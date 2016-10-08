@@ -32,10 +32,15 @@
     "predeploy": "npm-run-all lint-all",
     "deploy": "git push heroku master"
   },
+  "dependencies": {
+    "npm-run-all": "^3.1.0"
+  },
   "engines": {
     "node": "6.7.0"
   },
-  "dependencies": {
-    "npm-run-all": "^3.1.0"
-  }
+  "cacheDirectories": [
+    "node_modules",
+    "backend/node_modules",
+    "frontend/node_modules"
+  ]
 }
