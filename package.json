@@ -37,8 +37,5 @@
   },
   "dependencies": {
     "npm-run-all": "^3.1.0"
-  },
-  "devDependencies": {
-    "now": "^0.25.1"
   }
 }
