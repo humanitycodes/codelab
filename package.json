@@ -14,7 +14,7 @@
     "url": "https://github.com/chrisvfritz/msu.lansing.codes/issues"
   },
   "scripts": {
-    "install:backend": "cd backend && npm install",
+    "install:backend": "cd backend && npm install --only=dev && npm install --only=prod",
     "install:frontend": "cd frontend && npm install --only=dev && npm install --only=prod",
     "lint:backend": "cd backend && npm run lint",
     "lint:frontend": "cd frontend && npm run lint",
