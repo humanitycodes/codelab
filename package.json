@@ -1,0 +1,44 @@
+{
+  "name": "msu.lansing.codes",
+  "private": "true",
+  "version": "1.0.0",
+  "license": "Copyright",
+  "author": "Humanity Codes, LLC",
+  "homepage": "https://github.com/chrisvfritz/msu.lansing.codes#readme",
+  "description": "Learning Management System for MSU Coding Courses",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisvfritz/msu.lansing.codes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/chrisvfritz/msu.lansing.codes/issues"
+  },
+  "scripts": {
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install --only=dev && npm install --only=prod",
+    "lint:backend": "cd backend && npm run lint",
+    "lint:frontend": "cd frontend && npm run lint",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "serve:backend": "cd backend && npm run serve:prod",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "lint-all": "npm-run-all --parallel lint:*",
+    "dev-all": "npm-run-all --parallel dev:*",
+    "build-all": "npm-run-all --parallel build:*",
+    "serve-all": "npm-run-all --parallel serve:*",
+    "prestart": "npm-run-all install:* build-all",
+    "start": "npm-run-all serve-all",
+    "predeploy": "npm-run-all lint-all",
+    "deploy": "git push heroku master"
+  },
+  "engines": {
+    "node": "6.7.0"
+  },
+  "dependencies": {
+    "npm-run-all": "^3.1.0"
+  },
+  "devDependencies": {
+    "now": "^0.25.1"
+  }
+}
