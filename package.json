@@ -23,11 +23,11 @@
     "serve:backend": "cd backend && npm run serve:prod",
     "build:backend": "cd backend && npm run build",
     "build:frontend": "cd frontend && npm run build",
+    "postinstall": "npm-run-all install:* build-all",
     "lint-all": "npm-run-all --parallel lint:*",
     "dev-all": "npm-run-all --parallel dev:*",
     "build-all": "npm-run-all --parallel build:*",
     "serve-all": "npm-run-all --parallel serve:*",
-    "prestart": "npm-run-all install:* build-all",
     "start": "npm-run-all serve-all",
     "predeploy": "npm-run-all lint-all",
     "deploy": "git push heroku master"
