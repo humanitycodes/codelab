@@ -1,3 +1,9 @@
+test:
+  all:
+    - npm run test-all:
+        environment:
+          NODE_ENV: test
+
 deployment:
   production:
     branch: master

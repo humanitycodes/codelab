@@ -38,3 +38,7 @@ git push origin my-feature-branch
 ```
 
 And open a pull request.
+
+## Continuous Integration and Deployment
+
+Commits to master are automatically deployed to Heroku after tests pass.
