@@ -14,18 +14,27 @@ No testing framework is yet configured for the backend (Erik, I'll let you do th
 
 ## Contributing
 
-Since we'll be working on mostly separate parts of the application and with a small team, I think it's fine to just push to master, though only non-destructive pushes are allowed (i.e. no force pushing). That means as you're developing a feature, it'll be good to rebase frequently with:
+To ensure frequent communication, all features will be done in feature branches (we are not able to push to `master`). Here's a good process for starting a new feature:
 
 ``` sh
 git fetch origin
-git checkout master # or your feature branch
+git checkout master
+git reset --hard origin/master
+git checkout -b my-feature-branch
+```
+
+Before merging, each feature must be reviewed by at least one other team member and be up-to-date with master. That means it's a good idea to rebase frequently:
+
+``` sh
+git fetch origin
+git checkout my-feature-branch # if you're not already there
 git rebase origin/master
 ```
 
 When you're finally done, rebase one more time if necessary, then:
 
 ``` sh
-git push origin master
+git push origin my-feature-branch
 ```
 
-If there's a feature you want review on, push it to a feature branch on GitHub and submit a pull request. We'll have to discuss which kinds of changes, if any, should require review.
+And open a pull request.
