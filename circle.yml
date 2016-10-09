@@ -1,5 +1,9 @@
+machine:
+  timezone:
+    America/Detroit
+
 test:
-  all:
+  post:
     - npm run test-all:
         environment:
           NODE_ENV: test
