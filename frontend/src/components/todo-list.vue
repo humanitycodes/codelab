@@ -33,9 +33,8 @@ export default {
       if (this.newTodoText) {
         todosRef.push({
           text: this.newTodoText
-        }).then(() => {
-          this.newTodoText = ''
         })
+        this.newTodoText = ''
       }
     },
     removeTodo (todo) {

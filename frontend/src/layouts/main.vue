@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <ul>
+  <div id="container">
+    <ul id="nav">
       <li>Future</li>
       <li>Nav</li>
       <li>Links</li>
