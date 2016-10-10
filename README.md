@@ -39,6 +39,10 @@ git push origin my-feature-branch
 
 And open a pull request.
 
+## Development
+
+The development environment can be launched for either the frontend or the backend, by running `npm run dev` from those directories. The frontend launches to port 8080 and the backend to port 4000. On the frontend, `/api` is proxied to the backend. From the root directory, you can also run `npm run dev-all` to launch the entire app.
+
 ## Continuous Integration and Deployment
 
 Commits to master are automatically deployed to Heroku after tests pass.
