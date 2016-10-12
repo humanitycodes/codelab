@@ -28,6 +28,13 @@ module.exports = {
         pathRewrite: {
           '^/api': ''
         }
+      },
+      '/auth': {
+        target: 'http://localhost:4000/auth',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/auth': ''
+        }
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
