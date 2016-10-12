@@ -1,5 +1,4 @@
-import axios from 'axios'
-import querystring from 'querystring'
+const msunet = require('./msunet')
 
 const API_PREFIX = '/api/'
 const AUTH_PREFIX = '/auth/'
@@ -27,16 +26,12 @@ export default server => {
       auth: false
     },
     handler (request, reply) {
-      axios.post('https://oauth.ais.msu.edu/oauth/token', querystring.stringify({
-        code: request.query.code,
-        client_id: process.env.MSU_AUTH_CLIENT_ID,
-        client_secret: process.env.MSU_AUTH_CLIENT_SECRET,
-        grant_type: 'authorization_code',
-        redirect_uri: `${process.env.SERVER_BASE_URL}/auth/msu/callback`
-      })).then(response => {
-        reply({ authenticated: true, status: response.status, response: response.data })
-      }).catch(error => {
-        reply({ authenticated: false, error: error.message, status: error.response.status, response: error.response.data })
+      msunet.requestToken(request.query.code, (error, data) => {
+        if (error) {
+          reply({ authenticated: false, error: error.message, response: error.response.data })
+        } else {
+          reply({ authenticated: true, token: data.access_token })
+        };
       })
     }
   })
