@@ -4,6 +4,9 @@ import Hapi from 'hapi'
 // CONFIG
 // ------
 
+require('dotenv').config()
+require('./requestlog').default()
+
 const server = new Hapi.Server({
   connections: {
     routes: {
