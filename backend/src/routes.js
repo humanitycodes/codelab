@@ -1,9 +1,10 @@
-const PREFIX = '/api/'
+const API_PREFIX = '/api/'
+const AUTH_PREFIX = '/auth/'
 
 export default server => {
   server.route({
     method: 'GET',
-    path: PREFIX + 'authenticated',
+    path: `${API_PREFIX}authenticated`,
     config: {
       auth: {
         // https://github.com/dwyl/hapi-auth-jwt2#authentication-modes
@@ -13,6 +14,17 @@ export default server => {
       handler (request, reply) {
         reply({ authenticated: request.auth.isAuthenticated })
       }
+    }
+  })
+
+  server.route({
+    method: 'GET',
+    path: `${AUTH_PREFIX}msu/callback`,
+    config: {
+      auth: false
+    },
+    handler (request, reply) {
+      reply({ authenticated: 'maybe' })
     }
   })
 }
