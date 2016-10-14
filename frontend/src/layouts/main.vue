@@ -1,10 +1,18 @@
 <template>
   <div id="container">
     <ul id="nav">
-      <li>Future</li>
-      <li>Nav</li>
-      <li>Links</li>
+      <li><LoginLink/></li>
     </ul>
     <slot></slot>
   </div>
 </template>
+
+<script>
+import LoginLink from '@components/login-link'
+
+export default {
+  components: {
+    LoginLink
+  }
+}
+</script>

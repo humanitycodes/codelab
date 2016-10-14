@@ -22,7 +22,8 @@ module.exports = {
       '@components': path.resolve(__dirname, '../src/components'),
       '@pages': path.resolve(__dirname, '../src/pages'),
       '@layouts': path.resolve(__dirname, '../src/layouts'),
-      '@plugins': path.resolve(__dirname, '../src/plugins')
+      '@plugins': path.resolve(__dirname, '../src/plugins'),
+      '@env': path.resolve(__dirname, '../src/env/' + (process.env.NODE_ENV === 'production' ? 'prod' : 'dev'))
     }
   },
   resolveLoader: {
