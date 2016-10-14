@@ -12,7 +12,7 @@ module.exports = {
       .url(devServer)
       .waitForElementVisible('#container', 5000)
       .assert.containsText('h1', 'Hi.')
-      .assert.elementCount('#nav > li', 3)
+      .assert.elementCount('#nav > li', 1)
       .end()
   }
 }
