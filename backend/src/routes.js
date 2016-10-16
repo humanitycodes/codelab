@@ -1,4 +1,6 @@
-const msunet = require('./msunet')
+import joi from 'joi'
+
+const msuOAuth = require('./oauth-providers/msu-oauth')
 
 const API_PREFIX = '/api/'
 const AUTH_PREFIX = '/auth/'
@@ -23,15 +25,19 @@ export default server => {
     method: 'GET',
     path: `${AUTH_PREFIX}msu/callback`,
     config: {
-      auth: false
+      validate: {
+        query: {
+          code: joi.string().required()
+        }
+      }
     },
     handler (request, reply) {
-      msunet.requestToken(request.query.code, (error, data) => {
+      msuOAuth.requestToken(request.query.code, (error, data) => {
         if (error) {
           reply({ authenticated: false, error: error.message, response: error.response.data })
         } else {
           reply({ authenticated: true, token: data.access_token })
-        };
+        }
       })
     }
   })
