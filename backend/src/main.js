@@ -1,4 +1,5 @@
 import Hapi from 'hapi'
+import _ from 'lodash'
 
 // ------
 // CONFIG
@@ -63,7 +64,15 @@ server.register(plugins, error => {
   // API ROUTES
   // ----------
 
-  require('./routes').default(server)
+  const routeConfigs = {
+    '/api': require('./routes/api-routes').config,
+    '/auth': require('./routes/auth-routes').config
+  }
+
+  _.forEach(routeConfigs, (configs, baseUrl) => {
+    configs.forEach(config => { config.path = baseUrl + config.path })
+    server.route(configs)
+  })
 
   // ----------
   // SPA ROUTES
