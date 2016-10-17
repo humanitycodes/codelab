@@ -46,3 +46,10 @@ The development environment can be launched for either the frontend or the backe
 ## Continuous Integration and Deployment
 
 Commits to master are automatically deployed to Heroku after tests pass.
+
+## SSL Certificate Renewal
+
+``` sh
+brew install certbot # only once
+npm run ssl:renew
+```
