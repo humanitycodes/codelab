@@ -1,3 +1,5 @@
+// Polyfill features that are not yet natively
+// supported in node
 import 'babel-polyfill'
 
 import Hapi from 'hapi'
