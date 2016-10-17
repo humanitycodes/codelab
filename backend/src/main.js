@@ -1,12 +1,13 @@
 import Hapi from 'hapi'
+import logRequests from 'log-requests'
+import { config as setEnvVars } from 'dotenv'
 import _ from 'lodash'
 
 // ------
 // CONFIG
 // ------
 
-require('dotenv').config()
-require('./request-log').default()
+setEnvVars()
 
 const server = new Hapi.Server({
   connections: {
@@ -101,6 +102,12 @@ server.register(plugins, error => {
       }
     }
   })
+
+  // -------
+  // LOGGING
+  // -------
+
+  logRequests()
 
   // -----
   // START
