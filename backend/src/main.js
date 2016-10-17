@@ -1,13 +1,16 @@
 import Hapi from 'hapi'
 import logRequests from './log-requests'
-import { config as setEnvVars } from 'dotenv'
 import _ from 'lodash'
 
 // ------
 // CONFIG
 // ------
 
-setEnvVars()
+// Do not use dotenv in production because Heroku
+// blows up if you do.
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 
 const server = new Hapi.Server({
   connections: {
