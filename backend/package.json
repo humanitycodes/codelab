@@ -6,7 +6,7 @@
     "lint": "eslint --ext .js,.json src",
     "serve:dev": "nodemon src/main.js --exec babel-node --presets es2015,stage-0",
     "dev": "npm-run-all lint env serve:dev",
-    "build": "babel src -d dist --presets es2015,stage-2",
+    "build": "babel src -d dist --presets es2015,stage-0",
     "serve:prod": "node dist/main.js",
     "start": "npm-run-all lint env build serve:prod"
   },
