@@ -1,4 +1,5 @@
 import joi from 'joi'
+import boom from 'boom'
 
 const msuOAuth = require('../oauth-providers/msu-oauth')
 
@@ -13,14 +14,13 @@ export const config = [
         }
       }
     },
-    handler (request, reply) {
-      msuOAuth.requestToken(request.query.code, (error, data) => {
-        if (error) {
-          reply({ authenticated: false, error: error.message, response: error.response.data })
-        } else {
-          reply({ authenticated: true, token: data.access_token })
-        }
-      })
+    handler: function* (request, reply) {
+      try {
+        let response = yield msuOAuth.requestToken(request.query.code)
+        reply(response.data)
+      } catch (error) {
+        reply(boom.unauthorized(error.response.data.error_description))
+      }
     }
   }
 ]
