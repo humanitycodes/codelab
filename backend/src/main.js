@@ -31,7 +31,8 @@ server.connection({
 
 const plugins = [
   require('inert'), // For serving static assets
-  require('hapi-auth-jwt2') // For JWT authentication
+  require('hapi-auth-jwt2'), // For JWT authentication
+  require('hapi-plugin-co') // For generator-style handlers
 ]
 
 // Enforce HTTPS when in production
