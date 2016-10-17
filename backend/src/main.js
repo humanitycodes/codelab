@@ -1,3 +1,5 @@
+import 'babel-polyfill'
+
 import Hapi from 'hapi'
 import logRequests from './log-requests'
 import _ from 'lodash'
