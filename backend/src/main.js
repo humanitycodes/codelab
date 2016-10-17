@@ -74,9 +74,9 @@ server.register(plugins, error => {
   // Let's Encrypt Verification
   server.route({
     method: 'GET',
-    path: '/.well-known/acme-challenge/2YzSws1BiRjdHLLavdtTdX3pC_c55EZtYiyDXNnO2FI',
+    path: '/.well-known/acme-challenge/vrUiRMkqkvskketMH03SnD1l_r5UyRv9MTHnmVl3W5I',
     handler (request, reply) {
-      reply('2YzSws1BiRjdHLLavdtTdX3pC_c55EZtYiyDXNnO2FI.QM9b48okjRNaKQUQwaWWZBaguWP08vF-cZUDzHQdWXs')
+      reply('vrUiRMkqkvskketMH03SnD1l_r5UyRv9MTHnmVl3W5I.QM9b48okjRNaKQUQwaWWZBaguWP08vF-cZUDzHQdWXs')
     }
   })
 
