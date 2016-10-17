@@ -1,5 +1,5 @@
 import Hapi from 'hapi'
-import logRequests from 'log-requests'
+import logRequests from './log-requests'
 import { config as setEnvVars } from 'dotenv'
 import _ from 'lodash'
 
@@ -59,6 +59,19 @@ server.register(plugins, error => {
     },
     validateFunc (decoded, request, callback) {
       callback(null, !!decoded)
+    }
+  })
+
+  // ------------------------
+  // 3RD-PARTY SERVICE ROUTES
+  // ------------------------
+
+  // Let's Encrypt Verification
+  server.route({
+    method: 'GET',
+    path: '/.well-known/acme-challenge/2YzSws1BiRjdHLLavdtTdX3pC_c55EZtYiyDXNnO2FI',
+    handler (request, reply) {
+      reply('2YzSws1BiRjdHLLavdtTdX3pC_c55EZtYiyDXNnO2FI.QM9b48okjRNaKQUQwaWWZBaguWP08vF-cZUDzHQdWXs')
     }
   })
 
