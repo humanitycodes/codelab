@@ -42,9 +42,9 @@ const plugins = [
 ]
 
 // Enforce HTTPS when in production
-if (process.env.NODE_ENV === 'production') {
-  plugins.push(require('hapi-require-https'))
-}
+// if (process.env.NODE_ENV === 'production') {
+//   plugins.push(require('hapi-require-https'))
+// }
 
 server.register(plugins, error => {
   if (error) throw error
