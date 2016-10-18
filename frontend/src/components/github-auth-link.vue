@@ -14,7 +14,7 @@ export default {
   },
   data () {
     return {
-      url: 'https://oauth.ais.msu.edu/oauth/authorize?response_type=code&client_id=' + env.msuAuthClientId
+      url: 'https://github.com/login/oauth/authorize?client_id=' + env.githubAuthClientId
     }
   }
 }
