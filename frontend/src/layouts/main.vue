@@ -1,18 +1,18 @@
 <template>
   <div id="container">
     <ul id="nav">
-      <li><LoginLink/></li>
+      <li><MsuAuthLink label="Sign up"/> with your MSU Account</li>
     </ul>
     <slot></slot>
   </div>
 </template>
 
 <script>
-import LoginLink from '@components/login-link'
+import MsuAuthLink from '@components/msu-auth-link'
 
 export default {
   components: {
-    LoginLink
+    MsuAuthLink
   }
 }
 </script>
