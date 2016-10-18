@@ -1,17 +1,9 @@
-<template>
-  <a :href="url">{{ label }}</a>
-</template>
-
 <script>
 import env from '@env'
+import AuthLink from '@components/auth-link'
 
 export default {
-  props: {
-    label: {
-      type: String,
-      default: 'Login'
-    }
-  },
+  extends: AuthLink,
   data () {
     return {
       url: 'https://oauth.ais.msu.edu/oauth/authorize?response_type=code&client_id=' + env.msuAuthClientId
