@@ -30,6 +30,7 @@ describe('auth-link.vue', () => {
     const vm = new Vue(newAuthLink('github')).$mount()
 
     expect(vm.url).to.contain('https://github.com/login/oauth/authorize')
+    expect(vm.url).to.contain('scope=')
     expect(vm.url).to.contain('client_id=')
   })
 
