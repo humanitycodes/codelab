@@ -34,7 +34,7 @@
     "serve-all": "npm-run-all --parallel serve:*",
     "start": "npm-run-all serve-all",
     "predeploy": "npm-run-all lint-all test-all",
-    "deploy": "echo \"`git rev-parse --abbrev-ref HEAD`:master\" | git push heroku",
+    "deploy": "git push heroku `git rev-parse --abbrev-ref HEAD`:master",
     "ssl:renew": "sudo certbot certonly --manual -d msu.lansing.codes && sudo heroku certs:update /etc/letsencrypt/live/msu.lansing.codes/fullchain.pem /etc/letsencrypt/live/msu.lansing.codes/privkey.pem --confirm msu-lansing-codes"
   },
   "dependencies": {
