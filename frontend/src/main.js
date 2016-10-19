@@ -1,9 +1,9 @@
 import Vue from 'vue'
+import App from './app'
 import router from '@plugins/router'
-import '@plugins/firebase'
 
 new Vue({ // eslint-disable-line no-new
   el: '#app',
   router,
-  render: h => h('router-view')
+  render: h => h(App)
 })

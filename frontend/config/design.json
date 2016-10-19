@@ -1,0 +1,11 @@
+{
+  "branding": {
+    "lightgrey": "#F3F3F3",
+    "green": "#3AA979",
+    "darkblue": "#2C3E50"
+  },
+  "layout": {
+    "//": "'Number in pixels'",
+    "gutterWidth": "20px"
+  }
+}

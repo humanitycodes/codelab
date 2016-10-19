@@ -11,8 +11,8 @@ module.exports = {
     browser
       .url(devServer)
       .waitForElementVisible('#container', 5000)
-      .assert.containsText('h1', 'Hi.')
-      .assert.elementCount('#nav > li', 2)
-      .end()
+    browser.expect.element('h1').text.to.contain('Welcome')
+    browser.expect.element('.main-nav').to.be.present
+    browser.end()
   }
 }

@@ -1,19 +1,22 @@
 <template>
   <div id="container">
-    <ul id="nav">
-      <li><AuthLink provider="msu">Sign up</AuthLink> with your MSU account.</li>
-      <li><AuthLink provider="github">Login</AuthLink> with your GitHub account.</li>
-    </ul>
-    <slot></slot>
+    <MainNav/>
+    <slot/>
   </div>
 </template>
 
 <script>
-import AuthLink from '@components/auth-link'
+import MainNav from '@components/main-nav'
 
 export default {
   components: {
-    AuthLink
+    MainNav
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+#container
+  max-width: 600px
+  margin: 0 auto
+</style>
