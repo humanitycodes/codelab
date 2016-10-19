@@ -1,18 +1,32 @@
 <template>
-  <a :href="url">{{ label }}</a>
+  <a :href="url"><slot/></a>
 </template>
 
 <script>
+import env from '@env'
+
+const providers = {
+  github: {
+    url: 'https://github.com/login/oauth/authorize?client_id=' + env.githubAuthClientId
+  },
+  msu: {
+    url: 'https://oauth.ais.msu.edu/oauth/authorize?response_type=code&client_id=' + env.msuAuthClientId
+  }
+}
+
 export default {
   props: {
-    label: {
+    provider: {
       type: String,
-      default: 'Login'
+      required: true,
+      validator: function (value) {
+        return value in providers
+      }
     }
   },
-  data () {
-    return {
-      url: ''
+  computed: {
+    url: function () {
+      return providers[this.provider].url
     }
   }
 }
