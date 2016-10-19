@@ -2,6 +2,7 @@ import joi from 'joi'
 import boom from 'boom'
 
 const msuOAuth = require('../oauth-providers/msu-oauth')
+const githubOAuth = require('../oauth-providers/github-oauth')
 
 export const config = [
   {
@@ -16,10 +17,29 @@ export const config = [
     },
     handler: function* (request, reply) {
       try {
-        let response = yield msuOAuth.requestToken(request.query.code)
-        reply(response.data)
+        let oauth = yield msuOAuth.requestToken(request.query.code)
+        reply(oauth)
       } catch (error) {
-        reply(boom.unauthorized(error.response.data.error_description))
+        reply(boom.unauthorized(error.message))
+      }
+    }
+  },
+  {
+    method: 'GET',
+    path: `/github/callback`,
+    config: {
+      validate: {
+        query: {
+          code: joi.string().required()
+        }
+      }
+    },
+    handler: function* (request, reply) {
+      try {
+        let oauth = yield githubOAuth.requestToken(request.query.code)
+        reply(oauth)
+      } catch (error) {
+        reply(boom.unauthorized(error.message))
       }
     }
   }
