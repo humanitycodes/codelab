@@ -1,14 +1,36 @@
 machine:
+  node:
+    version: 6.7.0
   timezone:
     America/Detroit
+  # Create the .yarn-cache dir, so that it's detected
+  # during the dependency cache restoration
+  pre:
+    - mkdir ~/.yarn-cache
+
+dependencies:
+  pre:
+    # Install yarn
+    - curl -o- -L https://yarnpkg.com/install.sh | bash
+  cache_directories:
+    # These directories also contain dependencies
+    - ~/.yarn-cache
+    - frontend/node_modules
+    - backend/node_modules
+  override:
+    # Use yarn instead of NPM, because it's way faster
+    # and because the lockfile ensures consistent builds
+    - yarn install
 
 test:
-  post:
-    - npm run test-all:
+  override:
+    # Use yarn to run the tests
+    - yarn test-all:
         environment:
           NODE_ENV: test
 
 deployment:
+  # Deploy to master branch to Heroku
   production:
     branch: master
     heroku:

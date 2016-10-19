@@ -11,6 +11,13 @@ describe('auth-link.vue', () => {
     }
   }
 
+  it('throws a prop validation when passed a bad provider', () => {
+    sinon.stub(console, 'error')
+    new Vue(newAuthLink('kittenz!')) // eslint-disable-line no-new
+    expect(console.error).to.have.been.calledWithMatch('Invalid prop: custom validator check failed for prop "provider"')
+    console.error.restore()
+  })
+
   it('supports MSU OAuth login', () => {
     const vm = new Vue(newAuthLink('msu')).$mount()
 
@@ -24,5 +31,19 @@ describe('auth-link.vue', () => {
 
     expect(vm.url).to.contain('https://github.com/login/oauth/authorize')
     expect(vm.url).to.contain('client_id=')
+  })
+
+  it('renders an anchor with the slot contents', () => {
+    const slotContents = 'kittenz!'
+    const vm = new Vue({
+      template: `
+        <AuthLink provider="github">
+          ${slotContents}
+        </AuthLink>
+      `,
+      components: { AuthLink }
+    }).$mount()
+    expect(vm.$el.tagName).to.equal('A')
+    expect(vm.$el.textContent.trim()).to.equal(slotContents)
   })
 })

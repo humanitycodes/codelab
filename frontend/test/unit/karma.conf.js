@@ -15,6 +15,11 @@ var webpackConfig = merge(baseConfig, {
   module: {
     loaders: utils.styleLoaders()
   },
+  resolve: {
+    alias: {
+      'vue$': 'vue/dist/vue.js'
+    }
+  },
   devtool: '#inline-source-map',
   vue: {
     loaders: {
