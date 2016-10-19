@@ -14,18 +14,18 @@
     "url": "https://github.com/chrisvfritz/msu.lansing.codes/issues"
   },
   "scripts": {
-    "install:backend": "cd backend && npm install --only=dev && npm install --only=prod",
-    "install:frontend": "cd frontend && npm install --only=dev && npm install --only=prod",
-    "lint:backend": "cd backend && npm run lint",
-    "lint:frontend": "cd frontend && npm run lint",
+    "install:backend": "cd backend && yarn",
+    "install:frontend": "cd frontend && yarn",
+    "lint:backend": "cd backend && yarn run lint",
+    "lint:frontend": "cd frontend && yarn run lint",
     "test:backend": "echo No tests yet.",
-    "test:frontend": "cd frontend && npm run test",
-    "dev:backend": "cd backend && npm run dev",
-    "dev:frontend": "cd frontend && npm run dev",
+    "test:frontend": "cd frontend && yarn run test",
+    "dev:backend": "cd backend && yarn run dev",
+    "dev:frontend": "cd frontend && yarn run dev",
     "dev:ssl": "local-ssl-proxy --source 8080 --target 8181",
-    "serve:backend": "cd backend && npm run serve:prod",
-    "build:backend": "cd backend && npm run build",
-    "build:frontend": "cd frontend && npm run build",
+    "serve:backend": "cd backend && yarn run serve:prod",
+    "build:backend": "cd backend && yarn run build",
+    "build:frontend": "cd frontend && yarn run build",
     "postinstall": "npm-run-all install:* build-all",
     "lint-all": "npm-run-all --parallel lint:*",
     "test-all": "npm-run-all test:*",
@@ -47,6 +47,7 @@
     "node": "6.7.0"
   },
   "cacheDirectories": [
+    "~/.yarn-cache",
     "node_modules",
     "backend/node_modules",
     "frontend/node_modules"
