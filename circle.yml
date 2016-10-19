@@ -10,9 +10,6 @@ machine:
 
 dependencies:
   pre:
-    # We don't need these services running
-    - sudo service mysql stop
-    - sudo service postgresql stop
     # Install yarn
     - curl -o- -L https://yarnpkg.com/install.sh | bash
   cache_directories:
