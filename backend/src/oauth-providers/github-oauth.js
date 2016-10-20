@@ -54,7 +54,6 @@ export async function requestLoginProfile (code, callback) {
       resolve(loginProfile)
     })
     .catch(error => {
-      console.log(error)
       reject(error)
     })
   })
