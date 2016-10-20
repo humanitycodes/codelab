@@ -5,6 +5,7 @@ import 'babel-polyfill'
 import Hapi from 'hapi'
 import logRequests from './log-requests'
 import _ from 'lodash'
+import firebase from 'firebase'
 
 // ------
 // CONFIG
@@ -34,6 +35,22 @@ server.connection({
 })
 
 // -------------------
+// DATABASE SETUP
+// -------------------
+
+if (process.env.NODE_ENV === 'production') {
+  firebase.initializeApp({
+    serviceAccount: './env/production/firebase-service-account.json',
+    databaseURL: 'https://msulansingcodes.firebaseio.com'
+  })
+} else {
+  firebase.initializeApp({
+    serviceAccount: './env/dev/firebase-service-account.json',
+    databaseURL: 'https://msulansingcodesdev.firebaseio.com'
+  })
+}
+
+// -------------------
 // PLUGIN REGISTRATION
 // -------------------
 
@@ -56,16 +73,20 @@ server.register(plugins, error => {
   // --------------
 
   // https://github.com/dwyl/hapi-auth-jwt2
-  // https://firebase.google.com/docs/auth/web/custom-auth
+  // https://firebase.google.com/docs/auth/server/verify-id-tokens
   server.auth.strategy('jwt', 'jwt', {
-    key: new Buffer('SECRET_KEY', 'base64'),
+    key: Buffer(process.env.JWT_SECRET, 'base64'),
     verifyOptions: {
-      algorithms: ['HS256'],
-      // Will be required if we use something like Auth0
-      audience: 'JTW_PROVIDER_USER_ID'
+      ignoreExpiration: true
     },
-    validateFunc (decoded, request, callback) {
-      callback(null, !!decoded)
+    validateFunc: (decoded, request, callback) => {
+      // Firebase verifies the encoded JWT, so get the JWT from the header
+      firebase.auth().verifyIdToken(request.headers.authorization)
+      .then(decodedToken => {
+        callback(null, true)
+      }).catch(error => {
+        callback(error, false)
+      })
     }
   })
 

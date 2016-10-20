@@ -1,5 +1,6 @@
 import joi from 'joi'
 import boom from 'boom'
+import firebase from 'firebase'
 
 const msuOAuth = require('../oauth-providers/msu-oauth')
 const githubOAuth = require('../oauth-providers/github-oauth')
@@ -17,8 +18,13 @@ export const config = [
     },
     handler: function* (request, reply) {
       try {
-        let oauth = yield msuOAuth.requestToken(request.query.code)
-        reply(oauth)
+        let loginProfile = yield msuOAuth.requestLoginProfile(request.query.code)
+
+        const firebaseJwt = firebase.auth().createCustomToken(loginProfile.id, {
+          msu: loginProfile
+        })
+
+        reply(firebaseJwt)
       } catch (error) {
         reply(boom.unauthorized(error.message))
       }
@@ -36,8 +42,8 @@ export const config = [
     },
     handler: function* (request, reply) {
       try {
-        let oauth = yield githubOAuth.requestToken(request.query.code)
-        reply(oauth)
+        let loginProfile = yield githubOAuth.requestLoginProfile(request.query.code)
+        reply(loginProfile)
       } catch (error) {
         reply(boom.unauthorized(error.message))
       }
