@@ -30,8 +30,8 @@ ajv-keywords@^1.0.0:
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-1.1.1.tgz#02550bc605a3e576041565628af972e06c549d50"
 
 ajv@^4.7.0:
-  version "4.8.0"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-4.8.0.tgz#011df5c4a08edb29574a477269afb15a6f97abe5"
+  version "4.8.2"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-4.8.2.tgz#65486936ca36fea39a1504332a78bebd5d447bdc"
   dependencies:
     co "^4.6.0"
     json-stable-stringify "^1.0.1"
@@ -1508,9 +1508,9 @@ find-versions@^1.0.0:
     meow "^3.5.0"
     semver-regex "^1.0.0"
 
-firebase@^3.4.1:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/firebase/-/firebase-3.5.0.tgz#53e5e5e2c827e731b280fea56e02cbd06a7cd22e"
+firebase@^3.5.0:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-3.5.1.tgz#1e689252f1b74985b4e18d052662eb4a01b5cfd2"
   dependencies:
     dom-storage "2.0.2"
     faye-websocket "0.9.3"
@@ -1736,8 +1736,8 @@ hapi-require-https@^2.0.9:
   resolved "https://registry.yarnpkg.com/hapi-require-https/-/hapi-require-https-2.0.9.tgz#31756cee5db8796d3c2d6f6cd973c7747f013335"
 
 hapi@^15.1.1:
-  version "15.1.1"
-  resolved "https://registry.yarnpkg.com/hapi/-/hapi-15.1.1.tgz#617aeb2354b4b4b1f8f05cd7b7ab4a5208adc09e"
+  version "15.2.0"
+  resolved "https://registry.yarnpkg.com/hapi/-/hapi-15.2.0.tgz#5704ca2c04b6386c03caf9ee901f1de080316d23"
   dependencies:
     accept "2.x.x"
     ammo "2.x.x"
@@ -1755,7 +1755,7 @@ hapi@^15.1.1:
     podium "^1.2.x"
     shot "3.x.x"
     statehood "5.x.x"
-    subtext "^4.2.x"
+    subtext "^4.3.x"
     topo "2.x.x"
 
 har-validator@~2.0.6:
@@ -3195,9 +3195,9 @@ strip-json-comments@~1.0.1, strip-json-comments@~1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-1.0.4.tgz#1e15fbcac97d3ee99bf2d73b4c656b082bbafb91"
 
-subtext@^4.2.x:
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/subtext/-/subtext-4.2.2.tgz#6251d5c7b3da72d070293c4d798932d881c600eb"
+subtext@^4.3.x:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/subtext/-/subtext-4.3.0.tgz#dfac90492ec35669fd6e00c6e5d938b06d7ccfbb"
   dependencies:
     boom "4.x.x"
     content "3.x.x"
