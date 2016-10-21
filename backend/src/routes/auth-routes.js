@@ -20,11 +20,13 @@ export const config = [
       try {
         let loginProfile = yield msuOAuth.requestLoginProfile(request.query.code)
 
-        const firebaseJwt = firebase.auth().createCustomToken(loginProfile.id, {
+        const jwt = firebase.auth().createCustomToken(loginProfile.id, {
           msu: loginProfile
         })
 
-        reply(firebaseJwt)
+        // The Base64 JWT can contain + symbols, so encode it
+        const encodedJwt = encodeURIComponent(jwt)
+        reply().redirect(`${process.env.SERVER_BASE_URL}/login?token=${encodedJwt}`)
       } catch (error) {
         reply(boom.unauthorized(error.message))
       }
