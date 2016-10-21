@@ -20,6 +20,7 @@ export const config = [
       try {
         let loginProfile = yield msuOAuth.requestLoginProfile(request.query.code)
 
+        // todo: lookup or generate our own unique id
         const jwt = firebase.auth().createCustomToken(loginProfile.id, {
           msu: loginProfile
         })
