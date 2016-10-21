@@ -10,5 +10,11 @@ export default [
   {
     path: '/lessons/:key',
     component: require('@pages/lesson')
+  },
+  {
+    // This path has a required query parameter: ?token={jwt}
+    // The periods in the token cause something to break when used as path param
+    path: '/login',
+    component: require('@pages/login')
   }
 ]
