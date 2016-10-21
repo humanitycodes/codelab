@@ -22,7 +22,8 @@
     "inert": "^4.0.2",
     "joi": "^9.1.0",
     "jsonwebtoken": "^7.1.9",
-    "lodash": "^4.16.4"
+    "lodash": "^4.16.4",
+    "node-rsa": "^0.4.2"
   },
   "devDependencies": {
     "babel-cli": "^6.16.0",

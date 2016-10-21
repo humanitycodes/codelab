@@ -6,6 +6,8 @@ import Hapi from 'hapi'
 import logRequests from './log-requests'
 import _ from 'lodash'
 import firebase from 'firebase'
+import NodeRSA from 'node-rsa'
+import fs from 'fs'
 
 // ------
 // CONFIG
@@ -38,17 +40,18 @@ server.connection({
 // DATABASE SETUP
 // -------------------
 
+let firebaseAppConfig = {
+  serviceAccount: './env/dev/firebase-service-account.json',
+  databaseURL: 'https://msulansingcodesdev.firebaseio.com'
+}
 if (process.env.NODE_ENV === 'production') {
-  firebase.initializeApp({
+  firebaseAppConfig = {
     serviceAccount: './env/production/firebase-service-account.json',
     databaseURL: 'https://msulansingcodes.firebaseio.com'
-  })
-} else {
-  firebase.initializeApp({
-    serviceAccount: './env/dev/firebase-service-account.json',
-    databaseURL: 'https://msulansingcodesdev.firebaseio.com'
-  })
+  }
 }
+
+firebase.initializeApp(firebaseAppConfig)
 
 // -------------------
 // PLUGIN REGISTRATION
@@ -74,19 +77,19 @@ server.register(plugins, error => {
 
   // https://github.com/dwyl/hapi-auth-jwt2
   // https://firebase.google.com/docs/auth/server/verify-id-tokens
+  // http://catchcoder.com/questions/lpg64/firebase-custom-token-authentication-firebase-version-3
+
+  // Read file sync because jwt auth needs to be in place before routes load
+  var firebasePrivateKey = JSON.parse(fs.readFileSync(firebaseAppConfig.serviceAccount, 'utf8')).private_key
+  var key = new NodeRSA(firebasePrivateKey).exportKey('pkcs8-public-pem')
+
   server.auth.strategy('jwt', 'jwt', {
-    key: Buffer(process.env.JWT_SECRET, 'base64'),
+    key: key,
     verifyOptions: {
       ignoreExpiration: true
     },
-    validateFunc: (decoded, request, callback) => {
-      // Firebase verifies the encoded JWT, so get the JWT from the header
-      firebase.auth().verifyIdToken(request.headers.authorization)
-      .then(decodedToken => {
-        callback(null, true)
-      }).catch(error => {
-        callback(error, false)
-      })
+    verifyFunc (decoded, request, callback) {
+      callback(null, !!decoded)
     }
   })
 
