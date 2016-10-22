@@ -17,11 +17,9 @@ export default {
     })
     .then(() => {
       localStorage.setItem('token', token)
+      next('/')
     })
-    .catch(function (error) {
-      console.log(error)
-    })
-    next('/')
+    .catch(console.error)
   }
 }
 </script>
