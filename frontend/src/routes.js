@@ -16,5 +16,9 @@ export default [
     // The periods in the token cause something to break when used as path param
     path: '/login',
     component: require('@pages/login')
+  },
+  {
+    path: '/logout',
+    component: require('@pages/logout')
   }
 ]

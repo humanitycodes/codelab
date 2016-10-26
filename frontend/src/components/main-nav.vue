@@ -13,6 +13,11 @@
         Lessons
       </router-link>
     </li>
+    <li>
+      <router-link to="/logout">
+        Logout
+      </router-link>
+    </li>
   </ul>
 </template>
 
