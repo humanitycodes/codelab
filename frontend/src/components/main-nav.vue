@@ -1,33 +1,33 @@
 <template>
   <ul class="main-nav">
-    <li>
-      <AuthLink provider="msu">Sign up</AuthLink>
-      with your MSU account.
+    <li v-if="!userSignedIn">
+      <AuthLink provider="msu">Sign in</AuthLink>
     </li>
-    <li>
-      <AuthLink provider="github">Login</AuthLink>
-      with your GitHub account.
+    <li v-if="userSignedIn && !currentUser.githubToken">
+      <AuthLink provider="github">Connect GitHub</AuthLink>
     </li>
-    <li>
+    <li v-if="userSignedIn">
       <router-link to="/lessons">
         Lessons
       </router-link>
     </li>
-    <li>
-      <router-link to="/logout">
-        Logout
+    <li v-if="userSignedIn">
+      <router-link to="/signout">
+        Sign out
       </router-link>
     </li>
   </ul>
 </template>
 
 <script>
+import { userHelpers } from '@state/helpers'
 import AuthLink from './auth-link'
 
 export default {
   components: {
     AuthLink
-  }
+  },
+  computed: userHelpers
 }
 </script>
 
