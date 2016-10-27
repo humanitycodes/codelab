@@ -15,8 +15,6 @@ dependencies:
   cache_directories:
     # These directories also contain dependencies
     - ~/.yarn-cache
-    - frontend/node_modules
-    - backend/node_modules
   override:
     # Use yarn instead of NPM, because it's way faster
     # and because the lockfile ensures consistent builds
