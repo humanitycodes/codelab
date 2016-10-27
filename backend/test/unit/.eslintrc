@@ -1,0 +1,11 @@
+{
+  "env": {
+    "mocha": true
+  },
+  "globals": {
+    "src": true,
+    "expect": true,
+    "assert": true,
+    "sinon": true
+  }
+}
