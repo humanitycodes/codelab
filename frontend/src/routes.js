@@ -14,11 +14,11 @@ export default [
   {
     // This path has a required query parameter: ?token={jwt}
     // The periods in the token cause something to break when used as path param
-    path: '/login',
-    component: require('@pages/login')
+    path: '/sign-in',
+    component: require('@pages/sign-in')
   },
   {
-    path: '/logout',
-    component: require('@pages/logout')
+    path: '/sign-out',
+    component: require('@pages/sign-out')
   }
 ]

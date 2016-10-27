@@ -1,27 +1,20 @@
 <template>
   <Layout>
-    <h1>Welcome Home {{ displayName }}</h1>
+    <h1>
+      Welcome Home
+      <span v-if="userSignedIn">{{ currentUser.displayName }}</span>
+    </h1>
   </Layout>
 </template>
 
 <script>
-import firebase from 'firebase'
+import { userHelpers } from '@state/helpers'
 import Layout from '@layouts/main'
 
 export default {
-  beforeCreate () {
-    const vm = this
-    firebase.auth().onAuthStateChanged(function (user) {
-      vm.displayName = user ? user.displayName : ''
-    })
-  },
-  data () {
-    return {
-      displayName: ''
-    }
-  },
   components: {
     Layout
-  }
+  },
+  computed: userHelpers
 }
 </script>
