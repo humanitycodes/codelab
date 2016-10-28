@@ -14,6 +14,7 @@ dependencies:
     - curl -o- -L https://yarnpkg.com/install.sh | bash
   cache_directories:
     # These directories also contain dependencies
+    - ~/.yarn-cache
     - frontend/node_modules
     - backend/node_modules
   override:
