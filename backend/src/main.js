@@ -4,7 +4,6 @@ import 'babel-polyfill'
 
 import Hapi from 'hapi'
 import logRequests from './log-requests'
-import _ from 'lodash'
 import firebase from 'firebase'
 import NodeRSA from 'node-rsa'
 import fs from 'fs'
@@ -115,7 +114,7 @@ server.register(plugins, error => {
     '/auth': require('./routes/auth-routes').config
   }
 
-  _.forEach(routeConfigs, (configs, baseUrl) => {
+  Object.entries(routeConfigs).forEach(([baseUrl, configs]) => {
     configs.forEach(config => { config.path = baseUrl + config.path })
     server.route(configs)
   })
