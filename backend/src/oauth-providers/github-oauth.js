@@ -1,5 +1,4 @@
 import axios from 'axios'
-import _ from 'lodash'
 
 function getFromGitHub (path, token) {
   return axios({
@@ -50,7 +49,7 @@ export async function requestLoginProfile (code, callback) {
     .then(([emailResponse, userResponse]) => {
       loginProfile.id = userResponse.data.id
       loginProfile.name = userResponse.data.name
-      loginProfile.email = _.find(emailResponse.data, email => { return email.primary }).email
+      loginProfile.email = Array.find(emailResponse.data, email => { return email.primary }).email
       resolve(loginProfile)
     })
     .catch(error => {

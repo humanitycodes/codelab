@@ -1,10 +1,8 @@
-import _ from 'lodash'
-
 const routes = require(`${src}/routes/auth-routes`).config
 
 describe('auth-routes', () => {
   function lookupRoute (method, path) {
-    let route = _.find(routes, (config) => {
+    let route = Array.find(routes, (config) => {
       return config.method === method && config.path === path
     })
 
