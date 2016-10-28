@@ -2,7 +2,7 @@ const routes = require(`${src}/routes/auth-routes`).config
 
 describe('auth-routes', () => {
   function lookupRoute (method, path) {
-    let route = Array.find(routes, (config) => {
+    let route = routes.find(config => {
       return config.method === method && config.path === path
     })
 
