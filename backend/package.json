@@ -24,7 +24,8 @@
     "inert": "^4.0.2",
     "joi": "^9.1.0",
     "jsonwebtoken": "^7.1.9",
-    "node-rsa": "^0.4.2"
+    "node-rsa": "^0.4.2",
+    "uuid": "^2.0.3"
   },
   "devDependencies": {
     "babel-cli": "^6.16.0",
