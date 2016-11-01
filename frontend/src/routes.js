@@ -8,6 +8,14 @@ export default [
     component: require('@pages/lessons')
   },
   {
+    path: '/lessons/new',
+    component: require('@pages/lesson-new')
+  },
+  {
+    path: '/lessons/:key/edit',
+    component: require('@pages/lesson-edit')
+  },
+  {
     path: '/lessons/:key',
     component: require('@pages/lesson')
   },

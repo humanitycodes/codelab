@@ -1,6 +1,7 @@
 <template>
   <Layout>
     <h1>Lessons</h1>
+    <router-link to="/lessons/new">New Lesson</router-link>
     <LessonsMap :lessons="lessons"/>
   </Layout>
 </template>

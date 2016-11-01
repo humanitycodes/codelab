@@ -23,6 +23,7 @@ module.exports = {
       '@layouts': path.resolve(__dirname, '../src/layouts'),
       '@plugins': path.resolve(__dirname, '../src/plugins'),
       '@state': path.resolve(__dirname, '../src/state'),
+      '@helpers': path.resolve(__dirname, '../src/helpers'),
       '@env': path.resolve(__dirname, '../src/env/' + (process.env.NODE_ENV === 'production' ? 'prod' : 'dev'))
     }
   },

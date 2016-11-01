@@ -1,27 +1,35 @@
 <template>
   <Layout>
-    <h1>Lesson</h1>
-    <p>{{ lesson }}</p>
+    <pre v-if="lesson.createdBy">{{ lesson }}</pre>
+    <div v-if="!lesson.createdBy && lesson['.key']">
+      The lesson <strong>{{ $route.params.key }}</strong> doesn't exist. Did you mean
+      <router-link
+        :to="'/lessons/' + suggestedKey"
+      >{{ suggestedKey }}</router-link>?
+    </div>
   </Layout>
 </template>
 
 <script>
 import Layout from '@layouts/main'
 import db from '@plugins/firebase'
+import suggestedKey from '@helpers/suggested-lesson-key'
 
 export default {
   components: {
     Layout
   },
-  firebase: {
-    lessons: db.ref('lessons')
+  firebase () {
+    return {
+      lessons: db.ref('lessons'),
+      lesson: {
+        source: db.ref('lessons').child(this.$route.params.key),
+        asObject: true
+      }
+    }
   },
   computed: {
-    lesson () {
-      return this.lessons.find(lesson => {
-        return lesson['.key'] === this.$route.params.key
-      })
-    }
+    suggestedKey
   }
 }
 </script>
