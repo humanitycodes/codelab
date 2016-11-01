@@ -1,6 +1,7 @@
 import joi from 'joi'
 import boom from 'boom'
 import firebase from 'firebase'
+import uuid from 'uuid'
 
 const msuOAuth = require('../oauth-providers/msu-oauth')
 const githubOAuth = require('../oauth-providers/github-oauth')
@@ -20,8 +21,8 @@ export const config = [
       try {
         let loginProfile = yield msuOAuth.requestLoginProfile(request.query.code)
 
-        // todo: lookup or generate our own unique id
-        const jwt = firebase.auth().createCustomToken(loginProfile.id, {
+        const userId = uuid.v4()
+        const jwt = firebase.auth().createCustomToken(userId, {
           msu: loginProfile
         })
 
