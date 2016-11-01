@@ -7,8 +7,14 @@ export async function readByMsuUid (msuUid) {
     usersRef.orderByChild('msuUid').equalTo(msuUid).once('value')
     .then(userSnapshot => {
       if (userSnapshot && userSnapshot.exists()) {
-        let user = userSnapshot.val()
-        user.id = userSnapshot.key
+        if (userSnapshot.numChildren() !== 1) {
+          reject(new Error(`More than one user found for MSU NetID ${msuUid}.`))
+          return
+        }
+        const userResults = userSnapshot.val()
+        const userId = Object.keys(userResults)[0]
+        let user = userResults[userId]
+        user.id = userId
         resolve(user)
       } else {
         resolve(null)

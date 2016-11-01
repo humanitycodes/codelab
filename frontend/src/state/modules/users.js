@@ -20,10 +20,11 @@ export default {
       const decodedToken = jwtDecode(token)
       return firebase.auth().signInWithCustomToken(token)
         .then(() => {
-          const msuInfo = decodedToken.claims.msu
+          const profile = decodedToken.claims.profile
+          console.log(profile)
           return Promise.all([
-            firebase.auth().currentUser.updateEmail(msuInfo.email),
-            firebase.auth().currentUser.updateProfile({ displayName: msuInfo.name })
+            firebase.auth().currentUser.updateEmail(profile.email),
+            firebase.auth().currentUser.updateProfile({ displayName: profile.fullName })
           ])
         })
         .catch(console.error)

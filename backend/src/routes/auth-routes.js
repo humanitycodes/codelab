@@ -33,7 +33,7 @@ export const config = [
         }
 
         const jwt = firebase.auth().createCustomToken(user.id, {
-          msu: msuProfile
+          profile: user
         })
 
         // The Base64 JWT can contain + symbols, so encode it
