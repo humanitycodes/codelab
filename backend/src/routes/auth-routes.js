@@ -38,7 +38,7 @@ export const config = [
 
         // The Base64 JWT can contain + symbols, so encode it
         const encodedJwt = encodeURIComponent(jwt)
-        reply().redirect(`${process.env.SERVER_BASE_URL}/login?token=${encodedJwt}`)
+        reply().redirect(`${process.env.SERVER_BASE_URL}/sign-in?token=${encodedJwt}`)
       } catch (error) {
         reply(boom.unauthorized(error.message))
       }
