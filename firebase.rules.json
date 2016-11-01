@@ -24,7 +24,7 @@
       "$uid": {
         ".read": "auth != null && (auth.uid === $uid || root.child('roles/'+auth.uid+'/instructor').val() === true || root.child('roles/'+auth.uid+'/admin').val() === true)",
         ".write": "auth != null && ((!data.exists() && auth.uid === $uid) || root.child('roles/'+auth.uid+'/admin').val() === true)",
-        ".validate": "(data.exists() || (newData.child('student').val() === true && newData.child('instructor').val() === false && newData.child('admin').val() === false)) && (newData.child('student').val() === true || newData.child('instructor').val() === true || newData.child('admin').val() === true)",
+        ".validate": "(data.exists() || (newData.child('student').val() === true && (!newData.child('instructor').exists() || newData.child('instructor').val() === false) && (!newData.child('admin').exists() || newData.child('admin').val() === false))) && (newData.child('student').val() === true || newData.child('instructor').val() === true || newData.child('admin').val() === true)",
 
         "student": {
           ".validate": "newData.isBoolean()"
