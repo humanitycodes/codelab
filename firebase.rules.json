@@ -1,6 +1,7 @@
 {
   "rules": {
     "users": {
+      ".indexOn": ["msuUid"],
       "$uid": {
         ".read": "auth != null && (auth.uid === $uid || root.child('roles/'+auth.uid+'/instructor').val() === true || root.child('roles/'+auth.uid+'/admin').val() === true)",
         ".write": "auth != null && ((!data.exists() && auth.uid === $uid) || root.child('roles/'+auth.uid+'/admin').val() === true)",
