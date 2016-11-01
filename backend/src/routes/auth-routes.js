@@ -40,7 +40,6 @@ export const config = [
         const encodedJwt = encodeURIComponent(jwt)
         reply().redirect(`${process.env.SERVER_BASE_URL}/login?token=${encodedJwt}`)
       } catch (error) {
-        console.error(error)
         reply(boom.unauthorized(error.message))
       }
     }
