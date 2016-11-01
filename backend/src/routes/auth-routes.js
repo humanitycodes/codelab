@@ -5,6 +5,7 @@ import uuid from 'uuid'
 
 const msuOAuth = require('../oauth-providers/msu-oauth')
 const githubOAuth = require('../oauth-providers/github-oauth')
+const userRepo = require('../db/user-repo')
 
 export const config = [
   {
@@ -19,17 +20,27 @@ export const config = [
     },
     handler: function* (request, reply) {
       try {
-        let loginProfile = yield msuOAuth.requestLoginProfile(request.query.code)
+        let msuProfile = yield msuOAuth.requestLoginProfile(request.query.code)
 
-        const userId = uuid.v4()
-        const jwt = firebase.auth().createCustomToken(userId, {
-          msu: loginProfile
+        let user = yield userRepo.readByMsuUid(msuProfile.id)
+
+        if (!user) {
+          user = yield userRepo.create(uuid.v4(), {
+            msuUid: msuProfile.id,
+            fullName: msuProfile.name,
+            email: msuProfile.email
+          })
+        }
+
+        const jwt = firebase.auth().createCustomToken(user.id, {
+          msu: msuProfile
         })
 
         // The Base64 JWT can contain + symbols, so encode it
         const encodedJwt = encodeURIComponent(jwt)
         reply().redirect(`${process.env.SERVER_BASE_URL}/login?token=${encodedJwt}`)
       } catch (error) {
+        console.error(error)
         reply(boom.unauthorized(error.message))
       }
     }
