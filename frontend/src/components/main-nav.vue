@@ -37,6 +37,6 @@ export default {
 ul
   margin: 0 0 $design.layout.gutterWidth
   padding: $design.layout.gutterWidth
-  background: $design.branding.lightgrey
+  background: $design.branding.muted.light.gray
   list-style-type: none
 </style>

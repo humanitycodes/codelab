@@ -1,11 +1,51 @@
 {
   "branding": {
-    "lightgrey": "#F3F3F3",
-    "green": "#3AA979",
-    "darkblue": "#2C3E50"
+    "primary": {
+      "light": "#3675BC",
+      "dark": "#32485F"
+    },
+    "danger": {
+      "light": "#E93F59",
+      "dark": "#8F0000"
+    },
+    "warning": {
+      "light": "#EDC661",
+      "dark": "#C49100"
+    },
+    "success": {
+      "light": "#6BDD99",
+      "dark": "#009A71"
+    },
+    "muted": {
+      "light": {
+        "tan": "#FBFCF2",
+        "gray": "#F9F7F5",
+        "yellow": "#F8F7E1"
+      }
+    }
   },
   "layout": {
-    "//": "'Number in pixels'",
     "gutterWidth": "20px"
+  },
+  "control": {
+    "height": "38px",
+    "padding": {
+      "vertical": "6px",
+      "horizontal": "10px"
+    },
+    "border": {
+      "color": "#BBBBBB",
+      "radius": "4px"
+    },
+    "active": {
+      "border": {
+        "color": "#3675BC"
+      }
+    }
+  },
+  "body": {
+    "text": {
+      "color": "#555555"
+    }
   }
 }

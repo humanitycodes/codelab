@@ -8,6 +8,7 @@
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
     "unit": "karma start test/unit/karma.conf.js --single-run",
+    "unit:watch": "karma start test/unit/karma.conf.js --auto-watch",
     "e2e": "node test/e2e/runner.js",
     "test": "yarn run unit && yarn run e2e",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
@@ -15,6 +16,7 @@
   "dependencies": {
     "firebase": "^3.5.2",
     "jwt-decode": "^2.1.0",
+    "lodash": "^4.16.4",
     "vue": "^2.0.1",
     "vue-router": "^2.0.0",
     "vuefire": "^1.3.0",
@@ -67,7 +69,7 @@
     "phantomjs-prebuilt": "^2.1.3",
     "selenium-server": "3.0.1",
     "shelljs": "^0.7.4",
-    "sinon": "^1.17.3",
+    "sinon": "^1.17.5",
     "sinon-chai": "^2.8.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^2.3.1",

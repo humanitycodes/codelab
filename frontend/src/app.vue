@@ -1,5 +1,5 @@
 <template>
-  <router-view/>
+  <router-view :key="$route.fullPath"/>
 </template>
 
 <style lang="stylus">
@@ -11,7 +11,7 @@
 body
   font-family: 'Merriweather'
   font-weight: 300
-  color: $design.branding.darkBlue
+  color: $design.body.text.color
   overflow-x: hidden
 
 body, i.fa
@@ -28,13 +28,13 @@ h4
   text-transform: uppercase
 
 a
-  color: $design.branding.green
+  color: $design.branding.primary.light
   text-decoration: none
   &:hover
-    color: darken($design.branding.green, 50%)
+    color: $design.branding.primary.dark
     text-decoration: underline
   &[name]
-    color: $design.branding.darkBlue
+    color: $design.branding.primary.dark
     position: relative
     &:hover:before
       content: '#'
@@ -44,28 +44,9 @@ a
 hr
   width: 30%
   border: none
-  border-top: 5px solid #555
+  border-top: 5px solid $design.branding.primary.dark
   border-radius: 5px
   margin: $design.layout.gutterWidth auto
-
-// ------
-// HEADER
-// ------
-
-header
-  text-align: center
-  img
-    width: 100px
-    height: 100px
-
-// ------
-// FOOTER
-// ------
-
-footer
-  text-align: center
-  margin-top: $design.layout.gutterWidth
-
 // -----------
 // CODE BLOCKS
 // -----------
@@ -73,31 +54,31 @@ footer
 code
   font-family: 'PT Mono'
 pre
-  background-color: $code-block-background-color
+  background-color: $design.branding.muted.light.tan
   overflow-y: hidden
   position: relative
   &:before, &:after
     content: ''
-    width: $code-block-padding
+    width: $design.layout.gutterWidth
     height: 100%
     position: absolute
     top: 0
     z-index: 1
   &:before
     left: 0
-    background-image: linear-gradient(to left, $gradient-transparent, $code-block-background-color)
+    background-image: linear-gradient(to left, rgba(255,255,255,0), $design.branding.muted.light.tan)
   &:after
     right: 0
-    background-image: linear-gradient(to right, $gradient-transparent, $code-block-background-color)
+    background-image: linear-gradient(to right, rgba(255,255,255,0), $design.branding.muted.light.tan)
   code
     display: block
-    padding: $code-block-padding
+    padding: $design.layout.gutterWidth
     &:after
       content: 'click to open'
       position: absolute
       top: 0
       right: 0
-      padding: $code-block-padding / 3 $code-block-padding / 2
+      padding: $design.layout.gutterWidth / 3 $design.layout.gutterWidth / 2
       pointer-events: none
       opacity: 0
       transition: opacity 0.2s
@@ -113,8 +94,101 @@ pre
 
 .hljs
   background: transparent
-  color: #6E819E
-  padding: $code-block-padding
+  color: $design.branding.primary.dark
+  padding: $design.layout.gutterWidth
 .hljs-comment
   color: #888
+
+// -------
+// BUTTONS
+// -------
+
+.button, button, input[type="submit"], input[type="reset"], input[type="button"]
+  display: inline-block
+  height: $design.control.height
+  padding: 0 30px
+  color: $design.body.text.color
+  text-align: center
+  font-size: 11px
+  font-weight: 600
+  line-height: $design.control.height
+  letter-spacing: .1rem
+  text-transform: uppercase
+  text-decoration: none
+  white-space: nowrap
+  background-color: transparent
+  border-radius: $design.control.border.radius
+  border: 1px solid $design.control.border.color
+  cursor: pointer
+  &:hover, &:focus
+    color: darken($design.body.text.color, 20%)
+    border-color: darken($design.control.border.color, 30%)
+    outline: 0
+  &[disabled]
+    opacity: .6
+  &.inline
+    height: auto
+    line-height: 1.7
+    padding: 0 $design.control.padding.vertical - 1px 0 $design.control.padding.vertical
+  &.primary
+    color: #FFF
+    background-color: $design.branding.primary.light
+    border-color: $design.branding.primary.dark
+    &:hover, &:focus
+      background-color: darken($design.branding.primary.light, 20%)
+  &.danger
+    color: #FFF
+    background-color: $design.branding.danger.light
+    border-color: $design.branding.danger.dark
+    &:hover, &:focus
+      background-color: darken($design.branding.danger.light, 30%)
+
+// -----
+// FORMS
+// -----
+
+input:not([type]), input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], input[type="password"], textarea, select
+  height: $design.control.height
+  // The 6px vertically centers text on FF, ignored by Webkit
+  padding: $design.control.padding.vertical $design.control.padding.horizontal
+  background-color: #fff
+  border: 1px solid $design.control.border.color
+  border-radius: $design.control.border.radius
+  box-shadow: none
+  vertical-align: bottom
+  &:focus
+    border: 1px solid $design.branding.primary.light
+    outline: 0
+
+// Removes awkward default styles on some inputs for iOS
+input:not([type]), input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], input[type="password"], textarea
+    appearance: none
+    width: 100%
+
+input[type="checkbox"], input[type="radio"]
+  display: inline
+
+textarea
+  min-height: 100px
+  resize: vertical
+
+label, legend
+  display: block
+  color: $design.branding.primary.dark
+  margin-top: $design.layout.gutterWidth
+  margin-bottom: $design.layout.gutterWidth * .2
+  font-weight: 600
+
+fieldset
+  padding: 0
+  border-width: 0
+
+// -----
+// NOTES
+// -----
+
+p.warning
+  padding: $design.layout.gutterWidth
+  background-color: $design.branding.muted.light.yellow
+  border: 1px solid $design.branding.warning.light
 </style>
