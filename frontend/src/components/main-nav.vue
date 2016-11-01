@@ -12,7 +12,7 @@
       </router-link>
     </li>
     <li v-if="userSignedIn">
-      <router-link to="/signout">
+      <router-link to="/sign-out">
         Sign out
       </router-link>
     </li>
