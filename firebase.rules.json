@@ -1,6 +1,49 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
+    "users": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || root.child('roles/'+auth.uid+'/instructor').val() === true || root.child('roles/'+auth.uid+'/admin').val() === true)",
+        ".write": "auth != null && ((!data.exists() && auth.uid === $uid) || root.child('roles/'+auth.uid+'/admin').val() === true)",
+
+        "msuUid": {
+          ".validate": "!newData.exists() || (newData.isString() && newData.val().length > 0)"
+        },
+        "fullName": {
+          ".validate": "newData.exists() && newData.isString() && newData.val().length > 0"
+        },
+        "email": {
+          ".validate": "newData.exists() && newData.isString() && newData.val().length > 0"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+
+    "roles": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || root.child('roles/'+auth.uid+'/instructor').val() === true || root.child('roles/'+auth.uid+'/admin').val() === true)",
+        ".write": "auth != null && ((!data.exists() && auth.uid === $uid) || root.child('roles/'+auth.uid+'/admin').val() === true)",
+        ".validate": "(data.exists() || (newData.child('student').val() === true && newData.child('instructor').val() === false && newData.child('admin').val() === false)) && (newData.child('student').val() === true || newData.child('instructor').val() === true || newData.child('admin').val() === true)",
+
+        "student": {
+          ".validate": "newData.isBoolean()"
+        },
+        "instructor": {
+          ".validate": "newData.isBoolean()"
+        },
+        "admin": {
+          ".validate": "newData.isBoolean()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+
+    "lessons": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
   }
 }
