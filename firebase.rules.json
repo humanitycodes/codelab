@@ -6,9 +6,10 @@
         ".read": "
           // Must be signed in
           auth != null
-          // Can read your own user record or be an instructor or be an admin
           && (
+            // Can read your own user record
             auth.uid === $uid
+            // Instructors and Admins can read everything
             || root.child('roles/'+auth.uid+'/instructor').val() === true
             || root.child('roles/'+auth.uid+'/admin').val() === true
           )
@@ -54,7 +55,9 @@
           auth != null
           // Can read your own user record or be an instructor or be an admin
           && (
+            // Can read your own user record
             auth.uid === $uid
+            // Instructors and Admins can read everything
             || root.child('roles/'+auth.uid+'/instructor').val() === true
             || root.child('roles/'+auth.uid+'/admin').val() === true
           )
@@ -109,8 +112,66 @@
     },
 
     "lessons": {
+      // Any signed in user can read
       ".read": "auth != null",
-      ".write": "auth != null"
+      ".write": "
+        // Must be signed in
+        auth != null
+        && (
+          // Instructors and Admins can modify everything
+          root.child('roles/'+auth.uid+'/instructor').val() === true
+          || root.child('roles/'+auth.uid+'/admin').val() === true
+        )
+      ",
+
+      "$key": {
+        // Only lowercase letters and hyphens allowed
+        ".validate": "$key.matches(/^[-a-z]+$/)",
+
+        "createdBy": {
+          // Must match a user
+          ".validate": "root.child('users').child(newData.val()).exists()"
+        },
+        "title": {
+          // Field is a required string, empty strings are allowed
+          ".validate": "newData.exists() && newData.isString()"
+        },
+        "learningObjectives": {
+          "$lokey": {
+            "content": {
+              // Field is a required string
+              ".validate": "newData.exists() && newData.isString() && newData.val().length > 0"
+            }
+          }
+        },
+        "content": {
+          // Field is a required string, empty strings are allowed
+          ".validate": "newData.exists() && newData.isString()"
+        },
+        "notes": {
+          ".validate": "
+            // Field is optional
+            !newData.exists()
+            // If provided, must be a string
+            || newData.isString()
+          "
+        },
+        "prereqKeys": {
+          "$prereq_key": {
+            ".validate": "
+              // Must match a lesson
+              root.child('lessons').child($prereq_key).exists()
+              // Value must be true
+              && newData.val() === true
+            "
+          }
+        },
+
+        "$other": {
+          // Only the above fields are permitted
+          ".validate": false
+        }
+      }
     }
   }
 }
