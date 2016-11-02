@@ -4,7 +4,8 @@ import jwtDecode from 'jwt-decode'
 export default {
   state: {
     currentUser: null,
-    userRoles: null
+    userRoles: null,
+    rolesRef: null
   },
   getters: {
     userSignedIn (state) {
@@ -21,17 +22,22 @@ export default {
     }
   },
   actions: {
-    syncCurrentUser ({ commit }) {
+    syncCurrentUser ({ commit, state }) {
       firebase.auth().onAuthStateChanged(user => {
         commit('SET_CURRENT_USER', user)
 
         if (user) {
-          firebase.database().ref(`roles/${user.uid}`)
-          .on('value', roleSnapshot => {
+          let rolesRef = firebase.database().ref(`roles/${user.uid}`)
+          commit('SET_CURRENT_ROLES_REF', rolesRef)
+          rolesRef.on('value', roleSnapshot => {
             commit('SET_CURRENT_ROLES', roleSnapshot.val())
           })
         } else {
           commit('SET_CURRENT_ROLES', null)
+          if (state.rolesRef) {
+            state.rolesRef.off('value')
+            commit('SET_CURRENT_ROLES_REF', null)
+          }
         }
       })
     },
@@ -56,6 +62,9 @@ export default {
     },
     SET_CURRENT_ROLES (state, newRoles) {
       state.userRoles = newRoles
+    },
+    SET_CURRENT_ROLES_REF (state, newUserRef) {
+      state.userRef = newUserRef
     }
   }
 }
