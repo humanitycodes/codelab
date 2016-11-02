@@ -77,25 +77,13 @@
             // Short-circuit if updating
             data.exists()
             || (
-              // If creating (signing up), student role is required
-              newData.child('student').val() === true
-              // All other roles must be left out or set to false
-              && (!newData.child('instructor').exists() || newData.child('instructor').val() === false)
+              // Cannot sign up as an instructor or admin
+              (!newData.child('instructor').exists() || newData.child('instructor').val() === false)
               && (!newData.child('admin').exists() || newData.child('admin').val() === false)
             )
           )
-          // At least one role must be set to true
-          && (
-            newData.child('student').val() === true
-            || newData.child('instructor').val() === true
-            || newData.child('admin').val() === true
-          )
         ",
 
-        "student": {
-          // Field is an optional boolean
-          ".validate": "newData.isBoolean()"
-        },
         "instructor": {
           // Field is an optional boolean
           ".validate": "newData.isBoolean()"
