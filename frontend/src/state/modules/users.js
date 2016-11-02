@@ -19,6 +19,10 @@ export default {
     },
     userIsAdmin (state) {
       return !!state.currentUser && !!state.userRoles && state.userRoles.admin
+    },
+    userAtLeastInstructor (state) {
+      let userRoles = state.userRoles
+      return !!state.currentUser && !!userRoles && (userRoles.instructor || userRoles.admin)
     }
   },
   actions: {

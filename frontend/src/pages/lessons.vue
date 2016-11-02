@@ -14,7 +14,7 @@ import store from '@state/store'
 
 export default {
   beforeRouteEnter (to, from, next) {
-    if (store.getters.userIsInstructor || store.getters.userIsAdmin) {
+    if (store.getters.userAtLeastInstructor) {
       next()
     } else {
       next('/')

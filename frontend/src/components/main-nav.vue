@@ -6,7 +6,7 @@
     <li v-if="userSignedIn && !currentUser.githubToken">
       <AuthLink provider="github">Connect GitHub</AuthLink>
     </li>
-    <li v-if="userIsInstructor || userIsAdmin">
+    <li v-if="userAtLeastInstructor">
       <router-link to="/lessons">
         Lessons
       </router-link>
