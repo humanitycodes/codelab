@@ -11,9 +11,6 @@ export default {
     userSignedIn (state) {
       return !!state.currentUser
     },
-    userIsStudent (state) {
-      return !!state.currentUser && !!state.userRoles && state.userRoles.student
-    },
     userIsInstructor (state) {
       return !!state.currentUser && !!state.userRoles && state.userRoles.instructor
     },
