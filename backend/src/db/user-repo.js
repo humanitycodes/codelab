@@ -1,5 +1,10 @@
 import firebase from 'firebase'
 
+const SIGNUP_ROLES = {
+  instructor: false,
+  admin: false
+}
+
 export async function readByMsuUid (msuUid) {
   let usersRef = firebase.database().ref('users')
 
@@ -25,13 +30,12 @@ export async function readByMsuUid (msuUid) {
 }
 
 export async function create (id, user) {
-  let usersRef = firebase.database().ref('users')
-  let rolesRef = firebase.database().ref('roles')
+  let db = firebase.database()
 
   return new Promise((resolve, reject) => {
     Promise.all([
-      usersRef.child(id).set(user),
-      rolesRef.child(id).set({ student: true })
+      db.ref('users').child(id).set(user),
+      db.ref('roles').child(id).set(SIGNUP_ROLES)
     ])
     .then(([usersCallback, rolesCallback]) => {
       resolve({
