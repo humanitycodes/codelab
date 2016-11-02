@@ -20,8 +20,16 @@ import db from '@plugins/firebase'
 import Layout from '@layouts/main'
 import LessonForm from '@components/lesson-form'
 import suggestedKey from '@helpers/suggested-lesson-key'
+import store from '@state/store'
 
 export default {
+  beforeRouteEnter (to, from, next) {
+    if (store.getters.userIsInstructor || store.getters.userIsAdmin) {
+      next()
+    } else {
+      next('/')
+    }
+  },
   components: {
     Layout, LessonForm
   },

@@ -14,8 +14,16 @@
 import Layout from '@layouts/main'
 import db from '@plugins/firebase'
 import suggestedKey from '@helpers/suggested-lesson-key'
+import store from '@state/store'
 
 export default {
+  beforeRouteEnter (to, from, next) {
+    if (store.getters.userIsInstructor || store.getters.userIsAdmin) {
+      next()
+    } else {
+      next('/')
+    }
+  },
   components: {
     Layout
   },
