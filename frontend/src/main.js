@@ -2,21 +2,11 @@ import Vue from 'vue'
 import App from './app'
 import store from '@state/store'
 import router from '@plugins/router'
+import LoadingScreen from '@components/loading-screen'
 
 // Show a loading message until we have the data needed
 // to authorize routes in our app
-new Vue({ // eslint-disable-line no-new
-  el: '#app',
-  render (h) {
-    return (
-      <div id='app'>
-        <h1 style={{ textAlign: 'center' }}>
-          Loading...
-        </h1>
-      </div>
-    )
-  }
-})
+new Vue(LoadingScreen).$mount('#app') // eslint-disable-line no-new
 
 // Once we have the information used to authorize
 // routes, we can run the main app
