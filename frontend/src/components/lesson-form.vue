@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import db from '@plugins/firebase'
+import { mapActions } from 'vuex'
 import LessonFormLearningObjectives from './lesson-form-learning-objectives'
 import LessonFormPrereqs from './lesson-form-prereqs'
 
@@ -50,33 +50,16 @@ export default {
     }
   },
   created () {
-    this.updateLesson()
+    this.updateLesson(this.lesson)
   },
   watch: {
     lesson: {
       deep: true,
-      handler: 'updateLesson'
+      handler (newLesson) {
+        this.updateLesson(newLesson)
+      }
     }
   },
-  methods: {
-    updateLesson () {
-      const editableFields = {
-        title: '',
-        content: '',
-        notes: '',
-        learningObjectives: {},
-        prereqKeys: {}
-      }
-      db.ref('lessons')
-        .child(this.lesson['.key'])
-        .update(
-          Object.keys(editableFields)
-            .map(field => ({
-              [field]: this.lesson[field] || editableFields[field]
-            }))
-            .reduce((a, b) => Object.assign({}, a, b))
-        )
-    }
-  }
+  methods: mapActions(['updateLesson'])
 }
 </script>

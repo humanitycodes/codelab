@@ -6,7 +6,7 @@
     <li v-if="userSignedIn && !currentUser.githubToken">
       <AuthLink provider="github">Connect GitHub</AuthLink>
     </li>
-    <li v-if="userAtLeastInstructor">
+    <li v-if="canReadAllLessons()">
       <router-link to="/lessons">
         Lessons
       </router-link>
@@ -20,14 +20,15 @@
 </template>
 
 <script>
-import { userHelpers } from '@state/helpers'
+import { userGetters, lessonPermissionMethods } from '@state/helpers'
 import AuthLink from './auth-link'
 
 export default {
   components: {
     AuthLink
   },
-  computed: userHelpers
+  computed: userGetters,
+  methods: lessonPermissionMethods
 }
 </script>
 

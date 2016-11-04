@@ -12,7 +12,7 @@
       <input v-model="key">
       <button
         :disabled="!keyIsValid"
-        @click="createLesson"
+        @click="tryToCreateLesson"
         class="primary"
       >
         Create key
@@ -22,19 +22,11 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import Layout from '@layouts/main'
-import { userHelpers } from '@state/helpers'
-import db from '@plugins/firebase'
-import store from '@state/store'
+import { userGetters, lessonGetters } from '@state/helpers'
 
 export default {
-  beforeRouteEnter (to, from, next) {
-    if (store.getters.userAtLeastInstructor) {
-      next()
-    } else {
-      next('/')
-    }
-  },
   components: {
     Layout
   },
@@ -50,10 +42,10 @@ export default {
       categoryPrefix: lessonCategories[0]
     }
   },
-  firebase: {
-    lessons: db.ref('lessons')
+  computed: {
+    ...userGetters,
+    ...lessonGetters
   },
-  computed: userHelpers,
   watch: {
     key (newKey, oldKey) {
       this.key = this.key.toLowerCase()
@@ -72,15 +64,15 @@ export default {
       })
       this.keyIsValid = keyFormatIsValid && keyIsUnique
     },
-    createLesson () {
+    tryToCreateLesson () {
       if (this.keyIsValid) {
         const key = [this.categoryPrefix, this.key].join('-')
-        db.ref('lessons').child(key).set({
-          createdBy: this.currentUser.uid
+        this.createLesson(key).then(() => {
+          this.$router.replace(`/lessons/${key}/edit`)
         })
-        this.$router.replace(`/lessons/${key}/edit`)
       }
-    }
+    },
+    ...mapActions(['createLesson'])
   }
 }
 </script>

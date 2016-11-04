@@ -1,43 +1,19 @@
 <template>
   <Layout>
-    <pre v-if="lesson.createdBy">{{ lesson }}</pre>
-    <div v-if="!lesson.createdBy && lesson['.key']">
-      The lesson <strong>{{ $route.params.key }}</strong> doesn't exist. Did you mean
-      <router-link
-        :to="'/lessons/' + suggestedKey"
-      >{{ suggestedKey }}</router-link>?
-    </div>
+    <pre v-if="currentLesson">{{ currentLesson }}</pre>
+    <LessonNotFound v-else/>
   </Layout>
 </template>
 
 <script>
 import Layout from '@layouts/main'
-import db from '@plugins/firebase'
-import suggestedKey from '@helpers/suggested-lesson-key'
-import store from '@state/store'
+import LessonNotFound from '@components/lesson-not-found'
+import { lessonGetters } from '@state/helpers'
 
 export default {
-  beforeRouteEnter (to, from, next) {
-    if (store.getters.userAtLeastInstructor) {
-      next()
-    } else {
-      next('/')
-    }
-  },
   components: {
-    Layout
+    Layout, LessonNotFound
   },
-  firebase () {
-    return {
-      lessons: db.ref('lessons'),
-      lesson: {
-        source: db.ref('lessons').child(this.$route.params.key),
-        asObject: true
-      }
-    }
-  },
-  computed: {
-    suggestedKey
-  }
+  computed: lessonGetters
 }
 </script>

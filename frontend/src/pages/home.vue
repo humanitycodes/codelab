@@ -8,13 +8,13 @@
 </template>
 
 <script>
-import { userHelpers } from '@state/helpers'
+import { userGetters } from '@state/helpers'
 import Layout from '@layouts/main'
 
 export default {
   components: {
     Layout
   },
-  computed: userHelpers
+  computed: userGetters
 }
 </script>
