@@ -62,6 +62,20 @@ export default {
     },
     destroyLesson (_, lessonKey) {
       return db.ref('lessons').child(lessonKey).remove()
+    },
+    addLessonPrereq (_, { lessonKey, prereqKey }) {
+      return db.ref('lessons')
+        .child(lessonKey)
+        .child('prereqKeys')
+        .child(prereqKey)
+        .set(true)
+    },
+    removeLessonPrereq (_, { lessonKey, prereqKey }) {
+      return db.ref('lessons')
+        .child(lessonKey)
+        .child('prereqKeys')
+        .child(prereqKey)
+        .remove()
     }
   },
   mutations: {

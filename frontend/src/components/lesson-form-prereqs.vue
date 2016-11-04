@@ -29,15 +29,13 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import Dropdown from './dropdown'
-import db from '@plugins/firebase'
+import { lessonGetters } from '@state/helpers'
 
 export default {
   components: {
     Dropdown
-  },
-  firebase: {
-    lessons: db.ref('lessons')
   },
   props: {
     lesson: {
@@ -51,6 +49,7 @@ export default {
     }
   },
   computed: {
+    ...lessonGetters,
     queryResults () {
       if (!this.prereqQuery || !this.lessons.length) return []
       const queryRegex = new RegExp(this.prereqQuery, 'i')
@@ -82,21 +81,21 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['addLessonPrereq', 'removeLessonPrereq']),
     addPrereq (prereq) {
-      db.ref('lessons')
-        .child(this.lesson['.key'])
-        .child('prereqKeys')
-        .child(prereq['.key'])
-        .set(true)
-      this.prereqQuery = ''
-      this.$refs.queryInput.focus()
+      this.addLessonPrereq({
+        lessonKey: this.lesson['.key'],
+        prereqKey: prereq['.key']
+      }).then(() => {
+        this.prereqQuery = ''
+        this.$refs.queryInput.focus()
+      })
     },
     removePrereq (prereq) {
-      db.ref('lessons')
-        .child(this.lesson['.key'])
-        .child('prereqKeys')
-        .child(prereq['.key'])
-        .remove()
+      this.removeLessonPrereq({
+        lessonKey: this.lesson['.key'],
+        prereqKey: prereq['.key']
+      })
     },
     prereqWouldBeAcyclic (prereq) {
       const currentLessonKey = this.lesson['.key']
