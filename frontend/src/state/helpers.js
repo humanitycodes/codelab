@@ -1,6 +1,13 @@
 import { mapState, mapGetters } from 'vuex'
+import * as lessonPermissionMethods from '@state/authorization/lessons'
 
-export const userHelpers = {
+export const userGetters = {
   ...mapState({ currentUser: state => state.users.currentUser }),
-  ...mapGetters(['userSignedIn', 'userIsInstructor', 'userIsAdmin', 'userAtLeastInstructor'])
+  ...mapGetters(['userSignedIn'])
 }
+
+export const lessonGetters = {
+  ...mapState({ lessons: state => state.lessons.all }),
+  ...mapGetters(['currentLesson'])
+}
+export { lessonPermissionMethods }
