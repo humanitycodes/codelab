@@ -25,7 +25,7 @@ export default {
   actions: {
     syncLessons ({ commit, rootState }) {
       return new Promise((resolve, reject) => {
-        // If Firebase already has lessons
+        // If Firebase already has already pulled in lessons
         if (firebaseComponent.lessons.length) {
           commit('SET_LESSONS', firebaseComponent.lessons)
           resolve(rootState)
