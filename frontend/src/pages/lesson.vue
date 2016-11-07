@@ -1,6 +1,10 @@
 <template>
   <Layout>
-    <pre v-if="currentLesson">{{ currentLesson }}</pre>
+    <div v-if="currentLesson">
+      <EditCurrentLessonButton/>
+      <pre>{{ currentLesson }}</pre>
+      <EditCurrentLessonButton/>
+    </div>
     <LessonNotFound v-else/>
   </Layout>
 </template>
@@ -12,7 +16,21 @@ import { lessonGetters } from '@state/helpers'
 
 export default {
   components: {
-    Layout, LessonNotFound
+    Layout,
+    LessonNotFound,
+    EditCurrentLessonButton: {
+      render (h) {
+        if (!this.canUpdateCurrentLesson) return ''
+        return (
+          <router-link to={this.editCurrentLessonPath}>
+            <button class='primary block'>
+              Edit this lesson
+            </button>
+          </router-link>
+        )
+      },
+      computed: lessonGetters
+    }
   },
   computed: lessonGetters
 }

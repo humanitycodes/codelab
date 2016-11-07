@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import db from '@plugins/firebase'
+import { canUpdateLesson } from '@state/authorization/lessons'
 
 const firebaseComponent = new Vue({
   firebase: {
@@ -20,6 +21,19 @@ export default {
           return lesson['.key'] === currentKey
         })
       }
+    },
+    showCurrentLessonPath (state, getters) {
+      const lessonKey = getters.currentLesson['.key']
+      return `/lessons/${lessonKey}`
+    },
+    editCurrentLessonPath (state, getters) {
+      const lessonKey = getters.currentLesson['.key']
+      return `/lessons/${lessonKey}/edit`
+    },
+    canUpdateCurrentLesson (state, getters) {
+      return canUpdateLesson({
+        lessonKey: canUpdateLesson(getters.currentLesson['.key'])
+      })
     }
   },
   actions: {
