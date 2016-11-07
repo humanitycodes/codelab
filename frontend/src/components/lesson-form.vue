@@ -25,7 +25,6 @@
       v-model="lesson.notes"
       placeholder="Additional notes for future instructors"
     />
-    <pre>{{ lesson }}</pre>
   </div>
 </template>
 

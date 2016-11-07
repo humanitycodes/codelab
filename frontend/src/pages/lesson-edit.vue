@@ -1,13 +1,15 @@
 <template>
   <Layout>
     <div v-if="currentLesson">
+      <DoneButton/>
       <LessonForm :lesson="currentLesson"/>
+      <DoneButton/>
       <button
         v-if="canDestroyLesson(currentLesson['.key'])"
         @click="confirmDestroyLesson"
-        class="danger"
+        class="danger block"
       >
-        Delete
+        Delete lesson
       </button>
     </div>
     <LessonNotFound v-else/>
@@ -23,7 +25,23 @@ import { lessonGetters, lessonPermissionMethods } from '@state/helpers'
 
 export default {
   components: {
-    Layout, LessonForm, LessonNotFound
+    Layout,
+    LessonForm,
+    LessonNotFound,
+    DoneButton: {
+      render (h) {
+        const getOuttaHere = () => {
+          window.history.length > 1
+            ? this.$router.go(-1)
+            : this.$router.push('/lessons')
+        }
+        return (
+          <button class="primary block" on-click={getOuttaHere}>
+            My work here is done
+          </button>
+        )
+      }
+    }
   },
   computed: lessonGetters,
   methods: {

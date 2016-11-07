@@ -8,6 +8,9 @@ export const userGetters = {
 
 export const lessonGetters = {
   ...mapState({ lessons: state => state.lessons.all }),
-  ...mapGetters(['currentLesson'])
+  ...mapGetters([
+    'currentLesson', 'showCurrentLessonPath', 'editCurrentLessonPath',
+    'canUpdateCurrentLesson'
+  ])
 }
 export { lessonPermissionMethods }

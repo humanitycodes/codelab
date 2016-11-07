@@ -126,6 +126,11 @@ pre
     outline: 0
   &[disabled]
     opacity: .6
+  &.block
+    display: block
+    width: 100%
+    margin-top: $design.layout.gutterWidth
+    margin-bottom: $design.layout.gutterWidth
   &.inline
     height: auto
     line-height: 1.7
