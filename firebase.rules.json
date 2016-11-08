@@ -100,8 +100,15 @@
     },
 
     "lessons": {
-      // Any signed in user can read
-      ".read": "auth != null",
+      ".read": "
+        // Must be signed in
+        auth != null
+        && (
+          // Instructors and Admins can modify everything
+          root.child('roles/'+auth.uid+'/instructor').val() === true
+          || root.child('roles/'+auth.uid+'/admin').val() === true
+        )
+      ",
       ".write": "
         // Must be signed in
         auth != null
