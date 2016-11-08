@@ -152,7 +152,7 @@ pre
 // FORMS
 // -----
 
-input:not([type]), input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], input[type="password"], textarea, select
+input:not([type]), input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="date"], input[type="url"], input[type="password"], textarea, select
   height: $design.control.height
   // The 6px vertically centers text on FF, ignored by Webkit
   padding: $design.control.padding.vertical $design.control.padding.horizontal
@@ -166,7 +166,7 @@ input:not([type]), input[type="email"], input[type="number"], input[type="search
     outline: 0
 
 // Removes awkward default styles on some inputs for iOS
-input:not([type]), input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], input[type="password"], textarea
+input:not([type]), input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="date"], input[type="url"], input[type="password"], textarea
     appearance: none
     width: 100%
 
@@ -187,6 +187,19 @@ label, legend
 fieldset
   padding: 0
   border-width: 0
+
+.form-row
+  display: flex
+  margin: $design.layout.gutterWidth 0
+  .form-group
+    width: 100%
+    margin: 0 $design.layout.gutterWidth * .5
+    &:first-child
+      margin-left: 0
+    &:last-child
+      margin-right: 0
+    label
+      margin-top: 0
 
 // -----
 // NOTES

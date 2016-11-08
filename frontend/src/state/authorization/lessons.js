@@ -14,10 +14,7 @@ export const canCreateLesson = () => {
 // ----
 
 export const canReadLesson = ({ lessonKey }) => {
-  return (
-    hasMatchingRole(['instructor', 'admin']) ||
-    isEnrolledInACourseWithLesson(lessonKey)
-  )
+  return hasMatchingRole(['instructor', 'admin'])
 }
 
 export const canReadAllLessons = () => {
@@ -39,7 +36,7 @@ export const canUpdateLesson = ({ lessonKey }) => {
 export const canDestroyLesson = ({ lessonKey }) => {
   return (
     hasMatchingRole(['instructor', 'admin']) &&
-    !lessonIsInCourse(lessonKey)
+    !lessonIsInACourse(lessonKey)
   )
 }
 
@@ -47,22 +44,12 @@ export const canDestroyLesson = ({ lessonKey }) => {
 // PRIVATE HELPERS
 // ---------------
 
-function isEnrolledInACourseWithLesson (lessonKey) {
-  const lesson = store.state.lessons.all.find(lesson => {
-    return lesson['.key'] === lessonKey
+function lessonIsInACourse (lessonKey) {
+  return store.state.courses.all.some(course => {
+    const lessonKeys = Object.keys(course.lessonKeys)
+    return (
+      lessonKeys.length &&
+      lessonKeys.some(key => course.lessonKeys[key])
+    )
   })
-  if (!lesson) return
-  // Just always return false because we can't yet check
-  // if they're enrolled in a course
-  return false
-}
-
-function lessonIsInCourse (lessonKey) {
-  const lesson = store.state.lessons.all.find(lesson => {
-    return lesson['.key'] === lessonKey
-  })
-  if (!lesson) return
-  // Just always return false because we can't yet check
-  // if the lesson is part of a course yet
-  return false
 }
