@@ -12,9 +12,13 @@ new Vue(LoadingScreen).$mount('#app') // eslint-disable-line no-new
 // routes, we can run the main app
 store.dispatch('syncCurrentUser')
 .then(state => {
-  return state.users.currentUser
-    ? store.dispatch('syncLessons')
-    : Promise.resolve()
+  if (state.users.currentUser) {
+    return Promise.all([
+      store.dispatch('syncLessons'),
+      store.dispatch('syncCourses')
+    ])
+  }
+  return Promise.resolve()
 })
 .then(() => {
   new Vue({ // eslint-disable-line no-new

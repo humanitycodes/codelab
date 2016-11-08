@@ -48,9 +48,6 @@ export default {
       newLearningObjective: ''
     }
   },
-  created () {
-    this.updateLesson(this.lesson)
-  },
   watch: {
     lesson: {
       deep: true,

@@ -1,12 +1,6 @@
-import Vue from 'vue'
 import db from '@plugins/firebase'
 import { canUpdateLesson } from '@state/authorization/lessons'
-
-const firebaseComponent = new Vue({
-  firebase: {
-    lessons: db.ref('lessons')
-  }
-})
+import { createFirebaseVM } from './_helpers'
 
 export default {
   state: {
@@ -39,15 +33,17 @@ export default {
   actions: {
     syncLessons ({ commit, rootState }) {
       return new Promise((resolve, reject) => {
-        // If Firebase already has already pulled in lessons
-        if (firebaseComponent.lessons.length) {
-          commit('SET_LESSONS', firebaseComponent.lessons)
-          resolve(rootState)
-        }
-        firebaseComponent.$watch('lessons', (newLessons, oldLessons) => {
-          commit('SET_LESSONS', newLessons)
-          resolve(rootState)
+        createFirebaseVM({
+          lessons: db.ref('lessons')
         })
+        .then(vm => {
+          commit('SET_LESSONS', vm.lessons)
+          resolve(rootState)
+          vm.$watch('lessons', (newLessons, oldLessons) => {
+            commit('SET_LESSONS', newLessons)
+          })
+        })
+        .catch(console.error)
       })
     },
     createLesson ({ rootState }, lessonKey) {
