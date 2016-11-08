@@ -167,6 +167,78 @@
           ".validate": false
         }
       }
+    },
+
+    "courses": {
+      ".read": "
+        // Must be signed in
+        auth != null
+        && (
+          // Instructors and Admins can modify everything
+          root.child('roles/'+auth.uid+'/instructor').val() === true
+          || root.child('roles/'+auth.uid+'/admin').val() === true
+        )
+      ",
+      ".write": "
+        // Must be signed in
+        auth != null
+        && (
+          // Instructors and Admins can modify everything
+          root.child('roles/'+auth.uid+'/instructor').val() === true
+          || root.child('roles/'+auth.uid+'/admin').val() === true
+        )
+      ",
+
+      "$key": {
+        // Only uppercase letters, numbers, and hyphens allowed
+        ".validate": "$key.matches(/^[-A-Z0-9]+$/)",
+
+        "createdBy": {
+          // Must match a user
+          ".validate": "root.child('users').child(newData.val()).exists()"
+        },
+        "title": {
+          // Field is a required string, empty strings are allowed
+          ".validate": "newData.exists() && newData.isString()"
+        },
+        "syllabus": {
+          // Field is a required string, empty strings are allowed
+          ".validate": "newData.exists() && newData.isString()"
+        },
+        "startDate": {
+          // Field is a required RFC2822 date string, empty strings are allowed
+          ".validate": "newData.exists() && newData.isString()"
+        },
+        "endDate": {
+          // Field is a required RFC2822 date string, empty strings are allowed
+          ".validate": "newData.exists() && newData.isString()"
+        },
+        "lessonKeys": {
+          "$lessonkey": {
+            ".validate": "
+              // Must match a lesson
+              root.child('lessons').child($lessonkey).exists()
+              // Value must be true
+              && newData.val() === true
+            "
+          }
+        },
+        "studentKeys": {
+          "$studentkey": {
+            ".validate": "
+              // Must match a user
+              root.child('users').child($studentkey).exists()
+              // Value must be true
+              && newData.val() === true
+            "
+          }
+        },
+
+        "$other": {
+          // Only the above fields are permitted
+          ".validate": false
+        }
+      }
     }
   }
 }
