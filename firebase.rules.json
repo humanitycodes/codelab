@@ -170,26 +170,28 @@
     },
 
     "courses": {
-      ".read": "
-        // Must be signed in
-        auth != null
-        && (
-          // Instructors and Admins can modify everything
-          root.child('roles/'+auth.uid+'/instructor').val() === true
-          || root.child('roles/'+auth.uid+'/admin').val() === true
-        )
-      ",
-      ".write": "
-        // Must be signed in
-        auth != null
-        && (
-          // Instructors and Admins can modify everything
-          root.child('roles/'+auth.uid+'/instructor').val() === true
-          || root.child('roles/'+auth.uid+'/admin').val() === true
-        )
-      ",
-
       "$key": {
+        ".read": "
+          // Must be signed in
+          auth != null
+          && (
+            // Instructors and Admins can modify everything
+            root.child('roles/'+auth.uid+'/instructor').val() === true
+            || root.child('roles/'+auth.uid+'/admin').val() === true
+            // Users can read only if they are a student in the course
+            || data.child('studentKeys').child(auth.uid).val() === true
+          )
+        ",
+        ".write": "
+          // Must be signed in
+          auth != null
+          && (
+            // Instructors and Admins can modify everything
+            root.child('roles/'+auth.uid+'/instructor').val() === true
+            || root.child('roles/'+auth.uid+'/admin').val() === true
+          )
+        ",
+
         // Only uppercase letters, numbers, and hyphens allowed
         ".validate": "$key.matches(/^[-A-Z0-9]+$/)",
 
