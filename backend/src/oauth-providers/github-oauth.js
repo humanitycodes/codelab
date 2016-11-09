@@ -11,7 +11,7 @@ function getFromGitHub (path, token) {
   })
 }
 
-export async function requestLoginProfile (code, callback) {
+export async function requestLoginProfile (code) {
   let githubProfile = {}
   return new Promise((resolve, reject) => {
     axios({

@@ -50,13 +50,17 @@ export const config = [
     config: {
       validate: {
         query: {
-          code: joi.string().required()
+          code: joi.string().required(),
+          state: joi.string()
         }
       }
     },
     handler: function* (request, reply) {
       try {
-        let githubProfile = yield githubOAuth.requestLoginProfile(request.query.code)
+        // const jwt = decodeURIComponent(request.query.state)
+
+        const githubProfile = yield githubOAuth.requestLoginProfile(request.query.code)
+
         reply(githubProfile)
       } catch (error) {
         reply(boom.unauthorized(error.message))

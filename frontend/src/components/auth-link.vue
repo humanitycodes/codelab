@@ -4,15 +4,7 @@
 
 <script>
 import env from '@env'
-
-const providers = {
-  github: {
-    url: 'https://github.com/login/oauth/authorize?scope=user&client_id=' + env.githubAuthClientId
-  },
-  msu: {
-    url: 'https://oauth.ais.msu.edu/oauth/authorize?response_type=code&client_id=' + env.msuAuthClientId
-  }
-}
+import store from '@state/store'
 
 export default {
   props: {
@@ -20,13 +12,22 @@ export default {
       type: String,
       required: true,
       validator: function (value) {
-        return value in providers
+        return ['msu', 'github'].indexOf(value) >= 0
       }
     }
   },
   computed: {
     url: function () {
-      return providers[this.provider].url
+      switch (this.provider) {
+        case 'github':
+          const currentUser = store.state.users.currentUser
+          const firebaseJwt = currentUser ? encodeURIComponent(currentUser.firebaseJwt) : ''
+          return `https://github.com/login/oauth/authorize?scope=user&client_id=${env.githubAuthClientId}&state=${firebaseJwt}`
+        case 'msu':
+          return `https://oauth.ais.msu.edu/oauth/authorize?response_type=code&client_id=${env.msuAuthClientId}`
+        default:
+          return null
+      }
     }
   }
 }
