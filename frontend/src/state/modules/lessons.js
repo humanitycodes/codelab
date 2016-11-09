@@ -1,5 +1,5 @@
 import db from '@plugins/firebase'
-import { canUpdateLesson } from '@state/authorization/lessons'
+import { canUpdateLesson, canDestroyLesson } from '@state/authorization/lessons'
 import { createFirebaseVM } from './_helpers'
 
 export default {
@@ -17,16 +17,25 @@ export default {
       }
     },
     showCurrentLessonPath (state, getters) {
+      if (!getters.currentLesson) return null
       const lessonKey = getters.currentLesson['.key']
       return `/lessons/${lessonKey}`
     },
     editCurrentLessonPath (state, getters) {
+      if (!getters.currentLesson) return null
       const lessonKey = getters.currentLesson['.key']
       return `/lessons/${lessonKey}/edit`
     },
     canUpdateCurrentLesson (state, getters) {
+      if (!getters.currentLesson) return false
       return canUpdateLesson({
-        lessonKey: canUpdateLesson(getters.currentLesson['.key'])
+        lessonKey: getters.currentLesson['.key']
+      })
+    },
+    canDestroyCurrentLesson (state, getters) {
+      if (!getters.currentLesson) return false
+      return canDestroyLesson({
+        lessonKey: getters.currentLesson['.key']
       })
     }
   },

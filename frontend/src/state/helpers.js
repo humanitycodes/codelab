@@ -13,7 +13,8 @@ export const lessonGetters = {
     'currentLesson',
     'showCurrentLessonPath',
     'editCurrentLessonPath',
-    'canUpdateCurrentLesson'
+    'canUpdateCurrentLesson',
+    'canDestroyCurrentLesson'
   ])
 }
 export { lessonPermissionMethods }
@@ -22,6 +23,9 @@ export const courseGetters = {
   ...mapState({ courses: state => state.courses.all }),
   ...mapGetters([
     'currentCourse',
+    'showCurrentCoursePath',
+    'editCurrentCoursePath',
+    'canUpdateCurrentCourse',
     'canDestroyCurrentCourse'
   ])
 }

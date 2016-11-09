@@ -11,6 +11,11 @@
         Lessons
       </router-link>
     </li>
+    <li v-if="canReadAllCourses()">
+      <router-link to="/courses">
+        Courses
+      </router-link>
+    </li>
     <li v-if="userSignedIn">
       <router-link to="/sign-out">
         Sign out
@@ -20,7 +25,9 @@
 </template>
 
 <script>
-import { userGetters, lessonPermissionMethods } from '@state/helpers'
+import {
+  userGetters, lessonPermissionMethods, coursePermissionMethods
+} from '@state/helpers'
 import AuthLink from './auth-link'
 
 export default {
@@ -28,7 +35,10 @@ export default {
     AuthLink
   },
   computed: userGetters,
-  methods: lessonPermissionMethods
+  methods: {
+    ...lessonPermissionMethods,
+    ...coursePermissionMethods
+  }
 }
 </script>
 

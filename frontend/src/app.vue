@@ -47,6 +47,7 @@ hr
   border-top: 5px solid $design.branding.primary.dark
   border-radius: 5px
   margin: $design.layout.gutterWidth auto
+
 // -----------
 // CODE BLOCKS
 // -----------

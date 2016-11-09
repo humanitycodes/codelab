@@ -1,5 +1,5 @@
 import db from '@plugins/firebase'
-import { canDestroyCourse } from '@state/authorization/courses'
+import { canUpdateCourse, canDestroyCourse } from '@state/authorization/courses'
 import { createFirebaseVM } from './_helpers'
 
 export default {
@@ -16,7 +16,24 @@ export default {
         })
       }
     },
+    showCurrentCoursePath (state, getters) {
+      if (!getters.currentCourse) return null
+      const courseKey = getters.currentCourse['.key']
+      return `/courses/${courseKey}`
+    },
+    editCurrentCoursePath (state, getters) {
+      if (!getters.currentCourse) return null
+      const courseKey = getters.currentCourse['.key']
+      return `/courses/${courseKey}/edit`
+    },
+    canUpdateCurrentCourse (state, getters) {
+      if (!getters.currentCourse) return false
+      return canUpdateCourse({
+        courseKey: getters.currentCourse['.key']
+      })
+    },
     canDestroyCurrentCourse (state, getters) {
+      if (!getters.currentCourse) return false
       return canDestroyCourse({
         courseKey: getters.currentCourse['.key']
       })
