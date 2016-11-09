@@ -43,7 +43,7 @@ export default {
             commit('SET_LESSONS', newLessons)
           })
         })
-        .catch(console.error)
+        .catch(resolve)
       })
     },
     createLesson ({ rootState }, lessonKey) {

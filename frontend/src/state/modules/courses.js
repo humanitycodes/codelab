@@ -35,7 +35,7 @@ export default {
             commit('SET_COURSES', newCourses)
           })
         })
-        .catch(console.error)
+        .catch(resolve)
       })
     },
     createCourse ({ rootState }, courseKey) {
