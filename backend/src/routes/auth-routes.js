@@ -56,8 +56,8 @@ export const config = [
     },
     handler: function* (request, reply) {
       try {
-        let loginProfile = yield githubOAuth.requestLoginProfile(request.query.code)
-        reply(loginProfile)
+        let githubProfile = yield githubOAuth.requestLoginProfile(request.query.code)
+        reply(githubProfile)
       } catch (error) {
         reply(boom.unauthorized(error.message))
       }

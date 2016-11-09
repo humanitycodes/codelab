@@ -12,9 +12,7 @@ function getFromGitHub (path, token) {
 }
 
 export async function requestLoginProfile (code, callback) {
-  let loginProfile = {
-    provider: 'github'
-  }
+  let githubProfile = {}
   return new Promise((resolve, reject) => {
     axios({
       method: 'post',
@@ -36,24 +34,18 @@ export async function requestLoginProfile (code, callback) {
       if (response.data.error_description) {
         reject(new Error(response.data.error_description))
       } else {
-        loginProfile.type = response.data.token_type
-        loginProfile.token = response.data.access_token
-        loginProfile.scope = response.data.scope
+        githubProfile.tokenType = response.data.token_type
+        githubProfile.token = response.data.access_token
+        githubProfile.scope = response.data.scope
 
-        return Promise.all([
-          getFromGitHub('/user/emails', loginProfile.token),
-          getFromGitHub('/user', loginProfile.token)
-        ])
+        return getFromGitHub('/user', githubProfile.token)
       }
     })
-    .then(([emailResponse, userResponse]) => {
-      loginProfile.id = userResponse.data.id
-      loginProfile.name = userResponse.data.name
-      loginProfile.email = emailResponse.data.find(email => { return email.primary }).email
-      resolve(loginProfile)
+    .then(response => {
+      githubProfile.userId = response.data.id
+      githubProfile.login = response.data.login
+      resolve(githubProfile)
     })
-    .catch(error => {
-      reject(error)
-    })
+    .catch(reject)
   })
 }
