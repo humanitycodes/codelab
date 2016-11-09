@@ -1,7 +1,9 @@
 <template>
   <Layout>
     <div v-if="currentCourse">
+      <DoneButton fallback-route="/courses"/>
       <CourseForm :course="currentCourse"/>
+      <DoneButton fallback-route="/courses"/>
       <button
         v-if="canDestroyCurrentCourse"
         @click="confirmDestroyCourse"
@@ -17,11 +19,12 @@
 import { mapActions } from 'vuex'
 import Layout from '@layouts/main'
 import CourseForm from '@components/course-form'
+import DoneButton from '@components/done-button'
 import { courseGetters } from '@state/helpers'
 
 export default {
   components: {
-    Layout, CourseForm
+    Layout, CourseForm, DoneButton
   },
   computed: courseGetters,
   methods: {

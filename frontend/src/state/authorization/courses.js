@@ -67,6 +67,7 @@ function findCourse (courseKey) {
 
 function isEnrolledInCourse (courseKey) {
   const course = findCourse(courseKey)
+  if (!course.studentKeys) return false
   const currentUserKey = store.state.users.currentUser['.key']
   return course.studentKeys[currentUserKey]
 }

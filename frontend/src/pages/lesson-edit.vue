@@ -1,11 +1,11 @@
 <template>
   <Layout>
     <div v-if="currentLesson">
-      <DoneButton/>
+      <DoneButton fallback-route="/lessons"/>
       <LessonForm :lesson="currentLesson"/>
-      <DoneButton/>
+      <DoneButton fallback-route="/lessons"/>
       <button
-        v-if="canDestroyLesson(currentLesson['.key'])"
+        v-if="canDestroyCurrentLesson"
         @click="confirmDestroyLesson"
         class="danger block"
       >
@@ -21,27 +21,12 @@ import { mapActions } from 'vuex'
 import Layout from '@layouts/main'
 import LessonForm from '@components/lesson-form'
 import LessonNotFound from '@components/lesson-not-found'
-import { lessonGetters, lessonPermissionMethods } from '@state/helpers'
+import DoneButton from '@components/done-button'
+import { lessonGetters } from '@state/helpers'
 
 export default {
   components: {
-    Layout,
-    LessonForm,
-    LessonNotFound,
-    DoneButton: {
-      render (h) {
-        const getOuttaHere = () => {
-          window.history.length > 1
-            ? this.$router.go(-1)
-            : this.$router.push('/lessons')
-        }
-        return (
-          <button class="primary block" on-click={getOuttaHere}>
-            My work here is done
-          </button>
-        )
-      }
-    }
+    Layout, LessonForm, LessonNotFound, DoneButton
   },
   computed: lessonGetters,
   methods: {
@@ -53,8 +38,7 @@ export default {
         })
       }
     },
-    ...mapActions(['destroyLesson']),
-    ...lessonPermissionMethods
+    ...mapActions(['destroyLesson'])
   }
 }
 </script>

@@ -1,22 +1,22 @@
 <template>
   <div>
-    The lesson <strong>{{ badKey }}</strong> doesn't exist. Did you mean
+    The course <strong>{{ badKey }}</strong> doesn't exist. Did you mean
     <router-link :to="suggestedLink">{{ suggestedKey }}</router-link>?
   </div>
 </template>
 
 <script>
-import suggestedLessonKey from '@helpers/suggested-resource-key'
-import { lessonGetters } from '@state/helpers'
+import suggestedCourseKey from '@helpers/suggested-resource-key'
+import { courseGetters } from '@state/helpers'
 
 export default {
   computed: {
-    ...lessonGetters,
+    ...courseGetters,
     badKey () {
-      return this.$route.params.lessonKey
+      return this.$route.params.courseKey
     },
     suggestedKey () {
-      return suggestedLessonKey(this.badKey, this.lessons)
+      return suggestedCourseKey(this.badKey, this.courses)
     },
     suggestedLink () {
       return this.$route.fullPath.replace(this.badKey, this.suggestedKey)

@@ -46,6 +46,7 @@ export const canDestroyLesson = ({ lessonKey }) => {
 
 function lessonIsInACourse (lessonKey) {
   return store.state.courses.all.some(course => {
+    if (!course.lessonKeys) return false
     const lessonKeys = Object.keys(course.lessonKeys)
     return (
       lessonKeys.length &&
