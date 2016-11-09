@@ -16,28 +16,35 @@ export default {
   },
   actions: {
     syncCurrentUser ({ commit, state, rootState }) {
-      return new Promise((resolve, reject) => {
-        let rolesRef
-        const currentRolesCallback = roleSnapshot => {
-          commit('SET_CURRENT_ROLES', roleSnapshot.val())
-          resolve(rootState)
-        }
-
-        firebase.auth().onAuthStateChanged(user => {
-          commit('SET_CURRENT_USER', user)
-          if (user) {
-            rolesRef = db.ref(`roles/${user.uid}`)
-            rolesRef.on('value', currentRolesCallback)
-          } else {
-            commit('SET_CURRENT_ROLES', null)
-            if (rolesRef) {
-              rolesRef.off('value', currentRolesCallback)
-              rolesRef = null
+      return firebase.auth().getToken()
+        .then(firebaseTokenResult => {
+          return new Promise((resolve, reject) => {
+            let rolesRef
+            const currentRolesCallback = roleSnapshot => {
+              commit('SET_CURRENT_ROLES', roleSnapshot.val())
+              resolve(rootState)
             }
-            resolve(rootState)
-          }
+
+            firebase.auth().onAuthStateChanged(user => {
+              if (user) {
+                commit('SET_CURRENT_USER', {
+                  ...user,
+                  firebaseJwt: firebaseTokenResult.accessToken
+                })
+                rolesRef = db.ref(`roles/${user.uid}`)
+                rolesRef.on('value', currentRolesCallback)
+              } else {
+                commit('SET_CURRENT_USER', null)
+                commit('SET_CURRENT_ROLES', null)
+                if (rolesRef) {
+                  rolesRef.off('value', currentRolesCallback)
+                  rolesRef = null
+                }
+                resolve(rootState)
+              }
+            })
+          })
         })
-      })
     },
     syncUsers ({ commit, rootState }) {
       return new Promise((resolve, reject) => {

@@ -3,7 +3,7 @@
     <li v-if="!userSignedIn">
       <AuthLink provider="msu">Sign in</AuthLink>
     </li>
-    <li v-if="userSignedIn && !currentUser.githubToken">
+    <li v-if="userSignedIn && !currentUser.github">
       <AuthLink provider="github">Connect GitHub</AuthLink>
     </li>
     <li v-if="canReadAllLessons()">
