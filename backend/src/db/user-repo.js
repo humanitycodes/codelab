@@ -5,6 +5,22 @@ const SIGNUP_ROLES = {
   admin: false
 }
 
+export async function readByUid (uid) {
+  let userRef = firebase.database().ref('users').child(uid)
+
+  return new Promise((resolve, reject) => {
+    userRef.once('value')
+    .then(userSnapshot => {
+      if (userSnapshot && userSnapshot.exists()) {
+        resolve([uid, userSnapshot.val()])
+      } else {
+        resolve([null, null])
+      }
+    })
+    .catch(reject)
+  })
+}
+
 export async function readByMsuUid (msuUid) {
   let usersRef = firebase.database().ref('users')
 
@@ -12,15 +28,15 @@ export async function readByMsuUid (msuUid) {
     usersRef.orderByChild('msuUid').equalTo(msuUid).once('value')
     .then(userSnapshot => {
       if (userSnapshot && userSnapshot.exists()) {
-        if (userSnapshot.numChildren() !== 1) {
-          reject(new Error(`More than one user found for MSU NetID ${msuUid}.`))
-          return
+        if (userSnapshot.numChildren() === 1) {
+          const userResults = userSnapshot.val()
+          const userId = Object.keys(userResults)[0]
+          resolve([userId, userResults[userId]])
+        } else {
+          reject(new Error(`Incorrect number of users found for MSU NetID ${msuUid}.`))
         }
-        const userResults = userSnapshot.val()
-        const userId = Object.keys(userResults)[0]
-        resolve([userId, userResults[userId]])
       } else {
-        resolve(null)
+        resolve([null, null])
       }
     })
     .catch(reject)
