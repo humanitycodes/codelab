@@ -60,7 +60,7 @@ export const config = [
     handler: function* (request, reply) {
       try {
         const token = yield verifyJWT(null, { auth: { token: decodeURIComponent(request.query.state) } })
-        console.log('token', token)
+        console.log(token.uid)
         const githubProfile = yield githubOAuth.requestLoginProfile(request.query.code)
         reply(githubProfile)
       } catch (error) {
