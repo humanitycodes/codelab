@@ -2,7 +2,7 @@
   <Layout>
     <h1>
       Welcome Home
-      <span v-if="userSignedIn">{{ currentUser.displayName }}</span>
+      <span v-if="userSignedIn">{{ currentUser.fullName }}</span>
     </h1>
   </Layout>
 </template>
