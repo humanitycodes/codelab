@@ -5,8 +5,9 @@ import 'babel-polyfill'
 import Hapi from 'hapi'
 import logRequests from './log-requests'
 import firebase from 'firebase'
-import NodeRSA from 'node-rsa'
-import fs from 'fs'
+
+import * as firebaseSettings from './firebase-settings'
+import { verifyJWTOptions, verifyJWT } from './helpers/verify-firebase-jwt'
 
 // ------
 // CONFIG
@@ -39,18 +40,7 @@ server.connection({
 // DATABASE SETUP
 // -------------------
 
-let firebaseAppConfig = {
-  serviceAccount: './env/dev/firebase-service-account.json',
-  databaseURL: 'https://msulansingcodesdev.firebaseio.com'
-}
-if (process.env.NODE_ENV === 'production') {
-  firebaseAppConfig = {
-    serviceAccount: './env/production/firebase-service-account.json',
-    databaseURL: 'https://msulansingcodes.firebaseio.com'
-  }
-}
-
-firebase.initializeApp(firebaseAppConfig)
+firebase.initializeApp(firebaseSettings.appConfig)
 
 // -------------------
 // PLUGIN REGISTRATION
@@ -78,18 +68,10 @@ server.register(plugins, error => {
   // https://firebase.google.com/docs/auth/server/verify-id-tokens
   // http://catchcoder.com/questions/lpg64/firebase-custom-token-authentication-firebase-version-3
 
-  // Read file sync because jwt auth needs to be in place before routes load
-  var firebasePrivateKey = JSON.parse(fs.readFileSync(firebaseAppConfig.serviceAccount, 'utf8')).private_key
-  var key = new NodeRSA(firebasePrivateKey).exportKey('pkcs8-public-pem')
-
   server.auth.strategy('jwt', 'jwt', {
-    key: key,
-    verifyOptions: {
-      ignoreExpiration: true
-    },
-    verifyFunc (decoded, request, callback) {
-      callback(null, !!decoded)
-    }
+    key: firebaseSettings.secretOrPublicKey,
+    verifyOptions: verifyJWTOptions,
+    verifyFunc: verifyJWT
   })
 
   // ------------------------
