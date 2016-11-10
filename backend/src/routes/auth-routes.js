@@ -60,9 +60,16 @@ export const config = [
     handler: function* (request, reply) {
       try {
         const token = yield verifyJWT(null, { auth: { token: decodeURIComponent(request.query.state) } })
-        console.log(token.uid)
+
+        const [userId, user] = yield userRepo.readById(token.uid)
+        if (!user) {
+          throw new Error(`User ${token.uid} not found.`)
+        }
+
         const githubProfile = yield githubOAuth.requestLoginProfile(request.query.code)
-        reply(githubProfile)
+        yield userRepo.saveGitHubProfile(userId, githubProfile)
+
+        reply().redirect(`${process.env.SERVER_BASE_URL}/`)
       } catch (error) {
         reply(boom.unauthorized(error.message))
       }
