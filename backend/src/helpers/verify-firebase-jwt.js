@@ -1,25 +1,16 @@
 import firebase from 'firebase'
 
-const userRepo = require('../db/user-repo')
-
 export const verifyJWTOptions = {
   ignoreExpiration: true
 }
 
 export function verifyJWT (decoded, request, callback) {
-  let token
   return firebase.auth().verifyIdToken(request.auth.token)
     .then(decodedToken => {
-      token = decodedToken
-      return userRepo.readByUid(token.uid)
-    }).then(([uid, user]) => {
-      if (!user) {
-        throw new Error(`User ${token.uid} not found.`)
-      }
       if (callback) {
-        callback(null, true)
+        callback(null, !!decodedToken)
       } else {
-        return Promise.resolve(token)
+        return Promise.resolve(decodedToken)
       }
     }).catch(error => {
       if (callback) {
