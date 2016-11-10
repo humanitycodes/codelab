@@ -1,6 +1,15 @@
 <template>
-  <router-view/>
+  <transition name="page-transition" mode="out-in" appear>
+    <router-view :key="$route.fullPath"/>
+  </transition>
 </template>
+
+<style lang="stylus" scoped>
+.page-transition-enter-active, .page-transition-leave-active
+  transition: opacity .2s
+.page-transition-enter, .page-transition-leave-active
+  opacity: 0
+</style>
 
 <style lang="stylus">
 @import './meta'
