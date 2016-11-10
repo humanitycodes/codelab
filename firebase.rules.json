@@ -44,6 +44,28 @@
           // Field is a required string
           ".validate": "newData.exists() && newData.isString() && newData.val().length > 0"
         },
+        "github": {
+          "login": {
+            // Field is a required string
+            ".validate": "newData.exists() && newData.isString()"
+          },
+          "scope": {
+            // Field is a required string
+            ".validate": "newData.exists() && newData.isString()"
+          },
+          "token": {
+            // Field is a required string
+            ".validate": "newData.exists() && newData.isString()"
+          },
+          "tokenType": {
+            // Field is a required string
+            ".validate": "newData.exists() && newData.isString()"
+          },
+          "userId": {
+            // Field is a required number
+            ".validate": "newData.exists() && newData.isNumber()"
+          }
+        },
         "$other": {
           // Only the above fields are permitted
           ".validate": false
@@ -57,7 +79,7 @@
         auth != null
         && (
           // Instructors and Admins can read everything
-          || root.child('roles/'+auth.uid+'/instructor').val() === true
+          root.child('roles/'+auth.uid+'/instructor').val() === true
           || root.child('roles/'+auth.uid+'/admin').val() === true
         )
       ",
