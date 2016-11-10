@@ -20,7 +20,8 @@
       "light": {
         "tan": "#FBFCF2",
         "gray": "#F9F7F5",
-        "yellow": "#F8F7E1"
+        "yellow": "#F8F7E1",
+        "red": "#ffdee1"
       }
     }
   },
