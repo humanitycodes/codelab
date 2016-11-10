@@ -2,17 +2,20 @@
   "rules": {
     "users": {
       ".indexOn": ["msuUid"],
+      ".read": "
+        auth != null && (
+          // Instructors and Admins can read everything
+          root.child('roles/'+auth.uid+'/instructor').val() === true
+          || root.child('roles/'+auth.uid+'/admin').val() === true
+        )
+      ",
+
       "$uid": {
         ".read": "
           // Must be signed in
           auth != null
-          && (
-            // Can read your own user record
-            auth.uid === $uid
-            // Instructors and Admins can read everything
-            || root.child('roles/'+auth.uid+'/instructor').val() === true
-            || root.child('roles/'+auth.uid+'/admin').val() === true
-          )
+          // Can read your own user record
+          && auth.uid === $uid
         ",
         ".write": "
           // Must be signed in
@@ -49,18 +52,22 @@
     },
 
     "roles": {
+      ".read": "
+        // Must be signed in
+        auth != null
+        && (
+          // Instructors and Admins can read everything
+          || root.child('roles/'+auth.uid+'/instructor').val() === true
+          || root.child('roles/'+auth.uid+'/admin').val() === true
+        )
+      ",
+
       "$uid": {
         ".read": "
           // Must be signed in
           auth != null
-          // Can read your own user record or be an instructor or be an admin
-          && (
-            // Can read your own user record
-            auth.uid === $uid
-            // Instructors and Admins can read everything
-            || root.child('roles/'+auth.uid+'/instructor').val() === true
-            || root.child('roles/'+auth.uid+'/admin').val() === true
-          )
+          // Can read your own user record
+          && auth.uid === $uid
         ",
         ".write": "
           // Must be signed in
@@ -170,26 +177,30 @@
     },
 
     "courses": {
+      ".read": "
+        auth != null &&
+        (
+          // Instructors and Admins can modify everything
+          root.child('roles/'+auth.uid+'/instructor').val() === true
+          || root.child('roles/'+auth.uid+'/admin').val() === true
+        )
+      ",
+      ".write": "
+        // Must be signed in
+        auth != null
+        && (
+          // Instructors and Admins can modify everything
+          root.child('roles/'+auth.uid+'/instructor').val() === true
+          || root.child('roles/'+auth.uid+'/admin').val() === true
+        )
+      ",
+
       "$key": {
         ".read": "
           // Must be signed in
           auth != null
-          && (
-            // Instructors and Admins can modify everything
-            root.child('roles/'+auth.uid+'/instructor').val() === true
-            || root.child('roles/'+auth.uid+'/admin').val() === true
-            // Users can read only if they are a student in the course
-            || data.child('studentKeys').child(auth.uid).val() === true
-          )
-        ",
-        ".write": "
-          // Must be signed in
-          auth != null
-          && (
-            // Instructors and Admins can modify everything
-            root.child('roles/'+auth.uid+'/instructor').val() === true
-            || root.child('roles/'+auth.uid+'/admin').val() === true
-          )
+          // Students must be enrolled in the course
+          && data.child('studentKeys').child(auth.uid).val() === true
         ",
 
         // Only uppercase letters, numbers, and hyphens allowed

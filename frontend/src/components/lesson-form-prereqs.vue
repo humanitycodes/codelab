@@ -1,30 +1,33 @@
 <template>
-  <div class="form-field">
-    <Dropdown
-      :results="queryResults"
-      :resultHandler="addPrereq"
-      :resultContent="function (lesson) {
-        return lesson.title || lesson['.key']
-      }"
-    >
-      <input
-        ref="queryInput"
-        v-model="prereqQuery"
-        placeholder="Add prerequisite lessons"
+  <div class="form-row">
+    <div class="form-group">
+      <label>Prerequisites</label>
+      <Dropdown
+        :results="queryResults"
+        :resultHandler="addPrereq"
+        :resultContent="function (lesson) {
+          return lesson.title || lesson['.key']
+        }"
       >
-    </Dropdown>
-    <ul v-if="prereqs.length">
-      <li v-for="prereq in prereqs">
-        {{ prereq.title || prereq['.key'] }}
-        <button
-          @click="removePrereq(prereq)"
-          class="inline danger"
-        >X</button>
-      </li>
-    </ul>
-    <p v-else class="warning">
-      Most lessons will have prerequisites. Are you sure there are no other lessons that should be completed before this one?
-    </p>
+        <input
+          ref="queryInput"
+          v-model="prereqQuery"
+          placeholder="Add prerequisite lessons"
+        >
+      </Dropdown>
+      <ul v-if="prereqs.length">
+        <li v-for="prereq in prereqs">
+          {{ prereq.title || prereq['.key'] }}
+          <button
+            @click="removePrereq(prereq)"
+            class="inline danger"
+          >X</button>
+        </li>
+      </ul>
+      <p v-else class="warning">
+        Most lessons will have prerequisites. Are you sure there are no other lessons that should be completed before this one?
+      </p>
+    </div>
   </div>
 </template>
 

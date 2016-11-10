@@ -1,5 +1,5 @@
 import db from '@plugins/firebase'
-import { canUpdateCourse, canDestroyCourse } from '@state/authorization/courses'
+import { canUpdateCourse, shouldUpdateCourse, canDestroyCourse } from '@state/authorization/courses'
 import { createFirebaseVM } from './_helpers'
 
 export default {
@@ -29,6 +29,12 @@ export default {
     canUpdateCurrentCourse (state, getters) {
       if (!getters.currentCourse) return false
       return canUpdateCourse({
+        courseKey: getters.currentCourse['.key']
+      })
+    },
+    shouldUpdateCurrentCourse (state, getters) {
+      if (!getters.currentCourse) return false
+      return shouldUpdateCourse({
         courseKey: getters.currentCourse['.key']
       })
     },
@@ -83,18 +89,32 @@ export default {
     destroyCourse (_, courseKey) {
       return db.ref('courses').child(courseKey).remove()
     },
-    addCourseLesson (_, { courseKey, prereqKey }) {
+    addStudentToCourse (_, { courseKey, studentKey }) {
       return db.ref('courses')
         .child(courseKey)
-        .child('prereqKeys')
-        .child(prereqKey)
+        .child('studentKeys')
+        .child(studentKey)
         .set(true)
     },
-    removeCourseLesson (_, { courseKey, prereqKey }) {
+    removeStudentFromCourse (_, { courseKey, studentKey }) {
       return db.ref('courses')
         .child(courseKey)
-        .child('prereqKeys')
-        .child(prereqKey)
+        .child('studentKeys')
+        .child(studentKey)
+        .remove()
+    },
+    addLessonToCourse (_, { courseKey, lessonKey }) {
+      return db.ref('courses')
+        .child(courseKey)
+        .child('lessonKeys')
+        .child(lessonKey)
+        .set(true)
+    },
+    removeLessonFromCourse (_, { courseKey, lessonKey }) {
+      return db.ref('courses')
+        .child(courseKey)
+        .child('lessonKeys')
+        .child(lessonKey)
         .remove()
     }
   },

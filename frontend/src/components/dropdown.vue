@@ -1,11 +1,19 @@
 <template>
-  <span class="dropdown-wrapper" :class="{ expanded: results.length }">
+  <span
+    class="dropdown-wrapper"
+    :class="{ expanded: results.length }"
+    @keydown.up="focusedResultIndex > 0 && focusedResultIndex--"
+    @keydown.down="focusedResultIndex < results.length - 1 && focusedResultIndex++"
+    @keydown.enter="resultHandler(results[focusedResultIndex])"
+  >
     <slot/>
     <div class="dropdown-results" v-show="results.length">
       <div
-        v-for="result in results"
+        v-for="(result, index) in results"
         @click="resultHandler(result)"
+        @mouseenter="focusedResultIndex = index"
         class="dropdown-result"
+        :class="{ focused: focusedResultIndex === index }"
       >
         {{ resultContent(result) }}
       </div>
@@ -27,6 +35,16 @@ export default {
     resultContent: {
       type: Function,
       default: result => result
+    }
+  },
+  data () {
+    return {
+      focusedResultIndex: 0
+    }
+  },
+  watch: {
+    results () {
+      this.focusedResultIndex = 0
     }
   }
 }
@@ -53,11 +71,12 @@ export default {
   border-top: none
   border-bottom-left-radius: $design.control.border.radius
   border-bottom-right-radius: $design.control.border.radius
+  z-index: 1
 
 .dropdown-result
   padding: $design.control.padding.vertical $design.control.padding.horizontal
   cursor: pointer
-  &:hover
+  &.focused
     background-color: $design.branding.primary.light
     color: white
 </style>

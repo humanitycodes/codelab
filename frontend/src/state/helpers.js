@@ -3,7 +3,10 @@ import * as lessonPermissionMethods from '@state/authorization/lessons'
 import * as coursePermissionMethods from '@state/authorization/courses'
 
 export const userGetters = {
-  ...mapState({ currentUser: state => state.users.currentUser }),
+  ...mapState({
+    currentUser: state => state.users.currentUser,
+    users: state => state.users.all
+  }),
   ...mapGetters(['userSignedIn'])
 }
 
@@ -26,6 +29,7 @@ export const courseGetters = {
     'showCurrentCoursePath',
     'editCurrentCoursePath',
     'canUpdateCurrentCourse',
+    'shouldUpdateCurrentCourse',
     'canDestroyCurrentCourse'
   ])
 }

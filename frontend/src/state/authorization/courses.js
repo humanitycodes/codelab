@@ -32,6 +32,10 @@ export const canReadAllCourses = () => {
 // ------
 
 export const canUpdateCourse = ({ courseKey }) => {
+  return hasMatchingRole(['instructor', 'admin'])
+}
+
+export const shouldUpdateCourse = ({ courseKey }) => {
   return (
     hasMatchingRole(['instructor', 'admin']) &&
     !(

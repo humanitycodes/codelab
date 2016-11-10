@@ -1,41 +1,24 @@
 <template>
   <div v-if="lesson">
-    <label>Title</label>
-    <input
-      v-model="lesson.title"
-      placeholder="A short description of the lesson in the infinitive form"
-    >
-    <p v-if="!lesson.title" class="warning">
-      A title must be defined before a lesson can be added to a course.
-    </p>
-    <label>Learning Objectives</label>
-    <LessonFormLearningObjectives :lesson="lesson"/>
-    <label>Content</label>
-    <textarea
-      v-model="lesson.content"
-      placeholder="Markdown explaining the lesson content"
-    />
-    <p v-if="!lesson.content" class="warning">
-      A lesson must have content before being added to a course.
-    </p>
-    <label>Prerequisites</label>
-    <LessonFormPrereqs :lesson="lesson"/>
-    <label>Notes</label>
-    <textarea
-      v-model="lesson.notes"
-      placeholder="Additional notes for future instructors"
-    />
+    <LessonTitle :lesson="lesson"/>
+    <LessonLearningObjectives :lesson="lesson"/>
+    <LessonContent :lesson="lesson"/>
+    <LessonPrereqs :lesson="lesson"/>
+    <LessonNotes :lesson ="lesson"/>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
-import LessonFormLearningObjectives from './lesson-form-learning-objectives'
-import LessonFormPrereqs from './lesson-form-prereqs'
+import LessonTitle from './lesson-form-title'
+import LessonLearningObjectives from './lesson-form-learning-objectives'
+import LessonContent from './lesson-form-content'
+import LessonPrereqs from './lesson-form-prereqs'
+import LessonNotes from './lesson-form-notes'
 
 export default {
   components: {
-    LessonFormLearningObjectives, LessonFormPrereqs
+    LessonTitle, LessonLearningObjectives, LessonContent, LessonPrereqs, LessonNotes
   },
   props: {
     lesson: {

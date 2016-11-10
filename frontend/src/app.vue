@@ -127,6 +127,7 @@ pre
     outline: 0
   &[disabled]
     opacity: .6
+    cursor: not-allowed
   &.block
     display: block
     width: 100%
@@ -165,6 +166,9 @@ input:not([type]), input[type="email"], input[type="number"], input[type="search
   &:focus
     border: 1px solid $design.branding.primary.light
     outline: 0
+  &[disabled]
+    opacity: .8
+    cursor: not-allowed
 
 // Removes awkward default styles on some inputs for iOS
 input:not([type]), input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="date"], input[type="url"], input[type="password"], textarea
@@ -181,17 +185,24 @@ textarea
 label, legend
   display: block
   color: $design.branding.primary.dark
-  margin-top: $design.layout.gutterWidth
   margin-bottom: $design.layout.gutterWidth * .2
   font-weight: 600
+
+label.with-inline-input
+  cursor: pointer
+  margin-bottom: 0
+  > input
+    margin-right: 5px
+    position: relative
+    bottom: 2px
 
 fieldset
   padding: 0
   border-width: 0
 
 .form-row
-  display: flex
   margin: $design.layout.gutterWidth 0
+  display: flex
   .form-group
     width: 100%
     margin: 0 $design.layout.gutterWidth * .5
@@ -199,8 +210,24 @@ fieldset
       margin-left: 0
     &:last-child
       margin-right: 0
-    label
+    &[disabled]
+      position: relative
+      &:after
+        content: ''
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        background-color: rgba(255,255,255,.4)
+        cursor: not-allowed
+      input[disabled]
+        opacity: 1
+    :first-child
       margin-top: 0
+    :last-child
+      margin-bottom: 0
+
 
 // -----
 // NOTES
@@ -210,4 +237,9 @@ p.warning
   padding: $design.layout.gutterWidth
   background-color: $design.branding.muted.light.yellow
   border: 1px solid $design.branding.warning.light
+
+p.danger
+  padding: $design.layout.gutterWidth
+  background-color: $design.branding.muted.light.red
+  border: 1px solid $design.branding.danger.light
 </style>

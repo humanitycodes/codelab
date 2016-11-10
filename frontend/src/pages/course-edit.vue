@@ -1,6 +1,9 @@
 <template>
   <Layout>
     <div v-if="currentCourse">
+      <p v-if="!shouldUpdateCurrentCourse" class="danger">
+        It's not recommended to continue editing this course. If you want to use the same curriculum for a new semester, you should clone it.
+      </p>
       <DoneButton fallback-route="/courses"/>
       <CourseForm :course="currentCourse"/>
       <DoneButton fallback-route="/courses"/>
@@ -16,6 +19,7 @@
 </template>
 
 <script>
+import store from '@state/store'
 import { mapActions } from 'vuex'
 import Layout from '@layouts/main'
 import CourseForm from '@components/course-form'
@@ -23,6 +27,9 @@ import DoneButton from '@components/done-button'
 import { courseGetters } from '@state/helpers'
 
 export default {
+  beforeRouteEnter (to, from, next) {
+    store.dispatch('syncUsers').then(() => { next() })
+  },
   components: {
     Layout, CourseForm, DoneButton
   },
