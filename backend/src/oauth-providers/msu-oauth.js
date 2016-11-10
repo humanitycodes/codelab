@@ -2,7 +2,7 @@ import axios from 'axios'
 import querystring from 'querystring'
 
 export async function requestLoginProfile (code, callback) {
-  let loginProfile = {
+  let msuProfile = {
     provider: 'msu'
   }
   return new Promise((resolve, reject) => {
@@ -14,15 +14,15 @@ export async function requestLoginProfile (code, callback) {
       redirect_uri: `${process.env.SERVER_BASE_URL}/auth/msu/callback`
     }))
     .then(response => {
-      loginProfile.type = response.data.token_type
-      loginProfile.token = response.data.access_token
-      return axios.get(`https://oauth.ais.msu.edu/oauth/me?access_token=${loginProfile.token}`)
+      msuProfile.type = response.data.token_type
+      msuProfile.token = response.data.access_token
+      return axios.get(`https://oauth.ais.msu.edu/oauth/me?access_token=${msuProfile.token}`)
     })
     .then(response => {
-      loginProfile.id = response.data.uid
-      loginProfile.name = response.data.info.name
-      loginProfile.email = response.data.info.email
-      resolve(loginProfile)
+      msuProfile.id = response.data.uid
+      msuProfile.name = response.data.info.name
+      msuProfile.email = response.data.info.email
+      resolve(msuProfile)
     })
     .catch(error => {
       reject(new Error(error.response.data.error_description, error))

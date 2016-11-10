@@ -23,17 +23,18 @@ export const config = [
       try {
         let msuProfile = yield msuOAuth.requestLoginProfile(request.query.code)
 
-        let user = yield userRepo.readByMsuUid(msuProfile.id)
+        let [userId, user] = yield userRepo.readByMsuUid(msuProfile.id)
 
         if (!user) {
-          user = yield userRepo.create(uuid.v4(), {
+          userId = uuid.v4()
+          user = yield userRepo.create(userId, {
             msuUid: msuProfile.id,
             fullName: msuProfile.name,
             email: msuProfile.email
           })
         }
 
-        const jwt = firebase.auth().createCustomToken(user.id, {
+        const jwt = firebase.auth().createCustomToken(userId, {
           profile: user
         })
 

@@ -18,9 +18,7 @@ export async function readByMsuUid (msuUid) {
         }
         const userResults = userSnapshot.val()
         const userId = Object.keys(userResults)[0]
-        let user = userResults[userId]
-        user.id = userId
-        resolve(user)
+        resolve([userId, userResults[userId]])
       } else {
         resolve(null)
       }
@@ -38,10 +36,7 @@ export async function create (id, user) {
       db.ref('roles').child(id).set(SIGNUP_ROLES)
     ])
     .then(([usersCallback, rolesCallback]) => {
-      resolve({
-        id: id,
-        ...user
-      })
+      resolve(user)
     })
     .catch(reject)
   })
