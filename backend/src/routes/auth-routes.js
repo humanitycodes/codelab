@@ -2,6 +2,8 @@ import joi from 'joi'
 import boom from 'boom'
 import firebase from 'firebase'
 import uuid from 'uuid'
+import JWT from 'jsonwebtoken'
+import { verifyJWTOptions, verifyJWT } from '../helpers/verify-firebase-jwt'
 
 const msuOAuth = require('../oauth-providers/msu-oauth')
 const githubOAuth = require('../oauth-providers/github-oauth')
@@ -57,10 +59,10 @@ export const config = [
     },
     handler: function* (request, reply) {
       try {
-        // const jwt = decodeURIComponent(request.query.state)
+        const decodedToken = JWT.decode(decodeURIComponent(request.query.state), { complete: verifyJWTOptions.complete || false })
+        yield verifyJWT(decodedToken)
 
         const githubProfile = yield githubOAuth.requestLoginProfile(request.query.code)
-
         reply(githubProfile)
       } catch (error) {
         reply(boom.unauthorized(error.message))
