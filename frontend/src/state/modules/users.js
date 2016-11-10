@@ -19,7 +19,16 @@ export default {
       return firebase.auth().getToken()
         .then(firebaseTokenResult => {
           return new Promise((resolve, reject) => {
-            let rolesRef
+            let userRef, rolesRef
+            const currentUserCallback = userSnapshot => {
+              let user = userSnapshot.val()
+              commit('SET_CURRENT_USER', {
+                ...user,
+                uid: userSnapshot.key,
+                firebaseJwt: firebaseTokenResult.accessToken
+              })
+              resolve(rootState)
+            }
             const currentRolesCallback = roleSnapshot => {
               commit('SET_CURRENT_ROLES', roleSnapshot.val())
               resolve(rootState)
@@ -27,15 +36,19 @@ export default {
 
             firebase.auth().onAuthStateChanged(user => {
               if (user) {
-                commit('SET_CURRENT_USER', {
-                  ...user,
-                  firebaseJwt: firebaseTokenResult.accessToken
-                })
+                userRef = db.ref('users').child(user.uid)
+                userRef.on('value', currentUserCallback)
+
                 rolesRef = db.ref(`roles/${user.uid}`)
                 rolesRef.on('value', currentRolesCallback)
               } else {
                 commit('SET_CURRENT_USER', null)
                 commit('SET_CURRENT_ROLES', null)
+
+                if (userRef) {
+                  userRef.off('value', currentUserCallback)
+                  userRef = null
+                }
                 if (rolesRef) {
                   rolesRef.off('value', currentRolesCallback)
                   rolesRef = null
