@@ -1,0 +1,39 @@
+<template>
+  <div class="form-row">
+    <div class="form-group">
+      <label>Number of Credits</label>
+      <input
+        ref="input"
+        :value="course.credits"
+        @input="updateCredits($event.target.value)"
+        @change="$event.target.value = course.credits"
+      >
+      <p v-if="course.credits && course.credits > 4" class="warning">
+        It's quite rare for a course to be worth more than 4 credits. Are you sure that's right?
+      </p>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    course: {
+      type: Object,
+      required: true
+    }
+  },
+  methods: {
+    updateCredits (newCredits) {
+      if (/^\d*$/.test(newCredits)) {
+        const newCreditsNumber = Number(newCredits)
+        if (newCreditsNumber) {
+          this.course.credits = newCreditsNumber
+        }
+      } else {
+        this.$refs.input.value = this.course.credits
+      }
+    }
+  }
+}
+</script>
