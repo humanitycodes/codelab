@@ -1,8 +1,9 @@
 <template>
   <div v-if="course">
     <CourseTitle :course="course"/>
-    <CourseSyllabus :course="course"/>
+    <CourseCredits :course="course"/>
     <CourseDates :course="course"/>
+    <CourseSyllabus :course="course"/>
     <CourseLessons :course="course"/>
     <CourseStudents :course="course" :disabled="!isReadyForStudents"/>
   </div>
@@ -11,14 +12,15 @@
 <script>
 import { mapActions } from 'vuex'
 import CourseTitle from './course-form-title'
-import CourseSyllabus from './course-form-syllabus'
 import CourseDates from './course-form-dates'
+import CourseCredits from './course-form-credits'
+import CourseSyllabus from './course-form-syllabus'
 import CourseLessons from './course-form-lessons'
 import CourseStudents from './course-form-students'
 
 export default {
   components: {
-    CourseTitle, CourseSyllabus, CourseDates, CourseLessons, CourseStudents
+    CourseTitle, CourseDates, CourseCredits, CourseSyllabus, CourseLessons, CourseStudents
   },
   props: {
     course: {
@@ -30,6 +32,7 @@ export default {
     isReadyForStudents () {
       return !!this.course.studentKeys || (
         this.course.title &&
+        this.course.credits && this.course.credits > 0 &&
         this.course.syllabus &&
         this.course.startDate &&
         this.course.endDate &&
@@ -45,7 +48,8 @@ export default {
     course: {
       deep: true,
       handler (newCourse) {
-        this.updateCourse(newCourse)
+        console.log(newCourse)
+        // this.updateCourse(newCourse)
       }
     }
   },

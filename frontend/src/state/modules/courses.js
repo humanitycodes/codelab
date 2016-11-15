@@ -70,9 +70,10 @@ export default {
       // Whitelisting what can be edited, with defaults
       const editableFields = {
         title: '',
-        syllabus: '',
+        credits: 1,
         startDate: '',
         endDate: '',
+        syllabus: '',
         lessonKeys: {},
         studentKeys: {}
       }
