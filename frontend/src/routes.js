@@ -67,6 +67,11 @@ export default [
     }
   },
   {
+    // This is just a place to give us a place to put components.
+    path: '/demos',
+    component: require('@pages/demos')
+  },
+  {
     // This path has a required query parameter: ?token={jwt}
     // The periods in the token cause something to break when used as path param
     path: '/sign-in',
