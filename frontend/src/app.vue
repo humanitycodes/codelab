@@ -63,7 +63,7 @@ hr
 
 code
   font-family: 'PT Mono'
-pre
+pre.hljs
   background-color: $design.branding.muted.light.tan
   overflow-y: hidden
   position: relative
