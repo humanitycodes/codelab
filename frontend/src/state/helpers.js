@@ -1,6 +1,6 @@
 import { mapState, mapGetters } from 'vuex'
-import * as lessonPermissionMethods from '@state/authorization/lessons'
-import * as coursePermissionMethods from '@state/authorization/courses'
+import * as lessonPermissionMethods from '@state/auth/lessons'
+import * as coursePermissionMethods from '@state/auth/courses'
 
 export const userGetters = {
   ...mapState({

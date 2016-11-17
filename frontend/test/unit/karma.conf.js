@@ -58,10 +58,19 @@ module.exports = function (config) {
     // 1. install corresponding karma launcher
     //    http://karma-runner.github.io/0.13/config/browsers.html
     // 2. add it to the `browsers` array below.
-    browsers: ['PhantomJS'],
+    browsers: ['PhantomJSCustom'],
+    customLaunchers: {
+      'PhantomJSCustom': {
+        base: 'PhantomJS',
+        flags: ['--local-to-remote-url-access=true']
+      }
+    },
     frameworks: ['mocha', 'sinon-chai'],
     reporters: ['spec', 'coverage'],
-    files: ['./index.js'],
+    files: [
+      'https://cdn.polyfill.io/v2/polyfill.min.js',
+      './index.js'
+    ],
     preprocessors: {
       './index.js': ['webpack', 'sourcemap']
     },

@@ -1,6 +1,6 @@
 <template>
-  <div class="form-row">
-    <div class="form-group">
+  <div class="flex-row">
+    <div class="flex-col">
       <label>Notes</label>
       <textarea
         v-model="lesson.notes"

@@ -160,6 +160,10 @@
           // Field is a required string, empty strings are allowed
           ".validate": "newData.exists() && newData.isString()"
         },
+        "estimatedHours": {
+          // Fields is a required number, greater than 0
+          ".validate": "newData.exists() && newData.isNumber() && newData.val() > 0"
+        },
         "learningObjectives": {
           "$lokey": {
             "content": {

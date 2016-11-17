@@ -1,9 +1,15 @@
 import {
   canCreateLesson, canReadLesson, canReadAllLessons, canUpdateLesson
-} from '@state/authorization/lessons'
+} from '@state/auth/lessons'
 import {
   canCreateCourse, canReadCourse, canReadAllCourses, canUpdateCourse
-} from '@state/authorization/courses'
+} from '@state/auth/courses'
+
+// For routes that only staff are likely to access,
+// require.ensure is used to lazy-load those modules
+// so that students can download a much smaller
+// bundle that only includes the parts of the app
+// that they need to access.
 
 export default [
   {
@@ -12,30 +18,23 @@ export default [
   },
   {
     path: '/lessons',
-    component: require('@pages/lessons'),
+    component: cb => require.ensure([], () => cb(require('@pages/lessons')), 'staff'),
     meta: {
       isAuthorized: canReadAllLessons
     }
   },
   {
     path: '/lessons/new',
-    component: require('@pages/lesson-new'),
+    component: cb => require.ensure([], () => cb(require('@pages/lesson-new')), 'staff'),
     meta: {
       isAuthorized: canCreateLesson
     }
   },
   {
     path: '/lessons/:lessonKey/edit',
-    component: require('@pages/lesson-edit'),
+    component: cb => require.ensure([], () => cb(require('@pages/lesson-edit')), 'staff'),
     meta: {
       isAuthorized: canUpdateLesson
-    }
-  },
-  {
-    path: '/lessons/:lessonKey',
-    component: require('@pages/lesson'),
-    meta: {
-      isAuthorized: canReadLesson
     }
   },
   {
@@ -47,14 +46,14 @@ export default [
   },
   {
     path: '/courses/new',
-    component: require('@pages/course-new'),
+    component: cb => require.ensure([], () => cb(require('@pages/course-new')), 'staff'),
     meta: {
       isAuthorized: canCreateCourse
     }
   },
   {
     path: '/courses/:courseKey/edit',
-    component: require('@pages/course-edit'),
+    component: cb => require.ensure([], () => cb(require('@pages/course-edit')), 'staff'),
     meta: {
       isAuthorized: canUpdateCourse
     }
@@ -70,6 +69,13 @@ export default [
     // This is just a place to give us a place to put components.
     path: '/demos',
     component: require('@pages/demos')
+  },
+  {
+    path: '/courses/:courseKey/lessons/:lessonKey',
+    component: require('@pages/course-lesson'),
+    meta: {
+      isAuthorized: canReadLesson
+    }
   },
   {
     // This path has a required query parameter: ?token={jwt}

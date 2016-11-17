@@ -48,8 +48,7 @@ export default {
     course: {
       deep: true,
       handler (newCourse) {
-        console.log(newCourse)
-        // this.updateCourse(newCourse)
+        this.updateCourse(newCourse)
       }
     }
   },

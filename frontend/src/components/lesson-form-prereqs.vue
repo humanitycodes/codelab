@@ -1,6 +1,6 @@
 <template>
-  <div class="form-row">
-    <div class="form-group">
+  <div class="flex-row">
+    <div class="flex-col">
       <label>Prerequisites</label>
       <Dropdown
         :results="queryResults"

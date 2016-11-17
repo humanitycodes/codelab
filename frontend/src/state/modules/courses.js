@@ -1,5 +1,5 @@
 import db from '@plugins/firebase'
-import { canUpdateCourse, shouldUpdateCourse, canDestroyCourse } from '@state/authorization/courses'
+import { canUpdateCourse, shouldUpdateCourse, canDestroyCourse } from '@state/auth/courses'
 import { createFirebaseVM } from './_helpers'
 
 export default {
