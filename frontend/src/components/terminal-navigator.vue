@@ -203,7 +203,7 @@ export default {
         const pathString = this.processPathArg(command.args)
         if (!pathString) return
         let folderName = ''
-        const basePathString = pathString.replace(/\/?[^\/]+\/?$/, match => {
+        const basePathString = pathString.replace(/\/?[^/]+\/?$/, match => {
           folderName = match.replace('/', '')
           return ''
         }).trim()
@@ -310,7 +310,7 @@ export default {
         if (command.args) {
           const establishedPath = command.trailingSlash
             ? command.args
-            : command.args.replace(/\/[^\/]+$/, match => {
+            : command.args.replace(/\/[^/]+$/, match => {
               partialName = match.slice(1)
               return ''
             })
