@@ -91,7 +91,7 @@ function findLesson (lessonKey) {
 function isEnrolledInCourse (courseKey) {
   const course = findCourse(courseKey)
   if (!course.studentKeys) return false
-  const currentUserKey = store.state.users.currentUser['.key']
+  const currentUserKey = store.state.users.currentUser.uid
   return course.studentKeys[currentUserKey]
 }
 
@@ -107,7 +107,7 @@ function courseHasEnrolledStudents (courseKey) {
 
 function courseHasBegun (courseKey) {
   const course = findCourse(courseKey)
-  return Date.parse(course.startDate) >= Date.now()
+  return Date.parse(course.startDate) <= Date.now()
 }
 
 function courseHasEnded (courseKey) {

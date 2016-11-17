@@ -11,7 +11,7 @@
         Lessons
       </router-link>
     </li>
-    <li v-if="canReadAllCourses()">
+    <li>
       <router-link to="/courses">
         Courses
       </router-link>

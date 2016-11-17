@@ -2,7 +2,7 @@ import {
   canCreateLesson, canReadLesson, canReadAllLessons, canUpdateLesson
 } from '@state/auth/lessons'
 import {
-  canCreateCourse, canReadCourse, canReadAllCourses, canUpdateCourse
+  canCreateCourse, canReadCourse, canUpdateCourse
 } from '@state/auth/courses'
 
 // For routes that only staff are likely to access,
@@ -39,10 +39,7 @@ export default [
   },
   {
     path: '/courses',
-    component: require('@pages/courses'),
-    meta: {
-      isAuthorized: canReadAllCourses
-    }
+    component: require('@pages/courses')
   },
   {
     path: '/courses/new',
