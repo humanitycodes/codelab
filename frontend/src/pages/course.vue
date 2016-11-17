@@ -2,27 +2,37 @@
   <Layout>
     <div v-if="currentCourse">
       <EditCurrentCourseButton/>
-      <div class="form-row course-basic-data">
-        <div class="form-group course-key">
+      <div class="flex-row heading-basic-data">
+        <div class="flex-col">
           <span>{{ currentCourse['.key'] }}</span>
         </div>
-        <div class="form-group course-credits">
-          {{ currentCourse.credits }} credits
+        <div class="flex-col">
+          {{ currentCourse.credits }} Credits
         </div>
       </div>
       <h2>{{ currentCourse.title }}</h2>
-      <div class="form-row">
-        <div class="form-group">
+      <div class="flex-row">
+        <div class="flex-col">
           <h3>Start date</h3>
           <div>{{ formattedStartDate }}</div>
         </div>
-        <div class="form-group">
+        <div class="flex-col">
           <h3>End date</h3>
           <div>{{ formattedEndDate }}</div>
         </div>
       </div>
-      <h3>Syllabus</h3>
-      <div v-html="syllabusHTML"/>
+      <div class="flex-row">
+        <div class="flex-col">
+          <h3>Syllabus</h3>
+          <div v-html="syllabusHTML" class="rendered-content"/>
+        </div>
+      </div>
+      <div class="flex-row" v-if="courseLessons.length">
+        <div class="flex-col">
+          <h3>Lessons</h3>
+          <LessonsMap :course="currentCourse" :lessons="courseLessons"/>
+        </div>
+      </div>
       <EditCurrentCourseButton/>
     </div>
     <CourseNotFound v-else/>
@@ -30,10 +40,11 @@
 </template>
 
 <script>
-import { format as formatDate } from 'date-fns'
+import formatDate from 'date-fns/format'
 import Layout from '@layouts/main'
 import CourseNotFound from '@components/course-not-found'
-import { courseGetters } from '@state/helpers'
+import LessonsMap from '@components/lessons-map'
+import { courseGetters, lessonGetters } from '@state/helpers'
 import rho from 'rho'
 
 const dateFormat = 'MMMM Do, YYYY'
@@ -42,6 +53,7 @@ export default {
   components: {
     Layout,
     CourseNotFound,
+    LessonsMap,
     EditCurrentCourseButton: {
       render (h) {
         if (!this.canUpdateCurrentCourse) return ''
@@ -58,6 +70,14 @@ export default {
   },
   computed: {
     ...courseGetters,
+    ...lessonGetters,
+    courseLessons () {
+      if (!this.currentCourse.lessonKeys) return []
+      const keys = Object.keys(this.currentCourse.lessonKeys)
+      return this.lessons.filter(lesson => {
+        return keys.indexOf(lesson['.key']) !== -1
+      })
+    },
     formattedStartDate () {
       return formatDate(this.currentCourse.startDate, dateFormat)
     },
@@ -67,16 +87,14 @@ export default {
     syllabusHTML () {
       return rho.toHtml(this.currentCourse.syllabus)
     }
+  },
+  methods: {
+    courseLessonPath (lesson) {
+      return (
+        '/courses/' + this.currentCourse['.key'] +
+        '/lessons/' + lesson['.key']
+      )
+    }
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-.course-basic-data
-  opacity: .8
-  margin-bottom: 0
-  font-family: 'Lato'
-
-.course-credits
-  text-align: right
-</style>

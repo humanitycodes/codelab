@@ -3,7 +3,9 @@
 </template>
 
 <script>
-import { startOfDay, endOfDay, format as formatDate } from 'date-fns'
+import startOfDay from 'date-fns/start_of_day'
+import endOfDay from 'date-fns/end_of_day'
+import formatDate from 'date-fns/format'
 
 export default {
   props: {

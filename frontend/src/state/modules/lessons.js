@@ -1,5 +1,5 @@
 import db from '@plugins/firebase'
-import { canUpdateLesson, canDestroyLesson } from '@state/authorization/lessons'
+import { canUpdateLesson, canDestroyLesson } from '@state/auth/lessons'
 import { createFirebaseVM } from './_helpers'
 
 export default {
@@ -64,6 +64,7 @@ export default {
       // Whitelisting what can be edited, with defaults
       const editableFields = {
         title: '',
+        estimatedHours: 1,
         content: '',
         notes: '',
         learningObjectives: {},

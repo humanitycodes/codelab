@@ -1,6 +1,6 @@
 <template>
-  <div class="form-row">
-    <div class="form-group" :disabled="disabled">
+  <div class="flex-row">
+    <div class="flex-col" :disabled="disabled">
       <label>Enrolled Students</label>
       <Dropdown
         :results="queryResults"

@@ -1,6 +1,6 @@
 <template>
-  <div class="form-row">
-    <div class="form-group">
+  <div class="flex-row">
+    <div class="flex-col">
       <label>Number of Credits</label>
       <input
         ref="input"
@@ -27,7 +27,7 @@ export default {
     updateCredits (newCredits) {
       if (/^\d*$/.test(newCredits)) {
         const newCreditsNumber = Number(newCredits)
-        if (newCreditsNumber) {
+        if (!isNaN(newCreditsNumber) && newCreditsNumber > 0) {
           this.course.credits = newCreditsNumber
         }
       } else {

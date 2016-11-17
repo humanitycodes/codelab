@@ -49,7 +49,7 @@ export default {
   watch: {
     key (newKey, oldKey) {
       this.key = this.key.toLowerCase()
-      if (/(?:[^a-z\-]|--)/.test(this.key)) {
+      if (/(?:[^a-z-]|--)/.test(this.key)) {
         this.key = oldKey
       }
       this.validateKey(this.key)

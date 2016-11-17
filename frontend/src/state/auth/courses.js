@@ -45,18 +45,31 @@ export const shouldUpdateCourse = ({ courseKey }) => {
   )
 }
 
+export const lessonCanBeAddedToCourse = ({ courseKey, lessonKey }) => {
+  const course = findCourse(courseKey)
+  const lesson = findLesson(lessonKey)
+  return (
+    // Lesson is not already added
+    (
+      !course.lessonKeys ||
+      !course.lessonKeys[lessonKey]
+    ) &&
+    // Lesson has the required fields
+    lesson.title &&
+    lesson.learningObjectives &&
+    lesson.content &&
+    lesson.estimatedHours
+  )
+}
+
 // -------
 // DESTROY
 // -------
 
 export const canDestroyCourse = ({ courseKey }) => {
-  return (
-    hasMatchingRole(['instructor', 'admin']) &&
-    !(
-      courseHasEnrolledStudents(courseKey) &&
-      courseHasBegun(courseKey)
-    )
-  )
+  // To prevents instructors from destroying a course when they shouldn't,
+  // we're just goint go make this an admin-only change for now.
+  return false
 }
 
 // ---------------
@@ -66,6 +79,12 @@ export const canDestroyCourse = ({ courseKey }) => {
 function findCourse (courseKey) {
   return store.state.courses.all.find(course => {
     return course['.key'] === courseKey
+  })
+}
+
+function findLesson (lessonKey) {
+  return store.state.lessons.all.find(lesson => {
+    return lesson['.key'] === lessonKey
   })
 }
 

@@ -1,12 +1,22 @@
 <template>
-  <transition name="page-transition" mode="out-in" appear>
-    <router-view :key="$route.fullPath"/>
+  <transition name="page-transition" appear>
+    <div :key="$route.fullPath">
+      <router-view/>
+    </div>
   </transition>
 </template>
 
 <style lang="stylus" scoped>
 .page-transition-enter-active, .page-transition-leave-active
-  transition: opacity .2s
+  position: absolute
+  width: 100%
+.page-transition-enter-active
+  background: white
+  transition: opacity .3s cubic-bezier(.01,.98,.71,.84)
+  z-index: 30
+.page-transition-leave-active
+  transition: opacity .4s
+  z-index: -1
 .page-transition-enter, .page-transition-leave-active
   opacity: 0
 </style>
@@ -209,10 +219,10 @@ fieldset
   padding: 0
   border-width: 0
 
-.form-row
+.flex-row
   margin: $design.layout.gutterWidth 0
   display: flex
-  .form-group
+  .flex-col
     width: 100%
     margin: 0 $design.layout.gutterWidth * .5
     &:first-child
@@ -236,6 +246,12 @@ fieldset
       margin-top: 0
     :last-child
       margin-bottom: 0
+.heading-basic-data
+  opacity: .8
+  margin-bottom: 0
+  font-family: 'Lato'
+  > .flex-col:last-of-type
+    text-align: right
 
 
 // -----
@@ -251,4 +267,8 @@ p.danger
   padding: $design.layout.gutterWidth
   background-color: $design.branding.muted.light.red
   border: 1px solid $design.branding.danger.light
+
+.rendered-content
+  border: 1px solid $design.branding.muted.light.gray
+  padding: $design.layout.gutterWidth
 </style>

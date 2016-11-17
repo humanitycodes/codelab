@@ -1,6 +1,6 @@
 <template>
-  <div class="form-row">
-    <div class="form-group">
+  <div class="flex-row">
+    <div class="flex-col">
       <label>Lessons</label>
       <Dropdown
         :results="queryResults"
@@ -17,7 +17,7 @@
       </Dropdown>
       <ul v-if="courseLessons.length">
         <li v-for="lesson in courseLessons">
-          {{ lesson.title || lesson['.key'] }}
+          <LessonsMapLesson :lesson="lesson" :course="course"/>
           <button
             @click="removeCourseLesson(lesson)"
             class="inline danger"
@@ -33,12 +33,14 @@
 
 <script>
 import { mapActions } from 'vuex'
-import Dropdown from './dropdown'
 import { lessonGetters } from '@state/helpers'
+import { lessonCanBeAddedToCourse } from '@state/auth/courses'
+import Dropdown from './dropdown'
+import LessonsMapLesson from './lessons-map-lesson'
 
 export default {
   components: {
-    Dropdown
+    Dropdown, LessonsMapLesson
   },
   props: {
     course: {
@@ -56,13 +58,12 @@ export default {
     queryResults () {
       if (!this.lessonQuery || !this.lessons.length) return []
       const queryRegex = new RegExp(this.lessonQuery, 'i')
-      const courseLessonKeys = this.courseLessons.map(p => p['.key'])
       return this.lessons.filter(lesson => {
         return (
-          // Lesson is not self
-          this.course['.key'] !== lesson['.key'] &&
-          // Lesson is not already a courseLesson
-          courseLessonKeys.indexOf(lesson['.key']) === -1 &&
+          lessonCanBeAddedToCourse({
+            courseKey: this.course['.key'],
+            lessonKey: lesson['.key']
+          }) &&
           // Lesson matches the query string
           (
             queryRegex.test(lesson['.key']) ||
