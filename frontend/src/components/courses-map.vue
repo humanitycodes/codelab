@@ -1,8 +1,8 @@
 <template>
   <div>
     <ul>
-      <li v-for="course in courses">
-        <router-link
+      <li v-for="course in courses" v-if="canReadCourse({ courseKey: course['.key'] })">
+        <router-link v-if="canUpdateCourse({ courseKey: course['.key']})"
           :to="'/courses/' + course['.key'] + '/edit'"
         ><button class="inline">Edit</button></router-link>
         <router-link
@@ -14,12 +14,17 @@
 </template>
 
 <script>
+import { coursePermissionMethods } from '@state/helpers'
+
 export default {
   props: {
     courses: {
       type: Array,
       required: true
     }
+  },
+  methods: {
+    ...coursePermissionMethods
   }
 }
 </script>
