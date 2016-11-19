@@ -1,0 +1,10 @@
+{
+  "name": "firebase",
+  "version": "1.0.0",
+  "scripts": {
+    "deploy": "firebase deploy --project production --token `cat token`"
+  },
+  "devDependencies": {
+    "firebase-tools": "^3.1.0"
+  }
+}
