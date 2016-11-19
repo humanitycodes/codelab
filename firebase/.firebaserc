@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "dev": "msulansingcodesdev",
+    "production": "msulansingcodes",
+    "playground": "msulansingcodesplayground"
+  }
+}
