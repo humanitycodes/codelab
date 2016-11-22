@@ -2,6 +2,23 @@ var path = require('path')
 var config = require('../config')
 var utils = require('./utils')
 var projectRoot = path.resolve(__dirname, '../')
+var fs = require('fs')
+
+function chooseEnvironmentFile () {
+  if (process.env.NODE_ENV === 'production') {
+    return path.resolve(__dirname, '../src/env/prod')
+  } else {
+    try {
+      // Try to use user-specific dev config
+      var userConfigFile = path.resolve(__dirname, '../src/env/dev-' + process.env.USER + '.js')
+      fs.accessSync(userConfigFile, fs.F_OK)
+      return userConfigFile
+    } catch (e) {
+      // Use default dev config
+      return path.resolve(__dirname, '../src/env/dev')
+    }
+  }
+}
 
 module.exports = {
   entry: {
@@ -24,7 +41,7 @@ module.exports = {
       '@plugins': path.resolve(__dirname, '../src/plugins'),
       '@state': path.resolve(__dirname, '../src/state'),
       '@helpers': path.resolve(__dirname, '../src/helpers'),
-      '@env': path.resolve(__dirname, '../src/env/' + (process.env.NODE_ENV === 'production' ? 'prod' : 'dev'))
+      '@env': chooseEnvironmentFile()
     }
   },
   resolveLoader: {

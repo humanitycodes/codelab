@@ -2,6 +2,7 @@
   "projects": {
     "dev": "msulansingcodesdev",
     "production": "msulansingcodes",
-    "playground": "msulansingcodesplayground"
+    "playground": "msulansingcodesplayground",
+    "egillespie": "msulansingcodesdev-egillespie"
   }
 }
