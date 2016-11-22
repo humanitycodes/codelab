@@ -3,6 +3,7 @@
     "dev": "msulansingcodesdev",
     "production": "msulansingcodes",
     "playground": "msulansingcodesplayground",
-    "egillespie": "msulansingcodesdev-egillespie"
+    "egillespie": "msulansingcodesdev-egillespie",
+    "fritzc": "msulansingcodesdev-fritzc"
   }
 }
