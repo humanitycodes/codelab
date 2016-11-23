@@ -12,13 +12,15 @@ export default {
       type: String,
       required: true,
       validator: function (value) {
-        return ['msu', 'github'].indexOf(value) >= 0
+        return ['email', 'github', 'msu'].indexOf(value) >= 0
       }
     }
   },
   computed: {
     url: function () {
       switch (this.provider) {
+        case 'email':
+          return '/email-sign-in'
         case 'github':
           const currentUser = store.state.users.currentUser
           const firebaseJwt = currentUser ? encodeURIComponent(currentUser.firebaseJwt) : ''
