@@ -16,48 +16,48 @@ export default {
   },
   actions: {
     syncCurrentUser ({ commit, state, rootState }) {
-      return firebase.auth().getToken()
-        .then(firebaseTokenResult => {
-          return new Promise((resolve, reject) => {
-            let userRef, rolesRef
-            const currentUserCallback = userSnapshot => {
-              let user = userSnapshot.val()
-              commit('SET_CURRENT_USER', {
-                ...user,
-                uid: userSnapshot.key,
-                firebaseJwt: firebaseTokenResult.accessToken || firebaseTokenResult.refreshToken
-              })
-              resolve(rootState)
-            }
-            const currentRolesCallback = roleSnapshot => {
-              commit('SET_CURRENT_ROLES', roleSnapshot.val())
-              resolve(rootState)
-            }
-
-            firebase.auth().onAuthStateChanged(user => {
-              if (user) {
-                userRef = db.ref('users').child(user.uid)
-                userRef.on('value', currentUserCallback)
-
-                rolesRef = db.ref(`roles/${user.uid}`)
-                rolesRef.on('value', currentRolesCallback)
-              } else {
-                commit('SET_CURRENT_USER', null)
-                commit('SET_CURRENT_ROLES', null)
-
-                if (userRef) {
-                  userRef.off('value', currentUserCallback)
-                  userRef = null
-                }
-                if (rolesRef) {
-                  rolesRef.off('value', currentRolesCallback)
-                  rolesRef = null
-                }
-                resolve(rootState)
-              }
+      return new Promise((resolve, reject) => {
+        let userRef, rolesRef
+        const currentUserCallback = userSnapshot => {
+          firebase.auth().getToken()
+          .then(firebaseTokenResult => {
+            let user = userSnapshot.val()
+            commit('SET_CURRENT_USER', {
+              ...user,
+              uid: userSnapshot.key,
+              firebaseJwt: firebaseTokenResult.accessToken
             })
+            resolve(rootState)
           })
+        }
+        const currentRolesCallback = roleSnapshot => {
+          commit('SET_CURRENT_ROLES', roleSnapshot.val())
+          resolve(rootState)
+        }
+
+        firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            userRef = db.ref('users').child(user.uid)
+            userRef.on('value', currentUserCallback)
+
+            rolesRef = db.ref(`roles/${user.uid}`)
+            rolesRef.on('value', currentRolesCallback)
+          } else {
+            commit('SET_CURRENT_USER', null)
+            commit('SET_CURRENT_ROLES', null)
+
+            if (userRef) {
+              userRef.off('value', currentUserCallback)
+              userRef = null
+            }
+            if (rolesRef) {
+              rolesRef.off('value', currentRolesCallback)
+              rolesRef = null
+            }
+            resolve(rootState)
+          }
         })
+      })
     },
     syncUsers ({ commit, rootState }) {
       return new Promise((resolve, reject) => {
@@ -74,16 +74,20 @@ export default {
         .catch(resolve)
       })
     },
-    signIn (_, token) {
-      return firebase.auth().signInWithCustomToken(token)
-        .then(() => {
-          const profile = jwtDecode(token).claims.profile
-          return Promise.all([
-            firebase.auth().currentUser.updateEmail(profile.email),
-            firebase.auth().currentUser.updateProfile({ displayName: profile.fullName })
-          ])
-        })
-        .catch(console.error)
+    signIn (_, { token, email, password }) {
+      if (token) {
+        return firebase.auth().signInWithCustomToken(token)
+          .then(() => {
+            const profile = jwtDecode(token).claims.profile
+            return Promise.all([
+              firebase.auth().currentUser.updateEmail(profile.email),
+              firebase.auth().currentUser.updateProfile({ displayName: profile.fullName })
+            ])
+          })
+          .catch(console.error)
+      } else {
+        return firebase.auth().signInWithEmailAndPassword(email, password)
+      }
     },
     signOut () {
       return firebase.auth().signOut()

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import store from '@state/store'
 
 export default {
   props: {
@@ -16,10 +16,11 @@ export default {
   },
   methods: {
     signIn () {
-      firebase.auth().signInWithEmailAndPassword(this.credentials.email, this.credentials.password)
-      .then(user => user.getToken())
-      .then(token => {
-        console.log('token', token)
+      store.dispatch('signIn', this.credentials)
+      .then(authUser => {
+        window.history.length > 1
+          ? this.$router.go(-1)
+          : this.$router.push('/')
       })
       .catch(error => {
         this.credentials.error = error
