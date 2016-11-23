@@ -1,7 +1,10 @@
 <template>
   <ul class="main-nav">
     <li v-if="!userSignedIn">
-      <AuthLink provider="msu">Sign in</AuthLink>
+      <AuthLink provider="msu">Sign in with MSU</AuthLink>
+    </li>
+    <li v-if="!userSignedIn">
+      <AuthLink provider="email">Sign in with Email</AuthLink>
     </li>
     <li v-if="userSignedIn && !currentUser.github">
       <AuthLink provider="github">Connect GitHub</AuthLink>

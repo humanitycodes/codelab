@@ -63,16 +63,20 @@ export default [
     }
   },
   {
-    // This is just a place to give us a place to put components.
-    path: '/demos',
-    component: require('@pages/demos')
-  },
-  {
     path: '/courses/:courseKey/lessons/:lessonKey',
     component: require('@pages/course-lesson'),
     meta: {
       isAuthorized: canReadLesson
     }
+  },
+  {
+    // This is just a place to give us a place to put components.
+    path: '/demos',
+    component: require('@pages/demos')
+  },
+  {
+    path: '/email-sign-in',
+    component: require('@pages/email-sign-in')
   },
   {
     // This path has a required query parameter: ?token={jwt}
