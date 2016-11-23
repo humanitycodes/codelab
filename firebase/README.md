@@ -21,7 +21,8 @@ To prepare a new Firebase database for the MSU Code Lab application, perform the
 3. Enable GitHub in the Authentication settings:
    * Use the Client ID and Secret found in `backend/env/dev/.env`.
    * Click "Save".
-4. Create a service account for the database:
+4. Enable Email/Password in the Authentication settings.
+5. Create a service account for the database:
    * Click "Permissions" in the Settings (gear icon) menu.
    * Click on "Service accounts" in the left panel.
    * Click "Create Service Account" at the top of the page:
@@ -31,7 +32,7 @@ To prepare a new Firebase database for the MSU Code Lab application, perform the
      - Key type: `JSON`
    * Click "Create".
    * Save the Service Account JSON file to `backend/env/dev/firebase-service-account-<username>.json`.
-4. Make the following changes to the `msu.lansing.codes` project:
+6. Make the following changes to the `msu.lansing.codes` project:
    * Add an alias to `firebase/.firebaserc`:
      - `"<username>": "msulansingcodesdev-<username>"`
    * Create a frontend environment file:
@@ -51,15 +52,15 @@ To prepare a new Firebase database for the MSU Code Lab application, perform the
        })
        ```
      - Replace the contents of `firebaseConfig` with the "Web Setup" config found in the Firebase Console on the Authentication settings page.
-  7. Apply the Firebase rules by running the following command from the `firebase` directory:
-     ```sh
-     firebase deploy --project <username> --token `cat token`
-     ```
-  6. _Optional:_ Import a database.
-     - In the Firebase Console for the database you would like to copy, navigate to the Database page.
-     - Click the vertical ellipses and select "Export JSON".
-     - In the Firebase Console for the new database, navigate to the Database page.
-     - Click the vertical ellipses, select "Import JSON", and upload the exported JSON file.
+7. Apply the Firebase rules by running the following command from the `firebase` directory:
+   ```sh
+   firebase deploy --project <username> --token `cat token`
+   ```
+8. _Optional:_ Import a database.
+   - In the Firebase Console for the database you would like to copy, navigate to the Database page.
+   - Click the vertical ellipses and select "Export JSON".
+   - In the Firebase Console for the new database, navigate to the Database page.
+   - Click the vertical ellipses, select "Import JSON", and upload the exported JSON file.
 
 
 [1]: https://firebase.google.com/docs/cli/ "Firebase CLI Reference"
