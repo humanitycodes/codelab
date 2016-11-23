@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import firebase from 'firebase'
+
 export default {
   props: {
     credentials: {
@@ -14,7 +16,14 @@ export default {
   },
   methods: {
     signIn () {
-      console.log(this.credentials)
+      firebase.auth().signInWithEmailAndPassword(this.credentials.email, this.credentials.password)
+      .then(user => user.getToken())
+      .then(token => {
+        console.log('token', token)
+      })
+      .catch(error => {
+        this.credentials.error = error
+      })
     }
   }
 }

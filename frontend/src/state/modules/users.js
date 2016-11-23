@@ -25,7 +25,7 @@ export default {
               commit('SET_CURRENT_USER', {
                 ...user,
                 uid: userSnapshot.key,
-                firebaseJwt: firebaseTokenResult.accessToken
+                firebaseJwt: firebaseTokenResult.accessToken || firebaseTokenResult.refreshToken
               })
               resolve(rootState)
             }
