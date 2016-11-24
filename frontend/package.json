@@ -5,11 +5,11 @@
   "author": "Chris Fritz <chrisvfritz@gmail.com>",
   "private": true,
   "scripts": {
-    "postinstall": "node node_modules/chromedriver/install.js",
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
     "unit": "karma start test/unit/karma.conf.js --single-run",
     "unit:watch": "karma start test/unit/karma.conf.js --auto-watch",
+    "pree2e": "node node_modules/chromedriver/install.js",
     "e2e": "node test/e2e/runner.js",
     "test": "yarn run unit && yarn run e2e",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
