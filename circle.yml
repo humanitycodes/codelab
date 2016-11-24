@@ -20,7 +20,7 @@ dependencies:
   override:
     # Use yarn instead of NPM, because it's way faster
     # and because the lockfile ensures consistent builds
-    - yarn install --pure-lockfile
+    - yarn install --pure-lockfile --force
 
 test:
   override:

@@ -14,8 +14,8 @@
     "url": "https://github.com/chrisvfritz/msu.lansing.codes/issues"
   },
   "scripts": {
-    "install:backend": "cd backend && yarn install --pure-lockfile",
-    "install:frontend": "cd frontend && yarn install --pure-lockfile",
+    "install:backend": "cd backend && NODE_ENV=development yarn --pure-lockfile --force",
+    "install:frontend": "cd frontend && NODE_ENV=development yarn --pure-lockfile --force",
     "lint:backend": "cd backend && yarn run lint",
     "lint:frontend": "cd frontend && yarn run lint",
     "test:backend": "cd backend && yarn run test",
