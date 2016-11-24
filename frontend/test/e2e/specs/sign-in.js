@@ -11,7 +11,7 @@ module.exports = {
 
     browser.expect.element('.main-nav').to.be.present
     browser.expect.element('.main-nav a[href^=\'https://oauth.ais.msu.edu/oauth/authorize\']').to.be.present
-    browser.expect.element('.main-nav a[href^=\'https://oauth.ais.msu.edu/oauth/authorize\']').text.to.equal('Sign in')
+    browser.expect.element('.main-nav a[href^=\'https://oauth.ais.msu.edu/oauth/authorize\']').text.to.match(/Sign in/i)
     browser.end()
   }
 }

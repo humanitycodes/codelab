@@ -61,7 +61,9 @@ module.exports = app.listen(port, function (err) {
     console.log(err)
     return
   }
-  var uri = 'https://localhost:8080'
-  console.log('Listening at ' + uri + '\n')
-  opn(uri)
+  if (process.env.NODE_ENV !== 'testing') {
+    var uri = 'https://localhost:8080'
+    console.log('Listening at ' + uri + '\n')
+    opn(uri)
+  }
 })
