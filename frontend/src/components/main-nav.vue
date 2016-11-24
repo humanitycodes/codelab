@@ -14,7 +14,7 @@
         Lessons
       </router-link>
     </li>
-    <li>
+    <li v-if="userSignedIn">
       <router-link to="/courses">
         Courses
       </router-link>
