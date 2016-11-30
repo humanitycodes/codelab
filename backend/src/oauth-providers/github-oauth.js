@@ -1,9 +1,11 @@
 import axios from 'axios'
 
 function getFromGitHub (path, token) {
+  const githubAuthBaseUrl = process.env.GITHUB_AUTH_BASE_URL || 'https://api.github.com'
+
   return axios({
     method: 'get',
-    url: `https://api.github.com${path}`,
+    url: `${githubAuthBaseUrl}${path}`,
     headers: {
       Accept: 'application/vnd.github.v3+json',
       Authorization: `token ${token}`
