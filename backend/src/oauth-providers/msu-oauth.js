@@ -6,7 +6,9 @@ export async function requestLoginProfile (code, callback) {
     provider: 'msu'
   }
   return new Promise((resolve, reject) => {
-    axios.post('https://oauth.ais.msu.edu/oauth/token', querystring.stringify({
+    const msuAuthBaseUrl = process.env.MSU_AUTH_BASE_URL || 'https://oauth.ais.msu.edu'
+
+    axios.post(`${msuAuthBaseUrl}/oauth/token`, querystring.stringify({
       code: code,
       client_id: process.env.MSU_AUTH_CLIENT_ID,
       client_secret: process.env.MSU_AUTH_CLIENT_SECRET,
@@ -16,7 +18,7 @@ export async function requestLoginProfile (code, callback) {
     .then(response => {
       msuProfile.type = response.data.token_type
       msuProfile.token = response.data.access_token
-      return axios.get(`https://oauth.ais.msu.edu/oauth/me?access_token=${msuProfile.token}`)
+      return axios.get(`${msuAuthBaseUrl}/oauth/me?access_token=${msuProfile.token}`)
     })
     .then(response => {
       msuProfile.id = response.data.uid
