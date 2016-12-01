@@ -2,20 +2,18 @@
   "name": "backend",
   "version": "1.0.0",
   "scripts": {
-    "env": "[[ -z ${NODE_ENV} ]] && cp -f env/dev/.env . || cp -f env/${NODE_ENV}/.env .",
     "lint": "eslint --ext .js,.json src test/unit/specs",
     "serve:dev": "nodemon src/main.js --exec babel-node --presets es2015,stage-0",
-    "dev": "npm-run-all lint env serve:dev",
+    "dev": "npm-run-all lint serve:dev",
     "build": "babel src -d dist --presets es2015,stage-0",
     "serve:prod": "node dist/main.js",
-    "start": "npm-run-all lint env build serve:prod",
+    "start": "npm-run-all lint build serve:prod",
     "unit": "yarn run build && mocha --opts test/unit/mocha.opts test/unit/specs/",
     "test": "yarn run unit"
   },
   "dependencies": {
     "axios": "^0.15.0",
     "boom": "^4.1.0",
-    "dotenv": "^2.0.0",
     "firebase": "^3.5.0",
     "hapi": "^15.1.1",
     "hapi-auth-jwt2": "^7.1.3",

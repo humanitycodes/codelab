@@ -20,6 +20,7 @@
     "lint:frontend": "cd frontend && yarn run lint",
     "test:backend": "cd backend && yarn run test",
     "test:frontend": "cd frontend && yarn run test",
+    "test:test": "cd test && yarn run test",
     "dev:backend": "cd backend && yarn run dev",
     "dev:frontend": "cd frontend && yarn run dev",
     "dev:ssl": "local-ssl-proxy --source 8080 --target 8181",

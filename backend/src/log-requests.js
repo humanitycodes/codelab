@@ -1,8 +1,7 @@
-// Put the following line in *.env to turn on request logging:
-// LOG_REQUESTS=true
+import { config } from '../env/config'
 
 export default () => {
-  if (process.env.LOG_REQUESTS) {
+  if (config.logRequests) {
     const globalLog = require('global-request-logger')
     globalLog.initialize()
 
