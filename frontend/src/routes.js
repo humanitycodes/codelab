@@ -1,5 +1,5 @@
 import {
-  canCreateLesson, canReadLesson, canReadAllLessons, canUpdateLesson
+  canCreateLesson, canReadAllLessons, canUpdateLesson
 } from '@state/auth/lessons'
 import {
   canCreateCourse, canReadCourse, canUpdateCourse
@@ -66,7 +66,7 @@ export default [
     path: '/courses/:courseKey/lessons/:lessonKey',
     component: require('@pages/course-lesson'),
     meta: {
-      isAuthorized: canReadLesson
+      isAuthorized: canReadCourse
     }
   },
   {
