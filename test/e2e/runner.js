@@ -3,11 +3,10 @@ import spawn from 'cross-spawn'
 // 1. start the dev server using production config
 process.env.NODE_ENV = 'testing'
 
-let frontend, backend
+let servers
 
 function shutdown (result) {
-  if (frontend) frontend.kill()
-  if (backend) backend.kill()
+  if (servers) servers.kill()
 
   if (typeof result === 'number') {
     process.exit(result)
@@ -19,11 +18,12 @@ function shutdown (result) {
 function watch (child) {
   child.on('exit', shutdown)
   child.on('error', shutdown)
+  child.on('uncaughtException', shutdown)
 }
 
 try {
-  frontend = spawn('yarn', ['run', 'dev-all'], { cwd: '..', stdio: 'inherit' })
-  watch(frontend)
+  servers = spawn('yarn', ['run', 'dev-all'], { cwd: '..', stdio: 'inherit' })
+  watch(servers)
 
   // 2. run the nightwatch test suite against it
   // to run in additional browsers:
@@ -42,6 +42,7 @@ try {
 
   var runner = spawn('./node_modules/.bin/nightwatch', opts, { stdio: 'inherit' })
   watch(runner)
+  watch(process)
 } catch (error) {
   shutdown(error)
 }
