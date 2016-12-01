@@ -9,10 +9,8 @@
     "build": "node build/build.js",
     "unit": "karma start test/unit/karma.conf.js --single-run",
     "unit:watch": "karma start test/unit/karma.conf.js --auto-watch",
-    "pree2e": "node node_modules/chromedriver/install.js",
-    "e2e": "node test/e2e/runner.js",
-    "test": "yarn run unit && yarn run e2e",
-    "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
+    "test": "yarn run unit",
+    "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
   "dependencies": {
     "date-fns": "^1.10.0",
@@ -72,11 +70,9 @@
     "lodash-webpack-plugin": "^0.10.5",
     "lolex": "^1.4.0",
     "mocha": "^3.1.0",
-    "nightwatch": "^0.9.8",
     "opn": "^4.0.2",
     "ora": "^0.3.0",
     "phantomjs-prebuilt": "^2.1.13",
-    "selenium-server": "3.0.1",
     "shelljs": "^0.7.4",
     "sinon": "^1.17.5",
     "sinon-chai": "^2.8.0",

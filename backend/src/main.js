@@ -13,12 +13,6 @@ import { verifyJWTOptions, verifyJWT } from './helpers/verify-firebase-jwt'
 // CONFIG
 // ------
 
-// Do not use dotenv in production because Heroku
-// blows up if you do.
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
-}
-
 const server = new Hapi.Server({
   connections: {
     routes: {

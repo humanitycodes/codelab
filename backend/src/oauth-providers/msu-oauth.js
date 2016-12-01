@@ -1,24 +1,24 @@
 import axios from 'axios'
 import querystring from 'querystring'
+import { config } from '../../env/config'
 
 export async function requestLoginProfile (code, callback) {
   let msuProfile = {
     provider: 'msu'
   }
   return new Promise((resolve, reject) => {
-    const msuAuthBaseUrl = process.env.MSU_AUTH_BASE_URL || 'https://oauth.ais.msu.edu'
-
-    axios.post(`${msuAuthBaseUrl}/oauth/token`, querystring.stringify({
+    axios.post(`${config.msuAuthBaseURL}/oauth/token`, querystring.stringify({
       code: code,
-      client_id: process.env.MSU_AUTH_CLIENT_ID,
-      client_secret: process.env.MSU_AUTH_CLIENT_SECRET,
+      client_id: config.msuAuthClientID,
+      client_secret: config.msuAuthClientSecret,
       grant_type: 'authorization_code',
-      redirect_uri: `${process.env.SERVER_BASE_URL}/auth/msu/callback`
+      redirect_uri: `${config.serverBaseURL}/auth/msu/callback`
     }))
     .then(response => {
+      console.error('FOUND:', response.data)
       msuProfile.type = response.data.token_type
       msuProfile.token = response.data.access_token
-      return axios.get(`${msuAuthBaseUrl}/oauth/me?access_token=${msuProfile.token}`)
+      return axios.get(`${config.msuAuthBaseURL}/oauth/me?access_token=${msuProfile.token}`)
     })
     .then(response => {
       msuProfile.id = response.data.uid

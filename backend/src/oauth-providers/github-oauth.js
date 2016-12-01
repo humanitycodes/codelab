@@ -1,11 +1,10 @@
 import axios from 'axios'
+import { config } from '../../env/config'
 
 function getFromGitHub (path, token) {
-  const githubAuthBaseUrl = process.env.GITHUB_AUTH_BASE_URL || 'https://api.github.com'
-
   return axios({
     method: 'get',
-    url: `${githubAuthBaseUrl}${path}`,
+    url: `${config.githubAuthBaseURL}${path}`,
     headers: {
       Accept: 'application/vnd.github.v3+json',
       Authorization: `token ${token}`
@@ -26,9 +25,9 @@ export async function requestLoginProfile (code) {
       },
       params: {
         code: code,
-        client_id: process.env.GITHUB_AUTH_CLIENT_ID,
-        client_secret: process.env.GITHUB_AUTH_CLIENT_SECRET,
-        redirect_uri: `${process.env.SERVER_BASE_URL}/auth/github/callback`
+        client_id: config.githubAuthClientID,
+        client_secret: config.githubAuthClientSecret,
+        redirect_uri: `${config.serverBaseURL}/auth/github/callback`
       }
     })
     .then(response => {

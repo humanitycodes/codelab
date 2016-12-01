@@ -3,6 +3,7 @@ import boom from 'boom'
 import firebase from 'firebase'
 import uuid from 'uuid'
 import { verifyJWT } from '../helpers/verify-firebase-jwt'
+import env from '../../env/config'
 
 const msuOAuth = require('../oauth-providers/msu-oauth')
 const githubOAuth = require('../oauth-providers/github-oauth')
@@ -40,7 +41,7 @@ export const config = [
 
         // The Base64 JWT can contain + symbols, so encode it
         const encodedJwt = encodeURIComponent(jwt)
-        reply().redirect(`${process.env.SERVER_BASE_URL}/sign-in?token=${encodedJwt}`)
+        reply().redirect(`${env.config.serverBaseURL}/sign-in?token=${encodedJwt}`)
       } catch (error) {
         reply(boom.unauthorized(error.message))
       }
@@ -69,7 +70,7 @@ export const config = [
         const githubProfile = yield githubOAuth.requestLoginProfile(request.query.code)
         yield userRepo.saveGitHubProfile(userId, githubProfile)
 
-        reply().redirect(`${process.env.SERVER_BASE_URL}/`)
+        reply().redirect(`${env.config.serverBaseURL}/`)
       } catch (error) {
         reply(boom.unauthorized(error.message))
       }
