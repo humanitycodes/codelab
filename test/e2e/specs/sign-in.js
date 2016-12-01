@@ -26,11 +26,9 @@ module.exports = {
       port: 7777
     })
 
-    process.env.MSU_AUTH_BASE_URL = server.info.uri
-
     server.route({
       method: 'GET',
-      path: '/',
+      path: '/signin',
       handler: (request, reply) => {
         const response = reply(`<form action="${devServer}/auth/msu/callback" method="post"><input type="submit"></form>`)
         response.type('text/html')
@@ -51,13 +49,17 @@ module.exports = {
 
     server.start(error => {
       if (error) throw error
+
+      console.log('Server running at:', server.info.uri)
+
+      browser
+        .url(server.info.uri)
+        .waitForElementVisible('input[type=submit]', 50000)
+
+      browser.click('input[type=submit]')
+      browser.end()
+
+      server.stop()
     })
-
-    browser
-      .url(server.info.uri)
-      .waitForElementVisible('input[type=submit]', 5000)
-
-    browser.click('input[type=submit]')
-    browser.end()
   }
 }
