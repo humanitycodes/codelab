@@ -6,7 +6,12 @@ process.env.NODE_ENV = 'testing'
 let servers
 
 function shutdown (result) {
-  if (servers) servers.kill()
+  try {
+    // Passing a negative PID to kill will terminate all child processes, not just the parent
+    if (servers) process.kill(-servers.pid)
+  } catch (e) {
+    console.error('Unable to shutdown servers, may need to be killed manually')
+  }
 
   if (typeof result === 'number') {
     process.exit(result)
@@ -22,7 +27,7 @@ function watch (child) {
 }
 
 try {
-  servers = spawn('yarn', ['run', 'dev-all'], { cwd: '..', stdio: 'inherit' })
+  servers = spawn('yarn', ['run', 'dev-all'], { cwd: '..', stdio: 'inherit', detached: true })
   watch(servers)
 
   // 2. run the nightwatch test suite against it

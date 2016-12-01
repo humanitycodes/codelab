@@ -28,7 +28,7 @@ module.exports = {
 
     server.route({
       method: 'GET',
-      path: '/signin',
+      path: '/',
       handler: (request, reply) => {
         const response = reply(`<form action="${devServer}/auth/msu/callback" method="post"><input type="submit"></form>`)
         response.type('text/html')
@@ -54,7 +54,7 @@ module.exports = {
 
       browser
         .url(server.info.uri)
-        .waitForElementVisible('input[type=submit]', 50000)
+        .waitForElementVisible('input[type=submit]', 5000)
 
       browser.click('input[type=submit]')
       browser.end()
