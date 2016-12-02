@@ -16,6 +16,7 @@
   "scripts": {
     "install:backend": "cd backend && NODE_ENV=development yarn --pure-lockfile --force",
     "install:frontend": "cd frontend && NODE_ENV=development yarn --pure-lockfile --force",
+    "install:firebase": "cd firebase && NODE_ENV=development yarn --pure-lockfile --force",
     "install:test": "cd test && NODE_ENV=development yarn --pure-lockfile --force",
     "postinstall": "npm-run-all install:* build-all",
     "lint:backend": "cd backend && yarn run lint",
