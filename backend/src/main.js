@@ -4,7 +4,7 @@ import 'babel-polyfill'
 
 import Hapi from 'hapi'
 import logRequests from './log-requests'
-import firebase from 'firebase'
+import firebase from 'firebase-admin'
 
 import * as firebaseSettings from './firebase-settings'
 import { verifyJWTOptions, verifyJWT } from './helpers/verify-firebase-jwt'

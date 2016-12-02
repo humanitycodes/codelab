@@ -1,4 +1,4 @@
-import firebase from 'firebase'
+import firebase from 'firebase-admin'
 
 export const verifyJWTOptions = {
   ignoreExpiration: true
