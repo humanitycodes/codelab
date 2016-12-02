@@ -1,4 +1,4 @@
-export const config = {
+module.exports = {
   serverBaseURL: 'https://localhost:8080',
 
   msuAuthBaseURL: 'https://oauth.ais.msu.edu',
