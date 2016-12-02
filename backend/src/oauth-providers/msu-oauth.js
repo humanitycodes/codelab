@@ -15,7 +15,6 @@ export async function requestLoginProfile (code, callback) {
       redirect_uri: `${config.serverBaseURL}/auth/msu/callback`
     }))
     .then(response => {
-      console.error('FOUND:', response.data)
       msuProfile.type = response.data.token_type
       msuProfile.token = response.data.access_token
       return axios.get(`${config.msuAuthBaseURL}/oauth/me?access_token=${msuProfile.token}`)

@@ -1,9 +1,9 @@
 import joi from 'joi'
 import boom from 'boom'
-import firebase from 'firebase'
+import firebase from 'firebase-admin'
 import uuid from 'uuid'
 import { verifyJWT } from '../helpers/verify-firebase-jwt'
-import env from '../../env/config'
+import * as env from '../../env/config'
 
 const msuOAuth = require('../oauth-providers/msu-oauth')
 const githubOAuth = require('../oauth-providers/github-oauth')
@@ -35,7 +35,7 @@ export const config = [
           })
         }
 
-        const jwt = firebase.auth().createCustomToken(userId, {
+        const jwt = yield firebase.auth().createCustomToken(userId, {
           profile: user
         })
 
