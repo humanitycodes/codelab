@@ -1,4 +1,4 @@
-import fs from 'fs'
+const fs = require('fs')
 
 let configFile
 
@@ -12,4 +12,6 @@ try {
   configFile = './dev/config.js'
 }
 
-export const config = require(configFile).config
+module.exports = {
+  config: require(configFile)
+}
