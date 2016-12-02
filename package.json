@@ -16,6 +16,8 @@
   "scripts": {
     "install:backend": "cd backend && NODE_ENV=development yarn --pure-lockfile --force",
     "install:frontend": "cd frontend && NODE_ENV=development yarn --pure-lockfile --force",
+    "install:test": "cd test && NODE_ENV=development yarn --pure-lockfile --force",
+    "postinstall": "npm-run-all install:* build-all",
     "lint:backend": "cd backend && yarn run lint",
     "lint:frontend": "cd frontend && yarn run lint",
     "test:backend": "cd backend && yarn run test",
@@ -27,7 +29,6 @@
     "serve:backend": "cd backend && yarn run serve:prod",
     "build:backend": "cd backend && yarn run build",
     "build:frontend": "cd frontend && yarn run build",
-    "postinstall": "npm-run-all install:* build-all",
     "lint-all": "npm-run-all --parallel lint:*",
     "test-all": "npm-run-all test:*",
     "dev-all": "npm-run-all --parallel dev:*",
