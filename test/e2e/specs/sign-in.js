@@ -1,7 +1,43 @@
-import Hapi from 'hapi'
+import firebase from 'firebase-admin'
+import uuid from 'uuid'
+
+import * as firebaseSettings from '../../../backend/src/firebase-settings'
+
+const PASSWORD = 'toomanysecrets'
+
+function createUser (user) {
+  console.log('Creating user', user.uid)
+  let db = firebase.database()
+  return Promise.all([
+    firebase.auth().createUser({
+      uid: user.uid,
+      email: user.email,
+      emailVerified: true,
+      displayName: user.fullName,
+      password: PASSWORD
+    }),
+    db.ref('users').child(user.uid).set({
+      email: user.email,
+      fullName: user.fullName
+    }),
+    db.ref('roles').child(user.uid).set({
+      instructor: false
+    })
+  ])
+}
+
+function destroyUser (user) {
+  if (!user) return
+
+  console.log('Removing user', user.uid)
+  let db = firebase.database()
+  try { db.ref('roles').child(user.uid).remove() } catch (e) {}
+  try { db.ref('users').child(user.uid).remove() } catch (e) {}
+  try { firebase.auth().deleteUser(user.uid) } catch (e) {}
+}
 
 module.exports = {
-  'Verify Sign In link exists': browser => {
+  'Sign In links exist': browser => {
     // automatically uses dev Server port from /config.index.js
     // default: http://localhost:8080
     // see nightwatch.conf.js
@@ -13,53 +49,33 @@ module.exports = {
 
     browser.expect.element('.main-nav').to.be.present
     browser.expect.element('.main-nav a[href^=\'https://oauth.ais.msu.edu/oauth/authorize\']').to.be.present
-    browser.expect.element('.main-nav a[href^=\'https://oauth.ais.msu.edu/oauth/authorize\']').text.to.match(/Sign in/i)
+    browser.expect.element('.main-nav a[href^=\'/email-sign-in\']').to.be.present
     browser.end()
   },
-  'Successful Sign In shows dashboard': browser => {
+  'Successful Sign In with Email shows dashboard': browser => {
     const devServer = browser.globals.devServerURL
 
-    const server = new Hapi.Server()
+    firebase.initializeApp(firebaseSettings.appConfig)
 
-    server.connection({
-      host: '0.0.0.0',
-      port: 7777
-    })
+    let userId = uuid.v4()
+    let user = {
+      uid: userId,
+      email: `${userId}@test.com`,
+      fullName: 'Test User'
+    }
 
-    server.route({
-      method: 'GET',
-      path: '/',
-      handler: (request, reply) => {
-        const response = reply(`<form action="${devServer}/auth/msu/callback" method="post"><input type="submit"></form>`)
-        response.type('text/html')
-      }
-    })
+    createUser(user)
 
-    server.route({
-      method: 'POST',
-      path: '/oauth/token',
-      handler: (request, reply) => {
-        console.error('QUERY:', request.query)
-        reply({
-          token_type: 'Bearer',
-          access_token: 'a-c-c-e-s-s-t-o-k-e-n'
-        })
-      }
-    })
-
-    server.start(error => {
-      if (error) throw error
-
-      console.log('Server running at:', server.info.uri)
-
-      browser
-        .url(server.info.uri)
-        .waitForElementVisible('input[type=submit]', 5000)
-
-      browser.click('input[type=submit]')
-      browser.end()
-
-      server.stop()
-    })
+    browser.url(devServer)
+      .waitForElementVisible('.main-nav a[href^=\'/email-sign-in\']', 5000)
+      .click('.main-nav a[href^=\'/email-sign-in\']')
+      .waitForElementVisible('button', 5000)
+      .setValue('input[type=text]', user.email)
+      .setValue('input[type=password]', PASSWORD)
+      .click('button')
+      .waitForElementVisible('.main-nav a[href^=\'/sign-out\']', 5000)
+      .end(() => {
+        destroyUser(user)
+      })
   }
 }

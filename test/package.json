@@ -19,8 +19,11 @@
     "babel-preset-stage-0": "^6.16.0",
     "chai": "^3.5.0",
     "chromedriver": "^2.25.1",
-    "hapi": "^16.0.0",
+    "cross-spawn": "^5.0.1",
+    "firebase-admin": "^4.0.3",
     "nightwatch": "^0.9.9",
-    "selenium-server": "^3.0.1"
+    "node-rsa": "^0.4.2",
+    "selenium-server": "^3.0.1",
+    "uuid": "^3.0.1"
   }
 }

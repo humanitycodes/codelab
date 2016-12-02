@@ -2,7 +2,7 @@
   <div class="flex-row">
     <div class="flex-col">
       <label>Email</label>
-      <input v-model="credentials.email" placeholder="you@domain.com">
+      <input v-model="credentials.email" placeholder="you@domain.com" type="text">
     </div>
   </div>
 </template>
