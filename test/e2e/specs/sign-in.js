@@ -1,12 +1,12 @@
 import firebase from 'firebase-admin'
 import uuid from 'uuid'
+import chai from 'chai'
 
 import * as firebaseSettings from '../../../backend/src/firebase-settings'
 
 const PASSWORD = 'toomanysecrets'
 
 function createUser (user) {
-  console.log('Creating user', user.uid)
   let db = firebase.database()
   return Promise.all([
     firebase.auth().createUser({
@@ -27,13 +27,14 @@ function createUser (user) {
 }
 
 function destroyUser (user) {
-  if (!user) return
+  if (!user) return Promise.resolve()
 
-  console.log('Removing user', user.uid)
   let db = firebase.database()
-  try { db.ref('roles').child(user.uid).remove() } catch (e) {}
-  try { db.ref('users').child(user.uid).remove() } catch (e) {}
-  try { firebase.auth().deleteUser(user.uid) } catch (e) {}
+  return Promise.all([
+    db.ref('roles').child(user.uid).remove(),
+    db.ref('users').child(user.uid).remove(),
+    firebase.auth().deleteUser(user.uid)
+  ])
 }
 
 module.exports = {
@@ -75,7 +76,9 @@ module.exports = {
       .click('button')
       .waitForElementVisible('.main-nav a[href^=\'/sign-out\']', 5000)
       .end(() => {
-        destroyUser(user)
+        destroyUser(user).then(() => {
+          firebase.app().delete()
+        })
       })
   }
 }

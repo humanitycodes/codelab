@@ -6,7 +6,6 @@ process.env.NODE_ENV = 'testing'
 let servers
 
 function shutdown (result) {
-  console.log('HERE', result)
   try {
     // Passing a negative PID to kill will terminate all child processes, not just the parent
     if (servers) process.kill(-servers.pid)
