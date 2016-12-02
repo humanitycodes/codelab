@@ -1,41 +1,6 @@
-import firebase from 'firebase-admin'
 import uuid from 'uuid'
-import chai from 'chai'
 
-import * as firebaseSettings from '../../../backend/src/firebase-settings'
-
-const PASSWORD = 'toomanysecrets'
-
-function createUser (user) {
-  let db = firebase.database()
-  return Promise.all([
-    firebase.auth().createUser({
-      uid: user.uid,
-      email: user.email,
-      emailVerified: true,
-      displayName: user.fullName,
-      password: PASSWORD
-    }),
-    db.ref('users').child(user.uid).set({
-      email: user.email,
-      fullName: user.fullName
-    }),
-    db.ref('roles').child(user.uid).set({
-      instructor: false
-    })
-  ])
-}
-
-function destroyUser (user) {
-  if (!user) return Promise.resolve()
-
-  let db = firebase.database()
-  return Promise.all([
-    db.ref('roles').child(user.uid).remove(),
-    db.ref('users').child(user.uid).remove(),
-    firebase.auth().deleteUser(user.uid)
-  ])
-}
+import * as db from '../helpers/db'
 
 module.exports = {
   'Sign In links exist': browser => {
@@ -54,10 +19,6 @@ module.exports = {
     browser.end()
   },
   'Successful Sign In with Email shows dashboard': browser => {
-    const devServer = browser.globals.devServerURL
-
-    firebase.initializeApp(firebaseSettings.appConfig)
-
     let userId = uuid.v4()
     let user = {
       uid: userId,
@@ -65,19 +26,20 @@ module.exports = {
       fullName: 'Test User'
     }
 
-    createUser(user)
+    db.init()
+    db.createUser(user)
 
-    browser.url(devServer)
+    browser.url(browser.globals.devServerURL)
       .waitForElementVisible('.main-nav a[href^=\'/email-sign-in\']', 5000)
       .click('.main-nav a[href^=\'/email-sign-in\']')
       .waitForElementVisible('button', 5000)
       .setValue('input[type=text]', user.email)
-      .setValue('input[type=password]', PASSWORD)
+      .setValue('input[type=password]', db.USER_PASSWORD)
       .click('button')
       .waitForElementVisible('.main-nav a[href^=\'/sign-out\']', 5000)
       .end(() => {
-        destroyUser(user).then(() => {
-          firebase.app().delete()
+        db.destroyUser(user).then(() => {
+          db.close()
         })
       })
   }
