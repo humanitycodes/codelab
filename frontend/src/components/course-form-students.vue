@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import Dropdown from './dropdown'
 import { userGetters } from '@state/helpers'
 
@@ -65,13 +64,12 @@ export default {
     queryResults () {
       if (!this.studentQuery || !this.users.length) return []
       const queryRegex = new RegExp(this.studentQuery, 'i')
-      const studentKeys = this.students.map(p => p['.key'])
       return this.users.filter(user => {
         return (
           // User is not currentUser
           this.currentUser.uid !== user['.key'] &&
           // User is not already a student
-          studentKeys.indexOf(user['.key']) === -1 &&
+          this.course.studentKeys.indexOf(user['.key']) === -1 &&
           // Course matches the query string
           (
             queryRegex.test(user.email) ||
@@ -82,28 +80,19 @@ export default {
     },
     students () {
       if (!this.course.studentKeys) return []
-      const studentKeys = Object.keys(this.course.studentKeys)
       return this.users.filter(user => {
-        return studentKeys.indexOf(user['.key']) !== -1
+        return this.course.studentKeys.indexOf(user['.key']) !== -1
       })
     }
   },
   methods: {
-    ...mapActions(['addStudentToCourse', 'removeStudentFromCourse']),
     addStudent (student) {
-      this.addStudentToCourse({
-        courseKey: this.course['.key'],
-        studentKey: student['.key']
-      }).then(() => {
-        this.studentQuery = ''
-        this.$refs.queryInput.focus()
-      })
+      this.course.addStudent(student['.key'])
+      this.studentQuery = ''
+      this.$refs.queryInput.focus()
     },
     removeStudent (student) {
-      this.removeStudentFromCourse({
-        courseKey: this.course['.key'],
-        studentKey: student['.key']
-      })
+      this.course.removeStudent(student['.key'])
     }
   }
 }

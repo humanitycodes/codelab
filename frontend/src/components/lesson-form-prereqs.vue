@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import Dropdown from './dropdown'
 import { lessonGetters } from '@state/helpers'
 
@@ -56,13 +55,12 @@ export default {
     queryResults () {
       if (!this.prereqQuery || !this.lessons.length) return []
       const queryRegex = new RegExp(this.prereqQuery, 'i')
-      const prereqKeys = this.prereqs.map(p => p['.key'])
       return this.lessons.filter(lesson => {
         return (
           // Lesson is not self
           this.lesson['.key'] !== lesson['.key'] &&
           // Lesson is not already a prereq
-          prereqKeys.indexOf(lesson['.key']) === -1 &&
+          this.lesson.prereqKeys.indexOf(lesson['.key']) === -1 &&
           // Lesson would not cause cyclical dependency (catch 22)
           this.prereqWouldBeAcyclic(lesson) &&
           // Lesson matches the query string
@@ -77,28 +75,19 @@ export default {
       if (!this.lessons.length || !this.lesson.prereqKeys) {
         return []
       }
-      const prereqKeys = Object.keys(this.lesson.prereqKeys)
       return this.lessons.filter(lesson => {
-        return prereqKeys.indexOf(lesson['.key']) !== -1
+        return this.lesson.prereqKeys.indexOf(lesson['.key']) !== -1
       })
     }
   },
   methods: {
-    ...mapActions(['addLessonPrereq', 'removeLessonPrereq']),
     addPrereq (prereq) {
-      this.addLessonPrereq({
-        lessonKey: this.lesson['.key'],
-        prereqKey: prereq['.key']
-      }).then(() => {
-        this.prereqQuery = ''
-        this.$refs.queryInput.focus()
-      })
+      this.lesson.addPrereq(prereq['.key'])
+      this.prereqQuery = ''
+      this.$refs.queryInput.focus()
     },
     removePrereq (prereq) {
-      this.removeLessonPrereq({
-        lessonKey: this.lesson['.key'],
-        prereqKey: prereq['.key']
-      })
+      this.lesson.removePrereq(prereq['.key'])
     },
     prereqWouldBeAcyclic (prereq) {
       const currentLessonKey = this.lesson['.key']

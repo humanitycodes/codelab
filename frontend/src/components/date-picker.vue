@@ -5,14 +5,12 @@
 <script>
 import startOfDay from 'date-fns/start_of_day'
 import endOfDay from 'date-fns/end_of_day'
+import isValidDate from 'date-fns/is_valid'
 import formatDate from 'date-fns/format'
 
 export default {
   props: {
-    value: {
-      type: String,
-      default: ''
-    },
+    value: Number,
     atDay: {
       type: String,
       default: 'start'
@@ -27,12 +25,14 @@ export default {
   methods: {
     onInput (event) {
       const { value } = event.target
+      const dateValue = new Date(value)
+      if (!isValidDate(dateValue)) return
       const newDate = (
         this.atDay === 'start'
-          ? startOfDay(value)
-          : endOfDay(value)
-      ).toString()
-      this.$emit('input', newDate === 'Invalid Date' ? '' : newDate)
+          ? startOfDay(dateValue)
+          : endOfDay(dateValue)
+      ).getTime()
+      this.$emit('input', newDate)
     }
   }
 }

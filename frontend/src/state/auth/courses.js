@@ -56,7 +56,6 @@ export const lessonCanBeAddedToCourse = ({ courseKey, lessonKey }) => {
     ) &&
     // Lesson has the required fields
     lesson.title &&
-    lesson.learningObjectives &&
     lesson.content &&
     lesson.estimatedHours
   )
@@ -77,13 +76,13 @@ export const canDestroyCourse = ({ courseKey }) => {
 // ---------------
 
 function findCourse (courseKey) {
-  return store.state.courses.all.find(course => {
+  return store.getters.courses.find(course => {
     return course['.key'] === courseKey
   })
 }
 
 function findLesson (lessonKey) {
-  return store.state.lessons.all.find(lesson => {
+  return store.getters.lessons.find(lesson => {
     return lesson['.key'] === lessonKey
   })
 }

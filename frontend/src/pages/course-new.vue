@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import Layout from '@layouts/main'
 import { userGetters, courseGetters } from '@state/helpers'
 
@@ -99,12 +98,11 @@ export default {
   methods: {
     tryToCreateCourse () {
       if (this.keyIsValid) {
-        this.createCourse(this.key).then(() => {
-          this.$router.replace(`/courses/${this.key}/edit`)
+        this.courses.add(this.key).then(() => {
+          window.location = `/courses/${this.key}/edit`
         })
       }
-    },
-    ...mapActions(['createCourse'])
+    }
   }
 }
 </script>
