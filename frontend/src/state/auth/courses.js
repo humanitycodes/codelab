@@ -52,11 +52,10 @@ export const lessonCanBeAddedToCourse = ({ courseKey, lessonKey }) => {
     // Lesson is not already added
     (
       !course.lessonKeys ||
-      !course.lessonKeys[lessonKey]
+      course.lessonKeys.indexOf(lessonKey) === -1
     ) &&
     // Lesson has the required fields
     lesson.title &&
-    lesson.content &&
     lesson.estimatedHours
   )
 }

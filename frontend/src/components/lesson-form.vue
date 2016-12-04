@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import LessonTitle from './lesson-form-title'
 import LessonLearningObjectives from './lesson-form-learning-objectives'
 import LessonEstimatedHours from './lesson-form-estimated-hours'
@@ -27,18 +26,6 @@ export default {
       type: Object,
       required: true
     }
-  },
-  created () {
-    this.updateLesson(this.lesson)
-  },
-  watch: {
-    lesson: {
-      deep: true,
-      handler (newLesson) {
-        this.updateLesson(newLesson)
-      }
-    }
-  },
-  methods: mapActions(['updateLesson'])
+  }
 }
 </script>
