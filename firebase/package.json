@@ -4,9 +4,11 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint --ext .js,.json src",
-    "deploy": "firebase deploy --project production --token `cat token`",
     "build:rules": "babel-node src/build.js",
-    "build:adapter": "babel src -d dist --presets es2015,stage-0"
+    "build:adapter": "babel src -d dist --presets es2015,stage-0",
+    "postinstall": "yarn build:adapter",
+    "predeploy": "yarn build:rules",
+    "deploy": "firebase deploy --project production --token `cat token`"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
