@@ -18,6 +18,7 @@ export default {
     syncCurrentUser ({ commit, state, rootState }) {
       return new Promise((resolve, reject) => {
         let userRef, rolesRef
+        let resolvedCallbacksCount = 0
         const currentUserCallback = userSnapshot => {
           firebase.auth().getToken()
           .then(firebaseTokenResult => {
@@ -27,12 +28,14 @@ export default {
               uid: userSnapshot.key,
               firebaseJwt: firebaseTokenResult.accessToken
             })
-            resolve(rootState)
+            if (resolvedCallbacksCount === 1) resolve(rootState)
+            resolvedCallbacksCount++
           })
         }
         const currentRolesCallback = roleSnapshot => {
           commit('SET_CURRENT_ROLES', roleSnapshot.val())
-          resolve(rootState)
+          if (resolvedCallbacksCount === 1) resolve(rootState)
+          resolvedCallbacksCount++
         }
 
         firebase.auth().onAuthStateChanged(user => {

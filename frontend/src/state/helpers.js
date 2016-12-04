@@ -11,26 +11,26 @@ export const userGetters = {
 }
 
 export const lessonGetters = {
-  ...mapState({ lessons: state => state.lessons.all }),
   ...mapGetters([
+    'lessons',
     'currentLesson',
     'showCurrentLessonPath',
-    'editCurrentLessonPath',
-    'canUpdateCurrentLesson',
-    'canDestroyCurrentLesson'
+    'editCurrentLessonPath'
+    // 'canUpdateCurrentLesson',
+    // 'canDestroyCurrentLesson'
   ])
 }
 export { lessonPermissionMethods }
 
 export const courseGetters = {
-  ...mapState({ courses: state => state.courses.all }),
   ...mapGetters([
+    'courses',
     'currentCourse',
     'showCurrentCoursePath',
-    'editCurrentCoursePath',
-    'canUpdateCurrentCourse',
-    'shouldUpdateCurrentCourse',
-    'canDestroyCurrentCourse'
+    'editCurrentCoursePath'
+    // 'canUpdateCurrentCourse',
+    // 'shouldUpdateCurrentCourse',
+    // 'canDestroyCurrentCourse'
   ])
 }
 export { coursePermissionMethods }

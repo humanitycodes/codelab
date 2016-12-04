@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     addObjective () {
-      db.ref('lessons')
+      db.ref('lessons/fieldGroups/small/instructor')
         .child(this.lesson['.key'])
         .child('learningObjectives')
         .push({
@@ -49,7 +49,7 @@ export default {
       this.newLearningObjective = ''
     },
     removeObjective (objectiveKey) {
-      db.ref('lessons')
+      db.ref('lessons/fieldGroups/small/instructor')
         .child(this.lesson['.key'])
         .child('learningObjectives')
         .child(objectiveKey)

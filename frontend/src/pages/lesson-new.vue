@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import Layout from '@layouts/main'
 import { userGetters, lessonGetters } from '@state/helpers'
 
@@ -67,12 +66,11 @@ export default {
     tryToCreateLesson () {
       if (this.keyIsValid) {
         const key = [this.categoryPrefix, this.key].join('-')
-        this.createLesson(key).then(() => {
-          this.$router.replace(`/lessons/${key}/edit`)
+        this.lessons.add(key).then(() => {
+          window.location = `/lessons/${key}/edit`
         })
       }
-    },
-    ...mapActions(['createLesson'])
+    }
   }
 }
 </script>

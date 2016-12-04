@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import { lessonGetters } from '@state/helpers'
 import { lessonCanBeAddedToCourse } from '@state/auth/courses'
 import Dropdown from './dropdown'
@@ -76,28 +75,19 @@ export default {
       if (!this.lessons.length || !this.course.lessonKeys) {
         return []
       }
-      const courseLessonKeys = Object.keys(this.course.lessonKeys)
       return this.lessons.filter(lesson => {
-        return courseLessonKeys.indexOf(lesson['.key']) !== -1
+        return this.course.lessonKeys.indexOf(lesson['.key']) !== -1
       })
     }
   },
   methods: {
-    ...mapActions(['addLessonToCourse', 'removeLessonFromCourse']),
     addCourseLesson (lesson) {
-      this.addLessonToCourse({
-        courseKey: this.course['.key'],
-        lessonKey: lesson['.key']
-      }).then(() => {
-        this.lessonQuery = ''
-        this.$refs.queryInput.focus()
-      })
+      this.course.addLesson(lesson['.key'])
+      this.lessonQuery = ''
+      this.$refs.queryInput.focus()
     },
     removeCourseLesson (lesson) {
-      this.removeLessonFromCourse({
-        courseKey: this.course['.key'],
-        lessonKey: lesson['.key']
-      })
+      this.course.removeLesson(lesson['.key'])
     }
   }
 }

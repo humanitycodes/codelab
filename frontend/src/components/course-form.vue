@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import CourseTitle from './course-form-title'
 import CourseDates from './course-form-dates'
 import CourseCredits from './course-form-credits'
@@ -40,18 +39,6 @@ export default {
         this.course.lessonKeys
       )
     }
-  },
-  created () {
-    this.updateCourse(this.course)
-  },
-  watch: {
-    course: {
-      deep: true,
-      handler (newCourse) {
-        this.updateCourse(newCourse)
-      }
-    }
-  },
-  methods: mapActions(['updateCourse'])
+  }
 }
 </script>
