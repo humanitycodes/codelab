@@ -1,5 +1,5 @@
 {
   "database": {
-    "rules": "firebase.rules.clean.json"
+    "rules": "dist/firebase.rules.json"
   }
 }
