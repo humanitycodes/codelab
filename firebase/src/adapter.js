@@ -62,7 +62,6 @@ export default (store, db, uid, roles) => {
                 const resourceForeignKey = typeof relationshipDef === 'object' && relationshipDef.foreignKey
                   ? relationshipDef.foreignKey
                   : resourceName
-                console.log(relationshipDef)
                 const singularRelatedResourceName = singularize(relationshipName)
                 const addRelatedResourceName = 'add' + capitalize(singularRelatedResourceName)
                 resourceItem[addRelatedResourceName] = function (relatedResourceKey) {
@@ -78,18 +77,21 @@ export default (store, db, uid, roles) => {
                     .child(relatedResourceKey)
                     .child('createdBy')
                     .set(uid)
-                  db.ref(`${relatedResourceName}/relationships`)
-                    .child(relatedResourceKey)
-                    .child(resourceForeignKey)
-                    .child(resourceKey)
-                    .child('createdAt')
-                    .set(Date.now())
-                  db.ref(`${relatedResourceName}/relationships`)
-                    .child(relatedResourceKey)
-                    .child(resourceForeignKey)
-                    .child(resourceKey)
-                    .child('createdBy')
-                    .set(uid)
+                  const resourceNames = Object.keys(resourceDefs)
+                  if (resourceNames.indexOf(relatedResourceName) !== -1) {
+                    db.ref(`${relatedResourceName}/relationships`)
+                      .child(relatedResourceKey)
+                      .child(resourceForeignKey)
+                      .child(resourceKey)
+                      .child('createdAt')
+                      .set(Date.now())
+                    db.ref(`${relatedResourceName}/relationships`)
+                      .child(relatedResourceKey)
+                      .child(resourceForeignKey)
+                      .child(resourceKey)
+                      .child('createdBy')
+                      .set(uid)
+                  }
                 }
                 const removeRelatedResourceName = 'remove' + capitalize(singularRelatedResourceName)
                 resourceItem[removeRelatedResourceName] = function (relatedResourceKey) {
@@ -98,11 +100,14 @@ export default (store, db, uid, roles) => {
                     .child(relationshipName)
                     .child(relatedResourceKey)
                     .remove()
-                  db.ref(`${relatedResourceName}/relationships`)
-                    .child(relatedResourceKey)
-                    .child(resourceForeignKey)
-                    .child(resourceKey)
-                    .remove()
+                  const resourceNames = Object.keys(resourceDefs)
+                  if (resourceNames.indexOf(relatedResourceName) !== -1) {
+                    db.ref(`${relatedResourceName}/relationships`)
+                      .child(relatedResourceKey)
+                      .child(resourceForeignKey)
+                      .child(resourceKey)
+                      .remove()
+                  }
                 }
               })
               const sizeDef = resourceDefs[resourceName].fieldGroups
@@ -183,27 +188,7 @@ export default (store, db, uid, roles) => {
                   )
                 })
               })
-              // TODO: Also delete relationships
-              // const resourceNames = Object.keys(resourceDefs)
-              // resourceNames.filter(listedResourceName => {
-              //   return listedResourceName !== resourceName
-              // }).forEach(otherResourceName => {
-              //   const otherResourceRelationships = resourceDefs[otherResourceName].relationships
-              //   const relationshipNames = Object.keys(otherResourceRelationships)
-              //   relationshipNames.forEach(relationshipName => {
-              //     const relationshipDef = otherResourceRelationships[relationshipName]
-              //     const relationshipResourceName = typeof relationshipDef === 'object'
-              //       ? relationshipDef.resource
-              //       : relationshipName
-              //     if (relationshipResourceName === resourceName) {
-              //       db.ref(`${otherResourceName}/relationships`)
-              //         .child()
-              //     }
-              //   })
-              //   if (otherResourceName === resourceName) {
-
-              //   }
-              // })
+              // TODO: Also delete relationships, by pulling in all relationships of the deleted resource that exist and deleting their inverse
               return Promise.all(firebaseActions)
             }
             return resourceArray

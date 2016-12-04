@@ -16,9 +16,21 @@ export const lessonGetters = {
     'currentLesson',
     'showCurrentLessonPath',
     'editCurrentLessonPath'
-    // 'canUpdateCurrentLesson',
-    // 'canDestroyCurrentLesson'
-  ])
+  ]),
+  ...mapState({
+    canUpdateCurrentLesson (state, getters) {
+      if (!getters.currentLesson) return false
+      return lessonPermissionMethods.canUpdateLesson({
+        lessonKey: getters.currentLesson['.key']
+      })
+    },
+    canDestroyCurrentLesson (state, getters) {
+      if (!getters.currentLesson) return false
+      return lessonPermissionMethods.canDestroyLesson({
+        lessonKey: getters.currentLesson['.key']
+      })
+    }
+  })
 }
 export { lessonPermissionMethods }
 
@@ -28,9 +40,26 @@ export const courseGetters = {
     'currentCourse',
     'showCurrentCoursePath',
     'editCurrentCoursePath'
-    // 'canUpdateCurrentCourse',
-    // 'shouldUpdateCurrentCourse',
-    // 'canDestroyCurrentCourse'
-  ])
+  ]),
+  ...mapState({
+    canUpdateCurrentCourse (state, getters) {
+      if (!getters.currentCourse) return false
+      return coursePermissionMethods.canUpdateCourse({
+        courseKey: getters.currentCourse['.key']
+      })
+    },
+    shouldUpdateCurrentCourse (state, getters) {
+      if (!getters.currentCourse) return false
+      return coursePermissionMethods.shouldUpdateCourse({
+        courseKey: getters.currentCourse['.key']
+      })
+    },
+    canDestroyCurrentCourse (state, getters) {
+      if (!getters.currentCourse) return false
+      return coursePermissionMethods.canDestroyCourse({
+        courseKey: getters.currentCourse['.key']
+      })
+    }
+  })
 }
 export { coursePermissionMethods }
