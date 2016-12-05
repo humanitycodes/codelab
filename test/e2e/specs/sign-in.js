@@ -1,6 +1,6 @@
 import uuid from 'uuid'
 
-import * as db from '../helpers/db'
+const db = require('../helpers/db').init()
 
 let userId = uuid.v4()
 let user = {
@@ -11,13 +11,11 @@ let user = {
 
 module.exports = {
   before: browser => {
-    db.init()
     db.createStudent(user)
   },
 
   after: browser => {
-    db.destroyUser(user)
-    .then(() => {
+    db.destroyUser(user).then(() => {
       db.close()
     })
   },
@@ -38,7 +36,7 @@ module.exports = {
       .click('.main-nav a[href^=\'/email-sign-in\']')
       .waitForElementVisible('button', 5000)
       .setValue('input[type=text]', user.email)
-      .setValue('input[type=password]', db.USER_PASSWORD)
+      .setValue('input[type=password]', db.getDefaultPassword())
       .click('button')
       .waitForElementVisible('.main-nav a[href^=\'/sign-out\']', 5000)
       .end()

@@ -1,58 +1,92 @@
-import firebase from 'firebase-admin'
+import firebaseAdmin from 'firebase-admin'
+import uuid from 'uuid'
 
 import * as firebaseSettings from '../../../backend/src/firebase-settings'
 
-// ------
-// SETUP
-// ------
+const DEFAULT_PASSWORD = 'toomanysecrets'
 
 export function init () {
-  return firebase.initializeApp(firebaseSettings.appConfig)
-}
+  const firebase = firebaseAdmin.initializeApp(firebaseSettings.appConfig, uuid.v4())
+  return {
+    // Call this in your test's 'after' so Nightwatch shuts down properly
+    close: () => {
+      return firebase.delete()
+    },
+    // ------
+    // USERS
+    // ------
 
-export function close () {
-  return firebase.app().delete()
-}
+    getDefaultPassword: function () {
+      return DEFAULT_PASSWORD
+    },
 
-// ------
-// USERS
-// ------
+    createUser: function  (user, roles) {
+      let db = firebase.database()
+      return Promise.all([
+        firebase.auth().createUser({
+          uid: user.uid,
+          email: user.email,
+          emailVerified: true,
+          displayName: user.fullName,
+          password: DEFAULT_PASSWORD
+        }),
+        db.ref('users').child(user.uid).set({
+          email: user.email,
+          fullName: user.fullName
+        }),
+        db.ref('roles').child(user.uid).set(roles)
+      ])
+    },
 
-export const USER_PASSWORD = 'toomanysecrets'
+    createStudent: function (user) {
+      return this.createUser(user, { instructor: false })
+    },
 
-export function createUser (user, roles) {
-  let db = firebase.database()
-  return Promise.all([
-    firebase.auth().createUser({
-      uid: user.uid,
-      email: user.email,
-      emailVerified: true,
-      displayName: user.fullName,
-      password: USER_PASSWORD
-    }),
-    db.ref('users').child(user.uid).set({
-      email: user.email,
-      fullName: user.fullName
-    }),
-    db.ref('roles').child(user.uid).set(roles)
-  ])
-}
+    createInstructor: function (user) {
+      return this.createUser(user, { instructor: true })
+    },
 
-export function createStudent (user) {
-  return createUser(user, { instructor: false })
-}
+    destroyUser: function (user) {
+      if (!user) return Promise.resolve()
 
-export function createInstructor (user) {
-  return createUser(user, { instructor: true })
-}
+      let db = firebase.database()
+      return Promise.all([
+        db.ref('roles').child(user.uid).remove(),
+        db.ref('users').child(user.uid).remove(),
+        firebase.auth().deleteUser(user.uid)
+      ])
+    },
 
-export function destroyUser (user) {
-  if (!user) return Promise.resolve()
+    // --------
+    // LESSONS
+    // --------
 
-  let db = firebase.database()
-  return Promise.all([
-    db.ref('roles').child(user.uid).remove(),
-    db.ref('users').child(user.uid).remove(),
-    firebase.auth().deleteUser(user.uid)
-  ])
+    createLesson: function (lesson) {
+      let lessonCopy = { ...lesson }
+      delete lessonCopy.key
+
+      return firebase.database().ref('lessons').child(lesson.key).set(lessonCopy)
+    },
+
+    destroyLesson: function (lesson) {
+      if (!lesson) return Promise.resolve()
+      return firebase.database().ref('lessons').child(lesson.key).remove()
+    },
+
+    // --------
+    // COURSES
+    // --------
+
+    createCourse: function (course) {
+      let courseCopy = { ...course }
+      delete courseCopy.key
+
+      return firebase.database().ref('courses').child(course.key).set(courseCopy)
+    },
+
+    destroyCourse: function (course) {
+      if (!course) return Promise.resolve()
+      return firebase.database().ref('courses').child(course.key).remove()
+    }
+  }
 }
