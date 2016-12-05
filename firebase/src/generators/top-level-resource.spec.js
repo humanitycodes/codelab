@@ -12,13 +12,7 @@ describe('generateTopLevelResource', () => {
       },
       relationships: {
         // Get all the lessons a students has access to
-        students: {
-          resource: 'users',
-          relationships: {
-            // Get all the courses through which a student can access the lesson
-            courses: true
-          }
-        },
+        students: { resource: 'users' },
         // Get all the lessons in a course
         courses: true,
         // Get all the prerequisites for the course
@@ -57,6 +51,26 @@ describe('generateTopLevelResource', () => {
     expect(rules).toEqual({
       'lessons': {
         '.write': "((!data.exists() && root.child('roles/'+auth.uid+'/instructor').val() === true) || (data.exists() && newData.exists() && root.child('roles/'+auth.uid+'/instructor').val() === true) || (data.exists() && !newData.exists() && (!newData.child('relationships/students').exists() || newData.child('relationships/students').val() === false)))",
+        'meta': {
+          '$lessonsKey': {
+            '$other': {
+              '.validate': false
+            },
+            '.read': 'auth !== null',
+            'createdAt': {
+              '.validate': '(newData.isNumber() && newData.val() % 1 === 0)'
+            },
+            'createdBy': {
+              '.validate': "root.child('users/'+newData.val()).exists()"
+            },
+            'updatedAt': {
+              '.validate': '(newData.isNumber() && newData.val() % 1 === 0)'
+            },
+            'updatedBy': {
+              '.validate': "root.child('users/'+newData.val()).exists()"
+            }
+          }
+        },
         'fieldGroups': {
           'large': {
             'authed': {
@@ -82,24 +96,6 @@ describe('generateTopLevelResource', () => {
                   '.validate': 'newData.isString()'
                 }
               }
-            }
-          },
-          'meta': {
-            '$other': {
-              '.validate': false
-            },
-            '.read': "root.child('roles/'+auth.uid+'/instructor').val() === true",
-            'createdAt': {
-              '.validate': '(newData.isNumber() && newData.val() % 1 === 0)'
-            },
-            'createdBy': {
-              '.validate': "root.child('users/'+newData.val()).exists()"
-            },
-            'updatedAt': {
-              '.validate': '(newData.isNumber() && newData.val() % 1 === 0)'
-            },
-            'updatedBy': {
-              '.validate': "root.child('users/'+newData.val()).exists()"
             }
           },
           'small': {
@@ -150,7 +146,7 @@ describe('generateTopLevelResource', () => {
                 '$other': {
                   '.validate': false
                 },
-                '.validate': "root.child('courses/'+$coursesKey).exists()",
+                '.validate': "(root.child('courses/'+$coursesKey).exists() || root.child('courses/meta/'+$coursesKey).exists())",
                 'createdAt': {
                   '.validate': '(newData.isNumber() && newData.val() % 1 === 0)'
                 },
@@ -170,7 +166,7 @@ describe('generateTopLevelResource', () => {
                 '$other': {
                   '.validate': false
                 },
-                '.validate': "(root.child('lessons/'+$postreqsKey).exists() && $postreqsKey !== $lessonsKey)",
+                '.validate': "((root.child('lessons/'+$postreqsKey).exists() || root.child('lessons/meta/'+$postreqsKey).exists()) && $postreqsKey !== $lessonsKey)",
                 'createdAt': {
                   '.validate': '(newData.isNumber() && newData.val() % 1 === 0)'
                 },
@@ -190,7 +186,7 @@ describe('generateTopLevelResource', () => {
                 '$other': {
                   '.validate': false
                 },
-                '.validate': "(root.child('lessons/'+$prereqsKey).exists() && $prereqsKey !== $lessonsKey)",
+                '.validate': "((root.child('lessons/'+$prereqsKey).exists() || root.child('lessons/meta/'+$prereqsKey).exists()) && $prereqsKey !== $lessonsKey)",
                 'createdAt': {
                   '.validate': '(newData.isNumber() && newData.val() % 1 === 0)'
                 },
@@ -210,7 +206,7 @@ describe('generateTopLevelResource', () => {
                 '$other': {
                   '.validate': false
                 },
-                '.validate': "root.child('users/'+$studentsKey).exists()",
+                '.validate': "(root.child('users/'+$studentsKey).exists() || root.child('users/meta/'+$studentsKey).exists())",
                 'createdAt': {
                   '.validate': '(newData.isNumber() && newData.val() % 1 === 0)'
                 },

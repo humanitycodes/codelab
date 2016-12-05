@@ -2,7 +2,7 @@
   "name": "firebase",
   "version": "1.0.0",
   "scripts": {
-    "test": "jest",
+    "test": "jest src/**/*.spec.js",
     "lint": "eslint --ext .js,.json src",
     "build:rules": "babel-node src/build.js",
     "build:adapter": "babel src -d dist --presets es2015,stage-0",
