@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import store from '@state/store'
-
 export default {
   props: {
     credentials: {
@@ -16,7 +14,7 @@ export default {
   },
   methods: {
     signIn () {
-      store.dispatch('signIn', this.credentials)
+      this.$store.dispatch('signIn', this.credentials)
       .then(authUser => {
         window.history.length > 1
           ? this.$router.go(-1)

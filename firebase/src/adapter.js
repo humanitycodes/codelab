@@ -333,27 +333,23 @@ export default (store, db, uid, roles) => {
       }
     },
     mutations: {
-      ...mapAndMerge(resourceNames, resourceName => {
-        return {
-          SET_RESOURCE_ITEM (state, data) {
-            const pathSegments = data.path.split('/')
-            const stateResource = state[`raw-${pathSegments.shift()}`]
-            let stateToUpdate = stateResource
-            pathSegments.forEach((pathSegment, index) => {
-              if (index < pathSegments.length - 1) {
-                Vue.set(
-                  stateToUpdate,
-                  pathSegment,
-                  stateToUpdate[pathSegment] || {}
-                )
-                stateToUpdate = stateToUpdate[pathSegment]
-              } else {
-                Vue.set(stateToUpdate, pathSegment, data.fields)
-              }
-            })
+      SET_RESOURCE_ITEM (state, data) {
+        const pathSegments = data.path.split('/')
+        const stateResource = state[`raw-${pathSegments.shift()}`]
+        let stateToUpdate = stateResource
+        pathSegments.forEach((pathSegment, index) => {
+          if (index < pathSegments.length - 1) {
+            Vue.set(
+              stateToUpdate,
+              pathSegment,
+              stateToUpdate[pathSegment] || {}
+            )
+            stateToUpdate = stateToUpdate[pathSegment]
+          } else {
+            Vue.set(stateToUpdate, pathSegment, data.fields)
           }
-        }
-      })
+        })
+      }
     }
   }
 }

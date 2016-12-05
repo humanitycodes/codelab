@@ -3,6 +3,7 @@ import db from '@plugins/firebase'
 import jwtDecode from 'jwt-decode'
 import { createFirebaseVM } from './_helpers'
 
+const syncCache = {}
 export default {
   state: {
     currentUser: null,
@@ -16,6 +17,8 @@ export default {
   },
   actions: {
     syncCurrentUser ({ commit, state, rootState }) {
+      if (syncCache.currentUser) return Promise.resolve(rootState)
+      syncCache.currentUser = true
       return new Promise((resolve, reject) => {
         let userRef, rolesRef
         let resolvedCallbacksCount = 0
@@ -63,6 +66,8 @@ export default {
       })
     },
     syncUsers ({ commit, rootState }) {
+      if (syncCache.users) return Promise.resolve(rootState)
+      syncCache.users = true
       return new Promise((resolve, reject) => {
         createFirebaseVM({
           users: db.ref('users')
