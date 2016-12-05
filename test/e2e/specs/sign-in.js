@@ -12,7 +12,7 @@ let user = {
 module.exports = {
   before: browser => {
     db.init()
-    db.createUser(user)
+    db.createStudent(user)
   },
 
   after: browser => {

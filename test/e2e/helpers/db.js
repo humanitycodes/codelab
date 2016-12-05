@@ -20,7 +20,7 @@ export function close () {
 
 export const USER_PASSWORD = 'toomanysecrets'
 
-export function createUser (user) {
+export function createUser (user, roles) {
   let db = firebase.database()
   return Promise.all([
     firebase.auth().createUser({
@@ -34,10 +34,16 @@ export function createUser (user) {
       email: user.email,
       fullName: user.fullName
     }),
-    db.ref('roles').child(user.uid).set({
-      instructor: false
-    })
+    db.ref('roles').child(user.uid).set(roles)
   ])
+}
+
+export function createStudent (user) {
+  return createUser(user, { instructor: false })
+}
+
+export function createInstructor (user) {
+  return createUser(user, { instructor: true })
 }
 
 export function destroyUser (user) {
