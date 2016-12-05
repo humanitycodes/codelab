@@ -23,7 +23,7 @@ let lesson = {
   title: 'Test Title',
   estimatedHours: 4,
   learningObjectives: {},
-  content: '# Test Content',
+  content: 'Test Content',
   learningObjectives: {
     [`${uuid.v4()}`]: {
       content: 'Learn something'
@@ -71,20 +71,33 @@ module.exports = {
   'Enrolled student can access course and lesson': browser => {
     browser.url(browser.globals.devServerURL)
       // Sign in
-      .waitForElementVisible('.main-nav a[href^=\'/email-sign-in\']', 5000)
-      .click('.main-nav a[href^=\'/email-sign-in\']')
+      .waitForElementVisible(`.main-nav a[href^='/email-sign-in']`, 5000)
+      .click(`.main-nav a[href^='/email-sign-in']`)
       .waitForElementVisible('button', 5000)
       .setValue('input[type=text]', student.email)
       .setValue('input[type=password]', db.getDefaultPassword())
       .click('button')
       // Navigate to course list
-      .waitForElementVisible('.main-nav a[href^=\'/courses\']', 5000)
-      .click('.main-nav a[href^=\'/courses\']')
-      .refresh() // Content below 'Courses' does not render w/o this. Cannot recreate manually.
-      // Click on the course
-      .waitForElementVisible(`a[href^=\'/courses/${courseKey}\']`, 5000)
-      .click(`a[href^=\'/courses/${courseKey}\']`)
+      .waitForElementVisible(`.main-nav a[href^='/courses']`, 5000)
+      .click(`.main-nav a[href^='/courses']`)
+      .refresh() // todo: Content below 'Courses' does not render w/o this. Can sometimes recreate manually.
+      // Navigate to the course
+      .waitForElementVisible(`a[href^='/courses/${courseKey}']`, 5000)
+      .click(`a[href^='/courses/${courseKey}']`)
       .waitForElementVisible('.rendered-content', 5000)
+
+    // Make sure syllabus and lessons are visible
+    browser.expect.element('.rendered-content').text.to.contain(course.syllabus)
+    browser.expect.element(`a[href^='/courses/${courseKey}/lessons/${lessonKey}']`).to.be.present
+
+    browser
+      // Navigate to the lesson
+      .click(`a[href^='/courses/${courseKey}/lessons/${lessonKey}']`)
+      .refresh() // todo: Sometimes lesson content doesn't render w/o refreshing first.
+      .waitForElementVisible('.rendered-content', 5000)
+
+    // Make sure the lesson content is visible
+    browser.expect.element('.rendered-content').text.to.contain(lesson.content)
 
     browser.end()
   }
