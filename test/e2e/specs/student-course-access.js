@@ -1,4 +1,4 @@
-import uuid from 'uuid'
+const uuid = require('uuid')
 
 const db = require('../helpers/db').init()
 

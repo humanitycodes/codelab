@@ -1,4 +1,3 @@
-require('babel-register')
 var config = require('../../frontend/config')
 
 // http://nightwatchjs.org/guide#settings-file
