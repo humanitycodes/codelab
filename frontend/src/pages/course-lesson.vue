@@ -54,7 +54,9 @@ export default {
     },
     gradePoints () {
       const realGradePoints = courseLessonGradePoints(this.currentCourse, this.currentLesson)
-      return Math.floor(realGradePoints * 100) / 100
+      return isNaN(realGradePoints)
+        ? 0
+        : Math.floor(realGradePoints * 100) / 100
     }
   }
 }
