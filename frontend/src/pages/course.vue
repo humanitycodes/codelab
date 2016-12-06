@@ -77,10 +77,8 @@ export default {
     ...courseGetters,
     ...lessonGetters,
     courseLessons () {
-      if (!this.currentCourse.lessonKeys) return []
-      const keys = Object.keys(this.currentCourse.lessonKeys)
       return this.lessons.filter(lesson => {
-        return keys.indexOf(lesson['.key']) !== -1
+        return this.currentCourse.lessonKeys.indexOf(lesson['.key']) !== -1
       })
     },
     formattedStartDate () {
