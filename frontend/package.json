@@ -13,6 +13,7 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
   "dependencies": {
+    "ciena-dagre": "^1.0.0",
     "date-fns": "^1.10.0",
     "firebase": "^3.5.2",
     "jwt-decode": "^2.1.0",
