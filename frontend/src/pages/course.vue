@@ -7,7 +7,7 @@
           <span>{{ currentCourse['.key'] }}</span>
         </div>
         <div class="flex-col">
-          {{ currentCourse.credits }} Credits
+          {{ currentCourse.credits || '?' }} Credits
         </div>
       </div>
       <h2>{{ currentCourse.title }}</h2>
@@ -24,7 +24,12 @@
       <div class="flex-row">
         <div class="flex-col">
           <h3>Syllabus</h3>
-          <div v-html="syllabusHTML" class="rendered-content"/>
+          <div
+            v-if="syllabusHTML"
+            v-html="syllabusHTML"
+            class="rendered-content"
+          />
+          <p v-else>Not yet defined</p>
         </div>
       </div>
       <div class="flex-row" v-if="courseLessons.length">
@@ -79,10 +84,10 @@ export default {
       })
     },
     formattedStartDate () {
-      return formatDate(this.currentCourse.startDate, dateFormat)
+      return this.humanizeDate(this.currentCourse.startDate)
     },
     formattedEndDate () {
-      return formatDate(this.currentCourse.endDate, dateFormat)
+      return this.humanizeDate(this.currentCourse.endDate)
     },
     syllabusHTML () {
       return rho.toHtml(this.currentCourse.syllabus)
@@ -94,6 +99,10 @@ export default {
         '/courses/' + this.currentCourse['.key'] +
         '/lessons/' + lesson['.key']
       )
+    },
+    humanizeDate (date) {
+      if (!date) return 'Not yet defined'
+      return formatDate(date, dateFormat)
     }
   }
 }
