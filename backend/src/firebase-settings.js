@@ -1,7 +1,7 @@
-import NodeRSA from 'node-rsa'
-import fs from 'fs'
-import path from 'path'
-import firebase from 'firebase-admin'
+const NodeRSA = require('node-rsa')
+const fs = require('fs')
+const path = require('path')
+const firebase = require('firebase-admin')
 
 let firebaseAppConfig, certPath
 
@@ -34,8 +34,10 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
-export const appConfig = firebaseAppConfig
-
 // Read file sync because jwt auth needs to be in place before routes load
 const firebasePrivateKey = require(certPath).private_key
-export const secretOrPublicKey = new NodeRSA(firebasePrivateKey).exportKey('pkcs8-public-pem')
+
+module.exports = {
+  appConfig: firebaseAppConfig,
+  secretOrPublicKey: new NodeRSA(firebasePrivateKey).exportKey('pkcs8-public-pem')
+}

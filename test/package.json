@@ -4,12 +4,12 @@
   "private": true,
   "scripts": {
     "pree2e": "node node_modules/chromedriver/install.js",
-    "e2e": "babel-node e2e/runner.js --presets es2015,stage-0",
-    "lint": "eslint --ext .js,.vue e2e",
+    "e2e": "node e2e/runner.js",
     "test": "yarn run e2e"
   },
   "dependencies": {},
   "devDependencies": {
+    "axios": "^0.15.3",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.18.2",
     "babel-eslint": "^7.1.1",
