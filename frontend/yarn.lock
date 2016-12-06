@@ -1076,21 +1076,6 @@ chromedriver@^2.25.1:
     npmconf "^2.1.1"
     rimraf "^2.0.3"
 
-ciena-dagre@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/ciena-dagre/-/ciena-dagre-1.0.0.tgz#f49d36d8cce013c077ae521fde566e53597e13cc"
-  dependencies:
-    ciena-graphlib "^1.0.0"
-    lodash "^4.15.0"
-    npm-install-security-check "^1.0.2"
-
-ciena-graphlib@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/ciena-graphlib/-/ciena-graphlib-1.0.1.tgz#897a83a58bc8fa811dedbe631968e79f4130602e"
-  dependencies:
-    lodash "^4.11.1"
-    npm-install-security-check "^1.0.2"
-
 circular-json@^0.3.0:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.3.1.tgz#be8b36aefccde8b3ca7aa2d6afc07a37242c0d2d"
@@ -3313,7 +3298,7 @@ lodash@^3.8.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.0.0, lodash@^4.0.1, lodash@^4.11.1, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.16.2, lodash@^4.16.4, lodash@^4.17.2, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.5.0:
+lodash@^4.0.0, lodash@^4.0.1, lodash@^4.14.0, lodash@^4.16.2, lodash@^4.16.4, lodash@^4.17.2, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.5.0:
   version "4.17.2"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.2.tgz#34a3055babe04ce42467b607d700072c7ff6bf42"
 
@@ -3656,10 +3641,6 @@ normalize-url@^1.4.0:
     prepend-http "^1.0.0"
     query-string "^4.1.0"
     sort-keys "^1.0.0"
-
-npm-install-security-check@^1.0.2:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/npm-install-security-check/-/npm-install-security-check-1.0.4.tgz#ec419cc8280eb37abb0d879f4aef7f03b9990b08"
 
 npmconf@^2.1.1:
   version "2.1.2"
