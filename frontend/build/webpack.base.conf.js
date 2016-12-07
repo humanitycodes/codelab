@@ -30,10 +30,11 @@ module.exports = {
     filename: '[name].js'
   },
   resolve: {
-    extensions: ['', '.js', '.vue'],
+    extensions: ['', '.js', '.json', '.vue'],
     fallback: [path.join(__dirname, '../node_modules')],
     alias: {
       '@src': path.resolve(__dirname, '../src'),
+      '@config': path.resolve(__dirname, '../config'),
       '@assets': path.resolve(__dirname, '../src/assets'),
       '@components': path.resolve(__dirname, '../src/components'),
       '@pages': path.resolve(__dirname, '../src/pages'),

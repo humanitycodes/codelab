@@ -1440,11 +1440,22 @@ custom-event@~1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/custom-event/-/custom-event-1.0.1.tgz#5d02a46850adf1b4a317946a3928fccb5bfd0425"
 
+d3-path@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/d3-path/-/d3-path-1.0.3.tgz#60103d0dea9a6cd6ca58de86c6d56724002d3fde"
+
 d@^0.1.1, d@~0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/d/-/d-0.1.1.tgz#da184c535d18d8ee7ba2aa229b914009fae11309"
   dependencies:
     es5-ext "~0.10.2"
+
+dagre@^0.7.4:
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/dagre/-/dagre-0.7.4.tgz#de72f0e74a550ce11ce638f0a136fed712398022"
+  dependencies:
+    graphlib "^1.0.5"
+    lodash "^3.10.0"
 
 dashdash@^1.12.0:
   version "1.14.1"
@@ -2332,6 +2343,12 @@ graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
 "graceful-readlink@>= 1.0.0":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
+
+graphlib@^1.0.5:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/graphlib/-/graphlib-1.0.7.tgz#0cab2df0ffe6abe070b2625bfa1edb6ec967b8b1"
+  dependencies:
+    lodash "^3.10.0"
 
 growl@1.9.2:
   version "1.9.2"
@@ -3294,7 +3311,7 @@ lodash.toplainobject@^3.0.0:
     lodash._basecopy "^3.0.0"
     lodash.keysin "^3.0.0"
 
-lodash@^3.8.0:
+lodash@^3.10.0, lodash@^3.8.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
@@ -5158,9 +5175,9 @@ vue-hot-reload-api@^2.0.1:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.0.6.tgz#817d4bfb30f55428aa1012d029499e07f3147d21"
 
-vue-loader@^10.0.1:
-  version "10.0.1"
-  resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-10.0.1.tgz#ff711807176371f1a1ffba81c8eb494399a54181"
+vue-loader@^10.0.2:
+  version "10.0.2"
+  resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-10.0.2.tgz#6fe7bcefb32c5439bd0338464aa22673ad62299c"
   dependencies:
     consolidate "^0.14.0"
     hash-sum "^1.0.2"
@@ -5175,9 +5192,9 @@ vue-loader@^10.0.1:
     vue-style-loader "^1.0.0"
     vue-template-es2015-compiler "^1.2.2"
 
-vue-router@^2.0.2:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-2.0.3.tgz#444e246fd42d65a34dea6c3be8fde3315c4ba6f7"
+vue-router@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-2.1.1.tgz#10c31bbdcb6da92bd3e0223fa12345e73018625a"
 
 vue-style-loader@^1.0.0:
   version "1.0.0"
@@ -5185,9 +5202,9 @@ vue-style-loader@^1.0.0:
   dependencies:
     loader-utils "^0.2.7"
 
-vue-template-compiler@^2.1.3:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.1.3.tgz#af252df5848c15980cbf32d88a253db053290949"
+vue-template-compiler@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.1.4.tgz#ce99cb9c2f5842062d3b744c716224b613f198d4"
   dependencies:
     de-indent "^1.0.2"
     he "^1.1.0"
@@ -5196,9 +5213,9 @@ vue-template-es2015-compiler@^1.2.2:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.3.0.tgz#4a0f2a0bbef8b5731f78add8263cd86fe4f643ca"
 
-vue@^2.0.6:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.1.3.tgz#20161b8684777754fd9823134b38f13c1e197882"
+vue@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.1.4.tgz#d490f8fcf696847d8cf7f8eb9168e9a5dd806bfc"
 
 vuefire@^1.3.0:
   version "1.3.0"
