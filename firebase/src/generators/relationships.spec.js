@@ -79,8 +79,14 @@ describe('generateRelationships', () => {
   it('returns the correct rules for a derived resource', () => {
     const rules = generateRelationships('lessons', {
       students: {
-        resource: 'users',
         derivedFrom: { resource: 'courses' }
+      }
+    }, {
+      courses: {
+        relationships: {
+          students: { resource: 'users' },
+          lessons: true
+        }
       }
     })
     expect(rules).toEqual({

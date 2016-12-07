@@ -5,7 +5,7 @@ import {
 import timestampFields from './timestamp-fields'
 import generateResource from './resource'
 
-const generateRelationships = (parentResourceName, relationships) => {
+const generateRelationships = (parentResourceName, relationships, resourcesDef) => {
   if (!relationships) return {}
   const relationshipNames = Object.keys(relationships)
   return mapAndMerge(relationshipNames, name => {
@@ -13,7 +13,14 @@ const generateRelationships = (parentResourceName, relationships) => {
     const def = typeof relationships[name] === 'object'
       ? relationships[name]
       : {}
-    const resourceName = def.resource || name
+    const resourceName = def.derivedFrom
+      ? (() => {
+        const originRelationshipsDef = resourcesDef[def.derivedFrom.resource].relationships
+        const originRelationshipName = def.derivedFrom.relationship || name
+        const originRelationshipDef = originRelationshipsDef[originRelationshipName] || {}
+        return originRelationshipDef.resource || originRelationshipName
+      })()
+      : def.resource || name
     return {
       ...generateResource(name, {
         validate: all(
