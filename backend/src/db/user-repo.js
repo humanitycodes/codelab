@@ -1,8 +1,7 @@
 import firebase from 'firebase-admin'
 
 const SIGNUP_ROLES = {
-  instructor: false,
-  admin: false
+  instructor: false
 }
 
 export async function create (userId, user) {
