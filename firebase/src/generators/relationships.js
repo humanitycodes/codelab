@@ -45,8 +45,8 @@ const generateRelationships = (parentResourceName, relationships, resourcesDef) 
                     originResourceKey,
                     originResourceName + '/meta'
                   ),
-                  `root.child('${originResourceName}/relationships/'+${originResourceKey}+'/${foreignResourceName}/'+${parentResourceKey}').exists()`,
-                  `root.child('${parentResourceName}/relationships/'+${parentResourceKey}+'/${originResourceName}/'+${originResourceKey}').exists()`
+                  `root.child('${originResourceName}/relationships/'+${originResourceKey}+'/${foreignResourceName}/'+${parentResourceKey}).exists()`,
+                  `root.child('${parentResourceName}/relationships/'+${parentResourceKey}+'/${originResourceName}/'+${originResourceKey}).exists()`
                 )
               })(),
               fields: {
