@@ -24,6 +24,7 @@ let lesson = {
   estimatedHours: 4,
   learningObjectives: {},
   content: 'Test Content',
+  notes: 'Test Lesson Notes',
   learningObjectives: {
     [`${uuid.v4()}`]: {
       content: 'Learn something'
@@ -38,9 +39,9 @@ let course = {
   title: 'Test Course',
   credits: 2,
   syllabus: 'Test Syllabus',
-  startDate: 'Mon Dec 31 2007 23:59:59 GMT-0500 (EST)',
-  endDate: 'Mon Dec 31 2087 23:59:59 GMT-0500 (EST)',
-  notes: 'Test Notes',
+  startDate: new Date('Mon Dec 31 2007 23:59:59 GMT-0500 (EST)').getTime(),
+  endDate: new Date('Mon Dec 31 2087 23:59:59 GMT-0500 (EST)').getTime(),
+  notes: 'Test Course Notes',
   lessonKeys: {
     [`${lessonKey}`]: true
   },
@@ -58,14 +59,14 @@ module.exports = {
   },
 
   after: browser => {
-    Promise.all([
-      db.destroyUser(student),
-      db.destroyUser(instructor),
-      db.destroyCourse(course),
-      db.destroyLesson(lesson)
-    ]).then(() => {
+    // Promise.all([
+    //   db.destroyUser(student),
+    //   db.destroyUser(instructor),
+    //   db.destroyCourse(course),
+    //   db.destroyLesson(lesson)
+    // ]).then(() => {
       db.close()
-    })
+    // })
   },
 
   'Enrolled student can access course and lesson': browser => {

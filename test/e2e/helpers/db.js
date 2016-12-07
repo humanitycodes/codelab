@@ -66,12 +66,42 @@ module.exports = {
         let lessonCopy = Object.assign({}, lesson)
         delete lessonCopy.key
 
-        return firebase.database().ref('lessons').child(lesson.key).set(lessonCopy)
+        let db = firebase.database()
+        return Promise.all([
+          db.ref('lessons/fieldGroups/large/instructor').child(lesson.key).set({
+            notes: lesson.notes
+          }),
+          db.ref('lessons/fieldGroups/large/student').child(lesson.key).set({
+            content: lesson.content
+          }),
+          db.ref('lessons/fieldGroups/small/instructor').child(lesson.key).set({
+            learningObjectives: lesson.learningObjectives
+          }),
+          db.ref('lessons/fieldGroups/small/student').child(lesson.key).set({
+            estimatedHours: lesson.estimatedHours,
+            title: lesson.title
+          }),
+          db.ref('lessons/meta').child(lesson.key).set({
+            createdAt: 1480827219022,
+            createdBy: lesson.createdBy,
+            updatedAt: 1480827219022,
+            updatedBy: lesson.createdBy
+          })
+        ])
       },
 
       destroyLesson: function (lesson) {
         if (!lesson) return Promise.resolve()
-        return firebase.database().ref('lessons').child(lesson.key).remove()
+
+        let db = firebase.database()
+        return Promise.all([
+          db.ref('lessons/fieldGroups/large/instructor').child(lesson.key).remove(),
+          db.ref('lessons/fieldGroups/large/student').child(lesson.key).remove(),
+          db.ref('lessons/fieldGroups/small/instructor').child(lesson.key).remove(),
+          db.ref('lessons/fieldGroups/small/student').child(lesson.key).remove(),
+          db.ref('lessons/meta').child(lesson.key).remove(),
+          db.ref('lessons/relationships').child(lesson.key).remove()
+        ])
       },
 
       // --------
@@ -82,12 +112,85 @@ module.exports = {
         let courseCopy = Object.assign({}, course)
         delete courseCopy.key
 
-        return firebase.database().ref('courses').child(course.key).set(courseCopy)
+        let db = firebase.database()
+        let actions = [
+          db.ref('courses/fieldGroups/large/instructor').child(course.key).set({
+            syllabus: course.syllabus
+          }),
+          db.ref('courses/fieldGroups/small/authed').child(course.key).set({
+            credits: course.credits,
+            startDate: course.startDate,
+            endDate: course.endDate,
+            title: course.title
+          }),
+          db.ref('courses/meta').child(course.key).set({
+            createdAt: 1480827219022,
+            createdBy: course.createdBy,
+            updatedAt: 1480827219022,
+            updatedBy: course.createdBy
+          })
+        ]
+
+        if (course.lessonKeys || course.studentKeys) {
+          let courseRelationships = {}
+
+          if (course.lessonKeys) {
+            // Relate course and lessons
+            courseRelationships.lessons = {}
+            Object.keys(course.lessonKeys).forEach(lessonKey => {
+              courseRelationships.lessons[lessonKey] = {
+                createdAt: 1480827219022,
+                createdBy: course.createdBy
+              }
+
+              // Relate lesson to course and any students
+              let lessonRelationships = {
+                courses: {
+                  [course.key]: {
+                    createdAt: 1480827219022,
+                    createdBy: course.createdBy
+                  }
+                }
+              }
+              if (course.studentKeys) {
+                lessonRelationships.students = {}
+                Object.keys(course.studentKeys).forEach(studentKey => {
+                  lessonRelationships.students[studentKey] = {
+                    courses: lessonRelationships.courses
+                  }
+                })
+              }
+              actions.push(db.ref('lessons/relationships').child(lessonKey).set(lessonRelationships))
+            })
+          }
+
+          if (course.studentKeys) {
+            // Relate course and students
+            courseRelationships.students = {}
+            Object.keys(course.studentKeys).forEach(studentKey => {
+              courseRelationships.students[studentKey] = {
+                createdAt: 1480827219022,
+                createdBy: course.createdBy
+              }
+            })
+          }
+
+          actions.push(db.ref('courses/relationships').child(course.key).set(courseRelationships))
+        }
+
+        return Promise.all(actions)
       },
 
       destroyCourse: function (course) {
         if (!course) return Promise.resolve()
-        return firebase.database().ref('courses').child(course.key).remove()
+
+        let db = firebase.database()
+        return Promise.all([
+          db.ref('courses/fieldGroups/large/instructor').child(course.key).remove(),
+          db.ref('courses/fieldGroups/small/authed').child(course.key).remove(),
+          db.ref('courses/meta').child(course.key).remove(),
+          db.ref('courses/relationships').child(course.key).remove()
+        ])
       }
     }
   }
