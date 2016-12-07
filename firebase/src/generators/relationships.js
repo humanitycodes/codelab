@@ -10,7 +10,9 @@ const generateRelationships = (parentResourceName, relationships) => {
   const relationshipNames = Object.keys(relationships)
   return mapAndMerge(relationshipNames, name => {
     const keyVar = `$${name}Key`
-    const def = relationships[name]
+    const def = typeof relationships[name] === 'object'
+      ? relationships[name]
+      : {}
     const resourceName = def.resource || name
     return {
       ...generateResource(name, {
@@ -22,12 +24,22 @@ const generateRelationships = (parentResourceName, relationships) => {
           parentResourceName === resourceName &&
             `${keyVar} !== $${parentResourceName}Key`
         ),
-        fields: {
-          ...timestampFields,
-          ...def.fields
-        }
+        fields: def.derivedFrom
+          ? {
+            [def.derivedFrom.resource]: {
+              type: Array,
+              fields: {
+                ...timestampFields,
+                ...def.derivedFrom.fields
+              }
+            },
+            ...def.fields
+          }
+          : {
+            ...timestampFields,
+            ...def.fields
+          }
       }),
-      ...generateRelationships(def.relationships),
       ...noOtherFields
     }
   })

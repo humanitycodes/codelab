@@ -75,4 +75,39 @@ describe('generateRelationships', () => {
       $other: { '.validate': false }
     })
   })
+
+  it('returns the correct rules for a derived resource', () => {
+    const rules = generateRelationships('lessons', {
+      students: {
+        resource: 'users',
+        derivedFrom: { resource: 'courses' }
+      }
+    })
+    expect(rules).toEqual({
+      $other: { '.validate': false },
+      students: {
+        $studentsKey: {
+          '.validate': `(root.child('users/'+$studentsKey).exists() || root.child('users/meta/'+$studentsKey).exists())`,
+          $other: { '.validate': false },
+          courses: {
+            $coursesKey: {
+              createdAt: {
+                '.validate': `(newData.isNumber() && newData.val() % 1 === 0)`
+              },
+              createdBy: {
+                '.validate': `root.child('users/'+newData.val()).exists()`
+              },
+              updatedAt: {
+                '.validate': `(newData.isNumber() && newData.val() % 1 === 0)`
+              },
+              updatedBy: {
+                '.validate': `root.child('users/'+newData.val()).exists()`
+              },
+              $other: { '.validate': false }
+            }
+          }
+        }
+      }
+    })
+  })
 })
