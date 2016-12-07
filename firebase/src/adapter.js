@@ -56,7 +56,7 @@ export default (store, db, uid, roles) => {
               const { relationships } = resourceDefs[resourceName]
               const relationshipNames = Object.keys(relationships)
               relationshipNames.forEach(relationshipName => {
-                const relationshipDef = relationships[relationshipName]
+                const relationshipDef = relationships[relationshipName] || {}
                 Object.defineProperty(
                   resourceItem,
                   `${singularize(relationshipName)}Keys`,
@@ -65,6 +65,8 @@ export default (store, db, uid, roles) => {
                     enumerable: true
                   }
                 )
+                // !!! Abort (don't create add/remove relationship methods) if the course is derived
+                if (relationshipDef.derivedFrom) return
                 const relatedResourceName = typeof relationshipDef === 'object' && relationshipDef.resource
                   ? relationshipDef.resource
                   : relationshipName
