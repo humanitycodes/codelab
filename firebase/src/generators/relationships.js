@@ -39,12 +39,13 @@ const generateRelationships = (parentResourceName, relationships, resourcesDef) 
               validate: (() => {
                 const originResourceName = def.derivedFrom.resource
                 const originResourceKey = `$${originResourceName}Key`
+                const foreignResourceName = def.derivedFrom.foreignKey || parentResourceName
                 return all(
                   keyInResource(
                     originResourceKey,
                     originResourceName + '/meta'
                   ),
-                  `root.child('${originResourceName}/relationships/'+${originResourceKey}+'/${parentResourceName}/'+${parentResourceKey}').exists()`,
+                  `root.child('${originResourceName}/relationships/'+${originResourceKey}+'/${foreignResourceName}/'+${parentResourceKey}').exists()`,
                   `root.child('${parentResourceName}/relationships/'+${parentResourceKey}+'/${originResourceName}/'+${originResourceKey}').exists()`
                 )
               })(),
