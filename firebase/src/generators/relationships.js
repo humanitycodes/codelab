@@ -35,6 +35,10 @@ const generateRelationships = (parentResourceName, relationships, resourcesDef) 
           ? {
             [def.derivedFrom.resource]: {
               type: Array,
+              validate: keyInResource(
+                `$${def.derivedFrom.resource}Key`,
+                def.derivedFrom.resource + '/meta'
+              ),
               fields: {
                 ...timestampFields,
                 ...def.derivedFrom.fields
