@@ -7,7 +7,7 @@ export default () => {
   if (storeInitialized) return Promise.resolve(store)
   storeInitialized = true
   return store.dispatch('syncCurrentUser').then(state => {
-    if (!state.users.currentUser) return Promise.resolve()
+    if (!state.users.currentUser) return Promise.resolve(store)
     storeInitialized = true
     store.registerModule(
       'firebase',
