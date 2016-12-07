@@ -40,7 +40,9 @@ export default {
     },
     relationships: {
       // Get all the lessons a students has access to
-      students: { resource: 'users' },
+      students: {
+        derivedFrom: { resource: 'courses' }
+      },
       // Get all the lessons in a course
       courses: true,
       // Get all the prerequisites for the course

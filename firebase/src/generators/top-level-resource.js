@@ -1,3 +1,4 @@
+import resourcesDef from '../defs/resources'
 import mapAndMerge from '../utils/map-and-merge'
 import fieldGroups from '../defs/field-groups'
 import { userSignedIn } from './conditions'
@@ -49,7 +50,7 @@ export default (name, def) => {
     resourceGroups.relationships = {
       [resourceKey]: {
         ...generatePermissions({ read: userSignedIn }),
-        ...generateRelationships(name, def.relationships)
+        ...generateRelationships(name, def.relationships, resourcesDef)
       }
     }
   }
