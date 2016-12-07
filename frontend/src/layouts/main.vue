@@ -17,6 +17,6 @@ export default {
 
 <style lang="stylus" scoped>
 #container
-  max-width: 600px
+  max-width: 940px
   margin: 0 auto
 </style>

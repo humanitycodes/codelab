@@ -59,6 +59,11 @@ a
       content: '#'
       position: absolute
       left: -0.8em
+  &.container-link
+    color: inherit
+    &:hover
+      color: inherit
+      text-decoration: none
 
 hr
   width: 30%

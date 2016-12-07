@@ -45,7 +45,7 @@ export default (store, db, uid, roles) => {
                 value: resourceKey
               })
               // Define the meta fields as read-only
-              const meta = stateDefs[resourceKey].meta
+              const meta = stateDefs[resourceKey].meta || {}
               const metaFields = Object.keys(meta)
               metaFields.forEach(metaField => {
                 Object.defineProperty(resourceItem, '.' + metaField, {
@@ -53,7 +53,7 @@ export default (store, db, uid, roles) => {
                 })
               })
               // Define relationships as read-only
-              const { relationships } = resourceDefs[resourceName]
+              const relationships = resourceDefs[resourceName].relationships || {}
               const relationshipNames = Object.keys(relationships)
               relationshipNames.forEach(relationshipName => {
                 const relationshipDef = typeof relationships[relationshipName] === 'object'
