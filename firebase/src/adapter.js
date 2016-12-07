@@ -69,10 +69,10 @@ export default (store, db, uid, roles) => {
                 )
                 // !!! Abort (don't create add/remove relationship methods) if the course is derived
                 if (relationshipDef.derivedFrom) return
-                const relatedResourceName = typeof relationshipDef === 'object' && relationshipDef.resource
+                const relatedResourceName = relationshipDef.resource
                   ? relationshipDef.resource
                   : relationshipName
-                const resourceForeignKey = typeof relationshipDef === 'object' && relationshipDef.foreignKey
+                const resourceForeignKey = relationshipDef.foreignKey
                   ? relationshipDef.foreignKey
                   : resourceName
                 const singularRelatedResourceName = singularize(relationshipName)
