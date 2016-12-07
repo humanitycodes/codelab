@@ -21,6 +21,7 @@ const generateRelationships = (parentResourceName, relationships, resourcesDef) 
         return originRelationshipDef.resource || originRelationshipName
       })()
       : def.resource || name
+    const parentResourceKey = `$${parentResourceName}Key`
     return {
       ...generateResource(name, {
         validate: all(
@@ -29,20 +30,24 @@ const generateRelationships = (parentResourceName, relationships, resourcesDef) 
             keyInResource(keyVar, resourceName + '/meta')
           ),
           parentResourceName === resourceName &&
-            `${keyVar} !== $${parentResourceName}Key`
+            `${keyVar} !== ${parentResourceKey}`
         ),
         fields: def.derivedFrom
           ? {
             [def.derivedFrom.resource]: {
               type: Array,
-              validate: all(
-                keyInResource(
-                  `$${def.derivedFrom.resource}Key`,
-                  def.derivedFrom.resource + '/meta'
-                ),
-                `root.child('${def.derivedFrom.resource}/relationships/'+$${def.derivedFrom.resource}Key+'/${parentResourceName}/'+$${parentResourceName}Key').exists()`,
-                `root.child('${parentResourceName}/relationships/'+$${parentResourceName}Key+'/${def.derivedFrom.resource}/'+$${def.derivedFrom.resource}Key').exists()`
-              ),
+              validate: (() => {
+                const originResourceName = def.derivedFrom.resource
+                const originResourceKey = `$${originResourceName}Key`
+                return all(
+                  keyInResource(
+                    originResourceKey,
+                    originResourceName + '/meta'
+                  ),
+                  `root.child('${originResourceName}/relationships/'+${originResourceKey}+'/${parentResourceName}/'+${parentResourceKey}').exists()`,
+                  `root.child('${parentResourceName}/relationships/'+${parentResourceKey}+'/${originResourceName}/'+${originResourceKey}').exists()`
+                )
+              })(),
               fields: {
                 ...timestampFields,
                 ...def.derivedFrom.fields
