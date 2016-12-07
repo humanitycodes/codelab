@@ -35,9 +35,13 @@ const generateRelationships = (parentResourceName, relationships, resourcesDef) 
           ? {
             [def.derivedFrom.resource]: {
               type: Array,
-              validate: keyInResource(
-                `$${def.derivedFrom.resource}Key`,
-                def.derivedFrom.resource + '/meta'
+              validate: all(
+                keyInResource(
+                  `$${def.derivedFrom.resource}Key`,
+                  def.derivedFrom.resource + '/meta'
+                ),
+                `root.child('${def.derivedFrom.resource}/relationships/'+$${def.derivedFrom.resource}Key+'/${parentResourceName}/'+$${parentResourceName}Key').exists()`,
+                `root.child('${parentResourceName}/relationships/'+$${parentResourceName}Key+'/${def.derivedFrom.resource}/'+$${def.derivedFrom.resource}Key').exists()`
               ),
               fields: {
                 ...timestampFields,

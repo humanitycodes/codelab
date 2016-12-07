@@ -97,7 +97,7 @@ describe('generateRelationships', () => {
           $other: { '.validate': false },
           courses: {
             $coursesKey: {
-              '.validate': `root.child('courses/meta/'+$coursesKey).exists()`,
+              '.validate': `(root.child('courses/meta/'+$coursesKey).exists() && root.child('courses/relationships/'+$coursesKey+'/lessons/'+$lessonsKey').exists() && root.child('lessons/relationships/'+$lessonsKey+'/courses/'+$coursesKey').exists())`,
               createdAt: {
                 '.validate': `(newData.isNumber() && newData.val() % 1 === 0)`
               },
