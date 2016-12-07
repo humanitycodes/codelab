@@ -56,7 +56,9 @@ export default (store, db, uid, roles) => {
               const { relationships } = resourceDefs[resourceName]
               const relationshipNames = Object.keys(relationships)
               relationshipNames.forEach(relationshipName => {
-                const relationshipDef = relationships[relationshipName] || {}
+                const relationshipDef = typeof relationships[relationshipName] === 'object'
+                  ? relationships[relationshipName]
+                  : {}
                 Object.defineProperty(
                   resourceItem,
                   `${singularize(relationshipName)}Keys`,
