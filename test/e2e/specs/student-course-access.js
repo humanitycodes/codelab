@@ -59,14 +59,14 @@ module.exports = {
   },
 
   after: browser => {
-    // Promise.all([
-    //   db.destroyUser(student),
-    //   db.destroyUser(instructor),
-    //   db.destroyCourse(course),
-    //   db.destroyLesson(lesson)
-    // ]).then(() => {
+    Promise.all([
+      db.destroyUser(student),
+      db.destroyUser(instructor),
+      db.destroyCourse(course),
+      db.destroyLesson(lesson)
+    ]).then(() => {
       db.close()
-    // })
+    })
   },
 
   'Enrolled student can access course and lesson': browser => {
