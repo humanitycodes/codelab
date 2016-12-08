@@ -25,7 +25,7 @@ export default {
         }
       },
       large: {
-        instructor: {
+        authed: {
           syllabus: String
         }
       }
