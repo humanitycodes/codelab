@@ -1,8 +1,11 @@
 const db = require('../helpers/db').init()
 const dgen = require('../helpers/data-generator')
 
-const student1 = dgen.user()
-student1.fullName = 'Test Student One'
+const enrolledStudent = dgen.user()
+enrolledStudent.fullName = 'Test Enrolled Student'
+
+const hackerStudent = dgen.user()
+hackerStudent.fullName = 'Test Hacker Student'
 
 const instructor = dgen.user()
 instructor.fullName = 'Test Instructor'
@@ -11,11 +14,12 @@ const lesson = dgen.lesson({ createdBy: instructor })
 
 const course = dgen.course({ createdBy: instructor })
 course.lessonKeys.push(lesson.key)
-course.studentKeys.push(student1.key)
+course.studentKeys.push(enrolledStudent.key)
 
 module.exports = {
   before: browser => {
-    db.createStudent(student1)
+    db.createStudent(enrolledStudent)
+    db.createStudent(hackerStudent)
     db.createInstructor(instructor)
     db.createLesson(lesson)
     db.createCourse(course)
@@ -23,7 +27,8 @@ module.exports = {
 
   after: browser => {
     Promise.all([
-      db.destroyUser(student1),
+      db.destroyUser(enrolledStudent),
+      db.destroyUser(hackerStudent),
       db.destroyUser(instructor),
       db.destroyCourse(course),
       db.destroyLesson(lesson)
@@ -38,7 +43,7 @@ module.exports = {
       .waitForElementVisible(`.main-nav a[href^='/email-sign-in']`, 5000)
       .click(`.main-nav a[href^='/email-sign-in']`)
       .waitForElementVisible('button', 5000)
-      .setValue('input[type=text]', student1.email)
+      .setValue('input[type=text]', enrolledStudent.email)
       .setValue('input[type=password]', db.getDefaultPassword())
       .click('button')
 
@@ -64,6 +69,31 @@ module.exports = {
 
     // Make sure the lesson content is visible
     browser.expect.element('.rendered-content').text.to.contain(lesson.content)
+
+    // Close the browser and end the test
+    browser.end()
+  },
+
+  'Student cannot access courses they are not enrolled in': browser => {
+    browser.url(browser.globals.devServerURL)
+      // Sign in
+      .waitForElementVisible(`.main-nav a[href^='/email-sign-in']`, 5000)
+      .click(`.main-nav a[href^='/email-sign-in']`)
+      .waitForElementVisible('button', 5000)
+      .setValue('input[type=text]', hackerStudent.email)
+      .setValue('input[type=password]', db.getDefaultPassword())
+      .click('button')
+
+      // Navigate to course list
+      .waitForElementVisible(`.main-nav a[href^='/courses']`, 5000)
+      .click(`.main-nav a[href^='/courses']`)
+      .pause(200).refresh() // todo: Content below 'Courses' does not render w/o this. Can sometimes recreate manually.
+
+    // No courses should be listed
+    browser.expect.element(`a[href^='/courses/${course.key}']`).to.not.be.present
+
+
+
 
     // Close the browser and end the test
     browser.end()
