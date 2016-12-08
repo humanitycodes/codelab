@@ -52,11 +52,11 @@ describe('generateTopLevelResource', () => {
       'lessons': {
         '.write': "((!data.exists() && root.child('roles/'+auth.uid+'/instructor').val() === true) || (data.exists() && newData.exists() && root.child('roles/'+auth.uid+'/instructor').val() === true) || (data.exists() && !newData.exists() && (!newData.child('relationships/students').exists() || newData.child('relationships/students').val() === false)))",
         'meta': {
+          '.read': 'auth !== null',
           '$lessonsKey': {
             '$other': {
               '.validate': false
             },
-            '.read': 'auth !== null',
             'createdAt': {
               '.validate': '(newData.isNumber() && newData.val() % 1 === 0)'
             },
@@ -136,11 +136,11 @@ describe('generateTopLevelResource', () => {
           }
         },
         'relationships': {
+          '.read': 'auth !== null',
           '$lessonsKey': {
             '$other': {
               '.validate': false
             },
-            '.read': 'auth !== null',
             'courses': {
               '$coursesKey': {
                 '$other': {
