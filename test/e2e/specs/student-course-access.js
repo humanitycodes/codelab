@@ -32,7 +32,7 @@ let lesson = {
   }
 }
 
-let courseKey = uuid.v4()
+let courseKey = uuid.v4().toUpperCase()
 let course = {
   key: courseKey,
   createdBy: instructorId,
@@ -90,7 +90,7 @@ module.exports = {
       .waitForElementVisible('.lesson-graph-container', 5000)
 
     // Make sure syllabus and lessons are visible
-    //browser.expect.element('.rendered-content').text.to.contain(course.syllabus)
+    browser.expect.element('.rendered-content').text.to.contain(course.syllabus)
     browser.expect.element(`a[href^='/courses/${courseKey}/lessons/${lessonKey}']`).to.be.present
 
     browser
