@@ -13,6 +13,7 @@ module.exports = {
       close: () => {
         return firebase.delete()
       },
+
       // ------
       // USERS
       // ------
@@ -25,17 +26,17 @@ module.exports = {
         let db = firebase.database()
         return Promise.all([
           firebase.auth().createUser({
-            uid: user.uid,
+            uid: user.key,
             email: user.email,
             emailVerified: true,
             displayName: user.fullName,
             password: DEFAULT_PASSWORD
           }),
-          db.ref('users').child(user.uid).set({
+          db.ref('users').child(user.key).set({
             email: user.email,
             fullName: user.fullName
           }),
-          db.ref('roles').child(user.uid).set(roles)
+          db.ref('roles').child(user.key).set(roles)
         ])
       },
 
@@ -52,9 +53,9 @@ module.exports = {
 
         let db = firebase.database()
         return Promise.all([
-          db.ref('roles').child(user.uid).remove(),
-          db.ref('users').child(user.uid).remove(),
-          firebase.auth().deleteUser(user.uid)
+          firebase.auth().deleteUser(user.key),
+          db.ref('roles').child(user.key).remove(),
+          db.ref('users').child(user.key).remove()
         ])
       },
 
@@ -131,13 +132,13 @@ module.exports = {
           })
         ]
 
-        if (course.lessonKeys || course.studentKeys) {
+        if (course.lessonKeys.length || course.studentKeys.length) {
           let courseRelationships = {}
 
-          if (course.lessonKeys) {
+          if (course.lessonKeys.length) {
             // Relate course and lessons
             courseRelationships.lessons = {}
-            Object.keys(course.lessonKeys).forEach(lessonKey => {
+            course.lessonKeys.forEach(lessonKey => {
               courseRelationships.lessons[lessonKey] = {
                 createdAt: 1480827219022,
                 createdBy: course.createdBy
@@ -152,9 +153,9 @@ module.exports = {
                   }
                 }
               }
-              if (course.studentKeys) {
+              if (course.studentKeys.length) {
                 lessonRelationships.students = {}
-                Object.keys(course.studentKeys).forEach(studentKey => {
+                course.studentKeys.forEach(studentKey => {
                   lessonRelationships.students[studentKey] = {
                     courses: lessonRelationships.courses
                   }
@@ -164,10 +165,10 @@ module.exports = {
             })
           }
 
-          if (course.studentKeys) {
+          if (course.studentKeys.length) {
             // Relate course and students
             courseRelationships.students = {}
-            Object.keys(course.studentKeys).forEach(studentKey => {
+            course.studentKeys.forEach(studentKey => {
               courseRelationships.students[studentKey] = {
                 createdAt: 1480827219022,
                 createdBy: course.createdBy
