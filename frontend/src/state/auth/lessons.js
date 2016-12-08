@@ -50,7 +50,7 @@ function lessonIsInACourse (lessonKey) {
     const lessonKeys = Object.keys(course.lessonKeys)
     return (
       lessonKeys.length &&
-      lessonKeys.some(key => course.lessonKeys[key])
+      lessonKeys.some(key => course.lessonKeys.includes(key))
     )
   })
 }

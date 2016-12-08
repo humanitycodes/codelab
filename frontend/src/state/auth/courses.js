@@ -17,8 +17,7 @@ export const canReadCourse = ({ courseKey }) => {
   return (
     hasMatchingRole(['instructor', 'admin']) ||
     (
-      isEnrolledInCourse(courseKey) &&
-      courseHasBegun(courseKey)
+      isEnrolledInCourse(courseKey)
     )
   )
 }
@@ -90,7 +89,7 @@ function isEnrolledInCourse (courseKey) {
   const course = findCourse(courseKey)
   if (!course.studentKeys) return false
   const currentUserKey = store.state.users.currentUser.uid
-  return course.studentKeys[currentUserKey]
+  return course.studentKeys.includes(currentUserKey)
 }
 
 function courseHasEnrolledStudents (courseKey) {
@@ -99,7 +98,7 @@ function courseHasEnrolledStudents (courseKey) {
   const studentKeys = Object.keys(course.studentKeys)
   return (
     studentKeys.length &&
-    studentKeys.some(key => course.studentKeys[key])
+    studentKeys.some(key => course.studentKeys.includes(key))
   )
 }
 
