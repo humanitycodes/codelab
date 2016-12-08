@@ -114,7 +114,7 @@ module.exports = {
 
         let db = firebase.database()
         let actions = [
-          db.ref('courses/fieldGroups/large/instructor').child(course.key).set({
+          db.ref('courses/fieldGroups/large/authed').child(course.key).set({
             syllabus: course.syllabus
           }),
           db.ref('courses/fieldGroups/small/authed').child(course.key).set({
@@ -186,7 +186,7 @@ module.exports = {
 
         let db = firebase.database()
         return Promise.all([
-          db.ref('courses/fieldGroups/large/instructor').child(course.key).remove(),
+          db.ref('courses/fieldGroups/large/authed').child(course.key).remove(),
           db.ref('courses/fieldGroups/small/authed').child(course.key).remove(),
           db.ref('courses/meta').child(course.key).remove(),
           db.ref('courses/relationships').child(course.key).remove()
