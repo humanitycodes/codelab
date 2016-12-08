@@ -9,9 +9,7 @@ module.exports = {
   },
 
   after: browser => {
-    db.destroyUser(user).then(() => {
-      db.close()
-    })
+    db.close()
   },
 
   'Sign In links exist': browser => {

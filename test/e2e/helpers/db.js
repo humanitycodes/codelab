@@ -8,10 +8,26 @@ const DEFAULT_PASSWORD = 'toomanysecrets'
 module.exports = {
   init: function () {
     const firebase = firebaseAdmin.initializeApp(firebaseSettings.appConfig, uuid.v4())
+    let cleanupActions = []
+
     return {
       // Call this in your test's 'after' so Nightwatch shuts down properly
-      close: () => {
-        return firebase.delete()
+      close: (doCleanup = true) => {
+        let cleanupPromises = []
+        if (doCleanup) {
+          cleanupActions.forEach(({ callback, args }) => {
+            cleanupPromises.push(callback(...args))
+          })
+        }
+        cleanupActions = []
+        return Promise.all(cleanupPromises).then(() => firebase.delete())
+      },
+
+      cleanupLater: (callback, args) => {
+        cleanupActions.push({
+          callback: callback,
+          args: args
+        })
       },
 
       // ------
@@ -23,6 +39,8 @@ module.exports = {
       },
 
       createUser: function  (user, roles) {
+        this.cleanupLater(this.destroyUser, [user])
+
         let db = firebase.database()
         return Promise.all([
           firebase.auth().createUser({
@@ -64,6 +82,8 @@ module.exports = {
       // --------
 
       createLesson: function (lesson) {
+        this.cleanupLater(this.destroyLesson, [lesson])
+
         let lessonCopy = Object.assign({}, lesson)
         delete lessonCopy.key
 
@@ -110,6 +130,8 @@ module.exports = {
       // --------
 
       createCourse: function (course) {
+        this.cleanupLater(this.destroyCourse, [course])
+
         let courseCopy = Object.assign({}, course)
         delete courseCopy.key
 
