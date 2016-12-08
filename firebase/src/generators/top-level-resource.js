@@ -12,10 +12,10 @@ export default (name, def) => {
   const resourceKey = `$${name}Key`
   const resourceGroups = {
     meta: {
+      ...generatePermissions({
+        read: userSignedIn
+      }),
       [resourceKey]: {
-        ...generatePermissions({
-          read: userSignedIn
-        }),
         ...generateFields(timestampFields)
       }
     },
@@ -48,8 +48,8 @@ export default (name, def) => {
   }
   if (def.relationships) {
     resourceGroups.relationships = {
+      ...generatePermissions({ read: userSignedIn }),
       [resourceKey]: {
-        ...generatePermissions({ read: userSignedIn }),
         ...generateRelationships(name, def.relationships, resourcesDef)
       }
     }

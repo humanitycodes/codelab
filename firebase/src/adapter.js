@@ -176,8 +176,7 @@ export default (store, db, uid, roles) => {
                   return Promise.all(firebaseActions).then(() => {
                     return updatesToTrigger.map(updateDef => {
                       const sourceRelationshipKeys = Object.keys(
-                        state[`raw-${resourceName}`][resourceKey]
-                          .relationships[updateDef.sourceRelationship]
+                        stateDefs[resourceKey].relationships[updateDef.sourceRelationship]
                       )
                       if (updateDef.type === 'SELF_TO_MANY') {
                         return Promise.all(
@@ -448,7 +447,7 @@ export default (store, db, uid, roles) => {
               // if they're not an instructor
               itemsToFetchRef = db
                 .ref(`${resourceName}/relationships`)
-                .orderByChild(`student/${uid}`)
+                .orderByChild(`students/${uid}`)
                 // Only include existing values that are not false
                 // https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data#orderbychild
                 .startAt(true)
@@ -459,6 +458,8 @@ export default (store, db, uid, roles) => {
               if (!resources) return resolve([])
               const resourceKeys = Object.keys(resources)
               resolve(resourceKeys)
+            }, error => {
+              throw error
             })
           // For all the records that the user has access to
           }).then(keysToSync => {
