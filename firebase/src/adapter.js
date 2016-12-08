@@ -63,7 +63,12 @@ export default (store, db, uid, roles) => {
                   resourceItem,
                   `${singularize(relationshipName)}Keys`,
                   {
-                    value: Object.keys(stateDefs[resourceKey].relationships[relationshipName]),
+                    value: Object.keys(
+                      (
+                        stateDefs[resourceKey].relationships &&
+                        stateDefs[resourceKey].relationships[relationshipName]
+                      ) || {}
+                    ),
                     enumerable: true
                   }
                 )
