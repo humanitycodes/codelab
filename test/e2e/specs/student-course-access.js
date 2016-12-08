@@ -75,7 +75,9 @@ module.exports = {
   },
 
   'Student cannot access courses they are not enrolled in': browser => {
-    browser.url(browser.globals.devServerURL)
+    const baseURL = browser.globals.devServerURL
+
+    browser.url(baseURL)
       // Sign in
       .waitForElementVisible(`.main-nav a[href^='/email-sign-in']`, 5000)
       .click(`.main-nav a[href^='/email-sign-in']`)
@@ -92,8 +94,12 @@ module.exports = {
     // No courses should be listed
     browser.expect.element(`a[href^='/courses/${course.key}']`).to.not.be.present
 
+    // Try to navigate to course anyway
+    browser.url(`${baseURL}/courses/${course.key}`)
+      .waitForElementVisible(`.main-nav`, 5000)
 
-
+    // Should not see course content
+    browser.expect.element('.rendered-content').to.not.be.present
 
     // Close the browser and end the test
     browser.end()
