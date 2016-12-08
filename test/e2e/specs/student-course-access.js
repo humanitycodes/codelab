@@ -78,10 +78,12 @@ module.exports = {
       .setValue('input[type=text]', student.email)
       .setValue('input[type=password]', db.getDefaultPassword())
       .click('button')
+
       // Navigate to course list
       .waitForElementVisible(`.main-nav a[href^='/courses']`, 5000)
       .click(`.main-nav a[href^='/courses']`)
       .pause(200).refresh() // todo: Content below 'Courses' does not render w/o this. Can sometimes recreate manually.
+
       // Navigate to the course
       .waitForElementVisible(`a[href^='/courses/${courseKey}']`, 5000)
       .click(`a[href^='/courses/${courseKey}']`)
@@ -100,6 +102,7 @@ module.exports = {
     // Make sure the lesson content is visible
     browser.expect.element('.rendered-content').text.to.contain(lesson.content)
 
+    // Close the browser and end the test
     browser.end()
   }
 }
