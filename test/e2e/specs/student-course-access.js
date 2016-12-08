@@ -103,5 +103,45 @@ module.exports = {
 
     // Close the browser and end the test
     browser.end()
+  },
+
+  'Enrolled student cannot add or edit courses': browser => {
+    const baseURL = browser.globals.devServerURL
+
+    browser.url(baseURL)
+      // Sign in
+      .waitForElementVisible(`.main-nav a[href^='/email-sign-in']`, 5000)
+      .click(`.main-nav a[href^='/email-sign-in']`)
+      .waitForElementVisible('button', 5000)
+      .setValue('input[type=text]', enrolledStudent.email)
+      .setValue('input[type=password]', db.getDefaultPassword())
+      .click('button')
+
+      // Navigate to course list
+      .waitForElementVisible(`.main-nav a[href^='/courses']`, 5000)
+      .click(`.main-nav a[href^='/courses']`)
+      .pause(200).refresh() // todo: Content below 'Courses' does not render w/o this. Can sometimes recreate manually.
+      .waitForElementVisible(`a[href^='/courses/${course.key}']`, 5000)
+
+    // New and Edit links should not be present
+    browser.expect.element(`a[href^='/courses/new']`).to.not.be.present
+    browser.expect.element(`a[href^='/courses/${course.key}/edit']`).to.not.be.present
+
+    // Try to create a new course via URL
+    browser.url(`${baseURL}/courses/new`)
+      .waitForElementVisible(`.main-nav`, 5000)
+
+    // Should not see new course form
+    browser.expect.element('.key-field').to.not.be.present
+
+    // Try to edit a course via URL
+    browser.url(`${baseURL}/courses/${course.key}`)
+      .waitForElementVisible(`.main-nav`, 5000)
+
+    // Should not see editable course fields
+    browser.expect.element('input').to.not.be.present
+
+    // Close the browser and end the test
+    browser.end()
   }
 }
