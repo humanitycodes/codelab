@@ -17,7 +17,8 @@ export const canReadCourse = ({ courseKey }) => {
   return (
     hasMatchingRole(['instructor', 'admin']) ||
     (
-      isEnrolledInCourse(courseKey)
+      isEnrolledInCourse(courseKey) &&
+      courseHasBegun(courseKey)
     )
   )
 }
@@ -104,10 +105,10 @@ function courseHasEnrolledStudents (courseKey) {
 
 function courseHasBegun (courseKey) {
   const course = findCourse(courseKey)
-  return Date.parse(course.startDate) <= Date.now()
+  return course.startDate <= Date.now()
 }
 
 function courseHasEnded (courseKey) {
   const course = findCourse(courseKey)
-  return Date.parse(course.endDate) <= Date.now()
+  return course.endDate <= Date.now()
 }
