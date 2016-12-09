@@ -6,7 +6,7 @@
     <li v-if="!userSignedIn">
       <router-link to="/email-sign-in">Sign in with Email</AuthLink>
     </li>
-    <li v-if="userSignedIn && !currentUser.github">
+    <li v-if="userSignedIn && !currentUser.profile.github">
       <AuthLink provider="github">Connect GitHub</AuthLink>
     </li>
     <li v-if="canReadAllLessons()">

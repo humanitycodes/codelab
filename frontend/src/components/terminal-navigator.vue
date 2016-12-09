@@ -93,7 +93,7 @@ export default {
     ...userGetters,
     username () {
       return this.currentUser
-        ? this.currentUser.email.replace(/@.+/, '')
+        ? this.currentUser.profile.email.replace(/@.+/, '')
         : 'user'
     },
     directoryTree () {

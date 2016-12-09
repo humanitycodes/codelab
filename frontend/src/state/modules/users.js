@@ -27,7 +27,7 @@ export default {
           .then(firebaseTokenResult => {
             let user = userSnapshot.val()
             commit('SET_CURRENT_USER', {
-              ...user,
+              profile: user,
               uid: userSnapshot.key,
               firebaseJwt: firebaseTokenResult.accessToken
             })
@@ -99,6 +99,11 @@ export default {
     },
     signOut () {
       return firebase.auth().signOut()
+    },
+    updateCurrentUser ({ state }) {
+      return firebase.database().ref('users').child(state.currentUser.uid)
+        .set(state.currentUser.profile)
+        .catch(console.error)
     }
   },
   mutations: {
