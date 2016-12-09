@@ -1,17 +1,12 @@
-const fs = require('fs')
-
-let configFile
+let config
 
 try {
-  configFile = `./${process.env.NODE_ENV}/config.js`
-
-  // Test if the file exists
-  fs.accessSync(configFile, fs.F_OK)
+  config = require(`./${process.env.NODE_ENV}/config.js`)
 } catch (e) {
   // Use default dev config
-  configFile = './dev/config.js'
+  config = require('./dev/config.js')
 }
 
 module.exports = {
-  config: require(configFile)
+  config: config
 }
