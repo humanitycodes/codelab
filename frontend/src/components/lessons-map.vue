@@ -133,11 +133,17 @@ export default {
     },
     edgePath (edge) {
       const path = D3Path()
-      const [ startingPoint, middlePoint, endPoint ] = edge.points
+      const [ startingPoint, ...points ] = edge.points
       path.moveTo(startingPoint.x, startingPoint.y)
+      let i
+      for (i = 0; i < points.length - 2; i++) {
+        const xc = (points[i].x + points[i + 1].x) / 2
+        const yc = (points[i].y + points[i + 1].y) / 2
+        path.quadraticCurveTo(points[i].x, points[i].y, xc, yc)
+      }
       path.quadraticCurveTo(
-        middlePoint.x, middlePoint.y,
-        endPoint.x, endPoint.y
+        points[i].x, points[i].y,
+        points[i + 1].x, points[i + 1].y
       )
       return path.toString()
     },
