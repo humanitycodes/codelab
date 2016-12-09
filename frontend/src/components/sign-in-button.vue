@@ -15,11 +15,7 @@ export default {
   methods: {
     signIn () {
       this.$store.dispatch('signIn', this.credentials)
-      .then(authUser => {
-        window.history.length > 1
-          ? this.$router.go(-1)
-          : this.$router.push('/')
-      })
+      .then(authUser => { window.location = '/' })
       .catch(error => {
         this.credentials.error = error
       })
