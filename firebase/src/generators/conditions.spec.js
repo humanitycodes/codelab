@@ -1,5 +1,5 @@
 import {
-  all, any, not, keyInResource, keyIsCurrentUser,
+  all, any, not, keyInResource, keyIsCurrentUser, nonEmpty,
   isGreaterThan, isLongerThan, childIsFalsy, isType
 } from './conditions'
 
@@ -54,6 +54,13 @@ describe('isLongerThan helper', () => {
   it('returns the correct rule', () => {
     expect(isLongerThan('foo'))
       .toEqual('newData.val().length > foo')
+  })
+})
+
+describe('nonEmpty helper', () => {
+  it('returns the correct rule', () => {
+    expect(nonEmpty)
+      .toEqual('newData.val().length > 0')
   })
 })
 
