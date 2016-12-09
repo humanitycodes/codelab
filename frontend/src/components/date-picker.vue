@@ -5,7 +5,6 @@
 <script>
 import startOfDay from 'date-fns/start_of_day'
 import endOfDay from 'date-fns/end_of_day'
-import isValidDate from 'date-fns/is_valid'
 import formatDate from 'date-fns/format'
 
 export default {
@@ -25,14 +24,13 @@ export default {
   methods: {
     onInput (event) {
       const { value } = event.target
-      const dateValue = new Date(value)
-      if (!isValidDate(dateValue)) return
-      const newDate = (
+      if (!value) return
+      const dateNumber = (
         this.atDay === 'start'
-          ? startOfDay(dateValue)
-          : endOfDay(dateValue)
+          ? startOfDay(value)
+          : endOfDay(value)
       ).getTime()
-      this.$emit('input', newDate)
+      this.$emit('input', dateNumber)
     }
   }
 }
