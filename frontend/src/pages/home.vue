@@ -4,6 +4,7 @@
       Welcome Home
       <span v-if="userSignedIn">{{ currentUser.fullName }}</span>
     </h1>
+    <h3 v-if="currentUser.github">GitHub User: {{ currentUser.github.login }}</h3>
   </Layout>
 </template>
 
