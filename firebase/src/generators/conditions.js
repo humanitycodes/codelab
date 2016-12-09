@@ -35,7 +35,7 @@ export const isGreaterThan = min => {
 export const isLongerThan = min => {
   return `newData.val().length > ${min}`
 }
-export const nonEmpty = isGreaterThan(0)
+export const nonEmpty = isLongerThan(0)
 export const childIsFalsy = child => {
   return any(
     `!newData.child('${child}').exists()`,

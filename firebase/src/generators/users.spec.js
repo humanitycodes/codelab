@@ -35,10 +35,10 @@ describe('generateUsers', () => {
           '.read': 'auth.uid === $usersKey',
           '.write': `((!data.exists() && auth.uid === $usersKey) || (data.exists() && newData.exists() && (root.child('roles/'+auth.uid+'/instructor').val() === true || auth.uid === $usersKey)))`,
           'email': {
-            '.validate': '(newData.isString() && newData.val() > 0)'
+            '.validate': '(newData.isString() && newData.val().length > 0)'
           },
           'fullName': {
-            '.validate': '(newData.isString() && newData.val() > 0)'
+            '.validate': '(newData.isString() && newData.val().length > 0)'
           },
           'github': {
             '$other': {
@@ -61,7 +61,7 @@ describe('generateUsers', () => {
             }
           },
           'msuUid': {
-            '.validate': '(newData.isString() && newData.val() > 0)'
+            '.validate': '(newData.isString() && newData.val().length > 0)'
           }
         }
       }
