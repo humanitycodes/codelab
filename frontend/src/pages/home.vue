@@ -2,11 +2,11 @@
   <Layout>
     <h1>
       Welcome Home
-      <span v-if="userSignedIn">{{ currentUser.fullName }}</span>
+      <span v-if="userSignedIn">{{ currentUser.profile.fullName }}</span>
     </h1>
-    <div v-if="userSignedIn && currentUser.github">
+    <div v-if="userSignedIn && currentUser.profile.github">
       <strong>GitHub User:</strong>
-      {{ currentUser.github.login }}
+      {{ currentUser.profile.github.login }}
       <DisconnectGithubLink>X</DisconnectGithubLink>
     </div>
   </Layout>
