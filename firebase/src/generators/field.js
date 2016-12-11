@@ -10,10 +10,14 @@ export default (name, def) => {
         ...def,
         fields: {
           ...def.fields,
-          position: {
-            type: 'Integer',
-            validate: isGreaterThan(0)
-          }
+          ...def.orderable !== false
+            ? {
+              position: {
+                type: 'Integer',
+                validate: isGreaterThan(0)
+              }
+            }
+            : {}
         }
       })
     }

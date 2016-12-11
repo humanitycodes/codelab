@@ -36,6 +36,7 @@ const generateRelationships = (parentResourceName, relationships, resourcesDef) 
           ? {
             [def.derivedFrom.resource]: {
               type: Array,
+              orderable: false,
               validate: (() => {
                 const originResourceName = def.derivedFrom.resource
                 const originResourceKey = `$${originResourceName}Key`

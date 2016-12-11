@@ -51,6 +51,9 @@ describe('generateTopLevelResource', () => {
     expect(rules).toEqual({
       'lessons': {
         '.write': "((!data.exists() && root.child('roles/'+auth.uid+'/instructor').val() === true) || (data.exists() && newData.exists() && root.child('roles/'+auth.uid+'/instructor').val() === true) || (data.exists() && !newData.exists() && (!newData.child('relationships/students').exists() || newData.child('relationships/students').val() === false)))",
+        $other: {
+          '.validate': false
+        },
         'meta': {
           '.read': 'auth !== null',
           '$lessonsKey': {
@@ -125,6 +128,9 @@ describe('generateTopLevelResource', () => {
                   '$learningObjectivesKey': {
                     '$other': {
                       '.validate': false
+                    },
+                    position: {
+                      '.validate': '((newData.isNumber() && newData.val() % 1 === 0) && newData.val() > 0)'
                     },
                     'content': {
                       '.validate': 'newData.isString()'
