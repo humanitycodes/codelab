@@ -45,6 +45,9 @@ describe('generateField', () => {
           },
           '.read': 'buz',
           '.validate': '(bar && $fooKey.matches(baz))',
+          position: {
+            '.validate': '((newData.isNumber() && newData.val() % 1 === 0) && newData.val() > 0)'
+          },
           xxx: {
             '.validate': 'newData.isNumber()'
           }
