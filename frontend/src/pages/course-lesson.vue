@@ -16,6 +16,22 @@
         <div v-html="lessonContentHTML" class="rendered-content"/>
       </div>
     </div>
+    <div class="flex-row" v-if="currentLesson.projects.length">
+      <div class="flex-col">
+        <h3>
+          Project:
+          <span v-html="toHtml(currentLesson.projects[0].title)"/>
+        </h3>
+        <h4>Criteria</h4>
+        <ol v-if="currentLesson.projects[0].criteria.length">
+          <li
+            v-for="criterion in currentLesson.projects[0].criteria"
+            v-html="toHtml(criterion.content)"
+          />
+        </ol>
+        <p v-else>No criteria for this project yet.</p>
+      </div>
+    </div>
     <EditCurrentLessonButton/>
   </Layout>
 </template>
@@ -58,6 +74,9 @@ export default {
         ? 0
         : Math.floor(realGradePoints * 100) / 100
     }
+  },
+  methods: {
+    toHtml: rho.toInlineHtml
   }
 }
 </script>

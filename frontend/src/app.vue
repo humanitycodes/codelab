@@ -131,7 +131,7 @@ pre.hljs
 .button, button, input[type="submit"], input[type="reset"], input[type="button"]
   display: inline-block
   height: $design.control.height
-  padding: 0 30px
+  padding: 0 $design.control.height * .4
   color: $design.body.text.color
   text-align: center
   font-size: 11px

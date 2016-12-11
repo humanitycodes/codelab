@@ -1,7 +1,7 @@
 import resourcesDef from '../defs/resources'
 import mapAndMerge from '../utils/map-and-merge'
 import fieldGroups from '../defs/field-groups'
-import { userSignedIn } from './conditions'
+import { userSignedIn, noOtherFields } from './conditions'
 import timestampFields from './timestamp-fields'
 import generatePermissions from './permissions'
 import generateFields from './fields'
@@ -22,7 +22,8 @@ export default (name, def) => {
     fieldGroups: {
       small: {},
       large: {}
-    }
+    },
+    ...noOtherFields
   }
   const generateFieldGroups = groups => {
     const groupNames = Object.keys(groups)

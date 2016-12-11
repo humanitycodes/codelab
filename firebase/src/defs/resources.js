@@ -63,9 +63,7 @@ export default {
           estimatedHours: {
             type: Number,
             validate: isGreaterThan(0)
-          }
-        },
-        instructor: {
+          },
           learningObjectives: {
             type: Array,
             fields: {
@@ -76,7 +74,19 @@ export default {
       },
       large: {
         student: {
-          content: String
+          content: String,
+          projects: {
+            type: Array,
+            fields: {
+              title: String,
+              criteria: {
+                type: Array,
+                fields: {
+                  content: String
+                }
+              }
+            }
+          }
         },
         instructor: {
           notes: String
