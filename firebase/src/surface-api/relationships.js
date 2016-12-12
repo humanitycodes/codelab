@@ -10,8 +10,7 @@ export default ({
 }) => {
   // Define relationships as read-only
   const relationships = resourceDefs[resourceName].relationships || {}
-  const relationshipNames = Object.keys(relationships)
-  relationshipNames.forEach(relationshipName => {
+  for (const relationshipName in relationships) {
     const relationshipDef = typeof relationships[relationshipName] === 'object'
       ? relationships[relationshipName]
       : {}
@@ -28,8 +27,9 @@ export default ({
         enumerable: true
       }
     )
-    // !!! Abort (don't create add/remove relationship methods) if the course is derived
-    if (relationshipDef.derivedFrom) return
+
+    // !!! Abort (don't create add/remove relationship methods) if the relationship is derived
+    if (relationshipDef.derivedFrom) continue
 
     const relatedResourceName = relationshipDef.resource
       ? relationshipDef.resource
@@ -43,7 +43,7 @@ export default ({
       // Abort immediately if the resource is self, because there
       // will never be a need to derive a relationship from another
       // relationship on the same resource
-      if (otherResourceName === resourceName) return
+      if (otherResourceName === resourceName) continue
       const otherResourceRelationships = resourceDefs[otherResourceName].relationships
       const otherResourceRelationshipNames = Object.keys(otherResourceRelationships)
       otherResourceRelationshipNames.forEach(otherRelationshipName => {
@@ -254,5 +254,5 @@ export default ({
         })
       })
     }
-  })
+  }
 }

@@ -30,9 +30,6 @@ export default {
     Layout, CourseForm, DoneButton
   },
   computed: courseGetters,
-  created () {
-    window.course = this.currentCourse
-  },
   methods: {
     confirmDestroyCourse () {
       const srsly = confirm('Are you sure you want to PERMANENTLY delete this course?')
