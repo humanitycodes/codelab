@@ -44,10 +44,14 @@ module.exports = {
       .setValue('select', lessonKeyPrefix)
       .setValue('input', lessonKeySuffix)
       .click('button')
-      .waitForElementVisible(`button.danger`, 5000)
+      .waitForElementVisible('button.danger', 5000)
       .assert.urlContains(`/lessons/${lesson.key}/edit`)
 
       // Edit lesson fields
+      .setValue(`input[name=lesson-title]`, lesson.title)
+      .setValue(`input[name=lesson-estimated-hours]`, lesson.estimatedHours)
+      .setValue(`textarea[name=lesson-content]`, lesson.content)
+      .setValue(`textarea[name=lesson-notes]`, lesson.notes)
 
     // Close the browser and end the test
     browser.end()
