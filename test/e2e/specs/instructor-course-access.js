@@ -1,5 +1,3 @@
-const randomatic = require('randomatic')
-
 const db = require('../helpers/db').init()
 const dgen = require('../helpers/data-generator')
 
@@ -9,15 +7,14 @@ student.fullName = 'Test Student'
 const instructor = dgen.user()
 instructor.fullName = 'Test Instructor'
 
-const lessonPrefix = 'css'
-const lessonSuffix = randomatic('a', 10)
-const lessonKey = `${lessonPrefix}-${lessonSuffix}`
+const lesson = dgen.lesson({ createdBy: instructor })
+const [lessonKeyPrefix, lessonKeySuffix] = lesson.key.split('-')
 
 module.exports = {
   before: browser => {
     db.createStudent(student)
     db.createInstructor(instructor)
-    db.cleanupLater(db.destroyLesson, [{ key: lessonKey }])
+    db.cleanupLater(db.destroyLesson, [lesson])
   },
 
   after: browser => {
@@ -44,11 +41,13 @@ module.exports = {
       // Create new lesson
       .click(`a[href^='/lessons/new']`)
       .waitForElementVisible('select', 5000)
-      .setValue('select', lessonPrefix)
-      .setValue('input', lessonSuffix)
+      .setValue('select', lessonKeyPrefix)
+      .setValue('input', lessonKeySuffix)
       .click('button')
       .waitForElementVisible(`button.danger`, 5000)
-      .assert.urlContains(`/lessons/${lessonKey}/edit`)
+      .assert.urlContains(`/lessons/${lesson.key}/edit`)
+
+      // Edit lesson fields
 
     // Close the browser and end the test
     browser.end()

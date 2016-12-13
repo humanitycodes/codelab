@@ -7,6 +7,7 @@
         :value="lesson.estimatedHours"
         @input="updateHours($event.target.value)"
         @change="$event.target.value = lesson.estimatedHours"
+        name="lesson-estimated-hours"
         placeholder="Estimated hours to complete the lesson"
       >
       <p v-if="lesson.estimatedHours && lesson.estimatedHours > 3" class="warning">

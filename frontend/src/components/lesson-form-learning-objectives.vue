@@ -5,6 +5,7 @@
       <input
         v-model="newLearningObjective"
         @keydown.enter="addObjective"
+        name="lesson-new-learning-objective"
         placeholder="What new skills will students acquire?"
       >
       <OrderedEditableList :items="lesson.learningObjectives">

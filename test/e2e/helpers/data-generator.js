@@ -1,4 +1,5 @@
 const uuid = require('uuid')
+const randomatic = require('randomatic')
 
 module.exports = {
   user: () => {
@@ -12,7 +13,7 @@ module.exports = {
 
   lesson: ({ createdBy }) => {
     return {
-      key: uuid.v4(),
+      key: `css-${randomatic('a', 10)}`,
       createdBy: createdBy,
       title: 'Test Title',
       estimatedHours: 4,
