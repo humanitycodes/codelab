@@ -12,6 +12,7 @@
         <input
           ref="queryInput"
           v-model="prereqQuery"
+          name="lesson-prereq-query"
           placeholder="Add prerequisite lessons"
         >
       </Dropdown>

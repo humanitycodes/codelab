@@ -4,6 +4,7 @@
       <label>Notes</label>
       <textarea
         v-model="lesson.notes"
+        name="lesson-notes"
         placeholder="Additional notes for future instructors"
       />
     </div>

@@ -4,6 +4,7 @@
       <label>Content</label>
       <textarea
         v-model="lesson.content"
+        name="lesson-content"
         placeholder="Markdown explaining the lesson content"
       />
       <p v-if="!lesson.content" class="warning">
