@@ -1,5 +1,5 @@
 <template>
-  <input :value="simplifiedDate" @input="onInput" type="date">
+  <input :value="simplifiedDate" @input="onInput" type="date" :name="name">
 </template>
 
 <script>
@@ -13,7 +13,8 @@ export default {
     atDay: {
       type: String,
       default: 'start'
-    }
+    },
+    name: String
   },
   computed: {
     simplifiedDate () {

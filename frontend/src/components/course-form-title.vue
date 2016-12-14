@@ -4,6 +4,7 @@
       <label>Title</label>
       <input
         v-model="course.title"
+        name="course-title"
         placeholder="A short description of the course in the infinitive form"
       >
       <p v-if="!course.title" class="warning">

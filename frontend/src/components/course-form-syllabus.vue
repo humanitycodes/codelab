@@ -4,6 +4,7 @@
       <label>Syllabus</label>
       <textarea
         v-model="course.syllabus"
+        name="course-syllabus"
         placeholder="The structure and rules of the course"
       />
       <p v-if="!course.syllabus" class="warning">

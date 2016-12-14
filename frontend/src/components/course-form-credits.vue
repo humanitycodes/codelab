@@ -5,6 +5,7 @@
       <input
         ref="input"
         :value="course.credits"
+        name="course-credits"
         @input="updateCredits($event.target.value)"
         @change="$event.target.value = course.credits"
       >
