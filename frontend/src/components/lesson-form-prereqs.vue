@@ -22,7 +22,7 @@
           <button
             @click="removePrereq(prereq)"
             class="inline danger"
-            name="lesson-delete-prereq"
+            name="lesson-remove-prereq"
           >X</button>
         </li>
       </ul>

@@ -13,6 +13,7 @@
           :disabled="disabled"
           ref="queryInput"
           v-model="studentQuery"
+          name="course-student-query"
           placeholder="Add students to the course"
         >
       </Dropdown>
@@ -26,6 +27,7 @@
           <button
             @click="removeStudent(student)"
             class="inline danger"
+            name="course-remove-student"
           >X</button>
         </li>
       </ul>

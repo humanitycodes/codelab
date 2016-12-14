@@ -12,6 +12,7 @@
         <input
           ref="queryInput"
           v-model="lessonQuery"
+          name="course-lesson-query"
           placeholder="Add lessons to the course"
         >
       </Dropdown>
@@ -21,6 +22,7 @@
           <button
             @click="removeCourseLesson(lesson)"
             class="inline danger"
+            name="course-remove-lesson"
           >X</button>
         </li>
       </ul>

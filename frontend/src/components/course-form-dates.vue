@@ -3,11 +3,11 @@
     <div class="flex-row">
       <div class="flex-col">
         <label>Start Date</label>
-        <DatePicker v-model="course.startDate"/>
+        <DatePicker v-model="course.startDate" name="course-start-date"/>
       </div>
       <div class="flex-col">
         <label>End Date</label>
-        <DatePicker v-model="course.endDate" at-day="end"/>
+        <DatePicker v-model="course.endDate" at-day="end" name="course-end-date"/>
       </div>
     </div>
     <p v-if="warning" class="warning">

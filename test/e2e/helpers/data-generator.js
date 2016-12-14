@@ -16,7 +16,7 @@ module.exports = {
       key: `css-${randomatic('a', 10)}`,
       createdBy: {},
       title: 'Test Title',
-      estimatedHours: 4,
+      estimatedHours: 1,
       content: 'Test Content',
       notes: 'Test Lesson Notes',
       learningObjectives: {
@@ -27,11 +27,10 @@ module.exports = {
     }, lesson)
   },
 
-  course: ({ createdBy }) => {
-    let courseKey = uuid.v4().toUpperCase()
-    return {
-      key: courseKey,
-      createdBy: createdBy,
+  course: (course) => {
+    return Object.assign({
+      key: `MI-${randomatic('0', 3)}-FS${randomatic('0', 2)}-${randomatic('0', 3)}`,
+      createdBy: {},
       title: 'Test Course',
       credits: 2,
       syllabus: 'Test Syllabus',
@@ -40,6 +39,6 @@ module.exports = {
       notes: 'Test Course Notes',
       lessonKeys: [],
       studentKeys: []
-    }
+    }, course)
   }
 }

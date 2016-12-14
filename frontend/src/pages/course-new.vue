@@ -3,22 +3,22 @@
     <label>Unique Course Key</label>
     <p class="warning">This is the unique key for the course that will appear in URLs and project repos. <strong>It cannot be changed once the course is created.</strong></p>
     <div class="key-field">
-      <select v-model="prefix">
+      <select v-model="prefix" name="course-prefix">
         <option v-for="prefixOption in prefixOptions" :value="prefixOption">
           {{ prefixOption }}
         </option>
       </select>
       <span>-</span>
-      <input v-model="number" placeholder="Number">
+      <input v-model="number" name="course-number" placeholder="Number">
       <span>-</span>
-      <select v-model="semester">
+      <select v-model="semester" name="course-semester">
         <option v-for="(code, season) in semesterOptions" :value="code">
           {{ season }}
         </option>
       </select>
-      <input v-model="year" placeholder="Year">
+      <input v-model="year" name="course-year" placeholder="Year">
       <span>-</span>
-      <input v-model="section" placeholder="Section">
+      <input v-model="section" name="course-section" placeholder="Section">
     </div>
     <button
       :disabled="!keyIsValid"

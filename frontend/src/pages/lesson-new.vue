@@ -3,13 +3,13 @@
     <label>Unique Lesson Key</label>
     <p class="warning">This is the unique key for the lesson that will appear in URLs and project repos. <strong>It cannot be changed once the lesson is created.</strong></p>
     <div class="key-field">
-      <select v-model="categoryPrefix">
+      <select v-model="categoryPrefix" name="lesson-category">
         <option v-for="category in lessonCategories">
           {{ category }}
         </option>
       </select>
       <span>-</span>
-      <input v-model="key">
+      <input v-model="key" name="lesson-key">
       <button
         :disabled="!keyIsValid"
         @click="tryToCreateLesson"
