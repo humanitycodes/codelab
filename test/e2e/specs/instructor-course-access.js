@@ -29,7 +29,7 @@ module.exports = {
     db.close()
   },
 
-  'Instructors can maintain lessons': browser => {
+  'Instructor can create and edit lesson': browser => {
     const baseURL = browser.globals.devServerURL
 
     browser.url(baseURL)
@@ -52,7 +52,7 @@ module.exports = {
       .setValue('select', lessonKeyPrefix)
       .setValue('input', lessonKeySuffix)
       .click('button')
-      .waitForElementVisible('button.danger', 5000)
+      .waitForElementVisible('input[name=lesson-title]', 5000)
       .assert.urlContains(`/lessons/${lesson.key}/edit`)
 
       // Edit lesson fields
@@ -68,7 +68,23 @@ module.exports = {
       .waitForElementVisible('input[name=lesson-prereq-query] + .dropdown-results > .dropdown-result', 5000)
       .click('input[name=lesson-prereq-query] + .dropdown-results > .dropdown-result')
 
-    // Close the browser and end the test
-    browser.end()
+      // Make sure the lesson is in the master list
+      .click(`.main-nav a[href^='/lessons']`)
+      .waitForElementVisible(`a[href^='/lessons/new']`, 5000)
+      .assert.visible(`a[href^='/lessons/${lesson.key}/edit']`)
+
+      // View the recently edited lesson
+      .click(`a[href^='/lessons/${lesson.key}/edit']`)
+      .waitForElementVisible('input[name=lesson-title]', 5000)
+      .assert.value(`input[name=lesson-title]`, lesson.title)
+      .assert.value(`input[name=lesson-estimated-hours]`, lesson.estimatedHours.toString())
+      .assert.value(`textarea[name=lesson-content]`, lesson.content)
+      .assert.value(`textarea[name=lesson-notes]`, lesson.notes)
+      .assert.value(`input[name=lesson-new-learning-objective] + ol input`,
+        Object.values(lesson.learningObjectives)[0].content)
+      .assert.visible(`button[name=lesson-delete-prereq]`)
+
+      // Close the browser and end the test
+      .end()
   }
 }
