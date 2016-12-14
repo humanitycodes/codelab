@@ -11,10 +11,10 @@ module.exports = {
     }
   },
 
-  lesson: ({ createdBy }) => {
-    return {
+  lesson: (lesson) => {
+    return Object.assign({
       key: `css-${randomatic('a', 10)}`,
-      createdBy: createdBy,
+      createdBy: {},
       title: 'Test Title',
       estimatedHours: 4,
       content: 'Test Content',
@@ -24,7 +24,7 @@ module.exports = {
           content: 'Learn something'
         }
       }
-    }
+    }, lesson)
   },
 
   course: ({ createdBy }) => {
