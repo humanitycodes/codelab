@@ -1,3 +1,5 @@
+const randomatic = require('randomatic')
+
 const db = require('../helpers/db').init()
 const dgen = require('../helpers/data-generator')
 
@@ -7,6 +9,11 @@ student.fullName = 'Test Student'
 const instructor = dgen.user()
 instructor.fullName = 'Test Instructor'
 
+const prereqLesson = dgen.lesson({
+  createdBy: instructor,
+  title: `Prereq Title ${randomatic('a', 10)}`
+})
+
 const lesson = dgen.lesson({ createdBy: instructor })
 const [lessonKeyPrefix, lessonKeySuffix] = lesson.key.split('-')
 
@@ -14,6 +21,7 @@ module.exports = {
   before: browser => {
     db.createStudent(student)
     db.createInstructor(instructor)
+    db.createLesson(prereqLesson)
     db.cleanupLater(db.destroyLesson, [lesson])
   },
 
@@ -52,6 +60,13 @@ module.exports = {
       .setValue(`input[name=lesson-estimated-hours]`, lesson.estimatedHours)
       .setValue(`textarea[name=lesson-content]`, lesson.content)
       .setValue(`textarea[name=lesson-notes]`, lesson.notes)
+      .setValue(`input[name=lesson-new-learning-objective]`, [
+        Object.values(lesson.learningObjectives)[0].content,
+        browser.Keys.ENTER
+      ])
+      .setValue(`input[name=lesson-prereq-query]`, prereqLesson.title)
+      .waitForElementVisible('input[name=lesson-prereq-query] + .dropdown-results > .dropdown-result', 5000)
+      .click('input[name=lesson-prereq-query] + .dropdown-results > .dropdown-result')
 
     // Close the browser and end the test
     browser.end()
