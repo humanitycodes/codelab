@@ -213,6 +213,10 @@ data-uri-to-buffer@0:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-0.0.4.tgz#46e13ab9da8e309745c8d01ce547213ebdb2fe3f"
 
+date-fns@^1.20.1:
+  version "1.20.1"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.20.1.tgz#8cc3e1588354e65d145729d42b94f52a0f48d58d"
+
 debug@2, debug@^2.2.0:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.3.3.tgz#40c453e67e6e13c901ddec317af8986cda9eff8c"
