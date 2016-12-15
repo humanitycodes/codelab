@@ -5,9 +5,14 @@
       <span v-if="userSignedIn">{{ currentUser.profile.fullName }}</span>
     </h1>
     <div v-if="userSignedIn && currentUser.profile.github">
-      <strong>GitHub User:</strong>
-      {{ currentUser.profile.github.login }}
-      <DisconnectGithubLink>X</DisconnectGithubLink>
+      <div>
+        <strong>GitHub User:</strong>
+        {{ currentUser.profile.github.login }}
+        <DisconnectGithubLink>X</DisconnectGithubLink>
+      </div>
+      <div>
+        <strong>GitHub Scopes:</strong>
+        {{ currentUser.profile.github.scope }}
     </div>
   </Layout>
 </template>

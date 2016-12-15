@@ -6,6 +6,8 @@
 import env from '@env'
 import store from '@state/store'
 
+const githubScopes = encodeURIComponent(['user', 'repo'].join(' '))
+
 export default {
   props: {
     provider: {
@@ -22,7 +24,7 @@ export default {
         case 'github':
           const currentUser = store.state.users.currentUser
           const firebaseJwt = currentUser ? encodeURIComponent(currentUser.firebaseJwt) : ''
-          return `https://github.com/login/oauth/authorize?scope=user&client_id=${env.githubAuthClientId}&state=${firebaseJwt}`
+          return `https://github.com/login/oauth/authorize?scope=${githubScopes}&client_id=${env.githubAuthClientId}&state=${firebaseJwt}`
         case 'msu':
           return `https://oauth.ais.msu.edu/oauth/authorize?response_type=code&client_id=${env.msuAuthClientId}`
         default:
