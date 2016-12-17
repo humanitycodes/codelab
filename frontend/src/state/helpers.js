@@ -7,7 +7,10 @@ export const userGetters = {
     currentUser: state => state.users.currentUser,
     users: state => state.users.all
   }),
-  ...mapGetters(['userSignedIn'])
+  ...mapGetters([
+    'userSignedIn',
+    'newGitHubScopes'
+  ])
 }
 
 export const lessonGetters = {
