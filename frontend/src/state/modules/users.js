@@ -1,7 +1,9 @@
+import _ from 'lodash'
 import firebase from 'firebase'
 import db from '@plugins/firebase'
 import jwtDecode from 'jwt-decode'
 import { createFirebaseVM } from './_helpers'
+import requiredGitHubScopes from '@helpers/required-github-scopes'
 
 const syncCache = {}
 export default {
@@ -13,6 +15,15 @@ export default {
   getters: {
     userSignedIn (state) {
       return !!state.currentUser
+    },
+    newGitHubScopes (state) {
+      if (!state.currentUser) return false
+
+      if (state.currentUser.profile.github) {
+        const userScopes = state.currentUser.profile.github.scope.split(',')
+        return !_.isEqual(requiredGitHubScopes().sort(), userScopes.sort())
+      }
+      return true
     }
   },
   actions: {
