@@ -6,7 +6,7 @@
     <li v-if="!userSignedIn">
       <router-link to="/email-sign-in">Sign in with Email</AuthLink>
     </li>
-    <li v-if="newGitHubScopes">
+    <li v-if="hasNewGitHubScopes">
       <AuthLink provider="github">
         {{ currentUser.profile.github ? 'Reconnect GitHub' : 'Connect GitHub' }}
       </AuthLink>
