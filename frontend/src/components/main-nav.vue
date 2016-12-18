@@ -1,9 +1,9 @@
 <template>
   <ul class="main-nav">
-    <li v-if="!userSignedIn">
+    <li v-if="!isUserSignedIn">
       <AuthLink provider="msu">Sign in with MSU</AuthLink>
     </li>
-    <li v-if="!userSignedIn">
+    <li v-if="!isUserSignedIn">
       <router-link to="/email-sign-in">Sign in with Email</AuthLink>
     </li>
     <li v-if="hasNewGitHubScopes">
@@ -16,12 +16,12 @@
         Lessons
       </router-link>
     </li>
-    <li v-if="userSignedIn">
+    <li v-if="isUserSignedIn">
       <router-link to="/courses">
         Courses
       </router-link>
     </li>
-    <li v-if="userSignedIn">
+    <li v-if="isUserSignedIn">
       <router-link to="/sign-out">
         Sign out
       </router-link>

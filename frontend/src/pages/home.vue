@@ -2,9 +2,9 @@
   <Layout>
     <h1>
       Welcome Home
-      <span v-if="userSignedIn">{{ currentUser.profile.fullName }}</span>
+      <span v-if="isUserSignedIn">{{ currentUser.profile.fullName }}</span>
     </h1>
-    <div v-if="userSignedIn && currentUser.profile.github">
+    <div v-if="isUserSignedIn && currentUser.profile.github">
       <div>
         <strong>GitHub User:</strong>
         {{ currentUser.profile.github.login }}

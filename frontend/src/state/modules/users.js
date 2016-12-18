@@ -13,7 +13,7 @@ export default {
     all: []
   },
   getters: {
-    userSignedIn (state) {
+    isUserSignedIn (state) {
       return !!state.currentUser
     },
     hasNewGitHubScopes (state) {
