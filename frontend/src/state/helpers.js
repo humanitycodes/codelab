@@ -9,7 +9,7 @@ export const userGetters = {
   }),
   ...mapGetters([
     'userSignedIn',
-    'newGitHubScopes'
+    'hasNewGitHubScopes'
   ])
 }
 

@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { isEqual } from 'lodash'
 import firebase from 'firebase'
 import db from '@plugins/firebase'
 import jwtDecode from 'jwt-decode'
@@ -16,12 +16,12 @@ export default {
     userSignedIn (state) {
       return !!state.currentUser
     },
-    newGitHubScopes (state) {
+    hasNewGitHubScopes (state) {
       if (!state.currentUser) return false
 
       if (state.currentUser.profile.github) {
         const userScopes = state.currentUser.profile.github.scope.split(',')
-        return !_.isEqual(requiredGitHubScopes().sort(), userScopes.sort())
+        return !isEqual(requiredGitHubScopes().sort(), userScopes.sort())
       }
       return true
     }
