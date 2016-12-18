@@ -8,7 +8,7 @@ export const userGetters = {
     users: state => state.users.all
   }),
   ...mapGetters([
-    'userSignedIn',
+    'isUserSignedIn',
     'hasNewGitHubScopes'
   ])
 }
