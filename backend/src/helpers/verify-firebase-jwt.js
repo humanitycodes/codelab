@@ -14,7 +14,7 @@ export function verifyJWT (decoded, request, callback) {
       }
     }).catch(error => {
       if (callback) {
-        callback(error, false)
+        callback(null, false)
       } else {
         return Promise.reject(error)
       }
