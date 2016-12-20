@@ -1,4 +1,8 @@
 import joi from 'joi'
+import boom from 'boom'
+
+const ghclient = require('../helpers/github-client')
+const userRepo = require('../db/user-repo')
 
 export const config = [
   {
@@ -31,8 +35,30 @@ export const config = [
         }).required()
       }
     },
-    handler: (request, reply) => {
-      reply(request.payload)
+    handler: function* (request, reply) {
+      try {
+        const uid = request.auth.credentials.user_id
+        const [userId, user] = yield userRepo.readById(uid)
+        if (!user) {
+          throw boom.forbidden(`User ${uid} not found.`)
+        } else if (!user.github) {
+          throw boom.forbidden(`User ${uid} has not connected their GitHub account.`)
+        }
+
+        const { courseKey, lessonKey, projectKey } = request.payload
+        const repoName = `${courseKey}-${lessonKey}-${projectKey.slice(-6)}`
+        const repo = yield ghclient.createRepository(user.github.token, { name: repoName })
+
+        reply({
+          repo: {
+            name: repoName,
+            htmlUrl: repo.html_url,
+            apiUrl: repo.url
+          }
+        })
+      } catch (error) {
+        reply(boom.wrap(error))
+      }
     }
   }
 ]
