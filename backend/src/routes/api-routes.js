@@ -38,7 +38,7 @@ export const config = [
     handler: function* (request, reply) {
       try {
         const uid = request.auth.credentials.user_id
-        const [userId, user] = yield userRepo.readById(uid)
+        const user = yield userRepo.readById(uid)[1]
         if (!user) {
           throw boom.forbidden(`User ${uid} not found.`)
         } else if (!user.github) {
