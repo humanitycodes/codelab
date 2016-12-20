@@ -30,12 +30,12 @@ export async function requestLoginProfile (code) {
         githubProfile.token = response.data.access_token
         githubProfile.scope = response.data.scope
 
-        return getUserProfile({ token: githubProfile.token })
+        return getUserProfile(githubProfile.token)
       }
     })
-    .then(response => {
-      githubProfile.userId = response.data.id
-      githubProfile.login = response.data.login
+    .then(userProfile => {
+      githubProfile.userId = userProfile.id
+      githubProfile.login = userProfile.login
       resolve(githubProfile)
     })
     .catch(reject)
