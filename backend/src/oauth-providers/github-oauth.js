@@ -1,16 +1,7 @@
 import axios from 'axios'
 import { config } from '../../env/config'
 
-function getFromGitHub (path, token) {
-  return axios({
-    method: 'get',
-    url: `${config.githubAuthBaseURL}${path}`,
-    headers: {
-      Accept: 'application/vnd.github.v3+json',
-      Authorization: `token ${token}`
-    }
-  })
-}
+import { getUserProfile } from '../helpers/github-client'
 
 export async function requestLoginProfile (code) {
   let githubProfile = {}
@@ -39,7 +30,7 @@ export async function requestLoginProfile (code) {
         githubProfile.token = response.data.access_token
         githubProfile.scope = response.data.scope
 
-        return getFromGitHub('/user', githubProfile.token)
+        return getUserProfile({ token: githubProfile.token })
       }
     })
     .then(response => {
