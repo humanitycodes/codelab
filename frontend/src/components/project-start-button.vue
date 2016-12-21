@@ -1,28 +1,35 @@
 <template>
-  <button
-    v-if="!projectSubmission.repo"
-    class="primary block"
-    @click="startProject"
-    :disabled="isInProgress"
-  >
-    <p v-if="isInProgress">
-      Creating Project Repository
-    </p>
-    <p v-else>
-      Create Project Repository
-    </p>
-  </button>
+  <div v-if="hasNewGitHubScopes">
+    You must reconnect your GitHub account before you can start this project.
+  </div>
   <div v-else>
-    <div>
-      <strong>Congratulations!</strong> Your repository can be found at:
+    <button
+      v-if="!projectSubmission.repo"
+      class="primary block"
+      @click="startProject"
+      :disabled="isInProgress"
+    >
+      <p v-if="isInProgress">
+        Creating Project Repository
+      </p>
+      <p v-else>
+        Create Project Repository
+      </p>
+    </button>
+    <div v-else>
+      <div>
+        <strong>Congratulations!</strong> Your repository can be found at:
+      </div>
+      <a :href="projectSubmission.repo.htmlUrl" target="_blank">
+        {{ projectSubmission.repo.htmlUrl }}
+      </a>
     </div>
-    <a :href="projectSubmission.repo.htmlUrl" target="_blank">
-      {{ projectSubmission.repo.htmlUrl }}
-    </a>
   </div>
 </template>
 
 <script>
+import { userGetters } from '@state/helpers'
+
 export default {
   props: {
     course: {
@@ -44,6 +51,7 @@ export default {
       projectSubmission: {}
     }
   },
+  computed: userGetters,
   methods: {
     startProject () {
       this.isInProgress = true
