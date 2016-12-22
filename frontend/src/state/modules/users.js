@@ -4,6 +4,7 @@ import db from '@plugins/firebase'
 import jwtDecode from 'jwt-decode'
 import { createFirebaseVM } from './_helpers'
 import requiredGitHubScopes from '@helpers/required-github-scopes'
+import Axios from 'axios'
 
 const syncCache = {}
 export default {
@@ -42,6 +43,7 @@ export default {
               uid: userSnapshot.key,
               firebaseJwt: firebaseTokenResult.accessToken
             })
+            Axios.defaults.headers.common['Authorization'] = `Bearer ${firebaseTokenResult.accessToken}`
             if (resolvedCallbacksCount === 1) resolve(rootState)
             resolvedCallbacksCount++
           })

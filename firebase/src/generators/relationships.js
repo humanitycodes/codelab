@@ -4,6 +4,7 @@ import {
 } from './conditions'
 import timestampFields from './timestamp-fields'
 import generateResource from './resource'
+import generateFields from './fields'
 
 const generateRelationships = (parentResourceName, relationships, resourcesDef) => {
   if (!relationships) return {}
@@ -22,6 +23,14 @@ const generateRelationships = (parentResourceName, relationships, resourcesDef) 
       })()
       : def.resource || name
     const parentResourceKey = `$${parentResourceName}Key`
+    if (def.singular) {
+      return generateFields({
+        [name]: {
+          type: String,
+          validate: keyInResource('newData.val()', resourceName)
+        }
+      })
+    }
     return {
       ...generateResource(name, {
         validate: all(
