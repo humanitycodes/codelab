@@ -17,7 +17,11 @@
       </div>
     </div>
     <ProjectSubmissionFlow
-      v-if="currentLesson.projects.length"
+      v-if="
+        currentLesson.projects.length &&
+        currentUser.profile.github &&
+        !hasNewGitHubScopes
+      "
       :course="currentCourse"
       :lesson="currentLesson"
       :project="currentLesson.projects[0]"
