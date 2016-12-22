@@ -38,7 +38,7 @@ export const config = [
     handler: function* (request, reply) {
       try {
         const uid = request.auth.credentials.user_id
-        const user = yield userRepo.readById(uid)[1]
+        const user = (yield userRepo.readById(uid))[1]
         if (!user) {
           throw boom.forbidden(`User ${uid} not found.`)
         } else if (!user.github) {
@@ -57,6 +57,8 @@ export const config = [
           }
         })
       } catch (error) {
+        const params = JSON.stringify(request.payload)
+        console.error(`Unable to create project submission with parameters ${params}. Reason:`, error)
         reply(boom.wrap(error))
       }
     }

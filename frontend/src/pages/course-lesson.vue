@@ -30,6 +30,8 @@
           />
         </ol>
         <p v-else>No criteria for this project yet.</p>
+        <h4>Workflow</h4>
+        <ProjectStartButton :course="currentCourse" :lesson="currentLesson" :project="currentLesson.projects[0]"/>
       </div>
     </div>
     <EditCurrentLessonButton/>
@@ -43,10 +45,12 @@ import {
   courseGetters, lessonGetters, courseLessonGetters
 } from '@state/helpers'
 import courseLessonGradePoints from '@helpers/course-lesson-grade-points'
+import ProjectStartButton from '@components/project-start-button'
 
 export default {
   components: {
     Layout,
+    ProjectStartButton,
     EditCurrentLessonButton: {
       render (h) {
         if (!this.canUpdateCurrentLesson) return ''
