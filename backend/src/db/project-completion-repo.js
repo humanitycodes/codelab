@@ -6,8 +6,9 @@ export async function create ({ uid, courseKey, lessonKey, projectKey }) {
 
   return new Promise((resolve, reject) => {
     // Make sure the student is in the course
-    db.ref('courses/relationships/students')
+    db.ref('courses/relationships')
       .child(courseKey)
+      .child('students')
       .child(uid)
       .once('value', snapshot => {
         if (snapshot.val()) return resolve()
