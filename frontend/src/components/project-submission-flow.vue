@@ -55,6 +55,9 @@
       </button>
     </div>
     <div v-if="projectCompletion" class="project-submission-instructions">
+      <a :href="projectRepoUrl">
+        GitHub Repo
+      </a>
       <p>Instructions go here...</p>
     </div>
     <p v-if="error" class="danger">{{ error }}</p>
@@ -95,6 +98,18 @@ export default {
         delete projectCompletion.students
         return projectCompletion
       }
+    },
+    projectRepoUrl () {
+      return [
+        'https://github.com/',
+        this.currentUser.profile.github.login,
+        '/',
+        [
+          this.course['.key'],
+          this.lesson['.key'],
+          this.project['.key'].slice(-6)
+        ].join('-')
+      ].join('')
     }
   },
   methods: {

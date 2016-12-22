@@ -51,7 +51,7 @@ import rho from 'rho'
 import Layout from '@layouts/main'
 import ProjectSubmissionFlow from '@components/project-submission-flow'
 import {
-  courseGetters, lessonGetters, courseLessonGetters
+  userGetters, courseGetters, lessonGetters, courseLessonGetters
 } from '@state/helpers'
 import courseLessonGradePoints from '@helpers/course-lesson-grade-points'
 
@@ -74,6 +74,7 @@ export default {
     }
   },
   computed: {
+    ...userGetters,
     ...courseGetters,
     ...lessonGetters,
     ...courseLessonGetters,
