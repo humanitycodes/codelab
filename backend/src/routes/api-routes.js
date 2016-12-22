@@ -3,6 +3,7 @@ import boom from 'boom'
 
 const ghclient = require('../helpers/github-client')
 const userRepo = require('../db/user-repo')
+const projectCompletionRepo = require('../db/project-completion-repo')
 
 export const config = [
   {
@@ -21,7 +22,7 @@ export const config = [
   },
   {
     method: 'POST',
-    path: `/project-submissions`,
+    path: `/project-completions`,
     config: {
       auth: {
         mode: 'required',
@@ -38,25 +39,20 @@ export const config = [
     handler: function* (request, reply) {
       try {
         const uid = request.auth.credentials.user_id
-        const user = yield userRepo.readById(uid)[1]
+        const user = (yield userRepo.readById(uid))[1]
         if (!user) {
           throw boom.forbidden(`User ${uid} not found.`)
         } else if (!user.github) {
           throw boom.forbidden(`User ${uid} has not connected their GitHub account.`)
         }
-
         const { courseKey, lessonKey, projectKey } = request.payload
         const repoName = `${courseKey}-${lessonKey}-${projectKey.slice(-6)}`
-        const repo = yield ghclient.createRepository(user.github.token, { name: repoName })
-
-        reply({
-          repo: {
-            name: repoName,
-            htmlUrl: repo.html_url,
-            apiUrl: repo.url
-          }
-        })
+        yield ghclient.createRepository(user.github.token, { name: repoName })
+        yield projectCompletionRepo.create({ uid, courseKey, lessonKey, projectKey })
+        reply({ repo: { name: repoName } })
       } catch (error) {
+        const params = JSON.stringify(request.payload)
+        console.error(`Unable to create project submission with parameters ${params}. Reason:`, error)
         reply(boom.wrap(error))
       }
     }

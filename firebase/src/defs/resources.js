@@ -1,4 +1,4 @@
-import { isGreaterThan, hasRole, childIsFalsy } from '../generators/conditions'
+import { all, isGreaterThan, hasRole, childIsFalsy, isOneOfTheseStrings, keyInResource } from '../generators/conditions'
 
 export default {
   courses: {
@@ -10,6 +10,7 @@ export default {
     },
     relationships: {
       students: { resource: 'users' },
+      instructors: { resource: 'users' },
       lessons: true
     },
     fieldGroups: {
@@ -27,6 +28,27 @@ export default {
       large: {
         authed: {
           syllabus: String
+        },
+        student: {
+          projectCompletions: {
+            type: Array,
+            fields: {
+              students: { type: Array },
+              lessonKey: {
+                validate: keyInResource('newData.val()', 'lessons')
+              },
+              projectKey: {
+                validate: `root.child('lessons/large/student/'+data.parent().child('lessonKey').val()+'/projects/'+newData.val()).exists()`
+              },
+              submission: {
+                fields: {
+                  hostedUrl: String,
+                  instructorCommentedLast: Boolean,
+                  isApproved: Boolean
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -84,6 +106,12 @@ export default {
                 fields: {
                   content: String
                 }
+              },
+              hosting: {
+                type: String,
+                validate: isOneOfTheseStrings(
+                  'GitHub Pages', 'Heroku'
+                )
               }
             }
           }

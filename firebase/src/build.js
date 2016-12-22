@@ -9,6 +9,7 @@ import generateTopLevelResource from './generators/top-level-resource'
 import usersDef from './defs/users'
 import rolesDef from './defs/roles'
 import resourcesDef from './defs/resources'
+import { js_beautify as JSONBeautify } from 'js-beautify'
 
 const resourceNames = Object.keys(resourcesDef)
 
@@ -27,7 +28,10 @@ const rules = {
 
 fs.writeFile(
   path.join(__dirname, '../dist/firebase.rules.json'),
-  JSON.stringify(rules),
+  JSONBeautify(
+    JSON.stringify(rules),
+    { indent_size: 2 }
+  ),
   error => {
     if (error) throw error
     console.log('It\'s saved!')

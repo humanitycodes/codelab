@@ -10,6 +10,10 @@
     "predeploy": "yarn build:rules",
     "deploy": "firebase deploy --project production --token `cat token`"
   },
+  "dependencies": {
+    "js-beautify": "^1.6.4",
+    "lodash": "^4.17.2"
+  },
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-preset-es2015": "^6.18.0",
@@ -44,8 +48,5 @@
   },
   "engines": {
     "node": ">=7.0.0"
-  },
-  "dependencies": {
-    "lodash": "^4.17.2"
   }
 }

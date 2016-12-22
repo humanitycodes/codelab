@@ -16,6 +16,12 @@
         <div v-html="lessonContentHTML" class="rendered-content"/>
       </div>
     </div>
+    <ProjectSubmissionFlow
+      v-if="currentLesson.projects.length"
+      :course="currentCourse"
+      :lesson="currentLesson"
+      :project="currentLesson.projects[0]"
+    />
     <div class="flex-row" v-if="currentLesson.projects.length">
       <div class="flex-col">
         <h3>
@@ -39,6 +45,7 @@
 <script>
 import rho from 'rho'
 import Layout from '@layouts/main'
+import ProjectSubmissionFlow from '@components/project-submission-flow'
 import {
   courseGetters, lessonGetters, courseLessonGetters
 } from '@state/helpers'
@@ -47,6 +54,7 @@ import courseLessonGradePoints from '@helpers/course-lesson-grade-points'
 export default {
   components: {
     Layout,
+    ProjectSubmissionFlow,
     EditCurrentLessonButton: {
       render (h) {
         if (!this.canUpdateCurrentLesson) return ''

@@ -24,6 +24,9 @@ export const not = expression => {
 // -------------
 
 export const keyInResource = (key, resource) => {
+  if (!['users', 'roles'].includes(resource)) {
+    resource = `${resource}/meta`
+  }
   return `root.child('${resource}/'+${key}).exists()`
 }
 export const keyIsCurrentUser = key => {
@@ -34,6 +37,13 @@ export const isGreaterThan = min => {
 }
 export const isLongerThan = min => {
   return `newData.val().length > ${min}`
+}
+export const isOneOfTheseStrings = (...array) => {
+  return any(
+    ...array.map(value => {
+      return `newData.val() === '${value}'`
+    })
+  )
 }
 export const nonEmpty = isLongerThan(0)
 export const childIsFalsy = child => {

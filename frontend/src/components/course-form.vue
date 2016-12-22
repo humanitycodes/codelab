@@ -5,6 +5,7 @@
     <CourseDates :course="course"/>
     <CourseSyllabus :course="course"/>
     <CourseLessons :course="course"/>
+    <CourseInstructors :course="course"/>
     <CourseStudents :course="course" :disabled="!isReadyForStudents"/>
   </div>
 </template>
