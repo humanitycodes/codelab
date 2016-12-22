@@ -4,7 +4,7 @@
   </div>
   <div v-else>
     <button
-      v-if="!projectSubmission.repo"
+      v-if="!repoUrl"
       class="primary block"
       @click="startProject"
       :disabled="isInProgress"
@@ -20,8 +20,8 @@
       <div>
         <strong>Congratulations!</strong> Your repository can be found at:
       </div>
-      <a :href="projectSubmission.repo.htmlUrl" target="_blank">
-        {{ projectSubmission.repo.htmlUrl }}
+      <a :href="repoUrl" target="_blank">
+        {{ repoUrl }}
       </a>
     </div>
   </div>
@@ -48,7 +48,7 @@ export default {
   data () {
     return {
       isInProgress: false,
-      projectSubmission: {}
+      repoUrl: null
     }
   },
   computed: userGetters,
@@ -63,7 +63,7 @@ export default {
       })
       .then(response => response.json())
       .then(data => {
-        this.projectSubmission = data
+        this.repoUrl = data.repo.htmlUrl
         this.isInProgress = false
       })
       .catch(response => {
