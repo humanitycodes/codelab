@@ -24,7 +24,7 @@ export const not = expression => {
 // -------------
 
 export const keyInResource = (key, resource) => {
-  if (!['users', 'roles'].includes(resource)) {
+  if (['users', 'roles'].indexOf(resource) === -1) {
     resource = `${resource}/meta`
   }
   return `root.child('${resource}/'+${key}).exists()`
