@@ -152,7 +152,7 @@ describe('generateTopLevelResource', () => {
                 '$other': {
                   '.validate': false
                 },
-                '.validate': "(root.child('courses/'+$coursesKey).exists() || root.child('courses/meta/'+$coursesKey).exists())",
+                '.validate': "root.child('courses/meta/'+$coursesKey).exists()",
                 'createdAt': {
                   '.validate': '(newData.isNumber() && newData.val() % 1 === 0)'
                 },
@@ -172,7 +172,7 @@ describe('generateTopLevelResource', () => {
                 '$other': {
                   '.validate': false
                 },
-                '.validate': "((root.child('lessons/'+$postreqsKey).exists() || root.child('lessons/meta/'+$postreqsKey).exists()) && $postreqsKey !== $lessonsKey)",
+                '.validate': "(root.child('lessons/meta/'+$postreqsKey).exists() && $postreqsKey !== $lessonsKey)",
                 'createdAt': {
                   '.validate': '(newData.isNumber() && newData.val() % 1 === 0)'
                 },
@@ -192,7 +192,7 @@ describe('generateTopLevelResource', () => {
                 '$other': {
                   '.validate': false
                 },
-                '.validate': "((root.child('lessons/'+$prereqsKey).exists() || root.child('lessons/meta/'+$prereqsKey).exists()) && $prereqsKey !== $lessonsKey)",
+                '.validate': "(root.child('lessons/meta/'+$prereqsKey).exists() && $prereqsKey !== $lessonsKey)",
                 'createdAt': {
                   '.validate': '(newData.isNumber() && newData.val() % 1 === 0)'
                 },
@@ -212,7 +212,7 @@ describe('generateTopLevelResource', () => {
                 '$other': {
                   '.validate': false
                 },
-                '.validate': "(root.child('users/'+$studentsKey).exists() || root.child('users/meta/'+$studentsKey).exists())",
+                '.validate': "root.child('users/'+$studentsKey).exists()",
                 'createdAt': {
                   '.validate': '(newData.isNumber() && newData.val() % 1 === 0)'
                 },

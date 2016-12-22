@@ -34,10 +34,7 @@ const generateRelationships = (parentResourceName, relationships, resourcesDef) 
     return {
       ...generateResource(name, {
         validate: all(
-          any(
-            keyInResource(keyVar, resourceName),
-            keyInResource(keyVar, resourceName + '/meta')
-          ),
+          keyInResource(keyVar, resourceName),
           parentResourceName === resourceName &&
             `${keyVar} !== ${parentResourceKey}`
         ),
@@ -51,10 +48,7 @@ const generateRelationships = (parentResourceName, relationships, resourcesDef) 
                 const originResourceKey = `$${originResourceName}Key`
                 const foreignResourceName = def.derivedFrom.foreignKey || parentResourceName
                 return all(
-                  keyInResource(
-                    originResourceKey,
-                    originResourceName + '/meta'
-                  ),
+                  keyInResource(originResourceKey, originResourceName),
                   `root.child('${originResourceName}/relationships/'+${originResourceKey}+'/${foreignResourceName}/'+${parentResourceKey}).exists()`,
                   `root.child('${parentResourceName}/relationships/'+${parentResourceKey}+'/${originResourceName}/'+${originResourceKey}).exists()`
                 )

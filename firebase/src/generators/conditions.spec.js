@@ -30,9 +30,17 @@ describe('not helper', () => {
 })
 
 describe('keyInResource helper', () => {
-  it('returns the correct rule', () => {
+  it('returns the correct rule for resources', () => {
     expect(keyInResource('foo', 'bar'))
-      .toEqual(`root.child('bar/'+foo).exists()`)
+      .toEqual(`root.child('bar/meta/'+foo).exists()`)
+  })
+  it('returns the correct rule for users', () => {
+    expect(keyInResource('foo', 'users'))
+      .toEqual(`root.child('users/'+foo).exists()`)
+  })
+  it('returns the correct rule for roles', () => {
+    expect(keyInResource('foo', 'users'))
+      .toEqual(`root.child('users/'+foo).exists()`)
   })
 })
 

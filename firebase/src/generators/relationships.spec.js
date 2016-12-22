@@ -17,7 +17,7 @@ describe('generateRelationships', () => {
     expect(rules).toEqual({
       students: {
         $studentsKey: {
-          '.validate': `(root.child('users/'+$studentsKey).exists() || root.child('users/meta/'+$studentsKey).exists())`,
+          '.validate': `root.child('users/'+$studentsKey).exists()`,
           createdAt: {
             '.validate': `(newData.isNumber() && newData.val() % 1 === 0)`
           },
@@ -35,7 +35,7 @@ describe('generateRelationships', () => {
       },
       coursePrereqs: {
         $coursePrereqsKey: {
-          '.validate': `((root.child('courses/'+$coursePrereqsKey).exists() || root.child('courses/meta/'+$coursePrereqsKey).exists()) && $coursePrereqsKey !== $coursesKey)`,
+          '.validate': `(root.child('courses/meta/'+$coursePrereqsKey).exists() && $coursePrereqsKey !== $coursesKey)`,
           createdAt: {
             '.validate': `(newData.isNumber() && newData.val() % 1 === 0)`
           },
@@ -56,7 +56,7 @@ describe('generateRelationships', () => {
       },
       lessons: {
         $lessonsKey: {
-          '.validate': `(root.child('lessons/'+$lessonsKey).exists() || root.child('lessons/meta/'+$lessonsKey).exists())`,
+          '.validate': `root.child('lessons/meta/'+$lessonsKey).exists()`,
           createdAt: {
             '.validate': `(newData.isNumber() && newData.val() % 1 === 0)`
           },
@@ -93,7 +93,7 @@ describe('generateRelationships', () => {
       $other: { '.validate': false },
       students: {
         $studentsKey: {
-          '.validate': `(root.child('users/'+$studentsKey).exists() || root.child('users/meta/'+$studentsKey).exists())`,
+          '.validate': `root.child('users/'+$studentsKey).exists()`,
           $other: { '.validate': false },
           courses: {
             $coursesKey: {
