@@ -26,7 +26,7 @@
     "test:firebase": "cd firebase && yarn run test",
     "test:test": "cd test && yarn run test",
     "dev:backend": "cd backend && yarn run dev",
-    "predev:frontend": "cd firebase && yarn run build:adapter",
+    "predev:frontend": "cd firebase && yarn run build:adapter && yarn run dev:deploy",
     "dev:frontend": "cd frontend && yarn run dev",
     "dev:ssl": "local-ssl-proxy --source 8080 --target 8181",
     "serve:backend": "cd backend && yarn run serve:prod",
