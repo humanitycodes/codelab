@@ -55,7 +55,7 @@
       </button>
     </div>
     <div v-if="projectCompletion" class="project-submission-instructions">
-      <a :href="projectRepoUrl">
+      <a :href="projectRepoUrl" target="_blank">
         GitHub Repo
       </a>
       <p>Instructions go here...</p>
@@ -92,6 +92,8 @@ export default {
       const rawProjectCompletion = this.course.projectCompletions.find(completion => {
         return completion['.key'] === [this.project['.key'], this.currentUser.uid].join('-')
       })
+      console.log('Course:', this.course)
+      console.log('Completion:', rawProjectCompletion)
       if (rawProjectCompletion) {
         const projectCompletion = { ...rawProjectCompletion }
         projectCompletion.studentKey = projectCompletion.students[0]['.key']
