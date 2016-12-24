@@ -64,6 +64,24 @@
           git clone {{ projectRepoUrl }}.git
         </CodeBlock>
       </p>
+      <p>
+        Now, write some code. After you make any changes, add those files to the list of changes you want to commit:
+        <CodeBlock>
+          git add -A .
+        </CodeBlock>
+      </p>
+      <p>
+        When you've added all of the changes, the next step is to commit them on <em>your</em> computer:
+        <CodeBlock>
+          git commit -m 'a short message describing your changes'
+        </CodeBlock>
+      </p>
+      <p>
+        Then you have to upload your commits to GitHub:
+        <CodeBlock>
+          git push origin master
+        </CodeBlock>
+      </p>
     </div>
     <p v-if="error" class="danger">{{ error }}</p>
   </div>
