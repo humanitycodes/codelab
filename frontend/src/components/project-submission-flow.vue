@@ -58,7 +58,12 @@
       <a :href="projectRepoUrl" target="_blank">
         GitHub Repo
       </a>
-      <p>Instructions go here...</p>
+      <p>
+        In a terminal, run the following command to add the repo to your computer:
+        <CodeBlock>
+          git clone {{ projectRepoUrl }}.git
+        </CodeBlock>
+      </p>
     </div>
     <p v-if="error" class="danger">{{ error }}</p>
   </div>
@@ -67,8 +72,12 @@
 <script>
 import Axios from 'axios'
 import { userGetters } from '@state/helpers'
+import CodeBlock from '@components/code-block'
 
 export default {
+  components: {
+    CodeBlock
+  },
   props: {
     course: {
       type: Object,
