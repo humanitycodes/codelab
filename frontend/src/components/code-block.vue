@@ -1,6 +1,18 @@
 <template>
-  <pre><code>{{ this.$slots.default[0].text.trim() }}</code></pre>
+  <pre><code><slot/></code></pre>
 </template>
+
+<script>
+export default {
+  beforeMount () {
+    Object.values(this.$slots).forEach(slotArray => {
+      slotArray.forEach(slot => {
+        slot.text = slot.text.trim()
+      })
+    })
+  }
+}
+</script>
 
 <style lang="stylus" scoped>
 @import '../meta'
@@ -10,5 +22,4 @@ pre
   background-color: $design.branding.muted.light.gray
   > code
     display: block
-    font-weight: bold
 </style>
