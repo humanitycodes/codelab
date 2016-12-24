@@ -59,7 +59,7 @@
         GitHub Repo
       </a>
       <p>
-        In a terminal, run the following command to add the repo to your computer:
+        In a terminal, add the repo to your computer:
         <CodeBlock>
           git clone {{ projectRepoUrl }}.git
         </CodeBlock>
@@ -101,8 +101,6 @@ export default {
       const rawProjectCompletion = this.course.projectCompletions.find(completion => {
         return completion['.key'] === [this.project['.key'], this.currentUser.uid].join('-')
       })
-      console.log('Course:', this.course)
-      console.log('Completion:', rawProjectCompletion)
       if (rawProjectCompletion) {
         const projectCompletion = { ...rawProjectCompletion }
         projectCompletion.studentKey = projectCompletion.students[0]['.key']
