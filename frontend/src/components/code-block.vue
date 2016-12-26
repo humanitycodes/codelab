@@ -5,8 +5,8 @@
 <script>
 export default {
   beforeMount () {
-    Object.values(this.$slots).forEach(slotArray => {
-      slotArray.forEach(slot => {
+    Object.values(this.$slots).forEach(slots => {
+      slots.forEach(slot => {
         slot.text = slot.text.trim()
       })
     })
@@ -19,6 +19,7 @@ export default {
 
 pre
   padding: 1rem
+  margin: 0
   background-color: $design.branding.muted.light.gray
   > code
     display: block

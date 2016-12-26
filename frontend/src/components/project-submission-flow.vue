@@ -56,28 +56,34 @@
     </div>
     <div v-if="projectCompletion" class="project-submission-instructions">
       <a :href="projectRepoUrl" target="_blank">
-        GitHub Repo
+        GitHub Repository
       </a>
+      <h4>
+        Before you start coding:
+      </h4>
       <p>
-        In a terminal, add the repo to your computer:
+        Add the repository to your computer:
         <CodeBlock>
           git clone {{ projectRepoUrl }}.git
         </CodeBlock>
       </p>
+      <h4>
+        When you're done coding:
+      </h4>
       <p>
-        Now, write some code. After you make any changes, add those files to the list of changes you want to commit:
+        Add the files you worked on to the list of changes you want to commit:
         <CodeBlock>
           git add -A .
         </CodeBlock>
       </p>
       <p>
-        When you've added all of the changes, the next step is to commit them on <em>your</em> computer:
+        Commit your list of changes to <em>your</em> computer:
         <CodeBlock>
           git commit -m 'a short message describing your changes'
         </CodeBlock>
       </p>
       <p>
-        Then you have to upload your commits to GitHub:
+        Upload your commits to your GitHub repository:
         <CodeBlock>
           git push origin master
         </CodeBlock>
