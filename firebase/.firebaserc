@@ -4,6 +4,7 @@
     "production": "msulansingcodes",
     "playground": "msulansingcodesplayground",
     "egillespie": "msulansingcodesdev-egillespie",
-    "fritzc": "msulansingcodesdev-fritzc"
+    "fritzc": "msulansingcodesdev-fritzc",
+    "ubuntu": "msulansingcodesdev"
   }
 }
