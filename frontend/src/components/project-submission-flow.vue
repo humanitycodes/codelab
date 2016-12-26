@@ -70,7 +70,7 @@
         When you're done coding:
       </h4>
       <p>
-        Add the files you worked on to the list of changes you want to commit:
+        Add all the files you worked on to the list of changes you want to commit:
         <CodeBlock>
           git add -A .
         </CodeBlock>
