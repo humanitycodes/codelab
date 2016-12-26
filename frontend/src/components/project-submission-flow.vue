@@ -13,13 +13,13 @@
     >
       <button
         class="flex-col success"
-        disabled
+        :disabled="projectCompletion.submission || readyToSubmit"
       >
         Started
       </button>
       <button
         class="flex-col"
-        :disabled="projectCompletion.submission"
+        :disabled="!projectCompletion.submission && !readyToSubmit"
       >
         <span v-if="!projectCompletion.submission">Submit</span>
         <span v-else>Submitted</span>
@@ -54,10 +54,12 @@
         <span v-else>Get Feedback</span>
       </button>
     </div>
-    <div v-if="projectCompletion" class="project-submission-instructions">
-      <a :href="projectRepoUrl" target="_blank">
-        GitHub Repository
-      </a>
+    <div v-if="projectCompletion && !projectCompletion.submission" class="project-submission-instructions">
+      <div class="repo-link">
+        <a :href="projectRepoUrl" target="_blank">
+          GitHub Repository
+        </a>
+      </div>
       <h4>
         Before you start coding:
       </h4>
@@ -77,7 +79,7 @@
         </CodeBlock>
       </p>
       <p>
-        Commit your list of changes to <em>your</em> computer:
+        Commit the list of changes to <em>your</em> computer:
         <CodeBlock>
           git commit -m 'a short message describing your changes'
         </CodeBlock>
@@ -88,6 +90,12 @@
           git push origin master
         </CodeBlock>
       </p>
+      <button
+        class="primary block"
+        @click="transitionToSubmit"
+      >
+        I'm Done
+      </button>
     </div>
     <p v-if="error" class="danger">{{ error }}</p>
   </div>
@@ -117,7 +125,10 @@ export default {
     }
   },
   data () {
-    return { error: null }
+    return {
+      readyToSubmit: false,
+      error: null
+    }
   },
   computed: {
     ...userGetters,
@@ -163,6 +174,10 @@ export default {
         }
         this.error = 'There was a problem creating the project repo on GitHub. Please tell your instructor about this and we\'ll work to resolve it as soon as possible.'
       })
+    },
+    transitionToSubmit () {
+      this.error = ''
+      this.readyToSubmit = true
     }
   }
 }
@@ -189,4 +204,7 @@ export default {
     margin-top: 0
   :last-child
     margin-bottom: 0
+.repo-link
+  width: 100%
+  text-align: center
 </style>
