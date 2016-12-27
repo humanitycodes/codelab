@@ -94,7 +94,34 @@
         </button>
       </div>
       <div v-else-if="shouldShowSubmit" class="project-submission-instructions">
-        Submit Placeholder
+        <h4>
+          Put your project on the web:
+        </h4>
+        <p>
+          Push your code to GitHub Pages:
+          <CodeBlock>
+            git push -f origin master:gh-pages
+          </CodeBlock>
+        </p>
+
+        <h4>
+          Review project criteria:
+        </h4>
+        <p>
+          Before submitting your project, please make sure you have
+          met the criteria below.
+          <ol>
+            <li v-for="criterion in project.criteria" :key="criterion['.key']">
+              {{ criterion.content }}
+            </li>
+            <li>
+              Your project can be viewed at
+              <a :href="githubPagesUrl" target="_blank">
+                {{ githubPagesUrl }}
+              </a>
+            </li>
+          </ol>
+        </p>
       </div>
       <div v-else-if="shouldShowFeedback" class="project-submission-instructions">
         Feedback Placeholder
@@ -151,6 +178,18 @@ export default {
         'https://github.com/',
         this.currentUser.profile.github.login,
         '/',
+        [
+          this.course['.key'],
+          this.lesson['.key'],
+          this.project['.key'].slice(-6)
+        ].join('-')
+      ].join('')
+    },
+    githubPagesUrl () {
+      return [
+        'https://',
+        this.currentUser.profile.github.login,
+        '.github.io/',
         [
           this.course['.key'],
           this.lesson['.key'],
