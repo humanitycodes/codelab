@@ -7,98 +7,98 @@
     >
       Start Project
     </button>
-    <div
-      v-else
-      class="flex-row project-submission-tabs"
-    >
-      <button
-        class="flex-col success"
-        :disabled="!shouldShowStart"
-      >
-        Started
-      </button>
-      <button
-        class="flex-col"
-        :disabled="!shouldShowSubmit"
-      >
-        <span v-if="!projectCompletion.submission">Submit</span>
-        <span v-else>Submitted</span>
-      </button>
-      <button
-        class="flex-col"
-        :disabled="!shouldShowFeedback"
-      >
-        <span v-if="
-          projectCompletion.submission &&
-          !projectCompletion.submission.instructorCommentedLast &&
-          !projectCompletion.submission.isApproved
-        ">
-          Awaiting Feedback
-        </span>
-        <span v-else-if="
-          projectCompletion.submission &&
-          projectCompletion.submission.instructorCommentedLast &&
-          !projectCompletion.submission.isApproved
-        ">
-          Respond to Feedback
-        </span>
-        <span v-else-if="
-          projectCompletion.submission &&
-          projectCompletion.submission.isApproved
-        ">
-          Project Approved
-        </span>
-        <span v-else>Get Feedback</span>
-      </button>
-    </div>
-    <div v-if="shouldShowStart" class="project-submission-instructions">
-      <div class="repo-link">
-        <a :href="projectRepoUrl" target="_blank">
-          GitHub Repository
-        </a>
+
+    <div v-else>
+      <div class="flex-row project-submission-tabs">
+        <button
+          class="flex-col success"
+          :disabled="!shouldShowStart"
+        >
+          Started
+        </button>
+        <button
+          class="flex-col"
+          :disabled="!shouldShowSubmit"
+        >
+          <span v-if="!projectCompletion.submission">Submit</span>
+          <span v-else>Submitted</span>
+        </button>
+        <button
+          class="flex-col"
+          :disabled="!shouldShowFeedback"
+        >
+          <span v-if="
+            projectCompletion.submission &&
+            !projectCompletion.submission.instructorCommentedLast &&
+            !projectCompletion.submission.isApproved
+          ">
+            Awaiting Feedback
+          </span>
+          <span v-else-if="
+            projectCompletion.submission &&
+            projectCompletion.submission.instructorCommentedLast &&
+            !projectCompletion.submission.isApproved
+          ">
+            Respond to Feedback
+          </span>
+          <span v-else-if="
+            projectCompletion.submission &&
+            projectCompletion.submission.isApproved
+          ">
+            Project Approved
+          </span>
+          <span v-else>Get Feedback</span>
+        </button>
       </div>
-      <h4>
-        Before you start coding:
-      </h4>
-      <p>
-        Add the repository to your computer:
-        <CodeBlock>
-          git clone {{ projectRepoUrl }}.git
-        </CodeBlock>
-      </p>
-      <h4>
-        When you're done coding:
-      </h4>
-      <p>
-        Add all the files you worked on to the list of changes you want to commit:
-        <CodeBlock>
-          git add -A .
-        </CodeBlock>
-      </p>
-      <p>
-        Commit the list of changes to <em>your</em> computer:
-        <CodeBlock>
-          git commit -m 'a short message describing your changes'
-        </CodeBlock>
-      </p>
-      <p>
-        Upload your commits to your GitHub repository:
-        <CodeBlock>
-          git push origin master
-        </CodeBlock>
-      </p>
-      <button
-        class="primary block"
-        @click="transitionToSubmit"
-      >
-        I'm Done
-      </button>
-    </div>
-    <div v-else-if="shouldShowSubmit" class="project-submission-instructions">
-      Submit Placeholder
-    </div>
-    <div v-else-if="shouldShowFeedback" class="project-submission-instructions">
-      Feedback Placeholder
+      <div v-if="shouldShowStart" class="project-submission-instructions">
+        <div class="repo-link">
+          <a :href="projectRepoUrl" target="_blank">
+            GitHub Repository
+          </a>
+        </div>
+        <h4>
+          Before you start coding:
+        </h4>
+        <p>
+          Add the repository to your computer:
+          <CodeBlock>
+            git clone {{ projectRepoUrl }}.git
+          </CodeBlock>
+        </p>
+        <h4>
+          When you're done coding:
+        </h4>
+        <p>
+          Add all the files you worked on to the list of changes you want to commit:
+          <CodeBlock>
+            git add -A .
+          </CodeBlock>
+        </p>
+        <p>
+          Commit the list of changes to <em>your</em> computer:
+          <CodeBlock>
+            git commit -m 'a short message describing your changes'
+          </CodeBlock>
+        </p>
+        <p>
+          Upload your commits to your GitHub repository:
+          <CodeBlock>
+            git push origin master
+          </CodeBlock>
+        </p>
+        <button
+          class="primary block"
+          @click="transitionToSubmit"
+        >
+          I'm Done
+        </button>
+      </div>
+      <div v-else-if="shouldShowSubmit" class="project-submission-instructions">
+        Submit Placeholder
+      </div>
+      <div v-else-if="shouldShowFeedback" class="project-submission-instructions">
+        Feedback Placeholder
+      </div>
     </div>
     <p v-if="error" class="danger">{{ error }}</p>
   </div>
@@ -159,14 +159,17 @@ export default {
       ].join('')
     },
     shouldShowStart () {
-      return !this.projectCompletion.submission &&
+      return !this.projectCompletion || (
+        !this.projectCompletion.submission &&
         !this.readyToSubmit
+      )
     },
     shouldShowSubmit () {
-      return this.readyToSubmit
+      return this.projectCompletion && this.readyToSubmit
     },
     shouldShowFeedback () {
-      return this.projectCompletion.submission &&
+      return this.projectCompletion &&
+        this.projectCompletion.submission &&
         !this.projectCompletion.submission.isApproved
     }
   },
