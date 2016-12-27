@@ -3,13 +3,20 @@
 </template>
 
 <script>
+function trimSlots (vmSlots) {
+  Object.values(vmSlots).forEach(slots => {
+    slots.forEach(slot => {
+      slot.text = slot.text.trim()
+    })
+  })
+}
+
 export default {
   beforeMount () {
-    Object.values(this.$slots).forEach(slots => {
-      slots.forEach(slot => {
-        slot.text = slot.text.trim()
-      })
-    })
+    trimSlots(this.$slots)
+  },
+  beforeUpdate () {
+    trimSlots(this.$slots)
   }
 }
 </script>

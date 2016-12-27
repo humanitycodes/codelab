@@ -13,20 +13,20 @@
     >
       <button
         class="flex-col success"
-        :disabled="!showStart"
+        :disabled="!shouldShowStart"
       >
         Started
       </button>
       <button
         class="flex-col"
-        :disabled="!showSubmit"
+        :disabled="!shouldShowSubmit"
       >
         <span v-if="!projectCompletion.submission">Submit</span>
         <span v-else>Submitted</span>
       </button>
       <button
         class="flex-col"
-        :disabled="!showFeedback"
+        :disabled="!shouldShowFeedback"
       >
         <span v-if="
           projectCompletion.submission &&
@@ -51,7 +51,7 @@
         <span v-else>Get Feedback</span>
       </button>
     </div>
-    <div v-if="showStart" class="project-submission-instructions">
+    <div v-if="shouldShowStart" class="project-submission-instructions">
       <div class="repo-link">
         <a :href="projectRepoUrl" target="_blank">
           GitHub Repository
@@ -94,10 +94,10 @@
         I'm Done
       </button>
     </div>
-    <div v-else-if="showSubmit" class="project-submission-instructions">
+    <div v-else-if="shouldShowSubmit" class="project-submission-instructions">
       Submit Placeholder
     </div>
-    <div v-else-if="showFeedback" class="project-submission-instructions">
+    <div v-else-if="shouldShowFeedback" class="project-submission-instructions">
       Feedback Placeholder
     </div>
     <p v-if="error" class="danger">{{ error }}</p>
@@ -158,14 +158,14 @@ export default {
         ].join('-')
       ].join('')
     },
-    showStart () {
+    shouldShowStart () {
       return !this.projectCompletion.submission &&
         !this.readyToSubmit
     },
-    showSubmit () {
+    shouldShowSubmit () {
       return this.readyToSubmit
     },
-    showFeedback () {
+    shouldShowFeedback () {
       return this.projectCompletion.submission &&
         !this.projectCompletion.submission.isApproved
     }
