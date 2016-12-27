@@ -98,7 +98,7 @@
           Put your project on the web:
         </h4>
         <p>
-          Push your code to GitHub Pages:
+          Upload your code to GitHub Pages:
           <CodeBlock>
             git push -f origin master:gh-pages
           </CodeBlock>
