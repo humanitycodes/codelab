@@ -95,15 +95,36 @@
         </button>
       </div>
       <div v-else-if="shouldShowSubmit" class="project-submission-instructions">
-        <h4>
-          Put your project on the web:
-        </h4>
-        <p>
-          Upload your code to GitHub Pages:
-          <CodeBlock>
-            git push -f origin master:gh-pages
-          </CodeBlock>
-        </p>
+        <template v-if="project.hosting">
+          <h4>
+            Put your project on the web:
+          </h4>
+          <template v-if="project.hosting === 'GitHub Pages'">
+            <p>
+              Upload your code to GitHub Pages:
+              <CodeBlock>
+                git push -f origin master:gh-pages
+              </CodeBlock>
+            </p>
+            <p>
+              When you're done, your project can be viewed at:
+              <br/>
+              <div class="repo-link">
+                <a :href="githubPagesUrl" target="_blank">
+                  {{ githubPagesUrl }}
+                </a>
+              </div>
+            </p>
+          </template>
+          <template v-else-if="project.hosting === 'Heroku'">
+            <p>
+              Deploy your code to Heroku:
+              <CodeBlock>
+                git push heroku master
+              </CodeBlock>
+            </p>
+          </template>
+        </template>
 
         <h4>
           Review project criteria:
@@ -115,17 +136,11 @@
             <li v-for="criterion in project.criteria">
               {{ criterion.content }}
             </li>
-            <li>
-              Project can be viewed at
-              <a :href="githubPagesUrl" target="_blank">
-                {{ githubPagesUrl }}
-              </a>
-            </li>
           </ol>
         </p>
         <button
           class="primary block"
-          @click="transitionToSubmit"
+          @click="startProjectSubmission"
           name="start-submit"
         >
           Submit
@@ -141,8 +156,17 @@
 
 <script>
 import Axios from 'axios'
+import querystring from 'querystring'
 import { userGetters } from '@state/helpers'
 import CodeBlock from '@components/code-block'
+
+function repoName (course, lesson, project) {
+  return [
+    course['.key'],
+    lesson['.key'],
+    project['.key'].slice(-6)
+  ].join('-')
+}
 
 export default {
   components: {
@@ -186,11 +210,7 @@ export default {
         'https://github.com/',
         this.currentUser.profile.github.login,
         '/',
-        [
-          this.course['.key'],
-          this.lesson['.key'],
-          this.project['.key'].slice(-6)
-        ].join('-')
+        repoName(this.course, this.lesson, this.project)
       ].join('')
     },
     githubPagesUrl () {
@@ -198,12 +218,15 @@ export default {
         'https://',
         this.currentUser.profile.github.login,
         '.github.io/',
-        [
-          this.course['.key'],
-          this.lesson['.key'],
-          this.project['.key'].slice(-6)
-        ].join('-')
+        repoName(this.course, this.lesson, this.project)
       ].join('')
+    },
+    hostedUrl () {
+      if (this.project.hosting === 'GitHub Pages') {
+        return this.githubPagesUrl
+      } else if (this.project.hosting === 'Heroku') {
+        return 'https://heroku.com'
+      }
     },
     shouldShowStart () {
       return !this.projectCompletion || (
@@ -238,6 +261,23 @@ export default {
         }
         this.error = 'There was a problem creating the project repo on GitHub. Please tell your instructor about this and we\'ll work to resolve it as soon as possible.'
       })
+    },
+    startProjectSubmission () {
+      const criteria = this.project.criteria.map(criterion => criterion.content)
+
+      const newIssueUrl = [
+        'https://github.com/',
+        this.currentUser.profile.github.login,
+        '/',
+        repoName(this.course, this.lesson, this.project),
+        '/issues/new?',
+        querystring.stringify({
+          title: 'Project Feedback',
+          body: `Can you take a look at this? It's [hosted here](${this.projectRepoUrl}) and meets the following criteria:\n\n- [x] ${criteria.join('\n- [x] ')}\n\nAdd your own notes below this line.`
+        })
+      ].join('')
+
+      window.open(newIssueUrl, '_blank').focus()
     },
     transitionToSubmit () {
       this.error = ''
