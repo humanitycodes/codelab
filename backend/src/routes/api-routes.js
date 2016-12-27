@@ -72,14 +72,14 @@ export const config = [
         headers: joi.object({
           'x-github-event': joi.string().required(),
           'x-github-delivery': joi.string().required()
-        }).required()
+        }).unknown(true)
       }
     },
     handler: function* (request, reply) {
-      const eventId = request.headers['X-GitHub-Delivery']
+      const eventId = request.headers['x-github-delivery']
 
       try {
-        const eventName = request.headers['X-GitHub-Event']
+        const eventName = request.headers['x-github-event']
         console.log(`Received GitHub ${eventName} event ${eventId}. Payload:`,
           JSON.stringify(request.payload))
         reply()
