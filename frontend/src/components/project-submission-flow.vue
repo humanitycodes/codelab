@@ -89,6 +89,7 @@
         <button
           class="primary block"
           @click="transitionToSubmit"
+          name="ready-to-submit"
         >
           I'm Done
         </button>
@@ -111,17 +112,31 @@
           Before submitting your project, please make sure you have
           met the criteria below.
           <ol>
-            <li v-for="criterion in project.criteria" :key="criterion['.key']">
-              {{ criterion.content }}
+            <li v-for="criterion in project.criteria">
+              <input type="checkbox" :id="criterion['.key']">
+              <label :for="criterion['.key']">
+                {{ criterion.content }}
+              </label>
             </li>
             <li>
-              Your project can be viewed at
-              <a :href="githubPagesUrl" target="_blank">
-                {{ githubPagesUrl }}
-              </a>
+              <input type="checkbox" id="is-project-visible">
+              <label for="is-project-visible">
+                Project can be viewed at
+                <a :href="githubPagesUrl" target="_blank">
+                  {{ githubPagesUrl }}
+                </a>
+              </label>
             </li>
           </ol>
         </p>
+        <button
+          class="primary block"
+          @click="transitionToSubmit"
+          :disabled="!canSubmit"
+          name="start-submit"
+        >
+          Submit
+        </button>
       </div>
       <div v-else-if="shouldShowFeedback" class="project-submission-instructions">
         Feedback Placeholder
@@ -197,6 +212,9 @@ export default {
         ].join('-')
       ].join('')
     },
+    canSubmit () {
+      return true
+    },
     shouldShowStart () {
       return !this.projectCompletion || (
         !this.projectCompletion.submission &&
@@ -260,6 +278,16 @@ export default {
     margin-top: 0
   :last-child
     margin-bottom: 0
+  ol
+    list-style-type: none
+    padding-left: 1rem
+  input[type=checkbox]
+    line-height: 1rem
+    height: 1rem
+  input[type=checkbox] + label
+    display: inline-block
+    margin-left: 4px
+    font-weight: 300
 .repo-link
   width: 100%
   text-align: center
