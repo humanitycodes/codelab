@@ -109,30 +109,23 @@
           Review project criteria:
         </h4>
         <p>
-          Before submitting your project, please make sure you have
-          met the criteria below.
+          Before submitting your project, please make sure you have met the
+          following criteria:
           <ol>
             <li v-for="criterion in project.criteria">
-              <input type="checkbox" :id="criterion['.key']">
-              <label :for="criterion['.key']">
-                {{ criterion.content }}
-              </label>
+              {{ criterion.content }}
             </li>
             <li>
-              <input type="checkbox" id="is-project-visible">
-              <label for="is-project-visible">
-                Project can be viewed at
-                <a :href="githubPagesUrl" target="_blank">
-                  {{ githubPagesUrl }}
-                </a>
-              </label>
+              Project can be viewed at
+              <a :href="githubPagesUrl" target="_blank">
+                {{ githubPagesUrl }}
+              </a>
             </li>
           </ol>
         </p>
         <button
           class="primary block"
           @click="transitionToSubmit"
-          :disabled="!canSubmit"
           name="start-submit"
         >
           Submit
@@ -212,9 +205,6 @@ export default {
         ].join('-')
       ].join('')
     },
-    canSubmit () {
-      return true
-    },
     shouldShowStart () {
       return !this.projectCompletion || (
         !this.projectCompletion.submission &&
@@ -278,16 +268,6 @@ export default {
     margin-top: 0
   :last-child
     margin-bottom: 0
-  ol
-    list-style-type: none
-    padding-left: 1rem
-  input[type=checkbox]
-    line-height: 1rem
-    height: 1rem
-  input[type=checkbox] + label
-    display: inline-block
-    margin-left: 4px
-    font-weight: 300
 .repo-link
   width: 100%
   text-align: center
