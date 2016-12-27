@@ -8,5 +8,8 @@ module.exports = {
 
   githubAuthBaseURL: 'https://api.github.com',
   githubAuthClientID: '740ecf728a1bf799961b',
-  githubAuthClientSecret: '85174d69151083ce58a0c0775324e5f087f1a665'
+  githubAuthClientSecret: '85174d69151083ce58a0c0775324e5f087f1a665',
+
+  githubEventsBaseURL: 'https://msu.lansing.codes',
+  githubEventsPath: '/github-events/871255a9-83c9-496b-90b8-24440f16dc77'
 }

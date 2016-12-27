@@ -31,3 +31,18 @@ export function getUserProfile (token) {
 export function createRepository (token, { name }) {
   return postToGitHub('/user/repos', token, { name: name })
 }
+
+export function createWebhooks (token, { owner, repo }) {
+  return postToGitHub(`/repos/${owner}/${repo}/hooks`, token, {
+    name: 'web',
+    active: true,
+    events: [
+      'issues',
+      'issue_comment'
+    ],
+    config: {
+      url: `${config.githubEventsBaseURL}${config.githubEventsPath}`,
+      content_type: 'json'
+    }
+  })
+}
