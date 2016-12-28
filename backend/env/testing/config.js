@@ -9,6 +9,6 @@ module.exports = {
   githubAuthClientID: '740ecf728a1bf799961b',
   githubAuthClientSecret: '85174d69151083ce58a0c0775324e5f087f1a665',
 
-  githubEventsBaseURL: 'https://msu.lansing.codes',
-  githubEventsPath: '/api/github-events/eb564a2f-fca6-41fa-8e6d-11009a330e0b'
+  githubEventsBaseURL: 'https://msu.lansing.codes/api',
+  githubEventsPath: '/github-events/eb564a2f-fca6-41fa-8e6d-11009a330e0b'
 }
