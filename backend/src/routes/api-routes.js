@@ -2,10 +2,10 @@ import joi from 'joi'
 import boom from 'boom'
 
 import { config as env } from '../../env/config'
-import * as ghclient from '../helpers/github-client'
 import githubEventHandlers from '../helpers/github-event-handlers'
-const userRepo = require('../db/user-repo')
-const projectCompletionRepo = require('../db/project-completion-repo')
+import * as ghclient from '../helpers/github-client'
+import * as userRepo from '../db/user-repo'
+import * as projectCompletionRepo from '../db/project-completion-repo'
 
 export const config = [
   {
@@ -86,7 +86,7 @@ export const config = [
           return reply()
         } else if (githubEventHandlers[eventName]) {
           console.info(`Received GitHub ${eventName} event ${eventId}`)
-          githubEventHandlers[eventName](request.payload)
+          yield githubEventHandlers[eventName](request.payload)
           reply()
         } else {
           throw boom.badData(`GitHub event type ${eventName} is unsupported`)
