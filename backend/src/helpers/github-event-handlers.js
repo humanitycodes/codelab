@@ -1,7 +1,10 @@
 import boom from 'boom'
 
-import * as userRepo from '../db/user-repo'
-import * as projectCompletionRepo from '../db/project-completion-repo'
+import { readUserByGitHubLogin } from '../db/user-repo'
+import {
+  readProjectCompletionByPartialKey,
+  updateProjectCompletion
+} from '../db/project-completion-repo'
 
 // Capture Group 1. GitHub Username: ([^/]+)
 // Capture Group 2. Course Key: ([A-Z]+-\d{3}-[A-Z]{2}\d{2}-\d{3})
@@ -33,11 +36,11 @@ export default {
     const { username, courseKey, lessonKey, projectKeyPart } = derivedKeys
 
     // Get the internal user ID
-    const [userId] = yield userRepo.readByGitHubLogin(username)
+    const [userId] = yield readUserByGitHubLogin(username)
     if (!userId) throw boom.badData(`Unable to find user with GitHub login: ${username}`)
 
     // Find matching project completions
-    const projectCompletions = yield projectCompletionRepo.readByPartialKey({
+    const projectCompletions = yield readProjectCompletionByPartialKey({
       uid: userId,
       courseKey: courseKey,
       lessonKey: lessonKey,
@@ -58,7 +61,7 @@ export default {
     }
     if (!projectCompletion.submission.hasCommitOnRepository) {
       projectCompletion.submission.hasCommitOnRepository = true
-      yield projectCompletionRepo.update({
+      yield updateProjectCompletion({
         courseKey,
         projectCompletionKey
       }, projectCompletion)

@@ -1,6 +1,6 @@
 import firebase from 'firebase-admin'
 
-export async function create ({ uid, courseKey, lessonKey, projectKey }) {
+export async function createProjectCompletion ({ uid, courseKey, lessonKey, projectKey }) {
   const db = firebase.database()
   const projectCompletionKey = [projectKey, uid].join('-')
 
@@ -40,7 +40,7 @@ export async function create ({ uid, courseKey, lessonKey, projectKey }) {
   })
   .then(() => {
     // Create the project completion
-    return update({ courseKey, projectCompletionKey }, {
+    return updateProjectCompletion({ courseKey, projectCompletionKey }, {
       position: 1,
       students: { [uid]: { position: 1 } },
       lessonKey,
@@ -49,7 +49,7 @@ export async function create ({ uid, courseKey, lessonKey, projectKey }) {
   })
 }
 
-export async function readByPartialKey ({ uid, courseKey, lessonKey, projectKeyPart }) {
+export async function readProjectCompletionByPartialKey ({ uid, courseKey, lessonKey, projectKeyPart }) {
   const db = firebase.database()
   const partialCompletionKey = [projectKeyPart, uid].join('-')
 
@@ -75,7 +75,7 @@ export async function readByPartialKey ({ uid, courseKey, lessonKey, projectKeyP
   })
 }
 
-export async function update ({ courseKey, projectCompletionKey }, projectCompletion) {
+export async function updateProjectCompletion ({ courseKey, projectCompletionKey }, projectCompletion) {
   return firebase.database()
     .ref('courses/fieldGroups/large/student')
     .child(courseKey)
