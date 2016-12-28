@@ -81,7 +81,18 @@ export default {
   issues: function* (issue) {
     if (issue.action !== 'opened') return
 
-    console.log('Received issue with payload', issue)
+    const results = yield findProjectCompletionFromRepoName(issue.repository.full_name)
+
+    // Set submission to awaiting approval
+    let projectCompletion = results.projectCompletion
+    projectCompletion.submission = projectCompletion.submission || {}
+    projectCompletion.submission.isApproved = false
+    projectCompletion.submission.instructorCommentedLast = false
+
+    yield updateProjectCompletion({
+      courseKey: results.courseKey,
+      projectCompletionKey: results.projectCompletionKey
+    }, projectCompletion)
   },
 
   issue_comment: payload => {
