@@ -33,7 +33,7 @@ export default {
     const { username, courseKey, lessonKey, projectKeyPart } = derivedKeys
 
     // Get the internal user ID
-    const [userId, user] = yield userRepo.readByGitHubLogin(username)
+    const [userId] = yield userRepo.readByGitHubLogin(username)
     if (!userId) throw boom.badData(`Unable to find user with GitHub login: ${username}`)
 
     // Find matching project completions
