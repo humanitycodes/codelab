@@ -10,5 +10,5 @@ module.exports = {
   githubAuthClientSecret: 'f1be467bfbde6b2587e8377af80d1b4c465a3ae4',
 
   githubEventsBaseURL: 'https://msu.lansing.codes',
-  githubEventsPath: '/github-events/2ce78554-4c4b-46fb-90ef-a409056f27b0'
+  githubEventsPath: '/api/github-events/2ce78554-4c4b-46fb-90ef-a409056f27b0'
 }

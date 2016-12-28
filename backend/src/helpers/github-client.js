@@ -37,6 +37,7 @@ export function createWebhooks (token, { owner, repo }) {
     name: 'web',
     active: true,
     events: [
+      'push',
       'issues',
       'issue_comment'
     ],
