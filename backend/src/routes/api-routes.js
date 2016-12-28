@@ -2,9 +2,10 @@ import joi from 'joi'
 import boom from 'boom'
 
 import { config as env } from '../../env/config'
-const ghclient = require('../helpers/github-client')
-const userRepo = require('../db/user-repo')
-const projectCompletionRepo = require('../db/project-completion-repo')
+import githubEventHandlers from '../helpers/github-event-handlers'
+import * as ghclient from '../helpers/github-client'
+import * as userRepo from '../db/user-repo'
+import * as projectCompletionRepo from '../db/project-completion-repo'
 
 export const config = [
   {
@@ -52,7 +53,8 @@ export const config = [
         yield ghclient.createRepository(user.github.token, { name: repoName })
         yield ghclient.createWebhooks(user.github.token, {
           owner: user.github.login,
-          repo: repoName
+          repo: repoName,
+          events: Object.keys(githubEventHandlers)
         })
         yield projectCompletionRepo.create({ uid, courseKey, lessonKey, projectKey })
 
@@ -77,14 +79,20 @@ export const config = [
     },
     handler: function* (request, reply) {
       const eventId = request.headers['x-github-delivery']
+      const eventName = request.headers['x-github-event']
 
       try {
-        const eventName = request.headers['x-github-event']
-        console.log(`Received GitHub ${eventName} event ${eventId}. Payload:`,
-          JSON.stringify(request.payload))
-        reply()
+        if (eventName === 'ping') {
+          return reply()
+        } else if (githubEventHandlers[eventName]) {
+          console.info(`Received GitHub ${eventName} event ${eventId}`)
+          yield githubEventHandlers[eventName](request.payload)
+          reply()
+        } else {
+          throw boom.badData(`GitHub event type ${eventName} is unsupported`)
+        }
       } catch (error) {
-        console.error(`Unable to process GitHub event ${eventId}. Reason:`, error)
+        console.error(`Unable to process GitHub ${eventName} event ${eventId}. Reason:`, error)
         reply(boom.wrap(error))
       }
     }

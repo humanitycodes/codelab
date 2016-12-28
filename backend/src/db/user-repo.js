@@ -57,6 +57,28 @@ export async function readByMsuUid (msuUid) {
   })
 }
 
+export async function readByGitHubLogin (githubLogin) {
+  let usersRef = firebase.database().ref('users')
+
+  return new Promise((resolve, reject) => {
+    usersRef.orderByChild('github/login').equalTo(githubLogin).once('value')
+    .then(userSnapshot => {
+      if (userSnapshot && userSnapshot.exists()) {
+        if (userSnapshot.numChildren() === 1) {
+          const userResults = userSnapshot.val()
+          const userId = Object.keys(userResults)[0]
+          resolve([userId, userResults[userId]])
+        } else {
+          reject(new Error(`Incorrect number of users found for GitHub login ${githubLogin}.`))
+        }
+      } else {
+        resolve([null, null])
+      }
+    })
+    .catch(reject)
+  })
+}
+
 export async function saveGitHubProfile (userId, githubProfile) {
   let db = firebase.database().ref('users').child(userId).child('github')
 
