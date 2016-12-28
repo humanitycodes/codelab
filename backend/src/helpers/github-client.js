@@ -32,15 +32,11 @@ export function createRepository (token, { name }) {
   return postToGitHub('/user/repos', token, { name: name })
 }
 
-export function createWebhooks (token, { owner, repo }) {
+export function createWebhooks (token, { owner, repo, events }) {
   return postToGitHub(`/repos/${owner}/${repo}/hooks`, token, {
     name: 'web',
     active: true,
-    events: [
-      'push',
-      'issues',
-      'issue_comment'
-    ],
+    events: events,
     config: {
       url: `${config.githubEventsBaseURL}${config.githubEventsPath}`,
       content_type: 'json'
