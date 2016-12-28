@@ -1,8 +1,6 @@
 import firebase from 'firebase-admin'
 
-import {
-  readById as readUserById
-} from './user-repo'
+import { readUserById } from './user-repo'
 
 export async function readInstructorsByCourseKey (courseKey) {
   const db = firebase.database()

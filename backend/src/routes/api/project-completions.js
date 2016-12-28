@@ -3,8 +3,8 @@ import boom from 'boom'
 
 import githubEventHandlers from '../../helpers/github-event-handlers'
 import * as ghclient from '../../helpers/github-client'
-import * as userRepo from '../../db/user-repo'
-import * as projectCompletionRepo from '../../db/project-completion-repo'
+import { readUserById } from '../../db/user-repo'
+import { createProjectCompletion } from '../../db/project-completion-repo'
 
 export default {
   method: 'POST',
@@ -25,7 +25,7 @@ export default {
   handler: function* (request, reply) {
     try {
       const uid = request.auth.credentials.user_id
-      const user = (yield userRepo.readById(uid))[1]
+      const user = (yield readUserById(uid))[1]
       if (!user) {
         throw boom.forbidden(`User ${uid} not found.`)
       } else if (!user.github) {
@@ -40,7 +40,7 @@ export default {
         repo: repoName,
         events: Object.keys(githubEventHandlers)
       })
-      yield projectCompletionRepo.create({ uid, courseKey, lessonKey, projectKey })
+      yield createProjectCompletion({ uid, courseKey, lessonKey, projectKey })
 
       reply({ repo: { name: repoName } })
     } catch (error) {
