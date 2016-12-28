@@ -24,52 +24,64 @@ function parseKeysFromRepoName (name) {
   }
 }
 
+// repoName => egillespie/MI-654-SS17-654-css-sbvvixzswv-Biv4GT
+function* findProjectCompletionFromRepoName (repoName) {
+  // Figure out the owner, course, lesson, and project from the repo
+  const derivedKeys = parseKeysFromRepoName(repoName)
+  if (!derivedKeys) throw boom.badData(`Unable to parse repository name: ${repoName}`)
+  const { username, courseKey, lessonKey, projectKeyPart } = derivedKeys
+
+  // Get the internal user ID
+  const [userId] = yield readUserByGitHubLogin(username)
+  if (!userId) throw boom.badData(`Unable to find user with GitHub login: ${username}`)
+
+  // Find matching project completions
+  const projectCompletions = yield readProjectCompletionByPartialKey({
+    uid: userId,
+    courseKey: courseKey,
+    lessonKey: lessonKey,
+    projectKeyPart: projectKeyPart
+  })
+
+  // Make sure there's exactly 1
+  const projectCompletionKeys = Object.keys(projectCompletions)
+  if (projectCompletionKeys.length !== 1) {
+    throw boom.notFound(`Found ${projectCompletionKeys.length} project completions when expecting 1`)
+  }
+
+  return {
+    uid: userId,
+    courseKey: courseKey,
+    lessonKey: lessonKey,
+    projectCompletionKey: projectCompletionKeys[0],
+    projectCompletion: projectCompletions[projectCompletionKeys[0]]
+  }
+}
+
 export default {
   push: function* (push) {
     // Make sure there was at least one commit
     if (!push.commits.length) return
 
-    // Figure out the owner, course, lesson, and project from the repo
-    const repoName = push.repository.full_name
-    const derivedKeys = parseKeysFromRepoName(repoName)
-    if (!derivedKeys) throw boom.badData(`Unable to parse repository name: ${repoName}`)
-    const { username, courseKey, lessonKey, projectKeyPart } = derivedKeys
-
-    // Get the internal user ID
-    const [userId] = yield readUserByGitHubLogin(username)
-    if (!userId) throw boom.badData(`Unable to find user with GitHub login: ${username}`)
-
-    // Find matching project completions
-    const projectCompletions = yield readProjectCompletionByPartialKey({
-      uid: userId,
-      courseKey: courseKey,
-      lessonKey: lessonKey,
-      projectKeyPart: projectKeyPart
-    })
-
-    const projectCompletionKeys = Object.keys(projectCompletions)
-    if (projectCompletionKeys.length !== 1) {
-      throw boom.notFound(`Found ${projectCompletionKeys.length} project completions when expecting 1`)
-    }
+    const results = yield findProjectCompletionFromRepoName(push.repository.full_name)
 
     // Set submission.hasCommitOnRepository to true
-    const projectCompletionKey = projectCompletionKeys[0]
-    const projectCompletion = projectCompletions[projectCompletionKey]
+    let projectCompletion = results.projectCompletion
+    projectCompletion.submission = projectCompletion.submission || {}
 
-    if (!projectCompletion.submission) {
-      projectCompletion.submission = {}
-    }
     if (!projectCompletion.submission.hasCommitOnRepository) {
       projectCompletion.submission.hasCommitOnRepository = true
       yield updateProjectCompletion({
-        courseKey,
-        projectCompletionKey
+        courseKey: results.courseKey,
+        projectCompletionKey: results.projectCompletionKey
       }, projectCompletion)
     }
   },
 
-  issues: payload => {
-    console.log('Received issue with payload', payload)
+  issues: function* (issue) {
+    if (issue.action !== 'opened') return
+
+    console.log('Received issue with payload', issue)
   },
 
   issue_comment: payload => {
