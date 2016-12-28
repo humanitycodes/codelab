@@ -1,6 +1,6 @@
 import firebase from 'firebase-admin'
 
-export async function create ({ uid, courseKey, lessonKey, projectKey }) {
+export async function createProjectCompletion ({ uid, courseKey, lessonKey, projectKey }) {
   const db = firebase.database()
   const projectCompletionKey = [projectKey, uid].join('-')
 
@@ -40,15 +40,46 @@ export async function create ({ uid, courseKey, lessonKey, projectKey }) {
   })
   .then(() => {
     // Create the project completion
-    return db.ref('courses/fieldGroups/large/student')
+    return updateProjectCompletion({ courseKey, projectCompletionKey }, {
+      position: 1,
+      students: { [uid]: { position: 1 } },
+      lessonKey,
+      projectKey
+    })
+  })
+}
+
+export async function readProjectCompletionByPartialKey ({ uid, courseKey, lessonKey, projectKeyPart }) {
+  const db = firebase.database()
+  const partialCompletionKey = [projectKeyPart, uid].join('-')
+
+  return new Promise((resolve, reject) => {
+    db.ref('courses/fieldGroups/large/student')
       .child(courseKey)
       .child('projectCompletions')
-      .child(projectCompletionKey)
-      .update({
-        position: 1,
-        students: { [uid]: { position: 1 } },
-        lessonKey,
-        projectKey
+      .orderByChild('lessonKey')
+      .equalTo(lessonKey)
+      .once('value')
+      .then(snapshot => {
+        let projectCompletions = {}
+        Object.keys(snapshot.val()).forEach(projectCompletionKey => {
+          if (projectCompletionKey.endsWith(partialCompletionKey)) {
+            projectCompletions[projectCompletionKey] = snapshot.val()[projectCompletionKey]
+          }
+        })
+        resolve(projectCompletions)
+      })
+      .catch(error => {
+        reject('There was a problem communicating with Firebase:', error)
       })
   })
+}
+
+export async function updateProjectCompletion ({ courseKey, projectCompletionKey }, projectCompletion) {
+  return firebase.database()
+    .ref('courses/fieldGroups/large/student')
+    .child(courseKey)
+    .child('projectCompletions')
+    .child(projectCompletionKey)
+    .update(projectCompletion)
 }

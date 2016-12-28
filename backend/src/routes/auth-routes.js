@@ -2,12 +2,13 @@ import joi from 'joi'
 import boom from 'boom'
 import firebase from 'firebase-admin'
 import uuid from 'uuid'
+
 import { verifyJWT } from '../helpers/verify-firebase-jwt'
 import * as env from '../../env/config'
+import * as userRepo from '../db/user-repo'
 
 const msuOAuth = require('../oauth-providers/msu-oauth')
 const githubOAuth = require('../oauth-providers/github-oauth')
-const userRepo = require('../db/user-repo')
 
 export const config = [
   {
@@ -24,11 +25,11 @@ export const config = [
       try {
         let msuProfile = yield msuOAuth.requestLoginProfile(request.query.code)
 
-        let [userId, user] = yield userRepo.readByMsuUid(msuProfile.id)
+        let [userId, user] = yield userRepo.readUserByMsuUid(msuProfile.id)
 
         if (!user) {
           userId = uuid.v4()
-          user = yield userRepo.create(userId, {
+          user = yield userRepo.createUser(userId, {
             msuUid: msuProfile.id,
             fullName: msuProfile.name,
             email: msuProfile.email
@@ -62,13 +63,13 @@ export const config = [
       try {
         const token = yield verifyJWT(null, { auth: { token: decodeURIComponent(request.query.state) } })
 
-        const [userId, user] = yield userRepo.readById(token.uid)
+        const [userId, user] = yield userRepo.readUserById(token.uid)
         if (!user) {
           throw new Error(`User ${token.uid} not found.`)
         }
 
         const githubProfile = yield githubOAuth.requestLoginProfile(request.query.code)
-        yield userRepo.saveGitHubProfile(userId, githubProfile)
+        yield userRepo.saveUserGitHubProfile(userId, githubProfile)
 
         reply().redirect(`${env.config.serverBaseURL}/`)
       } catch (error) {

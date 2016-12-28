@@ -4,7 +4,7 @@ const SIGNUP_ROLES = {
   instructor: false
 }
 
-export async function create (userId, user) {
+export async function createUser (userId, user) {
   let db = firebase.database()
 
   return new Promise((resolve, reject) => {
@@ -19,7 +19,7 @@ export async function create (userId, user) {
   })
 }
 
-export async function readById (userId) {
+export async function readUserById (userId) {
   let userRef = firebase.database().ref('users').child(userId)
 
   return new Promise((resolve, reject) => {
@@ -35,7 +35,7 @@ export async function readById (userId) {
   })
 }
 
-export async function readByMsuUid (msuUid) {
+export async function readUserByMsuUid (msuUid) {
   let usersRef = firebase.database().ref('users')
 
   return new Promise((resolve, reject) => {
@@ -57,7 +57,29 @@ export async function readByMsuUid (msuUid) {
   })
 }
 
-export async function saveGitHubProfile (userId, githubProfile) {
+export async function readUserByGitHubLogin (githubLogin) {
+  let usersRef = firebase.database().ref('users')
+
+  return new Promise((resolve, reject) => {
+    usersRef.orderByChild('github/login').equalTo(githubLogin).once('value')
+    .then(userSnapshot => {
+      if (userSnapshot && userSnapshot.exists()) {
+        if (userSnapshot.numChildren() === 1) {
+          const userResults = userSnapshot.val()
+          const userId = Object.keys(userResults)[0]
+          resolve([userId, userResults[userId]])
+        } else {
+          reject(new Error(`Incorrect number of users found for GitHub login ${githubLogin}.`))
+        }
+      } else {
+        resolve([null, null])
+      }
+    })
+    .catch(reject)
+  })
+}
+
+export async function saveUserGitHubProfile (userId, githubProfile) {
   let db = firebase.database().ref('users').child(userId).child('github')
 
   return new Promise((resolve, reject) => {
