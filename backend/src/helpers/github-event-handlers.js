@@ -1,6 +1,7 @@
 import boom from 'boom'
 
 import { readUserByGitHubLogin } from '../db/user-repo'
+import { readInstructorsByCourseKey } from '../db/instructor-repo'
 import {
   readProjectCompletionByPartialKey,
   updateProjectCompletion
@@ -95,7 +96,43 @@ export default {
     }, projectCompletion)
   },
 
-  issue_comment: payload => {
-    console.log('Received issue comment with payload', payload)
+  issue_comment: function* (issueComment) {
+    if (['created', 'edited'].indexOf(issueComment.action) === -1) return
+
+    const results = yield findProjectCompletionFromRepoName(issueComment.repository.full_name)
+
+    let projectCompletion = results.projectCompletion
+    projectCompletion.submission = projectCompletion.submission || {}
+
+    // If submission is already approved, do nothing
+    if (projectCompletion.submission.isApproved) return
+
+    // Is this an instructor comment?
+    const instructors = yield readInstructorsByCourseKey(results.courseKey)
+    const commenterLogin = issueComment.comment.user.login
+    let isInstructorComment = false
+    Object.values(instructors).forEach(instructor => {
+      if (instructor.github && commenterLogin === instructor.github.login) {
+        isInstructorComment = true
+      }
+    })
+
+    // Does the comment contain an approval (:shipit:)?
+    let isApproved = issueComment.comment.body.search(':shipit:') !== -1
+
+    // If the instructor approved it, make it so
+    if (isInstructorComment && isApproved) {
+      projectCompletion.submission.isApproved = true
+    }
+
+    // Accurately reflect who was the last commenter on the submission
+    if (issueComment.action === 'created') {
+      projectCompletion.submission.instructorCommentedLast = isInstructorComment
+    }
+
+    yield updateProjectCompletion({
+      courseKey: results.courseKey,
+      projectCompletionKey: results.projectCompletionKey
+    }, projectCompletion)
   }
 }
