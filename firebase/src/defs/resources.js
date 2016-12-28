@@ -42,6 +42,7 @@ export default {
               },
               submission: {
                 fields: {
+                  hasCommitOnRepository: Boolean,
                   hostedUrl: String,
                   instructorCommentedLast: Boolean,
                   isApproved: Boolean
