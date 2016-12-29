@@ -66,16 +66,13 @@ export default {
 
     const results = yield findProjectCompletionFromRepoName(push.repository.full_name)
 
-    // Set submission.hasCommitOnRepository to true
-    let projectCompletion = results.projectCompletion
-    projectCompletion.submission = projectCompletion.submission || {}
-
-    if (!projectCompletion.submission.hasCommitOnRepository) {
-      projectCompletion.submission.hasCommitOnRepository = true
+    // Set committed to true
+    if (!results.projectCompletion.committed) {
+      results.projectCompletion.committed = true
       yield updateProjectCompletion({
         courseKey: results.courseKey,
         projectCompletionKey: results.projectCompletionKey
-      }, projectCompletion)
+      }, results.projectCompletion)
     }
   },
 
