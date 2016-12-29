@@ -129,7 +129,7 @@ export default {
         '/issues/new?',
         QueryString.stringify({
           title: 'Project Feedback',
-          body: `@${this.chosenInstructor} Can you take a look at this? It's [hosted here](${this.projectRepoUrl}) and meets the following criteria:\n\n- [x] ${criteria.join('\n- [x] ')}\n\n<!-- ADD YOUR OWN NOTES, IF ANY, BELOW THIS LINE -->`
+          body: `@${this.chosenInstructor} Can you take a look at this? It's [hosted here](${this.projectHostedUrl}) and meets the following criteria:\n\n- [x] ${criteria.join('\n- [x] ')}\n\n<!-- ADD YOUR OWN NOTES, IF ANY, BELOW THIS LINE -->`
         })
       ].join('')
 
