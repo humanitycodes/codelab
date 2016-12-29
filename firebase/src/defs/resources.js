@@ -33,6 +33,7 @@ export default {
           projectCompletions: {
             type: Array,
             fields: {
+              committed: Boolean,
               students: { type: Array },
               lessonKey: {
                 validate: keyInResource('newData.val()', 'lessons')
@@ -42,7 +43,6 @@ export default {
               },
               submission: {
                 fields: {
-                  hasCommitOnRepository: Boolean,
                   hostedUrl: String,
                   instructorCommentedLast: Boolean,
                   isApproved: Boolean

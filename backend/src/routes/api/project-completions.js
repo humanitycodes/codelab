@@ -45,7 +45,7 @@ export default {
       reply({ repo: { name: repoName } })
     } catch (error) {
       const params = JSON.stringify(request.payload)
-      console.error(`Unable to create project submission with parameters ${params}. Reason:`, error)
+      console.error(`Unable to create project completion with parameters ${params}. Reason:`, error)
       reply(boom.wrap(error))
     }
   }
