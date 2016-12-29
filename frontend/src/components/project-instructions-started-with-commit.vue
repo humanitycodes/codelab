@@ -1,5 +1,7 @@
 <template>
   <div>
+    <div v-if="error">{{ error }}</div>
+
     <h4>When you're done</h4>
 
     <p>Make sure that your latest work is on GitHub:</p>
@@ -39,8 +41,8 @@
       <select v-model="chosenInstructor">
         <option
           v-for="instructor in instructors"
-          :value="instructor.githubName"
-        >{{ instructor.name }}</option>
+          :value="instructor.github.login"
+        >{{ instructor.fullName }}</option>
       </select>
     </template>
 
@@ -62,11 +64,16 @@
 </template>
 
 <script>
+import Axios from 'axios'
 import QueryString from 'querystring'
 import { userGetters } from '@state/helpers'
 
 export default {
   props: {
+    course: {
+      type: Object,
+      required: true
+    },
     projectCompletion: {
       type: Object,
       required: true
@@ -89,29 +96,17 @@ export default {
     }
   },
   data () {
-    const instructors = [
-      {
-        githubName: 'stuartpearman',
-        name: 'Stuart Pearman'
-      },
-      {
-        githubName: 'chrisvfritz',
-        name: 'Chris Fritz'
-      },
-      {
-        githubName: 'egillespie',
-        name: 'Erik Gillespie'
-      }
-    ]
-
     return {
       metCriteria: this.project.criteria
         .map(criterion => ({ [criterion['.key']]: false }))
         .reduce((a, b) => Object.assign({}, a, b)),
-      // TODO: Pull this in from the backend instead
-      instructors,
-      chosenInstructor: instructors[0].githubName
+      error: '',
+      instructors: [],
+      chosenInstructor: null
     }
+  },
+  mounted () {
+    this.fetchInstructors()
   },
   computed: {
     ...userGetters,
@@ -138,7 +133,36 @@ export default {
       ].join('')
 
       window.open(newIssueUrl, '_blank').focus()
+    },
+    fetchInstructors () {
+      Axios.get(`/api/courses/${this.course['.key']}/instructors`)
+      .then(response => {
+        this.error = ''
+        this.instructors = []
+        Object.keys(response.data).forEach(uid => {
+          const instructor = response.data[uid]
+          if (instructor.github) {
+            this.instructors.push(instructor)
+          }
+        })
+        if (this.instructors.length) {
+          this.chosenInstructor = this.instructors[0].github.login
+        } else {
+          this.error = `Your instructor has not connected their GitHub account. Please tell your instructor about this so you can submit your project.`
+        }
+      })
+      .catch(error => {
+        console.error(error)
+        this.error = `There was a problem getting the instructors for the course. If refreshing the page doesn't work, please tell your instructor about this and we'll work to resolve it as soon as possible.`
+      })
     }
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+@import '../meta'
+
+input[type=checkbox]
+  height: 1rem
+</style>
