@@ -1,4 +1,4 @@
-import { all, isGreaterThan, hasRole, childIsFalsy, isOneOfTheseStrings, keyInResource } from '../generators/conditions'
+import { all, any, isGreaterThan, hasRole, childIsFalsy, isOneOfTheseStrings, keyInResource } from '../generators/conditions'
 
 export default {
   courses: {
@@ -45,7 +45,13 @@ export default {
                 fields: {
                   hostedUrl: String,
                   instructorCommentedLast: Boolean,
-                  isApproved: Boolean
+                  isApproved: Boolean,
+                  assignedInstructor: {
+                    validate: any(
+                      `root.child('courses/relationships/'+$coursesKey+'/instructors/'+newData.val()).exists()`,
+                      `root.child('courses/meta/'+$coursesKey+'/createdBy').val() === newData.val()`
+                    )
+                  }
                 }
               }
             }
