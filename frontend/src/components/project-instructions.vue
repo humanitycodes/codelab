@@ -8,7 +8,7 @@
     :project-name="projectName"
     :project-repo-url="projectRepoUrl"
     :project-hosted-url="projectHostedUrl"
-    class='project-instructions'
+    :class="currentStyleClass"
   />
 </template>
 
@@ -48,6 +48,9 @@ export default {
     ...userGetters,
     currentInstructions () {
       return statusInstructions[this.projectStatus]
+    },
+    currentStyleClass () {
+      return this.projectCompletion ? 'project-instructions' : ''
     },
     projectName () {
       return [
