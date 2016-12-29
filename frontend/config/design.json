@@ -9,7 +9,7 @@
       "dark": "#8F0000"
     },
     "warning": {
-      "light": "#EDC661",
+      "light": "#dcb529",
       "dark": "#C49100"
     },
     "success": {
@@ -21,7 +21,8 @@
         "tan": "#FBFCF2",
         "gray": "#F9F7F5",
         "yellow": "#F8F7E1",
-        "red": "#ffdee1"
+        "red": "#ffdee1",
+        "success": "#edfbed"
       }
     }
   },
