@@ -111,9 +111,10 @@ export default {
   computed: {
     ...userGetters,
     allCriteriaMet () {
-      return Object.keys(this.metCriteria).every(key => {
-        return this.metCriteria[key]
-      })
+      return this.chosenInstructor &&
+        Object.keys(this.metCriteria).every(key => {
+          return this.metCriteria[key]
+        })
     }
   },
   methods: {
@@ -146,9 +147,10 @@ export default {
           }
         })
         if (this.instructors.length) {
-          const random = Math.floor((Math.random() * this.instructors.length) + 1)
+          const random = Math.floor(Math.random() * this.instructors.length)
           this.chosenInstructor = this.instructors[random].github.login
         } else {
+          this.chosenInstructor = null
           this.error = `Your instructor has not connected their GitHub account. Please tell your instructor about this so you can submit your project.`
         }
       })
