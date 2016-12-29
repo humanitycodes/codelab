@@ -105,7 +105,7 @@ export default {
       chosenInstructor: null
     }
   },
-  mounted () {
+  created () {
     this.fetchInstructors()
   },
   computed: {
