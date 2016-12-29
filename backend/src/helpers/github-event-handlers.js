@@ -81,11 +81,24 @@ export default {
 
     const results = yield findProjectCompletionFromRepoName(issue.repository.full_name)
 
+    // Find the assigned instructor
+    let assignedInstructor = null
+    const instructors = yield readInstructorsByCourseKey(results.courseKey)
+    Object.keys(instructors).forEach(instructorUid => {
+      const instructor = instructors[instructorUid]
+      if (!instructor.github) return
+      const instructorMentionRegex = new RegExp(`@${instructor.github.login}\\b`)
+      if (issue.issue.body.search(instructorMentionRegex) !== -1) {
+        assignedInstructor = instructorUid
+      }
+    })
+
     // Set submission to awaiting approval
     let projectCompletion = results.projectCompletion
     projectCompletion.submission = projectCompletion.submission || {}
     projectCompletion.submission.isApproved = false
     projectCompletion.submission.instructorCommentedLast = false
+    projectCompletion.submission.assignedInstructor = assignedInstructor
 
     yield updateProjectCompletion({
       courseKey: results.courseKey,
