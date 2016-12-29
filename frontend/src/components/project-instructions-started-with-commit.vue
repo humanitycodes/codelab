@@ -146,7 +146,8 @@ export default {
           }
         })
         if (this.instructors.length) {
-          this.chosenInstructor = this.instructors[0].github.login
+          const random = Math.floor((Math.random() * this.instructors.length) + 1)
+          this.chosenInstructor = this.instructors[random].github.login
         } else {
           this.error = `Your instructor has not connected their GitHub account. Please tell your instructor about this so you can submit your project.`
         }
