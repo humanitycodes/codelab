@@ -26,6 +26,9 @@
       :lesson="currentLesson"
       :project="currentLesson.projects[0]"
     />
+    <p v-if="!currentUser.profile.github" class="warning">
+      You must connect your GitHub account before you can start a project.
+    </p>
     <div class="flex-row" v-if="currentLesson.projects.length">
       <div class="flex-col">
         <h3>
