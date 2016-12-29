@@ -18,6 +18,7 @@
     "dagre": "^0.7.4",
     "date-fns": "^1.10.0",
     "firebase": "^3.5.2",
+    "highlight.js": "^9.9.0",
     "jwt-decode": "^2.1.0",
     "lodash": "^4.17.2",
     "rho": "^0.3.0",

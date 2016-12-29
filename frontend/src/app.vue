@@ -78,10 +78,10 @@ hr
 
 code
   font-family: 'PT Mono'
-pre.hljs
-  background-color: $design.branding.muted.light.tan
+pre
   overflow-y: hidden
   position: relative
+  background-color: $design.branding.muted.light.tan
   &:before, &:after
     content: ''
     width: $design.layout.gutterWidth
@@ -95,32 +95,22 @@ pre.hljs
   &:after
     right: 0
     background-image: linear-gradient(to right, rgba(255,255,255,0), $design.branding.muted.light.tan)
-  code
+  > code
     display: block
-    padding: $design.layout.gutterWidth
-    &:after
-      content: 'click to open'
-      position: absolute
-      top: 0
-      right: 0
-      padding: $design.layout.gutterWidth / 3 $design.layout.gutterWidth / 2
-      pointer-events: none
-      opacity: 0
-      transition: opacity 0.2s
-      z-index: 2
-  a:hover
-    text-decoration: none
-    code:after
-      opacity: 1
+    background-color: transparent !important
+    padding: $design.layout.gutterWidth !important
 
 .xml, .html
   .css, .javascript
     opacity: 1
 
-.hljs
-  background: transparent
-  color: $design.branding.primary.dark
-  padding: $design.layout.gutterWidth
+.hljs.sh .hljs-built_in
+  color: inherit
+
+// .hljs
+//   background: transparent
+//   color: $design.branding.primary.dark
+//   padding: $design.layout.gutterWidth
 .hljs-comment
   color: #888
 
@@ -149,6 +139,7 @@ pre.hljs
     color: darken($design.body.text.color, 20%)
     border-color: darken($design.control.border.color, 30%)
     outline: 0
+    text-decoration: none
   &[disabled]
     opacity: .6
     cursor: not-allowed
@@ -173,6 +164,12 @@ pre.hljs
     border-color: $design.branding.danger.dark
     &:hover, &:focus
       background-color: darken($design.branding.danger.light, 30%)
+  &.warning
+    color: #FFF
+    background-color: $design.branding.warning.light
+    border-color: $design.branding.warning.dark
+    &:hover, &:focus
+      background-color: darken($design.branding.warning.light, 10%)
 
 // -----
 // FORMS
