@@ -2,7 +2,7 @@ import Vue from 'vue'
 import LessonsMap from '@components/lessons-map'
 import router from '@plugins/router'
 
-describe('lessons.vue', () => {
+describe('lessons-map.vue', () => {
   it('for users that cannot update lessons, renders a list item for each course lesson, but not an edit button', () => {
     const vm = new Vue({
       router,

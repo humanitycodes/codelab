@@ -184,7 +184,7 @@ export default {
       return '/lessons/' + lesson['.key'] + '/edit'
     },
     findProjectCompletion (lesson) {
-      if (!this.course) return null
+      if (!this.course || !this.course.projectCompletions) return null
       const rawProjectCompletion = this.course.projectCompletions.find(completion => {
         return (
           completion.students.some(student => {
