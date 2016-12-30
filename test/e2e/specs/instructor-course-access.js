@@ -45,10 +45,9 @@ module.exports = {
   'Instructor can create and edit lesson': browser => {
     const baseURL = browser.globals.devServerURL
 
-    browser.url(baseURL)
+    browser
       // Sign in
-      .waitForElementVisible(`.main-nav a[href^='/email-sign-in']`, 5000)
-      .click(`.main-nav a[href^='/email-sign-in']`)
+      .url(`${baseURL}/email-sign-in`)
       .waitForElementVisible('button', 5000)
       .setValue('input[type=text]', instructor.email)
       .setValue('input[type=password]', db.getDefaultPassword())
@@ -106,10 +105,9 @@ module.exports = {
   'Instructor can create and edit course': browser => {
     const baseURL = browser.globals.devServerURL
 
-    browser.url(baseURL)
+    browser
       // Sign in
-      .waitForElementVisible(`.main-nav a[href^='/email-sign-in']`, 5000)
-      .click(`.main-nav a[href^='/email-sign-in']`)
+      .url(`${baseURL}/email-sign-in`)
       .waitForElementVisible('button', 5000)
       .setValue('input[type=text]', instructor.email)
       .setValue('input[type=password]', db.getDefaultPassword())
