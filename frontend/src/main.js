@@ -13,7 +13,9 @@ requireGlobalComponent.keys().forEach(path => {
   const { camelize, capitalize } = Vue.util
   const fileName = path.match(/^\.\/([\w-]+)\.(?:js|vue)$/i)[1]
   const componentName = capitalize(camelize(fileName))
-  Vue.component(componentName, requireGlobalComponent(path))
+  const componentModule = requireGlobalComponent(path)
+  const component = componentModule.default || componentModule
+  Vue.component(componentName, component)
 })
 
 // Once we have the information used to authorize

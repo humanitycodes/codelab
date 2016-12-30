@@ -13,7 +13,11 @@
     <div class="flex-row">
       <div class="flex-col">
         <h3>Content</h3>
-        <div v-html="lessonContentHTML" class="rendered-content"/>
+        <div
+          v-html="lessonContentHTML"
+          ref="renderedContent"
+          class="rendered-content"
+        />
       </div>
     </div>
     <ProjectSubmissionFlow
@@ -57,6 +61,7 @@ import {
   userGetters, courseGetters, lessonGetters, courseLessonGetters
 } from '@state/helpers'
 import courseLessonGradePoints from '@helpers/course-lesson-grade-points'
+import { highlight, highlightAuto } from 'highlight.js'
 
 export default {
   components: {
@@ -91,8 +96,47 @@ export default {
         : Math.floor(realGradePoints * 100) / 100
     }
   },
+  watch: {
+    lessonContentHTML () {
+      this.$nextTick(() => {
+        const codeElements = this.$refs.renderedContent.querySelectorAll('pre > code')
+        const codeLangs = ['sh', 'html', 'js', 'md', 'css', 'scss']
+        const codeElementsCount = codeElements.length
+        for (let i = 0; i < codeElementsCount; i++) {
+          const codeEl = codeElements[i]
+          const preEl = codeEl.parentNode
+          if (preEl.classList.length) {
+            const lang = preEl.classList[0]
+            if (codeLangs.indexOf(lang) !== -1) {
+              codeEl.innerHTML = highlight(lang, codeEl.textContent).value
+            }
+            const preClassesCount = preEl.classList.length
+            for (let j = 0; j < preClassesCount; j++) {
+              codeEl.classList.add(preEl.classList[j])
+            }
+          } else {
+            codeEl.innerHTML = highlightAuto(codeEl.textContent, codeLangs).value
+          }
+          codeEl.classList.add('hljs')
+          // preEl.removeAttribute('class')
+        }
+      })
+    }
+  },
   methods: {
     toHtml: rho.toInlineHtml
   }
 }
 </script>
+
+<style lang="stylus">
+@import '../meta'
+
+.rendered-content
+  border: 1px solid $design.branding.muted.light.gray
+  padding: $design.layout.gutterWidth
+  img
+    display: block
+    margin: 0 auto
+    padding: $design.layout.gutterWidth
+</style>

@@ -20,10 +20,10 @@
     </CodeBlock>
 
     <p>And publish a hosted version of your site:</p>
-    <CodeBlock v-if="project.hosting === 'Heroku'">
+    <CodeBlock v-if="project.hosting === 'Heroku'" lang="sh">
       git push heroku master
     </CodeBlock>
-    <CodeBlock v-else>
+    <CodeBlock v-else lang="sh">
       git push origin master:gh-pages
     </CodeBlock>
 

@@ -67,7 +67,7 @@ export default {
       if (this.keyIsValid) {
         const key = [this.categoryPrefix, this.key].join('-')
         this.lessons.add(key).then(() => {
-          window.location = `/lessons/${key}/edit`
+          window.location.replace(`/lessons/${key}/edit`)
         })
       }
     }

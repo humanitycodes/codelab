@@ -99,7 +99,7 @@ export default {
     tryToCreateCourse () {
       if (this.keyIsValid) {
         this.courses.add(this.key).then(() => {
-          window.location = `/courses/${this.key}/edit`
+          window.location.replace(`/courses/${this.key}/edit`)
         })
       }
     }
