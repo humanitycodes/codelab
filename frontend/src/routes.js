@@ -20,7 +20,8 @@ export default [
     path: '/lessons',
     component: cb => require.ensure([], () => cb(require('@pages/lessons')), 'staff'),
     meta: {
-      isAuthorized: canReadAllLessons
+      isAuthorized: canReadAllLessons,
+      layout: 'full'
     }
   },
   {
@@ -59,7 +60,8 @@ export default [
     path: '/courses/:courseKey',
     component: require('@pages/course'),
     meta: {
-      isAuthorized: canReadCourse
+      isAuthorized: canReadCourse,
+      layout: 'full'
     }
   },
   {

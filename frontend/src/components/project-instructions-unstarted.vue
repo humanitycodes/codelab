@@ -43,13 +43,8 @@ export default {
         projectKey: this.project['.key']
       })
       .then(() => { this.error = '' })
-      .catch(error => {
-        const { statusCode } = error.response.data
-        if (statusCode === 404) {
-          this.error = 'Are you connected to the Internet? Make sure you\'re connected and try again.'
-          return
-        }
-        this.error = 'There was a problem creating the project repo on GitHub. Please tell your instructor about this and we\'ll work to resolve it as soon as possible.'
+      .catch(() => {
+        this.error = `There was a problem creating the project repo on GitHub. Make sure you're connected to the Internet. If you've confirmed you are, tell your instructor about this and we'll work to resolve it as soon as possible.`
       })
     }
   }

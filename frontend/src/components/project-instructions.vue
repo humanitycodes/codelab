@@ -84,4 +84,6 @@ export default {
   padding: $design.layout.gutterWidth
   border: 1px solid $design.control.border.color
   border-top: none
+  border-bottom-left-radius: $design.control.border.radius
+  border-bottom-right-radius: $design.control.border.radius
 </style>

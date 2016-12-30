@@ -1,8 +1,8 @@
 {
   "branding": {
     "primary": {
-      "light": "#3675BC",
-      "dark": "#32485F"
+      "light": "#198838",
+      "dark": "#17453A"
     },
     "danger": {
       "light": "#E93F59",
@@ -37,7 +37,7 @@
     },
     "border": {
       "color": "#BBBBBB",
-      "radius": "4px"
+      "radius": "3px"
     },
     "active": {
       "border": {

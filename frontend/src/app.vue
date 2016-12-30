@@ -43,8 +43,31 @@ h1, h2, h3, h4, h5, h6
 h1, h2
   margin-top: 0
 
+h3
+  margin-top: $design.layout.gutterWidth * 2
+  margin-bottom: $design.layout.gutterWidth
+
 h4
+  margin-top: $design.layout.gutterWidth * 1.5
+  margin-bottom: $design.layout.gutterWidth
   text-transform: uppercase
+
+p
+  margin: $design.layout.gutterWidth 0
+
+h1,h2,h3,h4,h5,h6,p,a
+  > code
+    padding-top: 0.2em
+    padding-bottom: 0.2em
+    background-color: rgba(0,0,0,0.04)
+    border-radius: $design.control.border.radius
+    vertical-align: top
+    &:before, &:after
+      content: '\00a0'
+      letter-spacing: -0.2em
+
+img
+  max-width: 100%
 
 a
   color: $design.branding.primary.light
@@ -82,6 +105,7 @@ pre
   overflow-y: hidden
   position: relative
   background-color: $design.branding.muted.light.tan
+  border-radius: $design.control.border.radius
   &:before, &:after
     content: ''
     width: $design.layout.gutterWidth
@@ -100,12 +124,52 @@ pre
     background-color: transparent !important
     padding: $design.layout.gutterWidth !important
 
+  $output-code-bg = #333
+  $output-code-color = #CFD2D1
+  $output-tag-font-size = 10px
+  $output-tag-padding-vertical = 1px
+  &.output, &.sh
+    background-color: $output-code-bg
+    &:before
+      background-image: linear-gradient(to left, rgba(255,255,255,0), $output-code-bg)
+    &:after
+      background-image: linear-gradient(to right, rgba(255,255,255,0), $output-code-bg)
+    > code
+      &:after
+        position: absolute
+        top: 0
+        right: 0
+        font-family: Lato
+        font-size: $output-tag-font-size
+        letter-spacing: 1px
+        padding: $output-tag-padding-vertical 7px
+        background-color: rgba(255,255,255,.4)
+        border-bottom-left-radius: $design.control.border.radius
+        color: #FFF
+        z-index: 2
+  &.sh
+    > code
+      color: $design.branding.muted.light.gray
+      &:after
+        content: 'TERMINAL'
+  &.output
+    cursor: not-allowed
+    user-select: none
+    > code
+      padding-top: $output-tag-font-size * 1.7 + $output-tag-padding-vertical * 2 + $design.layout.gutterWidth * .3 !important
+      color: $output-code-color
+      &:after
+        content: 'OUTPUT'
+
 .xml, .html
   .css, .javascript
     opacity: 1
 
-.hljs.sh .hljs-built_in
-  color: inherit
+.hljs.sh
+  .hljs-built_in
+    color: inherit
+  .hljs-string
+    color: #96c786
 
 // .hljs
 //   background: transparent
@@ -244,9 +308,9 @@ fieldset
         cursor: not-allowed
       input[disabled]
         opacity: 1
-    :first-child
+    > :first-child
       margin-top: 0
-    :last-child
+    > :last-child
       margin-bottom: 0
 .heading-basic-data
   opacity: .8
@@ -254,7 +318,6 @@ fieldset
   font-family: 'Lato'
   > .flex-col:last-of-type
     text-align: right
-
 
 // -----
 // NOTES
@@ -269,8 +332,4 @@ p.danger
   padding: $design.layout.gutterWidth
   background-color: $design.branding.muted.light.red
   border: 1px solid $design.branding.danger.light
-
-.rendered-content
-  border: 1px solid $design.branding.muted.light.gray
-  padding: $design.layout.gutterWidth
 </style>

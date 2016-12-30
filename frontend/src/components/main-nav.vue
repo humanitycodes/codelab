@@ -1,32 +1,42 @@
 <template>
-  <ul class="main-nav">
-    <li v-if="!isUserSignedIn">
-      <AuthLink provider="msu">Sign in with MSU</AuthLink>
-    </li>
-    <li v-if="!isUserSignedIn">
-      <router-link to="/email-sign-in">Sign in with Email</AuthLink>
-    </li>
-    <li v-if="hasNewGitHubScopes">
-      <AuthLink provider="github">
-        {{ currentUser.profile.github ? 'Reconnect GitHub' : 'Connect GitHub' }}
-      </AuthLink>
-    </li>
-    <li v-if="canReadAllLessons()">
-      <router-link to="/lessons">
-        Lessons
-      </router-link>
-    </li>
-    <li v-if="isUserSignedIn">
-      <router-link to="/courses">
-        Courses
-      </router-link>
-    </li>
-    <li v-if="isUserSignedIn">
-      <router-link to="/sign-out">
-        Sign out
-      </router-link>
-    </li>
-  </ul>
+  <nav class="main-nav">
+    <img
+      src="../assets/images/logo.png"
+      alt="Logo"
+      class="main-nav-logo"
+    >
+    <ul class="main-nav-group-left">
+      <li v-if="isUserSignedIn">
+        <router-link to="/courses">
+          Courses
+        </router-link>
+      </li>
+      <li v-if="canReadAllLessons()">
+        <router-link to="/lessons">
+          Lessons
+        </router-link>
+      </li>
+    </ul>
+    <ul class="main-nav-group-right">
+      <li v-if="!isUserSignedIn">
+        <AuthLink provider="msu">Sign in</AuthLink>
+      </li>
+      <!-- Katie can manually set this to display: block for now -->
+      <li v-if="!isUserSignedIn" v-show="false">
+        <router-link to="/email-sign-in">Sign in with Email</AuthLink>
+      </li>
+      <li v-if="hasNewGitHubScopes">
+        <AuthLink provider="github">
+          {{ currentUser.profile.github ? 'Reconnect GitHub' : 'Connect GitHub' }}
+        </AuthLink>
+      </li>
+      <li v-if="isUserSignedIn">
+        <router-link to="/sign-out">
+          Sign out
+        </router-link>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script>
@@ -50,9 +60,35 @@ export default {
 <style lang="stylus" scoped>
 @import '../meta'
 
-ul
+.main-nav
+  display: flex
+  align-items: center
   margin: 0 0 $design.layout.gutterWidth
   padding: $design.layout.gutterWidth
   background: $design.branding.muted.light.gray
+
+.main-nav-logo
+  width: 2em
+  height: 2em
+  margin-right: $design.layout.gutterWidth
+
+ul
+  display: flex
+  width: 100%
   list-style-type: none
+  margin: 0
+  padding: 0 $design.layout.gutterWidth 0 0
+  > li
+    padding-right: $design.layout.gutterWidth
+    white-space: nowrap
+    &:last-child
+      padding-right: 0
+    >
+      a
+  &.main-nav-group-left
+    justify-content: flex-start
+  &.main-nav-group-right
+    justify-content: flex-end
+  &:last-child
+    padding-right: 0
 </style>

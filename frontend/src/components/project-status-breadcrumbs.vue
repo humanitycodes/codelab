@@ -41,6 +41,13 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+@import '../meta'
+
 .project-submission-breadcrumbs
   margin-bottom: 0
+  > .flex-col
+    &:first-child
+      border-top-left-radius: $design.control.border.radius
+    &:last-child
+      border-top-right-radius: $design.control.border.radius
 </style>

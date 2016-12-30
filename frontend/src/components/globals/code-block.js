@@ -1,4 +1,3 @@
-<script>
 import { highlight, highlightAuto } from 'highlight.js'
 
 export default {
@@ -20,7 +19,7 @@ export default {
         ? highlight(this.lang, vnode.text).value
         : highlightAuto(vnode.text, ['sh', 'html', 'js', 'md', 'css', 'scss']).value
     }).join('')
-    return <pre><code
+    return <pre class={{ [this.lang]: !!this.lang }}><code
       class={{
         hljs: true,
         [this.lang]: !!this.lang
@@ -32,4 +31,3 @@ export default {
     lang: String
   }
 }
-</script>
