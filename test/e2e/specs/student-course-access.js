@@ -30,10 +30,9 @@ module.exports = {
   },
 
   'Enrolled student can access course and lesson': browser => {
-    browser.url(browser.globals.devServerURL)
+    browser
       // Sign in
-      .waitForElementVisible(`.main-nav a[href^='/email-sign-in']`, 5000)
-      .click(`.main-nav a[href^='/email-sign-in']`)
+      .url(`${browser.globals.devServerURL}/email-sign-in`)
       .waitForElementVisible('button', 5000)
       .setValue('input[type=text]', enrolledStudent.email)
       .setValue('input[type=password]', db.getDefaultPassword())
@@ -69,10 +68,9 @@ module.exports = {
   'Student cannot access courses they are not enrolled in': browser => {
     const baseURL = browser.globals.devServerURL
 
-    browser.url(baseURL)
+    browser
       // Sign in
-      .waitForElementVisible(`.main-nav a[href^='/email-sign-in']`, 5000)
-      .click(`.main-nav a[href^='/email-sign-in']`)
+      .url(`${baseURL}/email-sign-in`)
       .waitForElementVisible('button', 5000)
       .setValue('input[type=text]', hackerStudent.email)
       .setValue('input[type=password]', db.getDefaultPassword())
@@ -100,10 +98,9 @@ module.exports = {
   'Enrolled student cannot add or edit courses': browser => {
     const baseURL = browser.globals.devServerURL
 
-    browser.url(baseURL)
+    browser
       // Sign in
-      .waitForElementVisible(`.main-nav a[href^='/email-sign-in']`, 5000)
-      .click(`.main-nav a[href^='/email-sign-in']`)
+      .url(`${baseURL}/email-sign-in`)
       .waitForElementVisible('button', 5000)
       .setValue('input[type=text]', enrolledStudent.email)
       .setValue('input[type=password]', db.getDefaultPassword())

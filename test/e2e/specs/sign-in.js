@@ -25,9 +25,7 @@ module.exports = {
 
   'Successful Sign In with Email shows dashboard': browser => {
     browser
-      .url(browser.globals.devServerURL)
-      .waitForElementVisible('.main-nav a[href^=\'/email-sign-in\']', 5000)
-      .click('.main-nav a[href^=\'/email-sign-in\']')
+      .url(`${browser.globals.devServerURL}/email-sign-in`)
       .waitForElementVisible('button', 5000)
       .setValue('input[type=text]', user.email)
       .setValue('input[type=password]', db.getDefaultPassword())
