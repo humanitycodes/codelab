@@ -63,7 +63,7 @@ export default {
       }
       return this.projectCompletion.submission.isApproved
         ? 'approved'
-        : this.projectCompletion.instructorCommentedLast
+        : this.projectCompletion.submission.instructorCommentedLast
           ? 'changesRequested'
           : 'pendingReview'
     }
