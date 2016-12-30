@@ -14,12 +14,11 @@
     "url": "https://github.com/chrisvfritz/msu.lansing.codes/issues"
   },
   "scripts": {
-    "yarninstall:backend": "cd backend && NODE_ENV=development yarn --pure-lockfile --force --no-progress",
-    "yarninstall:frontend": "cd frontend && NODE_ENV=development yarn --pure-lockfile --force --no-progress",
-    "yarninstall:firebase": "cd firebase && NODE_ENV=development yarn --pure-lockfile --force --no-progress",
-    "yarninstall:test": "cd test && NODE_ENV=development yarn --pure-lockfile --force --no-progress",
-    "install:all": "npm-run-all --parallel yarninstall:*",
-    "postinstall": "npm-run-all install:all build-all",
+    "install:backend": "cd backend && NODE_ENV=development yarn --pure-lockfile --force",
+    "install:frontend": "cd frontend && NODE_ENV=development yarn --pure-lockfile --force",
+    "install:firebase": "cd firebase && NODE_ENV=development yarn --pure-lockfile --force",
+    "install:test": "cd test && NODE_ENV=development yarn --pure-lockfile --force",
+    "postinstall": "npm-run-all install:* build-all",
     "lint:backend": "cd backend && yarn run lint",
     "lint:frontend": "cd frontend && yarn run lint",
     "test:backend": "cd backend && yarn run test",
