@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import DatePicker from '@components/date-picker'
 
-describe('dropdown.vue', () => {
+describe('date-picker.vue', () => {
   let vm
   beforeEach(() => {
     vm = new Vue({
