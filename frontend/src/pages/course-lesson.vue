@@ -118,7 +118,6 @@ export default {
             codeEl.innerHTML = highlightAuto(codeEl.textContent, codeLangs).value
           }
           codeEl.classList.add('hljs')
-          // preEl.removeAttribute('class')
         }
       })
     }

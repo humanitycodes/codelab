@@ -18,9 +18,31 @@
     >
       <router-link
         v-if="course && canUpdateLesson({ lessonKey: node.lesson['.key'] })"
-        class="button inline lessons-map-edit-lesson-button"
+        class="button inline lessons-map-corner-action-lesson-button"
         :to="editLessonPath(node.lesson)"
       >Edit</router-link>
+      <a
+        v-else-if="findProjectCompletion(node.lesson)"
+        class="button inline lessons-map-corner-action-lesson-button"
+        :href="
+          'https://github.com/' +
+          currentUser.profile.github.login +
+          '/' +
+          [
+            course['.key'],
+            node.lesson['.key'],
+            findProjectCompletion(node.lesson).projectKey.slice(-6)
+          ].join('-')
+        "
+        target="_blank"
+        @click.stop
+      >
+        <span v-if="
+          findProjectCompletion(node.lesson).submission &&
+          findProjectCompletion(node.lesson).submission.isApproved"
+        >✓</span>
+        <span v-else>Δ</span>
+      </a>
       <h3>{{ node.lesson.title }}</h3>
       <div class="lesson-graph-card-scrollable">
         <strong v-if="node.lesson.learningObjectives">
@@ -50,6 +72,7 @@
 import Dagre from 'dagre'
 import { path as D3Path } from 'd3-path'
 import { canUpdateLesson } from '@state/auth/lessons'
+import { userGetters } from '@state/helpers'
 import design from '@config/design'
 
 const gutterWidth = design.layout.gutterWidth.replace('px', '')
@@ -69,6 +92,7 @@ export default {
     }
   },
   computed: {
+    ...userGetters,
     layout () {
       const layout = new Dagre.graphlib.Graph()
       // Layout options
@@ -124,6 +148,7 @@ export default {
     }
   },
   methods: {
+    canUpdateLesson,
     nodeTransform (node) {
       return `translate(${
         node.x - this.nodeWidth / 2 + 'px'
@@ -158,7 +183,23 @@ export default {
     editLessonPath (lesson) {
       return '/lessons/' + lesson['.key'] + '/edit'
     },
-    canUpdateLesson
+    findProjectCompletion (lesson) {
+      if (!this.course) return null
+      const rawProjectCompletion = this.course.projectCompletions.find(completion => {
+        return (
+          completion.students.some(student => {
+            return student['.key'] === this.currentUser.uid
+          }) &&
+          completion.lessonKey === lesson['.key']
+        )
+      })
+      if (rawProjectCompletion) {
+        const projectCompletion = { ...rawProjectCompletion }
+        projectCompletion.studentKey = projectCompletion.students[0]['.key']
+        delete projectCompletion.students
+        return projectCompletion
+      }
+    }
   }
 }
 </script>
@@ -182,7 +223,7 @@ export default {
   overflow: hidden
   overflow-y: auto
   max-height: 100%
-.lessons-map-edit-lesson-button
+.lessons-map-corner-action-lesson-button
   position: absolute
   top: 0
   right: 0
