@@ -338,4 +338,7 @@ p.danger
   padding: $design.layout.gutterWidth
   background-color: $design.branding.muted.light.red
   border: 1px solid $design.branding.danger.light
+
+p.muted
+  opacity: .7
 </style>

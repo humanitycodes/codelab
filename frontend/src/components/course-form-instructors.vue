@@ -1,10 +1,10 @@
 <template>
   <div class="flex-row">
     <div class="flex-col" :disabled="disabled">
-      <label>Enrolled instructors</label>
+      <label>Instructors</label>
       <Dropdown
         :results="queryResults"
-        :resultHandler="addinstructor"
+        :resultHandler="addInstructor"
         :resultContent="function (user) {
           return user.fullName + ' (' + user.email + ')'
         }"
@@ -25,14 +25,14 @@
             target="_blank"
           >{{ instructor.email }}</a>)
           <button
-            @click="removeinstructor(instructor)"
+            @click="removeInstructor(instructor)"
             class="inline danger"
             name="course-remove-instructor"
           >X</button>
         </li>
       </ul>
-      <p v-if="!instructors.length && !disabled" class="warning">
-        It's hardly a course without instructors. Add some when you feel the course is ready to share.
+      <p v-else class="warning">
+        You can't have a course without instructors! You must also add yourself if you'll be teaching this course.
       </p>
     </div>
   </div>
@@ -68,8 +68,6 @@ export default {
       const queryRegex = new RegExp(this.instructorQuery, 'i')
       return this.users.filter(user => {
         return (
-          // User is not currentUser
-          this.currentUser.uid !== user['.key'] &&
           // User is not already a instructor
           this.course.instructorKeys.indexOf(user['.key']) === -1 &&
           // Course matches the query string
@@ -88,13 +86,13 @@ export default {
     }
   },
   methods: {
-    addinstructor (instructor) {
-      this.course.addinstructor(instructor['.key'])
+    addInstructor (instructor) {
+      this.course.addInstructor(instructor['.key'])
       this.instructorQuery = ''
       this.$refs.queryInput.focus()
     },
-    removeinstructor (instructor) {
-      this.course.removeinstructor(instructor['.key'])
+    removeInstructor (instructor) {
+      this.course.removeInstructor(instructor['.key'])
     }
   }
 }
