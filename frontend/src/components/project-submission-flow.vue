@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="course.instructorKeys.length">
     <ProjectStatusBreadcrumbs :project-status="projectStatus"/>
     <ProjectInstructions
       :project-completion="projectCompletion"
@@ -8,8 +8,10 @@
       :lesson="lesson"
       :project="project"
     />
-    <p v-if="error" class="danger">{{ error }}</p>
   </div>
+  <p v-else class="danger">
+    You can't begin this project until at least one instructor is available for the course.
+  </p>
 </template>
 
 <script>
@@ -33,12 +35,6 @@ export default {
     project: {
       type: Object,
       required: true
-    }
-  },
-  data () {
-    return {
-      readyToSubmit: false,
-      error: null
     }
   },
   computed: {
