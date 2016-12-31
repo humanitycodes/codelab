@@ -4,7 +4,8 @@
       src="../assets/images/logo.png"
       alt="Logo"
       class="main-nav-logo"
-    >
+      @click="$router.push('/')"
+    />
     <ul class="main-nav-group-left">
       <li v-if="isUserSignedIn">
         <router-link to="/courses">
@@ -25,10 +26,13 @@
       <li v-if="!isUserSignedIn" v-show="false">
         <router-link to="/email-sign-in">Sign in with Email</AuthLink>
       </li>
-      <li v-if="hasNewGitHubScopes">
+      <li v-if="isUserSignedIn && hasNewGitHubScopes">
         <AuthLink provider="github">
           {{ currentUser.profile.github ? 'Reconnect GitHub' : 'Connect GitHub' }}
         </AuthLink>
+      </li>
+      <li v-if="isUserSignedIn">
+        {{ currentUser.profile.fullName }}
       </li>
       <li v-if="isUserSignedIn">
         <router-link to="/sign-out">
@@ -71,6 +75,7 @@ export default {
   width: 2em
   height: 2em
   margin-right: $design.layout.gutterWidth
+  cursor: pointer
 
 ul
   display: flex

@@ -16,11 +16,12 @@ import CourseDates from './course-form-dates'
 import CourseCredits from './course-form-credits'
 import CourseSyllabus from './course-form-syllabus'
 import CourseLessons from './course-form-lessons'
+import CourseInstructors from './course-form-instructors'
 import CourseStudents from './course-form-students'
 
 export default {
   components: {
-    CourseTitle, CourseDates, CourseCredits, CourseSyllabus, CourseLessons, CourseStudents
+    CourseTitle, CourseDates, CourseCredits, CourseSyllabus, CourseLessons, CourseInstructors, CourseStudents
   },
   props: {
     course: {

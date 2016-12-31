@@ -1,12 +1,6 @@
 <template>
   <div>
-    <a
-      :href="projectRepoUrl"
-      target="_blank"
-      class="button block"
-    >
-      Your GitHub Repository
-    </a>
+    <ProjectCompletionLinks :repo-url="projectRepoUrl"/>
 
     <h4>Before you start coding</h4>
 
@@ -42,7 +36,12 @@
 </template>
 
 <script>
+import ProjectCompletionLinks from './project-completion-links'
+
 export default {
+  components: {
+    ProjectCompletionLinks
+  },
   props: {
     projectRepoUrl: {
       type: String,

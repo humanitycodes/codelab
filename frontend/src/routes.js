@@ -4,6 +4,7 @@ import {
 import {
   canCreateCourse, canReadCourse, canUpdateCourse
 } from '@state/auth/courses'
+import store from '@state/store'
 
 // For routes that only staff are likely to access,
 // require.ensure is used to lazy-load those modules
@@ -14,7 +15,11 @@ import {
 export default [
   {
     path: '/',
-    component: require('@pages/home')
+    redirect: to => {
+      return store.state.users.currentUser
+        ? '/courses'
+        : '/msu-sign-in'
+    }
   },
   {
     path: '/lessons',
@@ -77,8 +82,12 @@ export default [
     component: require('@pages/demos')
   },
   {
+    path: '/msu-sign-in',
+    component: require('@pages/sign-in-msu')
+  },
+  {
     path: '/email-sign-in',
-    component: require('@pages/email-sign-in')
+    component: require('@pages/sign-in-email')
   },
   {
     // This path has a required query parameter: ?token={jwt}
