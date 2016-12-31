@@ -188,7 +188,7 @@ pre
   padding: 0 $design.control.height * .4
   color: $design.body.text.color
   text-align: center
-  font-size: 11px
+  font-size: $design.control.height * .3
   font-weight: 600
   line-height: $design.control.height
   letter-spacing: .1rem
@@ -234,6 +234,12 @@ pre
     border-color: $design.branding.warning.dark
     &:hover, &:focus
       background-color: darken($design.branding.warning.light, 10%)
+  &.extra-large
+    $button-extra-large-height = $design.control.height * 3
+    height: $button-extra-large-height
+    line-height: $button-extra-large-height
+    font-size: $button-extra-large-height * .3
+    padding: 0 $button-extra-large-height * .4
 
 // -----
 // FORMS

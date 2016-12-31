@@ -3,7 +3,9 @@
     <EditCurrentLessonButton/>
     <div class="flex-row heading-basic-data">
       <div class="flex-col">
-        <span>{{ currentCourse['.key'] }}</span>
+        <router-link :to="'/courses/'+currentCourse['.key']">
+          {{ currentCourse['.key'] }}
+        </router-link>
       </div>
       <div class="flex-col">
         {{ gradePoints }} Grade Points
@@ -12,7 +14,6 @@
     <h2>{{ currentLesson.title }}</h2>
     <div class="flex-row">
       <div class="flex-col">
-        <h3>Content</h3>
         <div
           v-html="lessonContentHTML"
           ref="renderedContent"
@@ -20,26 +21,12 @@
         />
       </div>
     </div>
-    <ProjectSubmissionFlow
-      v-if="
-        currentLesson.projects.length &&
-        currentUser.profile.github &&
-        !hasNewGitHubScopes
-      "
-      :course="currentCourse"
-      :lesson="currentLesson"
-      :project="currentLesson.projects[0]"
-    />
-    <p v-if="!currentUser.profile.github" class="warning">
-      You must connect your GitHub account before you can start a project.
-    </p>
-    <div class="flex-row" v-if="currentLesson.projects.length">
+    <div v-if="currentLesson.projects.length" class="flex-row">
       <div class="flex-col">
         <h3>
           Project:
           <span v-html="toHtml(currentLesson.projects[0].title)"/>
         </h3>
-        <h4>Criteria</h4>
         <ol v-if="currentLesson.projects[0].criteria.length">
           <li
             v-for="criterion in currentLesson.projects[0].criteria"
@@ -47,6 +34,19 @@
           />
         </ol>
         <p v-else>No criteria for this project yet.</p>
+        <ProjectSubmissionFlow
+          v-if="
+            currentLesson.projects.length &&
+            currentUser.profile.github &&
+            !hasNewGitHubScopes
+          "
+          :course="currentCourse"
+          :lesson="currentLesson"
+          :project="currentLesson.projects[0]"
+        />
+        <p v-if="!currentUser.profile.github" class="warning">
+          You must connect your GitHub account before you can start a project.
+        </p>
       </div>
     </div>
     <EditCurrentLessonButton/>

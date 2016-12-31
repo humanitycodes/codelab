@@ -1,5 +1,7 @@
 <template>
   <div>
+    <ProjectCompletionLinks :repo-url="projectRepoUrl"/>
+
     <p v-if="error" class="danger">{{ error }}</p>
 
     <h4>When you're done</h4>
@@ -67,8 +69,12 @@
 import Axios from 'axios'
 import QueryString from 'querystring'
 import { userGetters } from '@state/helpers'
+import ProjectCompletionLinks from './project-completion-links'
 
 export default {
+  components: {
+    ProjectCompletionLinks
+  },
   props: {
     course: {
       type: Object,
