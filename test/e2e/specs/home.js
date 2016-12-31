@@ -10,9 +10,9 @@ module.exports = {
 
     browser
       .url(devServer)
-      .waitForElementVisible('#container', 5000)
-    browser.expect.element('h1').text.to.contain('Welcome')
-    browser.expect.element('.main-nav').to.be.present
+      .waitForElementVisible('.msu-standalone-signin-container', 5000)
+    browser.expect.element('h1').to.be.present
+    browser.expect.element('.msu-standalone-signin-button').to.be.present
     browser.end()
   }
 }

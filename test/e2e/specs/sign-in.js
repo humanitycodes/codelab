@@ -12,14 +12,12 @@ module.exports = {
     db.close()
   },
 
-  'Sign In links exist': browser => {
+  'Sign In link exist': browser => {
     browser
       .url(browser.globals.devServerURL)
-      .waitForElementVisible('#container', 5000)
+      .waitForElementVisible('.msu-standalone-signin-container', 5000)
 
-    browser.expect.element('.main-nav').to.be.present
-    browser.expect.element('.main-nav a[href^=\'https://oauth.ais.msu.edu/oauth/authorize\']').to.be.present
-    browser.expect.element('.main-nav a[href^=\'/email-sign-in\']').to.be.present
+    browser.expect.element('a[href^=\'https://oauth.ais.msu.edu/oauth/authorize\']').to.be.present
     browser.end()
   },
 
