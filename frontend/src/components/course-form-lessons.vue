@@ -20,6 +20,12 @@
         <li v-for="lesson in courseLessons">
           <LessonsMapLesson :lesson="lesson" :course="course"/>
           <button
+            :disabled="lessonHasProjectCompletions(lesson)"
+            :title="
+              lessonHasProjectCompletions(lesson)
+                ? 'Lessons cannot be removed once students have started projects for these lessons'
+                : 'Remove the lesson from this course'
+            "
             @click="removeCourseLesson(lesson)"
             class="inline danger"
             name="course-remove-lesson"
@@ -90,6 +96,11 @@ export default {
     },
     removeCourseLesson (lesson) {
       this.course.removeLesson(lesson['.key'])
+    },
+    lessonHasProjectCompletions (lesson) {
+      return this.course.projectCompletions.some(completion => {
+        return completion.lessonKey === lesson['.key']
+      })
     }
   }
 }
