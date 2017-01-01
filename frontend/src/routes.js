@@ -71,6 +71,10 @@ export default [
   },
   {
     path: '/courses/:courseKey/lessons/:lessonKey',
+    redirect: '/courses/:courseKey/lessons/:lessonKey/1'
+  },
+  {
+    path: '/courses/:courseKey/lessons/:lessonKey/:currentPage',
     component: require('@pages/course-lesson'),
     meta: {
       isAuthorized: canReadCourse

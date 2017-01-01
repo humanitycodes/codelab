@@ -10,7 +10,7 @@
           {{ currentCourse.credits || '?' }} Credits
         </div>
       </div>
-      <h2>{{ currentCourse.title }}</h2>
+      <h1>{{ currentCourse.title }}</h1>
       <div class="flex-row">
         <div class="flex-col">
           <h3>Start date</h3>
