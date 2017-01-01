@@ -11,16 +11,12 @@
         {{ gradePoints }} Grade Points
       </div>
     </div>
-    <h2>{{ currentLesson.title }}</h2>
-    <div class="flex-row">
-      <div class="flex-col">
-        <div
-          v-html="lessonContentHTML"
-          ref="renderedContent"
-          class="rendered-content"
-        />
-      </div>
-    </div>
+    <h1>{{ currentLesson.title }}</h1>
+    <RenderedContent
+      :initial-page="Number($route.params.currentPage)"
+      :content="currentLesson.content"
+      @page-update="updateCurrentPage"
+    />
     <div v-if="currentLesson.projects.length" class="flex-row">
       <div class="flex-col">
         <h3>
@@ -56,16 +52,17 @@
 <script>
 import rho from 'rho'
 import Layout from '@layouts/main'
+import RenderedContent from '@components/rendered-content'
 import ProjectSubmissionFlow from '@components/project-submission-flow'
 import {
   userGetters, courseGetters, lessonGetters, courseLessonGetters
 } from '@state/helpers'
 import courseLessonGradePoints from '@helpers/course-lesson-grade-points'
-import { highlight, highlightAuto } from 'highlight.js'
 
 export default {
   components: {
     Layout,
+    RenderedContent,
     ProjectSubmissionFlow,
     EditCurrentLessonButton: {
       render (h) {
@@ -86,9 +83,6 @@ export default {
     ...courseGetters,
     ...lessonGetters,
     ...courseLessonGetters,
-    lessonContentHTML () {
-      return rho.toHtml(this.currentLesson.content)
-    },
     gradePoints () {
       const realGradePoints = courseLessonGradePoints(this.currentCourse, this.currentLesson)
       return isNaN(realGradePoints)
@@ -96,34 +90,19 @@ export default {
         : Math.floor(realGradePoints * 100) / 100
     }
   },
-  watch: {
-    lessonContentHTML () {
-      this.$nextTick(() => {
-        const codeElements = this.$refs.renderedContent.querySelectorAll('pre > code')
-        const codeLangs = ['sh', 'html', 'js', 'md', 'css', 'scss']
-        const codeElementsCount = codeElements.length
-        for (let i = 0; i < codeElementsCount; i++) {
-          const codeEl = codeElements[i]
-          const preEl = codeEl.parentNode
-          if (preEl.classList.length) {
-            const lang = preEl.classList[0]
-            if (codeLangs.indexOf(lang) !== -1) {
-              codeEl.innerHTML = highlight(lang, codeEl.textContent).value
-            }
-            const preClassesCount = preEl.classList.length
-            for (let j = 0; j < preClassesCount; j++) {
-              codeEl.classList.add(preEl.classList[j])
-            }
-          } else {
-            codeEl.innerHTML = highlightAuto(codeEl.textContent, codeLangs).value
-          }
-          codeEl.classList.add('hljs')
-        }
-      })
-    }
-  },
   methods: {
-    toHtml: rho.toInlineHtml
+    toHtml: rho.toInlineHtml,
+    updateCurrentPage (newPage) {
+      const newUrl = (
+        '/courses/' +
+        this.currentCourse['.key'] +
+        '/lessons/' +
+        this.currentLesson['.key'] +
+        '/' +
+        newPage
+      )
+      window.history.replaceState({}, null, newUrl)
+    }
   }
 }
 </script>
