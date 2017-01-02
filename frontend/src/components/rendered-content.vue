@@ -6,7 +6,7 @@
         :pages="pages"
       />
       <div
-        v-html="pages[currentPage - 1].content"
+        v-html="pages[validatedCurrentPage - 1].content"
         ref="renderedContent"
         class="rendered-content"
       />
@@ -117,6 +117,16 @@ export default {
           `
         }
       })
+    },
+    validatedCurrentPage () {
+      const validatedCurrentPage = isNaN(this.currentPage)
+        ? 1
+        : Math.min(
+          this.pages.length,
+          Math.max(1, this.currentPage)
+        )
+      this.currentPage = validatedCurrentPage
+      return validatedCurrentPage
     }
   },
   watch: {
