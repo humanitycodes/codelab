@@ -11,31 +11,67 @@
         </div>
       </div>
       <h1>{{ currentCourse.title }}</h1>
-      <div class="flex-row">
+      <div v-if="currentUserIsStudent" class="flex-row">
         <div class="flex-col">
-          <h3>Start date</h3>
+          <div class="course-meter">
+            <div
+              class="meter-percent-through-course"
+              :style="{ width: percentThroughCourse + '%' }"
+            />
+            <div class="course-meter-text">{{ formattedStartDate }}</div>
+            <div class="course-meter-text">{{ formattedEndDate }}</div>
+          </div>
+          <div class="course-meter">
+            <div
+              :style="{ width: percentToMaxGrade + '%' }"
+              class="meter-percent-to-max-grade"
+            />
+            <div
+              v-for="milestone in gradeMilestones"
+              :data-grade="milestone"
+              :style="{ left: milestone / maxGrade * 100 + '%' }"
+              :class="{
+                active: (
+                  achievedGradePoints >= milestone &&
+                  achievedGradePoints < milestone + gradeMilestones[0]
+                )
+              }"
+              class="course-grade-milestone"
+            />
+            <div
+              class="course-meter-text"
+              :class="{ active: achievedGradePoints < gradeMilestones[0] }"
+            >0</div>
+            <div
+              class="course-meter-text"
+              :class="{ active: achievedGradePoints >= maxGrade }"
+            >{{ maxGrade.toFixed(1) }}</div>
+          </div>
+        </div>
+      </div>
+      <div v-else class="flex-row">
+        <div class="flex-col">
+          <label>Start date</label>
           <div>{{ formattedStartDate }}</div>
         </div>
         <div class="flex-col">
-          <h3>End date</h3>
+          <label>End date</label>
           <div>{{ formattedEndDate }}</div>
-        </div>
-      </div>
-      <div class="flex-row">
-        <div class="flex-col">
-          <h3>Syllabus</h3>
-          <div
-            v-if="syllabusHTML"
-            v-html="syllabusHTML"
-            class="rendered-content"
-          />
-          <p v-else>Not yet defined</p>
         </div>
       </div>
       <div class="flex-row" v-if="courseLessons.length">
         <div class="flex-col">
-          <h3>Lessons</h3>
           <LessonsMap :course="currentCourse" :lessons="courseLessons"/>
+        </div>
+      </div>
+      <div class="flex-row">
+        <div class="flex-col">
+          <label>Syllabus</label>
+          <RenderedContent
+            v-if="currentCourse.syllabus"
+            :content="currentCourse.syllabus"
+          />
+          <div v-else>Not yet defined</div>
         </div>
       </div>
       <EditCurrentCourseButton/>
@@ -46,11 +82,13 @@
 
 <script>
 import formatDate from 'date-fns/format'
+import differenceInDays from 'date-fns/difference_in_days'
 import Layout from '@layouts/main'
 import CourseNotFound from '@components/course-not-found'
 import LessonsMap from '@components/lessons-map'
-import { courseGetters, lessonGetters } from '@state/helpers'
-import rho from 'rho'
+import RenderedContent from '@components/rendered-content'
+import { userGetters, courseGetters, lessonGetters } from '@state/helpers'
+import courseLessonGradePoints from '@helpers/course-lesson-grade-points'
 
 const dateFormat = 'MMMM Do, YYYY'
 
@@ -59,6 +97,7 @@ export default {
     Layout,
     CourseNotFound,
     LessonsMap,
+    RenderedContent,
     EditCurrentCourseButton: {
       render (h) {
         if (!this.canUpdateCurrentCourse) return ''
@@ -73,7 +112,14 @@ export default {
       computed: courseGetters
     }
   },
+  data () {
+    return {
+      maxGrade: 4,
+      gradeMilestones: [0.5, 1, 1.5, 2, 2.5, 3, 3.5]
+    }
+  },
   computed: {
+    ...userGetters,
     ...courseGetters,
     ...lessonGetters,
     courseLessons () {
@@ -87,8 +133,48 @@ export default {
     formattedEndDate () {
       return this.humanizeDate(this.currentCourse.endDate)
     },
-    syllabusHTML () {
-      return rho.toHtml(this.currentCourse.syllabus)
+    currentUserIsStudent () {
+      return this.currentCourse.studentKeys.some(key => key === this.currentUser.uid)
+    },
+    achievedGradePoints () {
+      const realGradePoints = this.currentCourse.projectCompletions.filter(completion => {
+        return (
+          completion.submission &&
+          completion.submission.isApproved &&
+          completion.students.some(student => {
+            return student['.key'] === this.currentUser.uid
+          })
+        )
+      }).map(completion => {
+        const lesson = this.lessons.find(lesson => lesson['.key'] === completion.lessonKey)
+        return courseLessonGradePoints(this.currentCourse, lesson)
+      }).reduce((a, b) => a + b, 0)
+      return isNaN(realGradePoints)
+        ? 0
+        : Math.floor(realGradePoints * 100) / 100
+    },
+    totalDaysInCourse () {
+      const { startDate, endDate } = this.currentCourse
+      const totalDays = differenceInDays(endDate, startDate)
+      return Math.max(0, totalDays)
+    },
+    daysSoFarInCourse () {
+      const { startDate } = this.currentCourse
+      const daysSoFar = differenceInDays(Date.now(), startDate)
+      return Math.max(0, daysSoFar)
+    },
+    minGradeExpectation () {
+      const daysOfPadding = Math.min(21, this.totalDaysInCourse * 0.1)
+      const realGradeExpectation = this.daysSoFarInCourse / (this.totalDaysInCourse - daysOfPadding) * this.maxGrade
+      return isNaN(realGradeExpectation)
+        ? 0
+        : Math.floor(realGradeExpectation * 100) / 100
+    },
+    percentThroughCourse () {
+      return Math.min(100, this.daysSoFarInCourse / this.totalDaysInCourse * 100)
+    },
+    percentToMaxGrade () {
+      return Math.min(100, this.achievedGradePoints / this.maxGrade * 100)
     }
   },
   methods: {
@@ -105,3 +191,55 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+@import '../meta'
+
+$course-meter-bg = $design.branding.muted.light.success
+$course-meter-filled-bg = $design.branding.success.light
+$course-meter-text-color = inherit
+$course-meter-active-text-color = firebrick
+
+.course-meter
+  display: flex
+  position: relative
+  justify-content: space-between
+  font-family: Lato
+  color: $course-meter-text-color
+  &:before
+    content: ''
+    position: absolute
+    left: 0
+    right: 0
+    height: 100%
+    background-color: $course-meter-bg
+    z-index: -1
+.course-meter-text
+  padding: $design.layout.gutterWidth * .5 $design.layout.gutterWidth
+  &.active
+    color: $course-meter-active-text-color
+    font-weight: 600
+.meter-percent-through-course, .meter-percent-to-max-grade
+  position: absolute
+  height: 100%
+  z-index: -1
+  background-color: $course-meter-filled-bg
+
+.course-grade-milestone
+  width: 2px
+  height: 100%
+  position: absolute
+  background-color: $course-meter-filled-bg
+  &:after
+    content: attr(data-grade)
+    height: $design.layout.gutterWidth
+    line-height: $design.layout.gutterWidth
+    position: absolute
+    top: 50%
+    margin-top: $design.layout.gutterWidth * -.5
+    margin-left: 5px
+  &.active
+    &:after
+      color: $course-meter-active-text-color
+      font-weight: 600
+</style>
