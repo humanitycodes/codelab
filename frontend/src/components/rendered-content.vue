@@ -13,7 +13,7 @@
       <PageNavigation
         v-model="currentPage"
         :pages="pages"
-        label-direction="top"
+        label-placement="top"
       />
     </div>
   </div>
@@ -40,7 +40,7 @@ export default {
                 on-click={() => this.toPage(index + 1)}
                 class={{
                   'rendered-content-page-breadcrumb': true,
-                  'label-direction-top': this.labelDirection === 'top',
+                  'label-placement-top': this.labelPlacement === 'top',
                   active: this.value === index + 1
                 }}
               >
@@ -68,7 +68,7 @@ export default {
           type: Array,
           required: true
         },
-        labelDirection: {
+        labelPlacement: {
           type: String,
           default: 'bottom'
         }
@@ -185,7 +185,7 @@ export default {
       box-shadow: 0 0 5px white
       color: $design.branding.primary.light
       z-index: 3
-    &.label-direction-top
+    &.label-placement-top
       &:after
         top: auto
         bottom: $design.control.height + $design.layout.gutterWidth * .2
