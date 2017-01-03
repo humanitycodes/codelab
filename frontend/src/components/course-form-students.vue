@@ -31,7 +31,24 @@
           >X</button>
         </li>
       </ul>
-      <p v-if="!students.length && !disabled" class="warning">
+      <p
+        v-if="preenrollments.length"
+        class="warning"
+      >
+        The following students are enrolled, but have not signed in.
+      </p>
+      <ul v-if="preenrollments.length">
+        <li v-for="preenrollment in preenrollments">
+          <a
+            :href="'mailto:' + preenrollment['.key']"
+            target="_blank"
+          >{{ preenrollment['.key'] }}</a>
+        </li>
+      </ul>
+      <p
+        v-if="!students.length && !preenrollments.length && !disabled"
+        class="warning"
+      >
         It's hardly a course without students. Add some when you feel the course is ready to share.
       </p>
     </div>
@@ -85,6 +102,11 @@ export default {
       return this.users.filter(user => {
         return this.course.studentKeys.indexOf(user['.key']) !== -1
       })
+    },
+    preenrollments () {
+      console.log('preenrollments', this.course.preenrollments)
+      if (!this.course.preenrollments) return []
+      return this.course.preenrollments
     }
   },
   methods: {
