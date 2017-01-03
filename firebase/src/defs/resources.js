@@ -1,4 +1,4 @@
-import { all, any, isGreaterThan, hasRole, childIsFalsy, isOneOfTheseStrings, keyInResource } from '../generators/conditions'
+import { all, any, isGreaterThan, hasRole, childIsFalsy, isOneOfTheseStrings, keyInResource, matches } from '../generators/conditions'
 
 export default {
   courses: {
@@ -23,6 +23,11 @@ export default {
           },
           startDate: Date,
           endDate: Date
+        },
+        instructor: {
+          preenrollments: {
+            type: Array
+          }
         }
       },
       large: {
