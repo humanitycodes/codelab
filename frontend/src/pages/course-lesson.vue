@@ -102,19 +102,8 @@ export default {
         newPage
       )
       window.history.replaceState({}, null, newUrl)
+      document.body.scrollTop = 0
     }
   }
 }
 </script>
-
-<style lang="stylus">
-@import '../meta'
-
-.rendered-content
-  border: 1px solid $design.branding.muted.light.gray
-  padding: $design.layout.gutterWidth
-  img
-    display: block
-    margin: 0 auto
-    padding: $design.layout.gutterWidth
-</style>
