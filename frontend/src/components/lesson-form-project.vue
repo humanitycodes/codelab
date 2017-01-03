@@ -1,33 +1,45 @@
 <template>
   <div class="flex-row" v-if="project">
     <div class="flex-col">
-      <label>Project Title</label>
-      <input
-        v-model="project.title"
-        placeholder="Project title"
-        class="lesson-project-title-input"
-      >
-      <label>Project Hosting</label>
-      <select v-model="project.hosting">
-        <option
-          v-for="hostingOption in hostingOptions"
-          :value="hostingOption"
-        >{{ hostingOption }}</option>
-      </select>
-      <p v-if="!project.title" class="warning">
-        This lesson's project needs a title so that people will understand the general idea of what they'll be building.
-      </p>
-      <label>Project Criteria</label>
-      <input
-        v-model="newProjectCriterion"
-        @keydown.enter="addCriterion"
-        placeholder="Add project criteria"
-      >
-      <OrderedEditableList :items="project.criteria">
-        <template scope="list">
-          <input v-model="list.item.content">
-        </template>
-      </OrderedEditableList>
+      <div class="flex-row">
+        <div class="flex-col">
+          <label>Project Title</label>
+          <input
+            v-model="project.title"
+            placeholder="Project title"
+            class="lesson-project-title-input"
+          >
+        </div>
+      </div>
+      <div class="flex-row">
+        <div class="flex-col">
+          <label>Project Criteria</label>
+          <input
+            v-model="newProjectCriterion"
+            @keydown.enter="addCriterion"
+            placeholder="Add project criteria"
+          >
+          <OrderedEditableList :items="project.criteria">
+            <template scope="list">
+              <input v-model="list.item.content">
+            </template>
+          </OrderedEditableList>
+        </div>
+      </div>
+      <div class="flex-row">
+        <div class="flex-col">
+          <label>Project Hosting</label>
+          <select v-model="project.hosting">
+            <option
+              v-for="hostingOption in hostingOptions"
+              :value="hostingOption"
+            >{{ hostingOption }}</option>
+          </select>
+          <p v-if="!project.title" class="warning">
+            This lesson's project needs a title so that people will understand the general idea of what they'll be building.
+          </p>
+        </div>
+      </div>
       <p v-if="!project.criteria.length" class="warning">
         If the project doesn't have any criteria, students won't have clear expectations on when they'll have finished the project.
       </p>
