@@ -104,12 +104,12 @@ blockquote
 // CODE BLOCKS
 // -----------
 
+$code-block-bg = #282C34
 code
-  font-family: 'PT Mono'
+  font-family: 'Operator Mono', 'Fira Code', 'Ubuntu Mono', 'Droid Sans Mono', 'Liberation Mono', 'Source Code Pro', Menlo, Consolas, Courier, monospace
 pre
   overflow-y: hidden
   position: relative
-  background-color: $design.branding.muted.light.tan
   border-radius: $design.control.border.radius
   &:before, &:after
     content: ''
@@ -120,13 +120,12 @@ pre
     z-index: 1
   &:before
     left: 0
-    background-image: linear-gradient(to left, rgba(255,255,255,0), $design.branding.muted.light.tan)
+    background-image: linear-gradient(to left, rgba(255,255,255,0), $code-block-bg)
   &:after
     right: 0
-    background-image: linear-gradient(to right, rgba(255,255,255,0), $design.branding.muted.light.tan)
+    background-image: linear-gradient(to right, rgba(255,255,255,0), $code-block-bg)
   > code
     display: block
-    background-color: transparent !important
     padding: $design.layout.gutterWidth !important
 
   $output-code-bg = #333
@@ -169,19 +168,6 @@ pre
 .xml, .html
   .css, .javascript
     opacity: 1
-
-.hljs.sh
-  .hljs-built_in
-    color: inherit
-  .hljs-string
-    color: #96c786
-
-// .hljs
-//   background: transparent
-//   color: $design.branding.primary.dark
-//   padding: $design.layout.gutterWidth
-.hljs-comment
-  color: #888
 
 // -------
 // BUTTONS
