@@ -31,7 +31,10 @@ export default {
       render (h) {
         return (
           <div class='flex-row rendered-content-page-navigation'>
-            <button on-click={this.toPrevPage} disabled={this.value === 1}>
+            <button
+              on-click={this.toPrevPage}
+              disabled={this.value === 1}
+            >
               Prev
             </button>
             {this.pages.map((page, index) =>
@@ -53,7 +56,10 @@ export default {
                 </svg>
               </div>
             )}
-            <button on-click={this.toNextPage} disabled={this.value === this.pages.length}>
+            <button
+              on-click={this.toNextPage}
+              disabled={this.value === this.pages.length}
+            >
               Next
             </button>
           </div>
@@ -170,6 +176,18 @@ export default {
 
 <style lang="stylus">
 @import '../meta'
+
+.rendered-content
+  border: 1px solid $design.branding.muted.light.gray
+  padding: $design.layout.gutterWidth
+  img
+    display: block
+    margin: 0 auto
+    padding: $design.layout.gutterWidth
+  > :first-child
+    margin-top: 0
+  > :last-child
+    margin-bottom: 0
 
 .rendered-content-page-navigation
   align-items: stretch

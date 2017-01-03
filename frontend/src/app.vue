@@ -55,16 +55,15 @@ h4
 p
   margin: $design.layout.gutterWidth 0
 
-h1,h2,h3,h4,h5,h6,p,a
-  > code
-    padding-top: 0.2em
-    padding-bottom: 0.2em
-    background-color: rgba(0,0,0,0.04)
-    border-radius: $design.control.border.radius
-    vertical-align: top
-    &:before, &:after
-      content: '\00a0'
-      letter-spacing: -0.2em
+:not(pre) > code
+  padding-top: 0.2em
+  padding-bottom: 0.2em
+  background-color: rgba(0,0,0,0.04)
+  border-radius: $design.control.border.radius
+  vertical-align: top
+  &:before, &:after
+    content: '\00a0'
+    letter-spacing: -0.2em
 
 img
   max-width: 100%
@@ -94,6 +93,12 @@ hr
   border-top: 5px solid $design.branding.primary.dark
   border-radius: 5px
   margin: $design.layout.gutterWidth auto
+
+blockquote
+  font-size: 1.3em
+  margin: 0
+  padding: $design.layout.gutterWidth
+  border-left: 5px solid rgba(0,0,0,.1)
 
 // -----------
 // CODE BLOCKS
@@ -329,16 +334,21 @@ fieldset
 // NOTES
 // -----
 
-p.warning
-  padding: $design.layout.gutterWidth
-  background-color: $design.branding.muted.light.yellow
-  border: 1px solid $design.branding.warning.light
-
-p.danger
-  padding: $design.layout.gutterWidth
-  background-color: $design.branding.muted.light.red
-  border: 1px solid $design.branding.danger.light
-
-p.muted
-  opacity: .7
+p, div
+  &.warning, &.danger, &.muted
+    margin: $design.layout.gutterWidth 0
+    > :first-child
+      margin-top: 0
+    > :last-child
+      margin-bottom: 0
+  &.warning
+    padding: $design.layout.gutterWidth
+    background-color: $design.branding.muted.light.yellow
+    border: 1px solid $design.branding.warning.light
+  &.danger
+    padding: $design.layout.gutterWidth
+    background-color: $design.branding.muted.light.red
+    border: 1px solid $design.branding.danger.light
+  &.muted
+    opacity: .7
 </style>

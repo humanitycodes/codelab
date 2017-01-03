@@ -77,7 +77,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 @import '../meta'
 
 .project-instructions
@@ -86,4 +86,8 @@ export default {
   border-top: none
   border-bottom-left-radius: $design.control.border.radius
   border-bottom-right-radius: $design.control.border.radius
+  > :first-child
+    margin-top: 0
+  > :last-child
+    margin-bottom: 0
 </style>
