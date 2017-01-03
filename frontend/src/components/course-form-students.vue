@@ -15,6 +15,7 @@
           v-model="studentQuery"
           name="course-student-query"
           placeholder="Add students to the course"
+          @keyup.enter="addPreenrollment"
         >
       </Dropdown>
       <ul v-if="students.length">
@@ -31,10 +32,7 @@
           >X</button>
         </li>
       </ul>
-      <p
-        v-if="preenrollments.length"
-        class="warning"
-      >
+      <p v-if="preenrollments.length" class="warning">
         The following students are enrolled, but have not signed in.
       </p>
       <ul v-if="preenrollments.length">
@@ -43,6 +41,11 @@
             :href="'mailto:' + preenrollment['.key']"
             target="_blank"
           >{{ preenrollment['.key'] }}</a>
+          <button
+            @click="removePreenrollment(preenrollment['.key'])"
+            class="inline danger"
+            name="course-remove-student"
+          >X</button>
         </li>
       </ul>
       <p
@@ -104,19 +107,29 @@ export default {
       })
     },
     preenrollments () {
-      console.log('preenrollments', this.course.preenrollments)
-      if (!this.course.preenrollments) return []
-      return this.course.preenrollments
+      return this.course.preenrollments || []
     }
   },
   methods: {
     addStudent (student) {
+      if (!student) return
       this.course.addStudent(student['.key'])
       this.studentQuery = ''
       this.$refs.queryInput.focus()
     },
     removeStudent (student) {
       this.course.removeStudent(student['.key'])
+    },
+    addPreenrollment () {
+      if (!this.queryResults.length &&
+        /^[\w.]+@msu\.edu/.test(this.studentQuery)) {
+        this.course.preenrollments.add({}, this.studentQuery)
+        this.studentQuery = ''
+        this.$refs.queryInput.focus()
+      }
+    },
+    removePreenrollment (email) {
+      this.course.preenrollments.remove(email)
     }
   }
 }
