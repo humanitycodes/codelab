@@ -105,6 +105,8 @@ blockquote
 // -----------
 
 $code-block-bg = #282C34
+$code-tag-font-size = 10px
+$code-tag-padding-vertical = 1px
 code
   font-family: 'Operator Mono', 'Fira Code', 'Ubuntu Mono', 'Droid Sans Mono', 'Liberation Mono', 'Source Code Pro', Menlo, Consolas, Courier, monospace
 pre
@@ -127,41 +129,35 @@ pre
   > code
     display: block
     padding: $design.layout.gutterWidth !important
-
-  $output-code-bg = #333
-  $output-code-color = #CFD2D1
-  $output-tag-font-size = 10px
-  $output-tag-padding-vertical = 1px
-  &.output, &.sh
-    background-color: $output-code-bg
-    &:before
-      background-image: linear-gradient(to left, rgba(255,255,255,0), $output-code-bg)
     &:after
-      background-image: linear-gradient(to right, rgba(255,255,255,0), $output-code-bg)
-    > code
-      &:after
-        position: absolute
-        top: 0
-        right: 0
-        font-family: Lato
-        font-size: $output-tag-font-size
-        letter-spacing: 1px
-        padding: $output-tag-padding-vertical 7px
-        background-color: rgba(255,255,255,.4)
-        border-bottom-left-radius: $design.control.border.radius
-        color: #FFF
-        z-index: 2
-  &.sh
-    > code
-      color: $design.branding.muted.light.gray
-      &:after
-        content: 'TERMINAL'
+      content: 'CODE'
+      position: absolute
+      top: 0
+      right: 0
+      font-family: Lato
+      font-size: $code-tag-font-size
+      letter-spacing: 1px
+      padding: $code-tag-padding-vertical 7px
+      background-color: rgba(255,255,255,.4)
+      border-bottom-left-radius: $design.control.border.radius
+      color: #FFF
+      z-index: 2
+  &.sh > code
+    &:after
+      content: 'TERMINAL'
+    .hljs-built_in
+      color: inherit
+  &.html > code:after
+    content: 'HTML'
+  &.css > code:after
+    content: 'CSS'
+  &.js > code:after
+    content: 'JAVASCRIPT'
   &.output
     cursor: not-allowed
     user-select: none
     > code
-      padding-top: $output-tag-font-size * 1.7 + $output-tag-padding-vertical * 2 + $design.layout.gutterWidth * .3 !important
-      color: $output-code-color
+      padding-top: $code-tag-font-size * 1.7 + $code-tag-padding-vertical * 2 + $design.layout.gutterWidth * .3 !important
       &:after
         content: 'OUTPUT'
 
