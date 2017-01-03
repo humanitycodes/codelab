@@ -20,10 +20,13 @@
 </template>
 
 <script>
-import rho from 'rho'
 import compact from 'lodash/compact'
 import chunk from 'lodash/chunk'
 import { highlight, highlightAuto } from 'highlight.js'
+import { BlockCompiler } from 'rho'
+const rho = new BlockCompiler({
+  externalLinks: true
+})
 
 export default {
   components: {
