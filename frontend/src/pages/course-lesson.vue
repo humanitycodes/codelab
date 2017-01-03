@@ -19,10 +19,10 @@
     />
     <div v-if="currentLesson.projects.length" class="flex-row">
       <div class="flex-col">
-        <h3>
+        <h2>
           Project:
           <span v-html="toHtml(currentLesson.projects[0].title)"/>
-        </h3>
+        </h2>
         <ol v-if="currentLesson.projects[0].criteria.length">
           <li
             v-for="criterion in currentLesson.projects[0].criteria"
