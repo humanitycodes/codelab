@@ -1,5 +1,6 @@
 import sortBy from 'lodash/sortBy'
 import defineKey from './key'
+import encodeKey from '../utils/encode-key'
 
 const defineField = ({
   resourceItem,
@@ -53,25 +54,30 @@ const defineField = ({
       let currentPosition = 1
       for (const item of resourceItem[fieldName]) {
         fieldRef
-          .child(item['.key'])
+          .child(encodeKey(item['.key']))
           .child('position')
           .set(currentPosition++)
       }
     }
-    resourceItem[fieldName].add = function (fields = {}) {
+    resourceItem[fieldName].add = function (fields = {}, key) {
       const subFieldRecordCount = subFieldStateKeys.length
-      fieldRef.push({
+      const data = {
         ...fields,
         position: subFieldRecordCount + 1
-      })
+      }
+      if (key) {
+        fieldRef.child(encodeKey(key)).set(data)
+      } else {
+        fieldRef.push(data)
+      }
       updateMeta()
     }
     resourceItem[fieldName].remove = function (key) {
-      fieldRef.child(key).remove()
+      fieldRef.child(encodeKey(key)).remove()
       let currentPosition = 1
       for (const otherKey of subFieldStateKeys) {
         if (otherKey !== key) {
-          fieldRef.child(otherKey).child('position').set(currentPosition++)
+          fieldRef.child(encodeKey(otherKey)).child('position').set(currentPosition++)
         }
       }
       updateMeta()
@@ -99,7 +105,7 @@ const defineField = ({
   function updateMeta () {
     db.ref(resourceName)
       .child('meta')
-      .child(resourceKey)
+      .child(encodeKey(resourceKey))
       .update({
         updatedAt: Date.now(),
         updatedBy: uid
