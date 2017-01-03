@@ -135,8 +135,25 @@ export default {
       return validatedCurrentPage
     }
   },
+  mounted () {
+    this.highlightCode()
+  },
   watch: {
     contentHtml () {
+      this.highlightCode()
+    },
+    currentPage (newPage) {
+      this.$emit('page-update', newPage)
+    }
+  },
+  methods: {
+    decodeHtml (text) {
+      var el = document.createElement('textarea')
+      el.innerHTML = text
+      return el.value
+    },
+    highlightCode () {
+      console.log('highlighting')
       this.$nextTick(() => {
         const codeElements = this.$refs.renderedContent.querySelectorAll('pre > code')
         const codeLangs = ['sh', 'html', 'js', 'md', 'css', 'scss']
@@ -159,16 +176,6 @@ export default {
           codeEl.classList.add('hljs')
         }
       })
-    },
-    currentPage (newPage) {
-      this.$emit('page-update', newPage)
-    }
-  },
-  methods: {
-    decodeHtml (text) {
-      var el = document.createElement('textarea')
-      el.innerHTML = text
-      return el.value
     }
   }
 }
