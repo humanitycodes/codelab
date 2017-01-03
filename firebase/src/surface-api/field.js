@@ -73,11 +73,12 @@ const defineField = ({
       updateMeta()
     }
     resourceItem[fieldName].remove = function (key) {
-      fieldRef.child(encodeKey(key)).remove()
+      const encodedKey = encodeKey(key)
+      fieldRef.child(encodedKey).remove()
       let currentPosition = 1
       for (const otherKey of subFieldStateKeys) {
-        if (otherKey !== key) {
-          fieldRef.child(encodeKey(otherKey)).child('position').set(currentPosition++)
+        if (otherKey !== encodedKey) {
+          fieldRef.child(otherKey).child('position').set(currentPosition++)
         }
       }
       updateMeta()
