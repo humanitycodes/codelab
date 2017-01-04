@@ -44,6 +44,7 @@ export const config = [
         const encodedJwt = encodeURIComponent(jwt)
         reply().redirect(`${env.config.serverBaseURL}/sign-in?token=${encodedJwt}`)
       } catch (error) {
+        console.error(`Unable to sign MSU user in with code ${request.query.code}. Reason:`, error)
         reply(boom.unauthorized(error.message))
       }
     }
@@ -73,6 +74,7 @@ export const config = [
 
         reply().redirect(`${env.config.serverBaseURL}/`)
       } catch (error) {
+        console.error(`Unable to connect GitHub account with state ${request.query.state}. Reason:`, error)
         reply(boom.unauthorized(error.message))
       }
     }

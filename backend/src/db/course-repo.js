@@ -34,6 +34,7 @@ export async function confirmPreenrollments (email, userId) {
       if (courseSnapshot && courseSnapshot.exists()) {
         return Object.keys(courseSnapshot.val())
       }
+      return []
     })
     .then(courseKeys => {
       let courseActions = []
