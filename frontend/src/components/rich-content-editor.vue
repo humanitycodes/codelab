@@ -5,6 +5,8 @@
   >
     <textarea
       ref="textarea"
+      :name="name"
+      :value.dom-prop="value"
       @input="$emit('input', $event.target.value)"
     />
     <RenderedContent
@@ -35,7 +37,8 @@ export default {
     value: {
       type: String,
       default: ''
-    }
+    },
+    name: String
   },
   data () {
     return {

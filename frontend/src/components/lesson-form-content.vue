@@ -5,7 +5,6 @@
       <RichContentEditor
         v-model="lesson.content"
         name="lesson-content"
-        placeholder="Lesson content in Rho"
       />
       <p v-if="!lesson.content" class="warning">
         A lesson must have content before being added to a course.
