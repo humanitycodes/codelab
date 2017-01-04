@@ -1,5 +1,7 @@
 import firebase from 'firebase-admin'
 
+import { confirmPreenrollments } from './course-repo'
+
 const SIGNUP_ROLES = {
   instructor: false
 }
@@ -13,6 +15,9 @@ export async function createUser (userId, user) {
       db.ref('roles').child(userId).set(SIGNUP_ROLES)
     ])
     .then(([usersCallback, rolesCallback]) => {
+      return confirmPreenrollments(user.email, userId)
+    })
+    .then(() => {
       resolve(user)
     })
     .catch(reject)
