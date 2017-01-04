@@ -1,5 +1,5 @@
 import firebase from 'firebase-admin'
-import encodeKey from '../../../firebase/src/utils/encode-key'
+import encodeKey from '../../../firebase/dist/utils/encode-key'
 
 function createCourseEnrollment (courseKey, userId) {
   return firebase.database()
