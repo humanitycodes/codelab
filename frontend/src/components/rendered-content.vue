@@ -161,6 +161,7 @@ export default {
     },
     highlightCode () {
       this.$nextTick(() => {
+        if (!this.$refs.renderedContent) return
         const codeElements = this.$refs.renderedContent.querySelectorAll('pre > code')
         const codeLangs = ['sh', 'html', 'js', 'md', 'css', 'scss']
         const codeElementsCount = codeElements.length
