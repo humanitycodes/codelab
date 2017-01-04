@@ -2,10 +2,9 @@
   <div class="flex-row">
     <div class="flex-col">
       <label>Syllabus</label>
-      <textarea
+      <RichContentEditor
         v-model="course.syllabus"
         name="course-syllabus"
-        placeholder="The structure and rules of the course"
       />
       <p v-if="!course.syllabus" class="warning">
         A syllabus must be defined before students can be enrolled in a course.
@@ -15,7 +14,12 @@
 </template>
 
 <script>
+import RichContentEditor from './rich-content-editor'
+
 export default {
+  components: {
+    RichContentEditor
+  },
   props: {
     course: {
       type: Object,

@@ -1,7 +1,8 @@
 <template>
   <div class="flex-row" v-if="content">
-    <div class="flex-col">
+    <div class="rendered-content-container flex-col">
       <PageNavigation
+        v-if="!paginationPlacement || paginationPlacement === 'top'"
         v-model="currentPage"
         :pages="pages"
       />
@@ -11,6 +12,7 @@
         class="rendered-content"
       />
       <PageNavigation
+        v-if="!paginationPlacement || paginationPlacement === 'bottom'"
         v-model="currentPage"
         :pages="pages"
         label-placement="top"
@@ -104,7 +106,8 @@ export default {
       type: Number,
       default: 1
     },
-    content: String
+    content: String,
+    paginationPlacement: String
   },
   data () {
     return {
@@ -147,6 +150,7 @@ export default {
     },
     currentPage (newPage) {
       this.$emit('page-update', newPage)
+      this.highlightCode()
     }
   },
   methods: {
@@ -156,7 +160,6 @@ export default {
       return el.value
     },
     highlightCode () {
-      console.log('highlighting')
       this.$nextTick(() => {
         const codeElements = this.$refs.renderedContent.querySelectorAll('pre > code')
         const codeLangs = ['sh', 'html', 'js', 'md', 'css', 'scss']
@@ -187,9 +190,15 @@ export default {
 <style lang="stylus">
 @import '../meta'
 
+.rendered-content-container
+  display: flex
+  flex-direction: column
+
 .rendered-content
+  flex-grow: 1
   border: 1px solid $design.branding.muted.light.gray
   padding: $design.layout.gutterWidth
+  overflow-y: auto
   img
     display: block
     margin: 0 auto
@@ -203,6 +212,7 @@ export default {
   align-items: stretch
   justify-content: space-between
   position: relative
+  min-height: $design.control.height
 
 .rendered-content-page-breadcrumb
   display: flex

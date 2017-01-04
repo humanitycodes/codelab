@@ -37,7 +37,7 @@ body, i.fa
   line-height: 1.7
 
 h1, h2, h3, h4, h5, h6
-  font-family: 'Lato'
+  font-family: Lato
   line-height: 1.3
 
 h1, h2
@@ -100,16 +100,18 @@ blockquote
   padding: $design.layout.gutterWidth
   border-left: 5px solid rgba(0,0,0,.1)
 
+strong, b
+  font-weight: 700
+
 // -----------
 // CODE BLOCKS
 // -----------
 
-$code-block-bg = #282C34
 $code-tag-font-size = 10px
 $code-tag-padding-vertical = 1px
 code
-  font-family: 'Operator Mono', 'Fira Code', 'Ubuntu Mono', 'Droid Sans Mono', 'Liberation Mono', 'Source Code Pro', Menlo, Consolas, Courier, monospace
-pre
+  font-family: $design.code.font.family
+pre:not(.CodeMirror-line)
   overflow-y: hidden
   position: relative
   border-radius: $design.control.border.radius
@@ -122,10 +124,10 @@ pre
     z-index: 1
   &:before
     left: 0
-    background-image: linear-gradient(to left, rgba(255,255,255,0), $code-block-bg)
+    background-image: linear-gradient(to left, rgba(255,255,255,0), $design.code.block.background)
   &:after
     right: 0
-    background-image: linear-gradient(to right, rgba(255,255,255,0), $code-block-bg)
+    background-image: linear-gradient(to right, rgba(255,255,255,0), $design.code.block.background)
   > code
     display: block
     padding: $design.layout.gutterWidth !important
@@ -143,6 +145,7 @@ pre
       color: #FFF
       z-index: 2
   &.sh > code
+  &.sh > code
     &:after
       content: 'TERMINAL'
     .hljs-built_in
@@ -153,6 +156,20 @@ pre
     content: 'CSS'
   &.js > code:after
     content: 'JAVASCRIPT'
+  &.txt > code:after
+    content: 'TEXT'
+  &.notepad
+    border: 1px solid $design.control.border.color
+    &:before
+      content: none
+    &:after
+      content: none
+    > code
+      color: black
+      font-family: monospace
+      background-color: white
+      &:after
+        content: 'NOTEPAD'
   &.output
     cursor: not-allowed
     user-select: none

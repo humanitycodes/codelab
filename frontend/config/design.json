@@ -49,5 +49,13 @@
     "text": {
       "color": "#555555"
     }
+  },
+  "code": {
+    "font": {
+      "family": "'Operator Mono', 'Fira Code', 'Ubuntu Mono', 'Droid Sans Mono', 'Liberation Mono', 'Source Code Pro', Menlo, Consolas, Courier, monospace"
+    },
+    "block": {
+      "background": "#282C34"
+    }
   }
 }

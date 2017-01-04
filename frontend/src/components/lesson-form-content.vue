@@ -2,10 +2,10 @@
   <div class="flex-row">
     <div class="flex-col">
       <label>Content</label>
-      <textarea
+      <RichContentEditor
         v-model="lesson.content"
         name="lesson-content"
-        placeholder="Markdown explaining the lesson content"
+        placeholder="Lesson content in Rho"
       />
       <p v-if="!lesson.content" class="warning">
         A lesson must have content before being added to a course.
@@ -15,7 +15,13 @@
 </template>
 
 <script>
+import '@assets/css/codemirror-theme-one-dark.css'
+import RichContentEditor from './rich-content-editor'
+
 export default {
+  components: {
+    RichContentEditor
+  },
   props: {
     lesson: {
       type: Object,
