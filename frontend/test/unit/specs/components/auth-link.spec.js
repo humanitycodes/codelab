@@ -27,7 +27,11 @@ describe('auth-link.vue', () => {
   })
 
   it('supports GitHub OAuth login', () => {
-    const vm = new Vue(newAuthLink('github')).$mount()
+    const vm = new Vue(newAuthLink('github'))
+    Object.defineProperty(vm, '$route', {
+      value: { fullPath: '/my/full/path' }
+    })
+    vm.$mount()
 
     expect(vm.url).to.contain('https://github.com/login/oauth/authorize')
     expect(vm.url).to.contain('scope=')
@@ -38,7 +42,7 @@ describe('auth-link.vue', () => {
     const slotContents = 'kittenz!'
     const vm = new Vue({
       template: `
-        <AuthLink provider="github">
+        <AuthLink provider="msu">
           ${slotContents}
         </AuthLink>
       `,
