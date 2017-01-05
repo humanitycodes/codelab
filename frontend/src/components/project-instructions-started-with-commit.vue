@@ -60,7 +60,7 @@
       @click="submitForReview"
       :disabled="!allCriteriaMet"
     >
-      Submit
+      Submit project for review
     </button>
   </div>
 </template>
