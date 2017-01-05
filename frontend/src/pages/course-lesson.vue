@@ -31,17 +31,17 @@
         </ol>
         <p v-else>No criteria for this project yet.</p>
         <ProjectSubmissionFlow
-          v-if="
-            currentLesson.projects.length &&
-            currentUser.profile.github &&
-            !hasNewGitHubScopes
-          "
+          v-if="currentLesson.projects.length && isGitHubConnected"
           :course="currentCourse"
           :lesson="currentLesson"
           :project="currentLesson.projects[0]"
         />
-        <p v-if="!currentUser.profile.github" class="warning">
-          You must connect your GitHub account before you can start a project.
+        <p v-if="!isGitHubConnected" class="warning">
+          You must
+          <AuthLink provider="github">
+            connect your GitHub account
+          </AuthLink>
+          before you can start a project.
         </p>
       </div>
     </div>
@@ -52,6 +52,7 @@
 <script>
 import rho from 'rho'
 import Layout from '@layouts/main'
+import AuthLink from '@components/auth-link'
 import RenderedContent from '@components/rendered-content'
 import ProjectSubmissionFlow from '@components/project-submission-flow'
 import {
@@ -62,6 +63,7 @@ import courseLessonGradePoints from '@helpers/course-lesson-grade-points'
 export default {
   components: {
     Layout,
+    AuthLink,
     RenderedContent,
     ProjectSubmissionFlow,
     EditCurrentLessonButton: {
@@ -83,6 +85,9 @@ export default {
     ...courseGetters,
     ...lessonGetters,
     ...courseLessonGetters,
+    isGitHubConnected () {
+      return this.currentUser.profile.github && !this.hasNewGitHubScopes
+    },
     gradePoints () {
       const realGradePoints = courseLessonGradePoints(this.currentCourse, this.currentLesson)
       return isNaN(realGradePoints)
