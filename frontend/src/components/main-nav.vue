@@ -47,7 +47,7 @@
 import {
   userGetters, lessonPermissionMethods, coursePermissionMethods
 } from '@state/helpers'
-import AuthLink from './auth-link'
+import AuthLink from '@components/auth-link'
 
 export default {
   components: {
