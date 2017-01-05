@@ -70,8 +70,6 @@ module.exports = {
       // Edit lesson fields
       .setValue(`input[name=lesson-title]`, lesson.title)
       .setValue(`input[name=lesson-estimated-hours]`, lesson.estimatedHours)
-      .setValue(`textarea[name=lesson-content]`, lesson.content)
-      .setValue(`textarea[name=lesson-notes]`, lesson.notes)
 
       .setValue(`input[name=lesson-new-learning-objective]`, [
         Object.values(lesson.learningObjectives)[0].content,
@@ -92,8 +90,6 @@ module.exports = {
       .waitForElementVisible('input[name=lesson-title]', 5000)
       .assert.value(`input[name=lesson-title]`, lesson.title)
       .assert.value(`input[name=lesson-estimated-hours]`, lesson.estimatedHours.toString())
-      .assert.value(`textarea[name=lesson-content]`, lesson.content)
-      .assert.value(`textarea[name=lesson-notes]`, lesson.notes)
       .assert.value(`input[name=lesson-new-learning-objective] + ol input`,
         Object.values(lesson.learningObjectives)[0].content)
       .assert.visible(`button[name=lesson-remove-prereq]`)
@@ -133,7 +129,6 @@ module.exports = {
 
       // Edit course fields
       .setValue(`input[name=course-title]`, course.title)
-      .setValue(`textarea[name=course-syllabus]`, course.syllabus)
       .setValue(`input[name=course-credits]`, course.credits)
 
       // setValue sends keystrokes, so format the dates in the order you would type a date
@@ -157,7 +152,6 @@ module.exports = {
       .click(`a[href^='/courses/${course.key}/edit']`)
       .waitForElementVisible('input[name=course-title]', 5000)
       .assert.value(`input[name=course-title]`, course.title)
-      .assert.value(`textarea[name=course-syllabus]`, course.syllabus)
       .assert.value(`input[name=course-credits]`, course.credits.toString())
       .assert.value(`input[name=course-start-date]`, datefns.format(course.startDate, 'YYYY-MM-DD'))
       .assert.value(`input[name=course-end-date]`, datefns.format(course.endDate, 'YYYY-MM-DD'))
