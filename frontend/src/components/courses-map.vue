@@ -7,7 +7,12 @@
         ><button class="inline">Edit</button></router-link>
         <router-link
           :to="'/courses/' + course['.key']"
-        >{{ course.title || course['.key'] }}</router-link>
+        >
+          {{ course['.key'] }}
+          <template v-if="course.title">
+            ({{ course.title }})
+          </template>
+        </router-link>
       </li>
     </ul>
   </div>
