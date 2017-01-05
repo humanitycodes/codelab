@@ -51,7 +51,7 @@ export const config = [
   },
   {
     method: 'GET',
-    path: `/github/callback`,
+    path: `/github/callback/{returnPath*}`,
     config: {
       validate: {
         query: {
@@ -72,7 +72,7 @@ export const config = [
         const githubProfile = yield githubOAuth.requestLoginProfile(request.query.code)
         yield userRepo.saveUserGitHubProfile(userId, githubProfile)
 
-        reply().redirect(`${env.config.serverBaseURL}/`)
+        reply().redirect(`${env.config.serverBaseURL}/${request.params.returnPath}`)
       } catch (error) {
         console.error(`Unable to connect GitHub account with state ${request.query.state}. Reason:`, error)
         reply(boom.unauthorized(error.message))

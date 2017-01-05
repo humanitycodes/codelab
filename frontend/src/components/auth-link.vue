@@ -25,7 +25,13 @@ export default {
         case 'github':
           const currentUser = store.state.users.currentUser
           const firebaseJwt = currentUser ? encodeURIComponent(currentUser.firebaseJwt) : ''
-          return `https://github.com/login/oauth/authorize?scope=${githubScopesPath}&client_id=${env.githubAuthClientId}&state=${firebaseJwt}`
+          return [
+            'https://github.com/login/oauth/authorize',
+            '?scope=', githubScopesPath,
+            '&client_id=', env.githubAuthClientId,
+            '&state=', firebaseJwt,
+            '&redirect_uri=', env.githubAuthRedirectURL + this.$route.fullPath
+          ].join('')
         case 'msu':
           return `https://oauth.ais.msu.edu/oauth/authorize?response_type=code&client_id=${env.msuAuthClientId}`
         default:
