@@ -1,25 +1,25 @@
 {
   "branding": {
     "primary": {
-      "light": "#198838",
+      "light": "#07682c",
       "dark": "#17453A"
     },
     "danger": {
-      "light": "#E93F59",
+      "light": "#D93946",
       "dark": "#8F0000"
     },
     "warning": {
-      "light": "#dcb529",
-      "dark": "#C49100"
+      "light": "#A7AE55",
+      "dark": "#747B22"
     },
     "success": {
-      "light": "#6BDD99",
-      "dark": "#009A71"
+      "light": "#09883A",
+      "dark": "#17453A"
     },
     "muted": {
       "light": {
         "tan": "#FBFCF2",
-        "gray": "#F9F7F5",
+        "gray": "#E8EAEA",
         "yellow": "#F8F7E1",
         "red": "#ffdee1",
         "success": "#edfbed"
@@ -47,7 +47,7 @@
   },
   "body": {
     "text": {
-      "color": "#555555"
+      "color": "#535054"
     }
   },
   "code": {
