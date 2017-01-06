@@ -28,6 +28,7 @@
   box-sizing: border-box
 
 body
+  background: $design.body.background
   font-family: 'Merriweather'
   font-weight: 300
   color: $design.body.text.color
@@ -182,7 +183,7 @@ pre:not(.CodeMirror-line)
     border-top: $design.control.border.radius solid $design.code.block.background
     border-top-left-radius: 0
     border-top-right-radius: 0
-    background-color: white
+    background-color: $design.branding.default.light
     position: relative
     z-index: 1
 
@@ -207,7 +208,7 @@ pre:not(.CodeMirror-line)
   text-transform: uppercase
   text-decoration: none
   white-space: nowrap
-  background-color: transparent
+  background-color: $design.branding.default.light
   border-radius: $design.control.border.radius
   border: 1px solid $design.control.border.color
   cursor: pointer
@@ -227,7 +228,9 @@ pre:not(.CodeMirror-line)
   &.inline
     height: auto
     line-height: 1.7
-    padding: 0 $design.control.padding.vertical - 1px 0 $design.control.padding.vertical
+    padding: 2px $design.control.padding.vertical - 1px 0 $design.control.padding.vertical
+    vertical-align: middle
+    margin-top: -2px
   &.primary
     color: #FFF
     background-color: $design.branding.primary.light
