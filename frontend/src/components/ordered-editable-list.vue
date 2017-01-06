@@ -6,10 +6,7 @@
           <div class="ordered-editable-list-input-group">
             <slot :item="item"/>
           </div>
-          <button
-            @click="removeItem(item)"
-            class="danger delete"
-          >×</button>
+          <button @click="removeItem(item)" class="danger">×</button>
         </div>
       </li>
     </Draggable>

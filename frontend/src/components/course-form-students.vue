@@ -27,7 +27,7 @@
           >{{ student.email }}</a>)
           <button
             @click="removeStudent(student)"
-            class="inline danger delete"
+            class="inline danger"
             name="course-remove-student"
           >×</button>
         </li>
@@ -43,7 +43,7 @@
           >{{ preenrollment['.key'] }}</a>
           <button
             @click="removePreenrollment(preenrollment['.key'])"
-            class="inline danger delete"
+            class="inline danger"
             name="course-remove-student"
           >×</button>
         </li>
