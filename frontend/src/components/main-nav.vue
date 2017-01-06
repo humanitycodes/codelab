@@ -70,6 +70,7 @@ export default {
   margin: 0 0 $design.layout.gutterWidth
   padding: $design.layout.gutterWidth
   background: $design.branding.muted.light.gray
+  border-bottom: 1px solid darken($design.branding.muted.light.gray, 10%)
 
 .main-nav-logo
   width: 2em
