@@ -29,7 +29,7 @@
             @click="removeStudent(student)"
             class="inline danger"
             name="course-remove-student"
-          >X</button>
+          >×</button>
         </li>
       </ul>
       <p v-if="preenrollments.length" class="warning">
@@ -45,7 +45,7 @@
             @click="removePreenrollment(preenrollment['.key'])"
             class="inline danger"
             name="course-remove-student"
-          >X</button>
+          >×</button>
         </li>
       </ul>
       <p
