@@ -243,7 +243,7 @@ export default {
     &:after
       content: attr(data-title)
       position: absolute
-      top: $design.control.height + $design.layout.gutterWidth * .2
+      top: $design.layout.gutterWidth * 1.5
       left: 0
       width: 100%
       text-align: center
@@ -252,10 +252,11 @@ export default {
       box-shadow: 0 0 5px white
       color: $design.branding.primary.light
       z-index: 3
+      background-color: transparent
     &.label-placement-top
       &:after
         top: auto
-        bottom: $design.control.height + $design.layout.gutterWidth * .2
+        bottom: $design.layout.gutterWidth * 1.5
   svg
     max-width: 10px
     max-height: 10px
