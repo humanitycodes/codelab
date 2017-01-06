@@ -246,6 +246,14 @@ pre:not(.CodeMirror-line)
     border-color: $design.branding.warning.dark
     &:hover, &:focus
       background-color: darken($design.branding.warning.light, 10%)
+  &.delete
+    height: 1.7rem
+    line-height: 1.7rem
+    width: 1.7rem
+    text-align: center
+    margin: auto
+    padding: 0 0 0 2px
+    font-size: $design.control.height * .5
   &.extra-large
     $button-extra-large-height = $design.control.height * 3
     height: $button-extra-large-height

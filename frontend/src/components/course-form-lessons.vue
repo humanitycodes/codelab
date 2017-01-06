@@ -27,7 +27,7 @@
                 : 'Remove the lesson from this course'
             "
             @click="removeCourseLesson(lesson)"
-            class="inline danger"
+            class="inline danger delete"
             name="course-remove-lesson"
           >×</button>
         </li>

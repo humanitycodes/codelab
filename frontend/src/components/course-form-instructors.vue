@@ -26,7 +26,7 @@
           >{{ instructor.email }}</a>)
           <button
             @click="removeInstructor(instructor)"
-            class="inline danger"
+            class="inline danger delete"
             name="course-remove-instructor"
           >×</button>
         </li>

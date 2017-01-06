@@ -1,5 +1,8 @@
 <template>
-  <button @click="disconnectGithub(currentUser)" class="inline danger">
+  <button
+    @click="disconnectGithub(currentUser)"
+    class="inline danger delete"
+  >
     <slot/>
   </button>
 </template>
