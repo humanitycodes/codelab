@@ -2,7 +2,7 @@
   <div class="flex-row" v-if="content">
     <div class="rendered-content-container flex-col">
       <PageNavigation
-        v-if="!paginationPlacement || paginationPlacement === 'top'"
+        v-if="isTopNavigationPresent"
         v-model="currentPage"
         :pages="pages"
       />
@@ -12,7 +12,7 @@
         class="rendered-content"
       />
       <PageNavigation
-        v-if="!paginationPlacement || paginationPlacement === 'bottom'"
+        v-if="isBottomNavigationPresent"
         v-model="currentPage"
         :pages="pages"
         label-placement="top"
@@ -107,7 +107,13 @@ export default {
       default: 1
     },
     content: String,
-    paginationPlacement: String
+    paginationPlacement: {
+      type: String,
+      default: 'both',
+      validator (value) {
+        return ['both', 'none', 'top', 'bottom'].indexOf(value) >= 0
+      }
+    }
   },
   data () {
     return {
@@ -115,6 +121,14 @@ export default {
     }
   },
   computed: {
+    isTopNavigationPresent () {
+      return this.pages.length > 1 &&
+        ['both', 'top'].indexOf(this.paginationPlacement) >= 0
+    },
+    isBottomNavigationPresent () {
+      return this.pages.length > 1 &&
+        ['both', 'bottom'].indexOf(this.paginationPlacement) >= 0
+    },
     contentHtml () {
       return rho.toHtml(this.content)
     },
