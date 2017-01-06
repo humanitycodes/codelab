@@ -1,5 +1,9 @@
 {
   "branding": {
+    "default": {
+      "light": "#FFF",
+      "dark": "#EEE"
+    },
     "primary": {
       "light": "#07682c",
       "dark": "#17453A"
@@ -46,6 +50,7 @@
     }
   },
   "body": {
+    "background": "#f9f9f7",
     "text": {
       "color": "#535054"
     }

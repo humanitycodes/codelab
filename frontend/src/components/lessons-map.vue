@@ -17,13 +17,16 @@
       class="lesson-graph-card container-link"
     >
       <router-link
-        v-if="course && canUpdateLesson({ lessonKey: node.lesson['.key'] })"
-        class="button inline lessons-map-corner-action-lesson-button"
+        v-if="course && canUpdateLesson({ lessonKey: node.lesson['.key'] }) && false"
+        class="button inline primary lessons-map-corner-action-lesson-button"
         :to="editLessonPath(node.lesson)"
       >Edit</router-link>
       <a
         v-else-if="findProjectCompletion(node.lesson)"
-        class="button inline lessons-map-corner-action-lesson-button"
+        class="button inline lessons-map-project-status lessons-map-corner-action-lesson-button"
+        :class="{
+          'approved': isLessonProjectApproved(node.lesson),
+        }"
         :href="
           'https://github.com/' +
           currentUser.profile.github.login +
@@ -37,32 +40,30 @@
         target="_blank"
         @click.stop
       >
-        <span v-if="
-          findProjectCompletion(node.lesson).submission &&
-          findProjectCompletion(node.lesson).submission.isApproved"
-        >✓</span>
-        <span v-else>Δ</span>
+        <span v-if="isLessonProjectApproved(node.lesson)">
+          ✓ Approved
+        </span>
+        <span v-else>
+          In Progress
+        </span>
       </a>
       <h3>{{ node.lesson.title }}</h3>
       <div class="lesson-graph-card-scrollable">
-        <strong v-if="node.lesson.learningObjectives">
-          Objectives
-        </strong>
-        <ul>
-          <li v-for="objective in node.lesson.learningObjectives">
-            {{ objective.content }}
-          </li>
-        </ul>
-        <strong v-if="node.lesson.technologies">
-          Technologies
-        </strong>
-        <ul v-for="tech in node.lesson.technologies">
-          <li>{{ tech.title }}</li>
-        </ul>
-        <p>
-          <strong>Duration:</strong>
-          <span>{{ node.lesson.estimatedHours }} hours</span>
-        </p>
+        <div class="flex-row">
+          <div class="flex-col" v-if="node.lesson.categories && node.lesson.categories.length">
+            <ul v-for="category in node.lesson.categories">
+              <li>{{ category.title }}</li>
+            </ul>
+          </div>
+          <div class="flex-col" v-if="node.lesson.categories">
+            <ul v-for="category in node.lesson.categories">
+              <li>{{ category.title }}</li>
+            </ul>
+          </div>
+          <div class="flex-col">
+            <span>~{{ node.lesson.estimatedHours }} hrs</span>
+          </div>
+        </div>
       </div>
     </router-link>
   </div>
@@ -88,7 +89,7 @@ export default {
   data () {
     return {
       nodeWidth: 320,
-      nodeHeight: 240
+      nodeHeight: 118
     }
   },
   computed: {
@@ -199,6 +200,13 @@ export default {
         delete projectCompletion.students
         return projectCompletion
       }
+    },
+    isLessonProjectApproved (lesson) {
+      const projectCompletion = this.findProjectCompletion(lesson)
+      return (
+        projectCompletion.submission &&
+        projectCompletion.submission.isApproved
+      )
     }
   }
 }
@@ -215,14 +223,29 @@ export default {
   flex-direction: column
   position: absolute
   top: 0
-  padding: $design.layout.gutterWidth
-  border: 1px solid $design.branding.primary.light
+  padding: $design.layout.gutterWidth + 5px $design.layout.gutterWidth $design.layout.gutterWidth
+  background-color: $design.branding.default.light
+  border: 1px solid $design.control.border.color
+  border-radius: $design.control.border.radius
+  &:hover
+    border-color: $design.branding.primary.light
   > h3
     margin-top: 0
+    white-space: nowrap
+    text-overflow: ellipsis
+    overflow: hidden
 .lesson-graph-card-scrollable
   overflow: hidden
   overflow-y: auto
   max-height: 100%
+  > .flex-row
+    &:first-child
+      margin-top: 0
+    &:last-child
+      margin-bottom: 0
+    > .flex-col
+      &:last-child
+        text-align: right
 .lessons-map-corner-action-lesson-button
   position: absolute
   top: 0
@@ -230,7 +253,13 @@ export default {
   border-top: none
   border-right: none
   border-top-left-radius: 0
+  border-top-right-radius: 0
   border-bottom-right-radius: 0
+  margin-top: 0
+  &.lessons-map-project-status
+    background-color: $design.branding.muted.light.yellow
+    &.approved
+      background-color: $design.branding.muted.light.success
 path
   stroke: $design.branding.primary.light
   stroke-width: 2px

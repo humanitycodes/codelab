@@ -199,6 +199,8 @@ export default {
   flex-grow: 1
   border: 1px solid $design.branding.muted.light.gray
   padding: $design.layout.gutterWidth
+  background-color: $design.branding.default.light
+  border-radius: $design.control.border.radius
   overflow-y: auto
   img
     display: block
@@ -234,9 +236,9 @@ export default {
       width: 100%
       text-align: center
       font-weight: 600
-      background-color: white
-      box-shadow: 0 0 5px white
       color: $design.branding.primary.light
+      background-color: $design.body.background
+      box-shadow: 0 0 3px 3px $design.body.background
       z-index: 3
       background-color: transparent
     &.label-placement-top
@@ -251,7 +253,7 @@ export default {
   &.active
     cursor: default
     circle
-      fill: transparent
+      fill: $design.branding.primary.dark
       stroke-width: 1px
       stroke: $design.branding.primary.dark
 </style>
