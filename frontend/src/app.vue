@@ -177,6 +177,14 @@ pre:not(.CodeMirror-line)
       padding-top: $code-tag-font-size * 1.7 + $code-tag-padding-vertical * 2 + $design.layout.gutterWidth * .3 !important
       &:after
         content: 'OUTPUT'
+  + .result
+    margin-top: "calc(-1em - %s)" % $design.control.border.radius
+    border-top: $design.control.border.radius solid $design.code.block.background
+    border-top-left-radius: 0
+    border-top-right-radius: 0
+    background-color: white
+    position: relative
+    z-index: 1
 
 .xml, .html
   .css, .javascript
@@ -333,8 +341,11 @@ fieldset
 // NOTES
 // -----
 
+p:empty
+  display: none
+
 p, div
-  &.warning, &.danger, &.muted
+  &.warning, &.danger, &.muted, &.result
     margin: $design.layout.gutterWidth 0
     > :first-child
       margin-top: 0
@@ -348,6 +359,42 @@ p, div
     padding: $design.layout.gutterWidth
     background-color: $design.branding.muted.light.red
     border: 1px solid $design.branding.danger.light
+  &.result
+    padding: $design.layout.gutterWidth
+    border: 1px solid $design.control.border.color
+    border-radius: $design.control.border.radius
+    position: relative
+    &:after
+      content: 'RESULT'
+      position: absolute
+      top: 0
+      right: 0
+      font-family: Lato
+      font-size: $code-tag-font-size
+      letter-spacing: 1px
+      padding: $code-tag-padding-vertical 7px
+      background-color: rgba(0,0,0,.1)
+      border-bottom-left-radius: $design.control.border.radius
+      z-index: 2
   &.muted
     opacity: .7
+
+// ---------------
+// LESSON-SPECIFIC
+// ---------------
+
+.result.headings-example
+  .h2
+    font-family: Lato
+    font-size: 1.5em
+    font-weight: bold
+    line-height: 1.3
+  h1, .h2, h3, h4, h5, h6
+    margin: $design.layout.gutterWidth 0
+  h1
+    margin-top: 0
+  h3
+    text-transform: none
+  h6
+    margin-bottom: 0
 </style>
