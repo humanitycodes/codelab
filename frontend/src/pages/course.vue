@@ -71,6 +71,7 @@
           <RenderedContent
             v-if="currentCourse.syllabus"
             :content="currentCourse.syllabus"
+            pagination-placement="bottom"
           />
           <div v-else>Not yet defined</div>
         </div>

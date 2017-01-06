@@ -16,6 +16,7 @@
       :initial-page="Number($route.params.currentPage)"
       :content="currentLesson.content"
       @page-update="updateCurrentPage"
+      pagination-placement="bottom"
     />
     <div v-if="currentLesson.projects.length" class="flex-row">
       <div class="flex-col">
