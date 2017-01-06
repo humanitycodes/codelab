@@ -205,8 +205,6 @@ $course-meter-active-text-color = firebrick
   > label
     display: inline-block
     width: 6em
-  > span
-    display: inline
 
 .course-meter
   display: flex
