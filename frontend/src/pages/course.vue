@@ -67,7 +67,7 @@
       </div>
       <div class="flex-row">
         <div class="flex-col">
-          <label>Syllabus</label>
+          <h2>Syllabus</h2>
           <RenderedContent
             v-if="currentCourse.syllabus"
             :content="currentCourse.syllabus"

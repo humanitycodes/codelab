@@ -295,7 +295,7 @@ textarea
 
 label, legend
   display: block
-  color: $design.branding.primary.dark
+  color: $design.body.text.color
   margin-bottom: $design.layout.gutterWidth * .2
   font-weight: 600
 
