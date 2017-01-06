@@ -21,7 +21,7 @@
           {{ prereq.title || prereq['.key'] }}
           <button
             @click="removePrereq(prereq)"
-            class="inline danger delete"
+            class="inline danger"
             name="lesson-remove-prereq"
           >×</button>
         </li>
