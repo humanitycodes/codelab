@@ -8,7 +8,7 @@
       <div>
         <strong>GitHub User:</strong>
         {{ currentUser.profile.github.login }}
-        <DisconnectGithubLink>X</DisconnectGithubLink>
+        <DisconnectGithubLink>×</DisconnectGithubLink>
       </div>
       <div>
         <strong>GitHub Scopes:</strong>

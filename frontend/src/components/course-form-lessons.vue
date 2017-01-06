@@ -29,7 +29,7 @@
             @click="removeCourseLesson(lesson)"
             class="inline danger"
             name="course-remove-lesson"
-          >X</button>
+          >×</button>
         </li>
       </ul>
       <p v-else class="warning">

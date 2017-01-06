@@ -23,7 +23,7 @@
             @click="removePrereq(prereq)"
             class="inline danger"
             name="lesson-remove-prereq"
-          >X</button>
+          >×</button>
         </li>
       </ul>
       <p v-else class="warning">
