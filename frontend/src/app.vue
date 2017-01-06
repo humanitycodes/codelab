@@ -334,7 +334,7 @@ fieldset
   opacity: .8
   margin-bottom: 0
   font-family: 'Lato'
-  > .flex-col:last-of-type
+  > .flex-col:last-of-type:not(:only-of-type)
     text-align: right
 
 // -----
