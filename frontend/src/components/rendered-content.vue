@@ -210,7 +210,7 @@ export default {
     margin-bottom: 0
   a[target=_blank]
     padding-right: 12px
-    background: transparent url(/external-link.svg) no-repeat right 35%
+    background: transparent url('../assets/images/external-link.svg') no-repeat right 35%
     background-size: .65rem
 
 .rendered-content-page-navigation
