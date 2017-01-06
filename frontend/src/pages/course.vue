@@ -4,9 +4,8 @@
       <EditCurrentCourseButton/>
       <div class="flex-row heading-basic-data">
         <div class="flex-col">
-          <span>{{ currentCourse['.key'] }}</span>
-        </div>
-        <div class="flex-col">
+          {{ currentCourse['.key'] }}
+          •
           {{ currentCourse.credits || '?' }} Credits
         </div>
       </div>
