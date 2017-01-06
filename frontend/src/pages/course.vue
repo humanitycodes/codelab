@@ -50,12 +50,14 @@
       </div>
       <div v-else class="flex-row">
         <div class="flex-col">
-          <label>Start date</label>
-          <div>{{ formattedStartDate }}</div>
-        </div>
-        <div class="flex-col">
-          <label>End date</label>
-          <div>{{ formattedEndDate }}</div>
+          <div class="course-date">
+            <label>Start date</label>
+            <span>{{ formattedStartDate }}</span>
+          </div>
+          <div class="course-date">
+            <label>End date</label>
+            <span>{{ formattedEndDate }}</span>
+          </div>
         </div>
       </div>
       <div class="flex-row" v-if="courseLessons.length">
@@ -198,6 +200,13 @@ $course-meter-bg = $design.branding.muted.light.success
 $course-meter-filled-bg = $design.branding.success.light
 $course-meter-text-color = inherit
 $course-meter-active-text-color = firebrick
+
+.course-date
+  > label
+    display: inline-block
+    width: 6em
+  > span
+    display: inline
 
 .course-meter
   display: flex
