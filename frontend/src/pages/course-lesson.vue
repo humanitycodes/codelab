@@ -16,6 +16,7 @@
       :initial-page="Number($route.params.currentPage)"
       :content="currentLesson.content"
       @page-update="updateCurrentPage"
+      class="course-lesson-content"
     />
     <div v-if="currentLesson.projects.length" class="flex-row">
       <div class="flex-col course-lesson-project">
@@ -107,7 +108,11 @@ export default {
         newPage
       )
       window.history.replaceState({}, null, newUrl)
-      document.body.scrollTop = 0
+      const { scrollTop } = document.body
+      const contentTop = document.querySelector('.course-lesson-content .rendered-content').offsetTop
+      if (scrollTop > contentTop) {
+        document.body.scrollTop = contentTop
+      }
     }
   }
 }
