@@ -44,7 +44,6 @@ export default {
             </button>
             {this.pages.map((page, index) =>
               <div
-                data-title={page.title}
                 on-click={() => this.toPage(index + 1)}
                 class={{
                   'rendered-content-page-breadcrumb': true,
@@ -52,6 +51,10 @@ export default {
                   active: this.value === index + 1
                 }}
               >
+                <div
+                  class='rendered-content-page-breadcrumb-preview-title'
+                  domPropsInnerHTML={ page.title }
+                />
                 <svg>
                   <circle
                     r='45%'
@@ -221,6 +224,9 @@ export default {
   position: relative
   min-height: $design.control.height
 
+.rendered-content-page-breadcrumb-preview-title
+  display: none
+
 .rendered-content-page-breadcrumb
   display: flex
   align-items: center
@@ -228,8 +234,8 @@ export default {
   cursor: pointer
   width: 100%
   &:not(.active):hover
-    &:after
-      content: attr(data-title)
+    .rendered-content-page-breadcrumb-preview-title
+      display: block
       position: absolute
       top: $design.layout.gutterWidth * 1.5
       left: 0
@@ -239,10 +245,11 @@ export default {
       color: $design.branding.primary.light
       z-index: 3
       background-color: transparent
+      pointer-events: none
     circle
       fill: lighten(desaturate($design.branding.primary.light, 70%), 30%)
     &.label-placement-top
-      &:after
+      .rendered-content-page-breadcrumb-preview-title
         top: auto
         bottom: $design.layout.gutterWidth * 1.5
   svg
