@@ -21,47 +21,44 @@
         class="button inline primary lessons-map-corner-action-lesson-button"
         :to="editLessonPath(node.lesson)"
       >Edit</router-link>
-      <a
-        v-else-if="findProjectCompletion(node.lesson)"
-        class="button inline lessons-map-project-status lessons-map-corner-action-lesson-button"
-        :class="{
-          'approved': isLessonProjectApproved(node.lesson),
-        }"
-        :href="
-          'https://github.com/' +
-          currentUser.profile.github.login +
-          '/' +
-          [
-            course['.key'],
-            node.lesson['.key'],
-            findProjectCompletion(node.lesson).projectKey.slice(-6)
-          ].join('-')
-        "
-        target="_blank"
-        @click.stop
-      >
-        <span v-if="isLessonProjectApproved(node.lesson)">
-          ✓ Approved
-        </span>
-        <span v-else>
-          In Progress
-        </span>
-      </a>
       <h3>{{ node.lesson.title }}</h3>
       <div class="lesson-graph-card-scrollable">
         <div class="flex-row">
+          <div class="flex-col">
+            <span>~{{ node.lesson.estimatedHours }} hrs</span>
+          </div>
           <div class="flex-col" v-if="node.lesson.categories && node.lesson.categories.length">
             <ul v-for="category in node.lesson.categories">
               <li>{{ category.title }}</li>
             </ul>
           </div>
-          <div class="flex-col" v-if="node.lesson.categories">
-            <ul v-for="category in node.lesson.categories">
-              <li>{{ category.title }}</li>
-            </ul>
-          </div>
           <div class="flex-col">
-            <span>~{{ node.lesson.estimatedHours }} hrs</span>
+            <a
+              v-if="findProjectCompletion(node.lesson)"
+              class="button inline lessons-map-project-status"
+              :class="{
+                'approved': isLessonProjectApproved(node.lesson),
+              }"
+              :href="
+                'https://github.com/' +
+                currentUser.profile.github.login +
+                '/' +
+                [
+                  course['.key'],
+                  node.lesson['.key'],
+                  findProjectCompletion(node.lesson).projectKey.slice(-6)
+                ].join('-')
+              "
+              target="_blank"
+              @click.stop
+            >
+              <span v-if="isLessonProjectApproved(node.lesson)">
+                ✓ Approved
+              </span>
+              <span v-else>
+                In Progress
+              </span>
+            </a>
           </div>
         </div>
       </div>
@@ -218,12 +215,13 @@ export default {
 .lesson-graph-container
   position: relative
   overflow-y: auto
+
 .lesson-graph-card
   display: flex
   flex-direction: column
   position: absolute
   top: 0
-  padding: $design.layout.gutterWidth + 5px $design.layout.gutterWidth $design.layout.gutterWidth
+  padding: $design.layout.gutterWidth
   background-color: $design.branding.default.light
   border: 1px solid $design.control.border.color
   border-radius: $design.control.border.radius
@@ -234,6 +232,7 @@ export default {
     white-space: nowrap
     text-overflow: ellipsis
     overflow: hidden
+
 .lesson-graph-card-scrollable
   overflow: hidden
   overflow-y: auto
@@ -246,6 +245,7 @@ export default {
     > .flex-col
       &:last-child
         text-align: right
+
 .lessons-map-corner-action-lesson-button
   position: absolute
   top: 0
@@ -256,10 +256,12 @@ export default {
   border-top-right-radius: 0
   border-bottom-right-radius: 0
   margin-top: 0
-  &.lessons-map-project-status
-    background-color: $design.branding.muted.light.yellow
-    &.approved
-      background-color: $design.branding.muted.light.success
+
+.lessons-map-project-status
+  background-color: $design.branding.muted.light.yellow
+  &.approved
+    background-color: $design.branding.muted.light.success
+
 path
   stroke: $design.branding.primary.light
   stroke-width: 2px
