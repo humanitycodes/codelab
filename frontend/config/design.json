@@ -20,13 +20,18 @@
       "light": "#09883A",
       "dark": "#17453A"
     },
+    "note": {
+      "light": "#5a9fd8",
+      "dark": "#2a5375"
+    },
     "muted": {
       "light": {
         "tan": "#FBFCF2",
         "gray": "#E8EAEA",
         "yellow": "#F8F7E1",
         "red": "#ffdee1",
-        "success": "#edfbed"
+        "success": "#edfbed",
+        "note": "#d1e8fb"
       }
     }
   },
