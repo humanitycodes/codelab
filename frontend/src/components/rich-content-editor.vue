@@ -7,17 +7,17 @@
       ref="textarea"
       :name="name"
       :value.dom-prop="value"
-      @input="$emit('input', $event.target.value)"
     />
     <RenderedContent
       v-if="isExpanded"
       pagination-placement="top"
-      :content="value"
+      :content="contentToPreview"
     />
   </div>
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
 import 'codemirror/lib/codemirror.css'
 import '@assets/css/codemirror-theme-one-dark.css'
 import 'codemirror/mode/xml/xml'
@@ -43,7 +43,8 @@ export default {
   data () {
     return {
       editor: null,
-      isExpanded: false
+      isExpanded: false,
+      contentToPreview: this.value
     }
   },
   mounted () {
@@ -76,9 +77,13 @@ export default {
       if (this.editor.getValue() !== newValue) {
         this.editor.setValue(newValue)
       }
+      this.updateContentToPreview()
     }
   },
   methods: {
+    updateContentToPreview: debounce(function (content) {
+      this.contentToPreview = this.value
+    }, 300),
     expandEditor () {
       if (this.isExpanded) return
       this.isExpanded = true
