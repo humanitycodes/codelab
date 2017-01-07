@@ -350,7 +350,7 @@ p:empty
   display: none
 
 p, div
-  &.warning, &.danger, &.muted, &.result
+  &.warning, &.danger, &.note, &.muted, &.result
     margin: $design.layout.gutterWidth 0
     > :first-child
       margin-top: 0
@@ -364,6 +364,11 @@ p, div
     padding: $design.layout.gutterWidth
     background-color: $design.branding.muted.light.red
     border: 1px solid $design.branding.danger.light
+  &.note
+    padding: $design.layout.gutterWidth
+    background: $design.branding.muted.light.note
+    border: 1px solid $design.branding.note.light
+    border-radius: $design.control.border.radius
   &.result
     padding: $design.layout.gutterWidth
     border: 1px solid $design.control.border.color
@@ -397,7 +402,7 @@ p, div
   h1, .h2, h3, h4, h5, h6
     margin: $design.layout.gutterWidth 0
   h1
-    margin-top: 0
+    margin-top: 0p
   h3
     text-transform: none
   h6
