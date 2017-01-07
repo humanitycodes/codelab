@@ -18,7 +18,7 @@
       @page-update="updateCurrentPage"
     />
     <div v-if="currentLesson.projects.length" class="flex-row">
-      <div class="flex-col">
+      <div class="flex-col course-lesson-project">
         <h2>
           Project:
           <span v-html="toHtml(currentLesson.projects[0].title)"/>
@@ -112,3 +112,13 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+@import '../meta'
+
+.course-lesson-project
+  background: rgba($design.branding.default.light, .7)
+  padding: $design.layout.gutterWidth
+  border: 1px solid $design.control.border.color
+  border-radius: $design.control.border.radius
+</style>

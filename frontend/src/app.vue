@@ -7,11 +7,13 @@
 </template>
 
 <style lang="stylus" scoped>
+@import './meta'
+
 .page-transition-enter-active, .page-transition-leave-active
   position: absolute
   width: 100%
 .page-transition-enter-active
-  background: white
+  background: url('assets/images/paper-overlay.png') $design.body.background
   transition: opacity .3s cubic-bezier(.01,.98,.71,.84)
   z-index: 30
 .page-transition-leave-active
@@ -27,9 +29,9 @@
 *, *:before, *:after
   box-sizing: border-box
 
-body
-  background: $design.body.background
-  font-family: 'Merriweather'
+html, body
+  background: url('assets/images/paper-overlay.png') $design.body.background
+  font-family: Merriweather
   font-weight: 300
   color: $design.body.text.color
   overflow-x: hidden

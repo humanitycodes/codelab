@@ -61,7 +61,8 @@ $breadcrumb-active-bg = #FFF
   color: lighten($design.body.text.color, 30%)
   text-align: center
   font-size: 11px
-  font-weight: 600
+  font-weight: normal
+  font-family: Lato
   line-height: $design.control.height
   letter-spacing: .1rem
   text-transform: uppercase
@@ -87,6 +88,7 @@ $breadcrumb-active-bg = #FFF
     right: $breadcrumb-arrow-width * -1 + 2px
     border-color: transparent $design.branding.muted.light.gray
   &.active
+    font-weight: 600
     background-color: $breadcrumb-active-bg
     color: $design.body.text.color
     border-bottom: none

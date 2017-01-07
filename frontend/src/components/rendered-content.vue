@@ -237,10 +237,10 @@ export default {
       text-align: center
       font-weight: 600
       color: $design.branding.primary.light
-      background-color: $design.body.background
-      box-shadow: 0 0 3px 3px $design.body.background
       z-index: 3
       background-color: transparent
+    circle
+      fill: lighten(desaturate($design.branding.primary.light, 70%), 30%)
     &.label-placement-top
       &:after
         top: auto
