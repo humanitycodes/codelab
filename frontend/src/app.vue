@@ -89,6 +89,17 @@ a
     &:hover
       color: inherit
       text-decoration: none
+  &[target=_blank]:not([href$=".jpg"]):not([href$=".jpeg"]):not([href$=".svg"]):not([href$=".png"]):not([href$=".gif"])
+    &:after
+      $external-link-symbol-size = .7em
+      display: inline-block
+      content: ''
+      background-image: url('assets/images/external-link.svg')
+      background-size: $external-link-symbol-size
+      height: $external-link-symbol-size
+      width: $external-link-symbol-size
+      margin-left: 5px
+
 
 hr
   width: 30%

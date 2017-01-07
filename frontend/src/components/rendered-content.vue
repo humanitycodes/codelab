@@ -213,10 +213,6 @@ export default {
     margin-top: 0
   > :last-child
     margin-bottom: 0
-  a[target=_blank]
-    padding-right: 12px
-    background: transparent url('../assets/images/external-link.svg') no-repeat right 35%
-    background-size: .65rem
 
 .rendered-content-page-navigation
   align-items: stretch
