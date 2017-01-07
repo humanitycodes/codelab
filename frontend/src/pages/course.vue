@@ -26,6 +26,10 @@
               class="meter-percent-to-max-grade"
             />
             <div
+              class="course-meter-text"
+              :class="{ active: achievedGradePoints < gradeMilestones[0] }"
+            >0</div>
+            <div
               v-for="milestone in gradeMilestones"
               :data-grade="milestone"
               :style="{ left: milestone / maxGrade * 100 + '%' }"
@@ -37,10 +41,6 @@
               }"
               class="course-grade-milestone"
             />
-            <div
-              class="course-meter-text"
-              :class="{ active: achievedGradePoints < gradeMilestones[0] }"
-            >0</div>
             <div
               class="course-meter-text"
               :class="{ active: achievedGradePoints >= maxGrade }"
@@ -196,10 +196,14 @@ export default {
 <style lang="stylus" scoped>
 @import '../meta'
 
-$course-meter-bg = $design.branding.muted.light.success
-$course-meter-filled-bg = $design.branding.success.light
+$course-meter-bg = $design.branding.default.light
+$course-meter-time-filled-bg = $design.branding.muted.light.note
+$course-meter-grade-filled-bg = darken($design.branding.muted.light.success, 5%)
 $course-meter-text-color = inherit
-$course-meter-active-text-color = firebrick
+$course-meter-text-opacity = .7
+$course-meter-active-text-color = $design.branding.success.light
+$course-meter-active-text-weight = 600
+$course-meter-active-text-size = 1.2em
 
 .course-date
   > label
@@ -212,6 +216,9 @@ $course-meter-active-text-color = firebrick
   justify-content: space-between
   font-family: Lato
   color: $course-meter-text-color
+  border: 1px solid $design.control.border.color
+  border-top: 0
+  z-index: 1
   &:before
     content: ''
     position: absolute
@@ -220,32 +227,52 @@ $course-meter-active-text-color = firebrick
     height: 100%
     background-color: $course-meter-bg
     z-index: -1
+  &:first-child
+    border-top: 1px solid $design.control.border.color
+    border-top-left-radius: $design.control.border.radius
+    border-top-right-radius: $design.control.border.radius
+  &:last-child
+    border-bottom-left-radius: $design.control.border.radius
+    border-bottom-right-radius: $design.control.border.radius
+
 .course-meter-text
   padding: $design.layout.gutterWidth * .5 $design.layout.gutterWidth
+  opacity: $course-meter-text-opacity
   &.active
     color: $course-meter-active-text-color
-    font-weight: 600
+    font-weight: $course-meter-active-text-weight
+    font-size: $course-meter-active-text-size
+    opacity: 1
+
 .meter-percent-through-course, .meter-percent-to-max-grade
   position: absolute
   height: 100%
   z-index: -1
-  background-color: $course-meter-filled-bg
+
+.meter-percent-through-course
+  background-color: $course-meter-time-filled-bg
+
+.meter-percent-to-max-grade
+  background-color: $course-meter-grade-filled-bg
 
 .course-grade-milestone
   width: 2px
   height: 100%
   position: absolute
-  background-color: $course-meter-filled-bg
+  background-color: $course-meter-grade-filled-bg
   &:after
     content: attr(data-grade)
     height: $design.layout.gutterWidth
     line-height: $design.layout.gutterWidth
     position: absolute
     top: 50%
+    opacity: $course-meter-text-opacity
     margin-top: $design.layout.gutterWidth * -.5
     margin-left: 5px
   &.active
     &:after
       color: $course-meter-active-text-color
-      font-weight: 600
+      opacity: 1
+      font-weight: $course-meter-active-text-weight
+      font-size: $course-meter-active-text-size
 </style>
