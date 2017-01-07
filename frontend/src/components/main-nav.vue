@@ -69,7 +69,7 @@ export default {
   align-items: center
   margin: 0 0 $design.layout.gutterWidth
   padding: $design.layout.gutterWidth
-  background: $design.branding.muted.light.gray
+  background: $design.branding.default.light
   border-bottom: 1px solid darken($design.branding.muted.light.gray, 10%)
 
 .main-nav-logo

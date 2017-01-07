@@ -86,6 +86,7 @@ export default {
   border-top: none
   border-bottom-left-radius: $design.control.border.radius
   border-bottom-right-radius: $design.control.border.radius
+  background-color: $design.branding.default.light
   > :first-child
     margin-top: 0
   > :last-child
