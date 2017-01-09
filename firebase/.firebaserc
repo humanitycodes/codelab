@@ -1,6 +1,7 @@
 {
   "projects": {
     "dev": "msulansingcodesdev",
+    "staging": "msulansingcodesstaging",
     "production": "msulansingcodes",
     "playground": "msulansingcodesplayground",
     "egillespie": "msulansingcodesdev-egillespie",

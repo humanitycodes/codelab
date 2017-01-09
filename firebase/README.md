@@ -16,7 +16,7 @@ To prepare a new Firebase database for the MSU Code Lab application, perform the
 
 1. Sign into the [Firebase Console][2] using the humanitycodes@gmail.com account.
 2. Click the "Create New Project" button:
-   * Type "MsuLansingCodesDev-<username>" as the project name, replacing `<username>` with the result of `whoami` on the developer's computer.
+   * Type "MsuLansingCodesDev-&lt;username&gt;" as the project name, replacing `<username>` with the result of `whoami` on the developer's computer.
    * Click "Create Project".
 3. Enable GitHub in the Authentication settings:
    * Use the Client ID and Secret found in `backend/env/dev/.env`.

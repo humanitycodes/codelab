@@ -47,7 +47,7 @@ test:
 
 deployment:
   # Deploy to master branch to Heroku
-  production:
+  staging:
     branch: master
     heroku:
-      appname: msu-lansing-codes
+      appname: msu-codes-staging
