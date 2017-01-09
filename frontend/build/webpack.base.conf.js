@@ -7,6 +7,8 @@ var fs = require('fs')
 function chooseEnvironmentFile () {
   if (process.env.NODE_ENV === 'production') {
     return path.resolve(__dirname, '../src/env/prod')
+  } else if (process.env.NODE_ENV === 'staging') {
+    return path.resolve(__dirname, '../src/env/staging')
   } else {
     try {
       // Try to use user-specific dev config
