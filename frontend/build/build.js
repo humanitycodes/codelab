@@ -1,7 +1,7 @@
 // https://github.com/shelljs/shelljs
 /* eslint-env shelljs */
 require('shelljs/global')
-env.NODE_ENV = 'production'
+env.NODE_ENV = process.env.NODE_ENV || 'production'
 
 var path = require('path')
 var config = require('../config')
