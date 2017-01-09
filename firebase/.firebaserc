@@ -1,6 +1,7 @@
 {
   "projects": {
     "dev": "msulansingcodesdev",
+    "testing": "msulansingcodesdev",
     "staging": "msulansingcodesstaging",
     "production": "msulansingcodes",
     "playground": "msulansingcodesplayground",
