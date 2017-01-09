@@ -42,7 +42,7 @@ dependencies:
 test:
   override:
     # Use yarn to run the tests
-    - yarn test-all:
+    - yarn test-all
 
 deployment:
   # Deploy to master branch to Heroku
