@@ -5,20 +5,23 @@ var projectRoot = path.resolve(__dirname, '../')
 var fs = require('fs')
 
 function chooseEnvironmentFile () {
+  let envFile
   if (process.env.NODE_ENV === 'production') {
-    return path.resolve(__dirname, '../src/env/prod')
+    envFile = path.resolve(__dirname, '../src/env/prod')
   } else if (process.env.NODE_ENV === 'staging') {
-    return path.resolve(__dirname, '../src/env/staging')
+    envFile = path.resolve(__dirname, '../src/env/staging')
   } else {
     try {
       // Try to use user-specific dev config
       var userConfigFile = path.resolve(__dirname, '../src/env/dev-' + process.env.USER + '.js')
       fs.accessSync(userConfigFile, fs.F_OK)
-      return userConfigFile
+      envFile = userConfigFile
     } catch (e) {
       // Use default dev config
-      return path.resolve(__dirname, '../src/env/dev')
+      envFile = path.resolve(__dirname, '../src/env/dev')
     }
+    console.log('Using environment file', envFile)
+    return envFile
   }
 }
 
@@ -28,7 +31,7 @@ module.exports = {
   },
   output: {
     path: config.build.assetsRoot,
-    publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath,
+    publicPath: process.env.NODE_ENV === 'development' ? config.dev.assetsPublicPath : config.build.assetsPublicPath,
     filename: '[name].js'
   },
   resolve: {
