@@ -25,10 +25,7 @@
 import compact from 'lodash/compact'
 import chunk from 'lodash/chunk'
 import { highlight, highlightAuto } from 'highlight.js'
-import { BlockCompiler } from 'rho'
-const rho = new BlockCompiler({
-  externalLinks: true
-})
+import toHtml from '@helpers/to-html'
 
 export default {
   components: {
@@ -119,7 +116,7 @@ export default {
   },
   computed: {
     contentHtml () {
-      return rho.toHtml(this.content)
+      return toHtml(this.content)
     },
     pages () {
       return chunk(compact(this.contentHtml.split(/<h2>(.+?)<\/h2>/)), 2).map(page => {

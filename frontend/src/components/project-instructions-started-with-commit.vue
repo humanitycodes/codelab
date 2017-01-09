@@ -49,10 +49,10 @@
     </template>
 
     <h4>Submit for review</h4>
-    <p>Final step! But first, please make sure you've met the following criteria (please check each box to confirm):</p>
+    <p>Final step! But first, make sure you've met the following criteria (check each box to confirm):</p>
     <label v-for="criterion in project.criteria">
       <input type="checkbox" v-model="metCriteria[criterion['.key']]">
-      {{ criterion.content }}
+      <span v-html="toInlineHtml(criterion.content)"/>
     </label>
 
     <button
@@ -70,6 +70,7 @@ import Axios from 'axios'
 import QueryString from 'querystring'
 import { userGetters } from '@state/helpers'
 import ProjectCompletionLinks from './project-completion-links'
+import toInlineHtml from '@helpers/to-inline-html'
 
 export default {
   components: {
@@ -124,6 +125,7 @@ export default {
     }
   },
   methods: {
+    toInlineHtml,
     submitForReview () {
       const criteria = this.project.criteria.map(criterion => criterion.content)
 

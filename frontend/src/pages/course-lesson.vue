@@ -22,12 +22,12 @@
       <div class="flex-col course-lesson-project">
         <h2>
           Project:
-          <span v-html="toHtml(currentLesson.projects[0].title)"/>
+          <span v-html="toInlineHtml(currentLesson.projects[0].title)"/>
         </h2>
         <ol v-if="currentLesson.projects[0].criteria.length">
           <li
             v-for="criterion in currentLesson.projects[0].criteria"
-            v-html="toHtml(criterion.content)"
+            v-html="toInlineHtml(criterion.content)"
           />
         </ol>
         <p v-else>No criteria for this project yet.</p>
@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import rho from 'rho'
 import Layout from '@layouts/main'
 import AuthLink from '@components/auth-link'
 import RenderedContent from '@components/rendered-content'
@@ -60,6 +59,7 @@ import {
   userGetters, courseGetters, lessonGetters, courseLessonGetters
 } from '@state/helpers'
 import courseLessonGradePoints from '@helpers/course-lesson-grade-points'
+import toInlineHtml from '@helpers/to-inline-html'
 
 export default {
   components: {
@@ -97,7 +97,7 @@ export default {
     }
   },
   methods: {
-    toHtml: rho.toInlineHtml,
+    toInlineHtml,
     updateCurrentPage (newPage) {
       const newUrl = (
         '/courses/' +
