@@ -5,7 +5,7 @@
     "test": "jest src/**/*.spec.js",
     "lint": "eslint --ext .js,.json src",
     "build:rules": "babel-node src/build.js",
-    "build:adapter": "ls -l ./node_modules/.bin && ls -l ./node_modules && babel src -d dist --presets es2015,stage-0",
+    "build:adapter": "babel src -d dist --presets es2015,stage-0",
     "postinstall": "yarn build:adapter",
     "predeploy": "yarn build:rules",
     "deploy": "firebase deploy --project ${NODE_ENV} --token `cat token`",
