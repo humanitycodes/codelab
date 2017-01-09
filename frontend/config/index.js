@@ -1,10 +1,20 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 
+let buildEnvFile = './prod.env'
+let buildIndexFile = path.resolve(__dirname, '../dist/index.html')
+
+if (process.env.NODE_ENV === 'staging') {
+  buildEnvFile = './staging.env'
+} else if (process.env.NODE_ENV === 'testing') {
+  buildEnvFile = './test.env'
+  buildIndexFile = 'index.html'
+}
+
 module.exports = {
   build: {
-    env: require('./prod.env'),
-    index: path.resolve(__dirname, '../dist/index.html'),
+    env: require(buildEnvFile),
+    index: buildIndexFile,
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
