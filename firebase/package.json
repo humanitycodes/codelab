@@ -8,7 +8,7 @@
     "build:adapter": "babel src -d dist --presets es2015,stage-0",
     "postinstall": "yarn build:adapter",
     "predeploy": "yarn build:rules",
-    "deploy": "firebase deploy --project ${NODE_ENV} --token `cat token`",
+    "deploy": "firebase deploy --project \"${NODE_ENV}\" --token \"`cat token`\"",
     "predev:deploy": "yarn build:rules",
     "dev:deploy": "firebase deploy --project ${USER} --token `cat token`"
   },
