@@ -20,9 +20,9 @@ function chooseEnvironmentFile () {
       // Use default dev config
       envFile = path.resolve(__dirname, '../src/env/dev')
     }
-    console.log('Using environment file', envFile)
-    return envFile
   }
+  console.log('Using environment file', envFile)
+  return envFile
 }
 
 module.exports = {
