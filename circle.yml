@@ -6,6 +6,7 @@ machine:
   environment:
     YARN_VERSION: 0.19.1
     PATH: "${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+    NODE_ENV: testing
 
 dependencies:
   pre:
@@ -42,8 +43,6 @@ test:
   override:
     # Use yarn to run the tests
     - yarn test-all:
-        environment:
-          NODE_ENV: test
 
 deployment:
   # Deploy to master branch to Heroku
