@@ -71,7 +71,7 @@ export default {
       if (!this.projectCompletion) return ''
       const githubUsername = this.currentUser.profile.github.login
       return this.projectCompletion.hostedUrl ||
-        `https://${githubUsername}.github.io/${this.projectName}`
+        `https://${githubUsername}.github.io/${this.projectName}/`
     }
   }
 }
