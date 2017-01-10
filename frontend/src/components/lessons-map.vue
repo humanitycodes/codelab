@@ -257,13 +257,16 @@ export default {
   border: 1px solid $design.control.border.color
   border-radius: $design.control.border.radius
   opacity: .7
-  &:hover
-    border-color: $design.branding.primary.light
   > h3
     margin-top: 0
     white-space: nowrap
     text-overflow: ellipsis
     overflow: hidden
+  &:hover
+    border-color: $design.branding.primary.light
+    height: auto !important
+    > h3
+      white-space: normal
   &.recommended
     opacity: 1
 
