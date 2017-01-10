@@ -26,7 +26,8 @@
       <div class="lesson-graph-card-scrollable">
         <div class="flex-row">
           <div class="flex-col">
-            <span>~{{ node.lesson.estimatedHours }} hrs</span>
+            ~{{ node.lesson.estimatedHours }}
+            {{ node.lesson.estimatedHours === 1 ? 'hr' : 'hrs' }}
           </div>
           <div class="flex-col" v-if="node.lesson.categories && node.lesson.categories.length">
             <ul v-for="category in node.lesson.categories">
