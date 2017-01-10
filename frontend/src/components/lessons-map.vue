@@ -246,7 +246,8 @@ export default {
 
 .lesson-graph-container
   position: relative
-  overflow-x: scroll
+  padding-bottom: 12px
+  overflow-x: auto
 
 .lesson-graph-card
   display: flex
