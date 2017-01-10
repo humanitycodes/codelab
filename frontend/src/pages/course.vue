@@ -68,10 +68,12 @@
       <div class="flex-row">
         <div class="flex-col">
           <h2>Syllabus</h2>
-          <RenderedContent
+          <div
             v-if="currentCourse.syllabus"
-            :content="currentCourse.syllabus"
-          />
+            class="course-syllabus-container"
+          >
+            <RenderedContent :content="currentCourse.syllabus"/>
+          </div>
           <div v-else>Not yet defined</div>
         </div>
       </div>
@@ -275,4 +277,14 @@ $course-meter-active-text-size = 1.2em
       opacity: 1
       font-weight: $course-meter-active-text-weight
       font-size: $course-meter-active-text-size
+
+.course-syllabus-container
+  background-color: rgba($design.branding.default.light, .7)
+  padding: $design.layout.gutterWidth
+  border: 1px solid $design.control.border.color
+  border-radius: $design.control.border.radius
+  > :first-child
+    margin-top: 0
+  > :last-child
+    margin-bottom: 0
 </style>
