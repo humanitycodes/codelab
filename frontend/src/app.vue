@@ -315,6 +315,14 @@ label.with-inline-input
     position: relative
     bottom: 2px
 
+label > input[type=checkbox]
+  height: 1rem
+  vertical-align: middle
+  cursor: pointer
+  + span
+    vertical-align: middle
+    cursor: pointer
+
 fieldset
   padding: 0
   border-width: 0
