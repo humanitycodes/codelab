@@ -67,5 +67,10 @@
     "block": {
       "background": "#282C34"
     }
+  },
+  "project": {
+    "breadcrumbs": {
+      "breakpoint": "500px"
+    }
   }
 }

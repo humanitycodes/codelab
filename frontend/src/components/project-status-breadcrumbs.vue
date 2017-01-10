@@ -50,4 +50,13 @@ export default {
       border-top-left-radius: $design.control.border.radius
     &:last-child
       border-top-right-radius: $design.control.border.radius
+
+@media screen and (max-width: $design.project.breadcrumbs.breakpoint)
+  .project-submission-breadcrumbs
+    flex-direction: column
+    > .flex-col
+      &:first-child
+        border-top-right-radius: $design.control.border.radius
+      &:last-child
+        border-top-right-radius: 0
 </style>
