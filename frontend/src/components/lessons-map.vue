@@ -15,6 +15,7 @@
       }"
       :to="nodeClickPath(node.lesson)"
       class="lesson-graph-card container-link"
+      :class="{ recommended: isLessonRecommended(node.lesson) }"
     >
       <router-link
         v-if="course && canUpdateLesson({ lessonKey: node.lesson['.key'] }) && false"
@@ -204,6 +205,36 @@ export default {
         projectCompletion.submission &&
         projectCompletion.submission.isApproved
       )
+    },
+    isLessonRecommended (lesson) {
+      const projectCompletion = this.findProjectCompletion(lesson)
+      return (
+        // Project is not approved for this lesson
+        (
+          !projectCompletion ||
+          !projectCompletion.submission ||
+          !projectCompletion.submission.isApproved
+        ) && (
+          // Lesson does not have any prereqs
+          !lesson.prereqKeys.length ||
+          // Projects for prereqs are all approved
+          lesson.prereqKeys
+            .map(prereqKey => {
+              return this.lessons.find(potentialPrereq => {
+                return potentialPrereq['.key'] === prereqKey
+              })
+            })
+            .filter(prereq => prereq)
+            .every(prereq => {
+              const prereqProjectCompletion = this.findProjectCompletion(prereq)
+              return (
+                prereqProjectCompletion &&
+                prereqProjectCompletion.submission &&
+                prereqProjectCompletion.submission.isApproved
+              )
+            })
+        )
+      )
     }
   }
 }
@@ -214,7 +245,7 @@ export default {
 
 .lesson-graph-container
   position: relative
-  overflow-y: auto
+  overflow-x: scroll
 
 .lesson-graph-card
   display: flex
@@ -225,6 +256,7 @@ export default {
   background-color: $design.branding.default.light
   border: 1px solid $design.control.border.color
   border-radius: $design.control.border.radius
+  opacity: .7
   &:hover
     border-color: $design.branding.primary.light
   > h3
@@ -232,6 +264,8 @@ export default {
     white-space: nowrap
     text-overflow: ellipsis
     overflow: hidden
+  &.recommended
+    opacity: 1
 
 .lesson-graph-card-scrollable
   overflow: hidden
