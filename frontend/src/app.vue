@@ -370,7 +370,20 @@ p:empty
 
 p, div
   &.warning, &.danger, &.note, &.muted, &.result
+    position: relative
+    border-radius: $design.control.border.radius
     margin: $design.layout.gutterWidth 0
+    &:after
+      position: absolute
+      top: 0
+      right: 0
+      font-family: Lato
+      font-size: $code-tag-font-size
+      letter-spacing: 1px
+      padding: $code-tag-padding-vertical 7px
+      border-bottom-left-radius: $design.control.border.radius
+      z-index: 2
+      color: white
     > :first-child
       margin-top: 0
     > :last-child
@@ -379,32 +392,32 @@ p, div
     padding: $design.layout.gutterWidth
     background-color: $design.branding.muted.light.yellow
     border: 1px solid $design.branding.warning.light
+    &:after
+      content: 'WARNING'
+      background-color: $design.branding.warning.dark
   &.danger
     padding: $design.layout.gutterWidth
     background-color: $design.branding.muted.light.red
     border: 1px solid $design.branding.danger.light
+    &:after
+      content: 'ERROR'
+      background-color: $design.branding.danger.dark
   &.note
     padding: $design.layout.gutterWidth
     background: $design.branding.muted.light.note
     border: 1px solid $design.branding.note.light
     border-radius: $design.control.border.radius
+    &:after
+      content: 'NOTE'
+      background-color: $design.branding.note.dark
   &.result
     padding: $design.layout.gutterWidth
     border: 1px solid $design.control.border.color
     border-radius: $design.control.border.radius
-    position: relative
     &:after
       content: 'RESULT'
-      position: absolute
-      top: 0
-      right: 0
-      font-family: Lato
-      font-size: $code-tag-font-size
-      letter-spacing: 1px
-      padding: $code-tag-padding-vertical 7px
       background-color: rgba(0,0,0,.1)
-      border-bottom-left-radius: $design.control.border.radius
-      z-index: 2
+      color: inherit
   &.muted
     opacity: .7
 
