@@ -257,6 +257,7 @@ export default {
   border: 1px solid $design.control.border.color
   border-radius: $design.control.border.radius
   opacity: .7
+  transition: border-color .2s
   > h3
     margin-top: 0
     white-space: nowrap
