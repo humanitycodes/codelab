@@ -72,7 +72,7 @@ img
   max-width: 100%
 
 a
-  color: $design.branding.primary.light
+  color: lighten($design.branding.primary.light, 5%)
   text-decoration: none
   &:hover
     color: $design.branding.primary.dark
