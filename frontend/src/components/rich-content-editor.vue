@@ -85,16 +85,18 @@ export default {
       this.contentToPreview = this.value
     }, 300),
     expandEditor () {
+      console.log(this.isExpanded)
       if (this.isExpanded) return
       this.isExpanded = true
-      document.body.style.overflowY = 'hidden'
+      document.documentElement.style.overflowY = 'hidden'
       window.addEventListener('keydown', this.collapseEditorIfEscapeKey)
     },
     collapseEditor () {
       if (!this.isExpanded) return
       this.isExpanded = false
-      document.body.style.overflowY = 'auto'
+      document.documentElement.style.overflowY = 'auto'
       window.removeEventListener('keydown', this.collapseEditorIfEscapeKey)
+      this.editor.getInputField().blur()
     },
     collapseEditorIfEscapeKey (event) {
       if (event.keyCode === 27) {
