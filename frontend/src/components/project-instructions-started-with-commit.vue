@@ -170,10 +170,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-@import '../meta'
-
-input[type=checkbox]
-  height: 1rem
-</style>
