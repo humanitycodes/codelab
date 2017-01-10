@@ -62,6 +62,7 @@
       </div>
       <div class="flex-row" v-if="courseLessons.length">
         <div class="flex-col">
+          <h2>Lessons</h2>
           <LessonsMap :course="currentCourse" :lessons="courseLessons"/>
         </div>
       </div>
