@@ -85,7 +85,6 @@ export default {
       this.contentToPreview = this.value
     }, 300),
     expandEditor () {
-      console.log(this.isExpanded)
       if (this.isExpanded) return
       this.isExpanded = true
       document.documentElement.style.overflowY = 'hidden'
