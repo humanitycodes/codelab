@@ -25,7 +25,10 @@ const router = new VueRouter({
 // and run it if one exists. Otherwise, redirect to
 // root.
 router.beforeEach((to, from, next) => {
-  const { isAuthorized } = to.meta
+  const { isAuthorized, isPublic } = to.meta
+  if (!isPublic && !store.state.users.currentUser) {
+    return next('/')
+  }
   return !isAuthorized || isAuthorized(to.params)
     ? next() : next('/')
 })
