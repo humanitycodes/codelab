@@ -33,13 +33,18 @@ export function createRepository (token, { name }) {
 }
 
 export function createWebhooks (token, { owner, repo, events }) {
-  return postToGitHub(`/repos/${owner}/${repo}/hooks`, token, {
-    name: 'web',
-    active: true,
-    events: events,
-    config: {
-      url: `${config.githubEventsBaseURL}${config.githubEventsPath}`,
-      content_type: 'json'
-    }
+  return new Promise(resolve => {
+    setTimeout(resolve, 1000)
+  })
+  .then(() => {
+    return postToGitHub(`/repos/${owner}/${repo}/hooks`, token, {
+      name: 'web',
+      active: true,
+      events: events,
+      config: {
+        url: `${config.githubEventsBaseURL}${config.githubEventsPath}`,
+        content_type: 'json'
+      }
+    })
   })
 }
