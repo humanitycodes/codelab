@@ -9,9 +9,9 @@
           :to="'/courses/' + course['.key']"
         >
           {{ course['.key'] }}
-          <template v-if="course.title">
+          <span v-if="course.title">
             ({{ course.title }})
-          </template>
+          </span>
         </router-link>
       </li>
     </ul>
