@@ -15,6 +15,9 @@ import store from '@state/store'
 export default [
   {
     path: '/',
+    meta: {
+      isPublic: true
+    },
     redirect: to => {
       return store.state.users.currentUser
         ? '/courses'
@@ -80,24 +83,34 @@ export default [
       isAuthorized: canReadCourse
     }
   },
-  {
-    // This is just a place to give us a place to put components.
-    path: '/demos',
-    component: require('@pages/demos')
-  },
+  // We do not need this live for now.
+  // {
+  //   // This is just a place to give us a place to put components.
+  //   path: '/demos',
+  //   component: require('@pages/demos')
+  // },
   {
     path: '/msu-sign-in',
-    component: require('@pages/sign-in-msu')
+    component: require('@pages/sign-in-msu'),
+    meta: {
+      isPublic: true
+    }
   },
   {
     path: '/email-sign-in',
-    component: require('@pages/sign-in-email')
+    component: require('@pages/sign-in-email'),
+    meta: {
+      isPublic: true
+    }
   },
   {
     // This path has a required query parameter: ?token={jwt}
     // The periods in the token cause something to break when used as path param
     path: '/sign-in',
-    component: require('@pages/sign-in')
+    component: require('@pages/sign-in'),
+    meta: {
+      isPublic: true
+    }
   },
   {
     path: '/sign-out',
