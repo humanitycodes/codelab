@@ -5,16 +5,9 @@
         <h2>{{ getUser(instructorKey).fullName }}</h2>
         <ul>
           <li v-for="codeReview in codeReviews">
-            {{ codeReview.course['.key'] }}
-            -
-            <router-link :to="'/lessons/' + codeReview.lesson['.key']">
-              {{ codeReview.lesson.title }}
-            </router-link>
-            <br/>
             {{ codeReview.student.fullName }}
-            (<a :href="'mailto:' + codeReview.student.email" target="_blank">{{ codeReview.student.email }}</a>)
-            <br/>
-            <a :href="getIssuesUrl(codeReview)" target="_blank">GitHub Issue</a>
+            (<router-link :to="'/lessons/' + codeReview.lesson['.key']">Lesson</router-link>)
+            (<a :href="getIssuesUrl(codeReview)" target="_blank">GitHub Issue</a>)
           </li>
         </ul>
       </div>
