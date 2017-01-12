@@ -2,7 +2,7 @@ import {
   canCreateLesson, canReadAllLessons, canUpdateLesson
 } from '@state/auth/lessons'
 import {
-  canCreateCourse, canReadCourse, canUpdateCourse
+  canCreateCourse, canReadCourse, canReadAllCourses, canUpdateCourse
 } from '@state/auth/courses'
 import store from '@state/store'
 
@@ -81,6 +81,13 @@ export default [
     component: require('@pages/course-lesson'),
     meta: {
       isAuthorized: canReadCourse
+    }
+  },
+  {
+    path: '/instructor-dashboard',
+    component: require('@pages/instructor-dashboard'),
+    meta: {
+      isAuthorized: canReadAllCourses
     }
   },
   // We do not need this live for now.

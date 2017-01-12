@@ -7,6 +7,11 @@
       @click="$router.push('/')"
     />
     <ul class="main-nav-group-left">
+      <li v-if="canReadAllCourses()">
+        <router-link to="/instructor-dashboard">
+          Dashboard
+        </router-link>
+      </li>
       <li v-if="isUserSignedIn">
         <router-link to="/courses">
           Courses
