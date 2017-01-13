@@ -54,6 +54,8 @@ h4
   margin-top: $design.layout.gutterWidth * 1.5
   margin-bottom: $design.layout.gutterWidth
   text-transform: uppercase
+  code
+    text-transform: none
 
 p
   margin: $design.layout.gutterWidth 0
@@ -99,7 +101,6 @@ a
       height: $external-link-symbol-size
       width: $external-link-symbol-size
       margin-left: 5px
-
 
 hr
   width: 30%
@@ -203,6 +204,13 @@ pre:not(.CodeMirror-line)
 .xml, .html
   .css, .javascript
     opacity: 1
+
+div.result
+  pre
+    &:before
+      content: none
+    &:after
+      content: none
 
 // -------
 // BUTTONS
@@ -418,6 +426,13 @@ p, div
       content: 'RESULT'
       background-color: rgba(0,0,0,.1)
       color: inherit
+    $poetry-bg = $design.branding.default.light
+    &.poetry
+      line-height: 1.7
+      &:after
+        content: 'POETRY'
+      pre
+        font-family: inherit
   &.muted
     opacity: .7
 
