@@ -20,6 +20,8 @@ dependencies:
     - ~/.cache/yarn
     - frontend/node_modules
     - backend/node_modules
+    - firebase/node_modules
+    - test/node_modules
   override:
     # Use yarn instead of NPM, because it's way faster
     # and because the lockfile ensures consistent builds
