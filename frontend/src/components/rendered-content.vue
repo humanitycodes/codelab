@@ -50,7 +50,7 @@ export default {
               >
                 <div
                   class='rendered-content-page-breadcrumb-preview-title'
-                  domPropsInnerHTML={ page.title }
+                  domPropsInnerHTML={ page.title.replace(/&/, '&amp;') }
                 />
                 <svg>
                   <circle
