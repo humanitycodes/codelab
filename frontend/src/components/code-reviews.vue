@@ -6,7 +6,7 @@
         <ul>
           <li v-for="codeReview in codeReviews">
             {{ codeReview.student.fullName }}
-            (<router-link :to="'/lessons/' + codeReview.lesson['.key']">Lesson</router-link>)
+            (<router-link :to="'/courses/' + codeReview.course['.key'] + '/lessons/' + codeReview.lesson['.key']">Lesson</router-link>)
             (<a :href="getIssuesUrl(codeReview)" target="_blank">GitHub Issue</a>)
           </li>
         </ul>
