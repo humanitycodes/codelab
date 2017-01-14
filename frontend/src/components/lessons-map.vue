@@ -11,19 +11,20 @@
       :style="{
         transform: nodeTransform(node),
         width: nodeWidth + 'px',
-        height: nodeHeight + 'px'
+        height: nodeHeight + 'px',
+        minHeight: nodeHeight + 'px'
       }"
       :to="nodeClickPath(node.lesson)"
       class="lesson-graph-card container-link"
       :class="{ recommended: isLessonRecommended(node.lesson) }"
     >
       <router-link
-        v-if="course && canUpdateLesson({ lessonKey: node.lesson['.key'] }) && false"
+        v-if="course && canUpdateLesson({ lessonKey: node.lesson['.key'] })"
         class="button inline primary lessons-map-corner-action-lesson-button"
         :to="editLessonPath(node.lesson)"
       >Edit</router-link>
       <h3>{{ node.lesson.title }}</h3>
-      <div class="lesson-graph-card-scrollable">
+      <div class="lesson-graph-card-details">
         <div class="flex-row lesson-graph-card-metadata">
           <div
             v-html="lessonLangTag(node.lesson)"
@@ -43,7 +44,9 @@
               v-if="findProjectCompletion(node.lesson)"
               class="button inline lessons-map-project-status"
               :class="{
-                'approved': isLessonProjectApproved(node.lesson),
+                approved: isLessonProjectApproved(node.lesson),
+                'changes-requested': isLessonProjectAwaitingRequestedChanges(node.lesson),
+                'awaiting-feedback': isLessonProjectAwaitingFeedback(node.lesson)
               }"
               :href="
                 'https://github.com/' +
@@ -60,6 +63,12 @@
             >
               <span v-if="isLessonProjectApproved(node.lesson)">
                 ✓ Approved
+              </span>
+              <span v-else-if="isLessonProjectAwaitingRequestedChanges(node.lesson)">
+                ⚠️ &nbsp;Changes<br>Requested
+              </span>
+              <span v-else-if="isLessonProjectAwaitingFeedback(node.lesson)">
+                Awaiting<br>Feedback
               </span>
               <span v-else>
                 In Progress
@@ -92,7 +101,7 @@ export default {
   data () {
     return {
       nodeWidth: 320,
-      nodeHeight: 118
+      nodeHeight: 114
     }
   },
   computed: {
@@ -211,6 +220,22 @@ export default {
         projectCompletion.submission.isApproved
       )
     },
+    isLessonProjectAwaitingRequestedChanges (lesson) {
+      const projectCompletion = this.findProjectCompletion(lesson)
+      return (
+        projectCompletion.submission &&
+        !projectCompletion.submission.isApproved &&
+        projectCompletion.submission.instructorCommentedLast
+      )
+    },
+    isLessonProjectAwaitingFeedback (lesson) {
+      const projectCompletion = this.findProjectCompletion(lesson)
+      return (
+        projectCompletion.submission &&
+        !projectCompletion.submission.isApproved &&
+        !projectCompletion.submission.instructorCommentedLast
+      )
+    },
     isLessonRecommended (lesson) {
       const projectCompletion = this.findProjectCompletion(lesson)
       return (
@@ -267,7 +292,7 @@ export default {
 <style lang="stylus">
 @import '../meta'
 
-.lesson-lang-tag.lesson-lang-tag.lesson-lang-tag
+.lesson-lang-tag.lesson-lang-tag
   margin-top: -2px
   padding: $design.layout.gutterWidth * .1 $design.layout.gutterWidth * .25
   border-radius: $design.control.border.radius
@@ -280,7 +305,7 @@ export default {
 
 .lesson-graph-container
   position: relative
-  padding-bottom: 12px
+  padding-bottom: 15px
   overflow-x: auto
 
 .lesson-graph-card
@@ -294,7 +319,6 @@ export default {
   border-radius: $design.control.border.radius
   opacity: .7
   transition: all .3s
-  font-family: Lato
   > h3
     margin-top: 0
     white-space: nowrap
@@ -309,10 +333,7 @@ export default {
   &.recommended
     opacity: 1
 
-.lesson-graph-card-scrollable
-  overflow: hidden
-  overflow-y: auto
-  max-height: 100%
+.lesson-graph-card-details
   > .flex-row
     &:first-child
       margin-top: 0
@@ -323,6 +344,9 @@ export default {
         text-align: right
 
 .lesson-graph-card-metadata > .flex-col
+  position: relative
+  overflow: visible
+  font-family: Lato
   white-space: nowrap
   margin-left: 0
   flex-shrink: 999
@@ -341,10 +365,21 @@ export default {
   margin-top: 0
 
 .lessons-map-project-status
-  font-family: Merriweather
-  background-color: $design.branding.muted.light.yellow
+  display: inline-block
+  padding: 4px 6px
+  line-height: 1.5
+  letter-spacing: 1px
+  position: absolute
+  right: 0
+  bottom: 0
+  background-color: $design.branding.muted.light.tan
   &.approved
     background-color: $design.branding.muted.light.success
+  &.changes-requested
+    background-color: $design.branding.muted.light.yellow
+    bottom: -5px
+  &.awaiting-feedback
+    bottom: -5px
 
 path
   stroke: $design.branding.primary.light
