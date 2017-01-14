@@ -65,7 +65,7 @@ p
   padding-bottom: 0.2em
   background-color: rgba(0,0,0,0.04)
   border-radius: $design.control.border.radius
-  vertical-align: top
+  vertical-align: baseline
   &:before, &:after
     content: '\00a0'
     letter-spacing: -0.2em
@@ -211,6 +211,19 @@ div.result
       content: none
     &:after
       content: none
+
+// ------
+// TABLES
+// ------
+
+table
+  width: 100%
+  margin: $design.layout.gutterWidth 0
+
+th, td
+  padding: $design.layout.gutterWidth * .5
+  border: 1px solid $design.control.border.color
+  background-color: $design.branding.muted.light.tan
 
 // -------
 // BUTTONS
