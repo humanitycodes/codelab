@@ -24,7 +24,11 @@
       >Edit</router-link>
       <h3>{{ node.lesson.title }}</h3>
       <div class="lesson-graph-card-scrollable">
-        <div class="flex-row">
+        <div class="flex-row lesson-graph-card-metadata">
+          <div
+            v-html="lessonLangTag(node.lesson)"
+            class="flex-col"
+          />
           <div class="flex-col">
             ~{{ node.lesson.estimatedHours }}
             {{ node.lesson.estimatedHours === 1 ? 'hr' : 'hrs' }}
@@ -236,10 +240,40 @@ export default {
             })
         )
       )
+    },
+    lessonLang (lesson) {
+      return lesson['.key'].match(/^(\w+?)-/)[1]
+    },
+    langColor (lang) {
+      return {
+        html: '#ffc5c5',
+        css: '#d5e2ec',
+        js: '#f3e9a6'
+      }[lang]
+    },
+    lessonLangTag (lesson) {
+      const lang = this.lessonLang(lesson)
+      const color = this.langColor(lang)
+      return `
+        <span class="lesson-lang-tag ${lang}" style="background:${color}">
+          ${lang.toUpperCase()}
+        </span>
+      `
     }
   }
 }
 </script>
+
+<style lang="stylus">
+@import '../meta'
+
+.lesson-lang-tag.lesson-lang-tag.lesson-lang-tag
+  margin-top: -2px
+  padding: $design.layout.gutterWidth * .1 $design.layout.gutterWidth * .25
+  border-radius: $design.control.border.radius
+  letter-spacing: 1px
+  font-size: .9em
+</style>
 
 <style lang="stylus" scoped>
 @import '../meta'
@@ -260,6 +294,7 @@ export default {
   border-radius: $design.control.border.radius
   opacity: .7
   transition: all .3s
+  font-family: Lato
   > h3
     margin-top: 0
     white-space: nowrap
@@ -287,6 +322,13 @@ export default {
       &:last-child
         text-align: right
 
+.lesson-graph-card-metadata > .flex-col
+  white-space: nowrap
+  margin-left: 0
+  flex-shrink: 999
+  &:last-child
+    flex-shrink: 1
+
 .lessons-map-corner-action-lesson-button
   position: absolute
   top: 0
@@ -299,6 +341,7 @@ export default {
   margin-top: 0
 
 .lessons-map-project-status
+  font-family: Merriweather
   background-color: $design.branding.muted.light.yellow
   &.approved
     background-color: $design.branding.muted.light.success
