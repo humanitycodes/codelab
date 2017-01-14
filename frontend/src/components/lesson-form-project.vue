@@ -65,6 +65,7 @@ export default {
       newProjectCriterion: '',
       hostingOptions: [
         'GitHub Pages',
+        'Surge',
         'Heroku'
       ]
     }

@@ -4,39 +4,12 @@
 
     <p v-if="error" class="danger">{{ error }}</p>
 
-    <h4>When you're done</h4>
-
-    <p>Make sure that your latest work is on GitHub:</p>
-    <CodeBlock lang="sh">
-      # 1) Navigate to your project folder (unless you're already there)
-      cd PATH/TO/{{ projectName }}
-
-      # 2) Add all the files you worked on to the list of changes you want to commit
-      git add -A .
-
-      # 3) Commit your changes with a message
-      git commit -m "a short message describing your changes"
-
-      # 4) Upload your commits to your GitHub repository
-      git push origin master
-    </CodeBlock>
-
-    <p>And publish a hosted version of your site:</p>
-    <CodeBlock v-if="project.hosting === 'Heroku'" lang="sh">
-      git push heroku master
-    </CodeBlock>
-    <CodeBlock v-else lang="sh">
-      git push origin master:gh-pages
-    </CodeBlock>
-
-    <h4>Double check your work</h4>
-    <p>
-      Visit the pages for your
-      <a :href="projectRepoUrl" target="_blank">GitHub repo</a>
-      and
-      <a :href="projectHostedUrl" target="_blank">hosted site</a>
-      to confirm they include your latest changes.
-    </p>
+    <ProjectCompletionUpdateInstructions
+      :project="project"
+      :projectName="projectName"
+      :projectRepoUrl="projectRepoUrl"
+      :projectHostedUrl="projectHostedUrl"
+    />
 
     <template v-if="instructors.length > 1">
       <h4>Choose a reviewer</h4>
@@ -69,12 +42,13 @@
 import Axios from 'axios'
 import QueryString from 'querystring'
 import { userGetters } from '@state/helpers'
+import ProjectCompletionUpdateInstructions from './project-completion-update-instructions'
 import ProjectCompletionLinks from './project-completion-links'
 import toInlineHtml from '@helpers/to-inline-html'
 
 export default {
   components: {
-    ProjectCompletionLinks
+    ProjectCompletionLinks, ProjectCompletionUpdateInstructions
   },
   props: {
     course: {
