@@ -5,8 +5,14 @@
       v-if="!projectCompletion"
       class="block"
       @click="createProjectRepo"
+      :disabled="starting"
     >
-      Start Project
+      <span v-if="starting">
+        Just a few seconds...
+      </span>
+      <span v-else>
+        Start Project
+      </span>
     </button>
   </div>
 </template>
@@ -32,11 +38,13 @@ export default {
   },
   data () {
     return {
-      error: ''
+      error: '',
+      starting: false
     }
   },
   methods: {
     createProjectRepo () {
+      this.starting = true
       Axios.post('/api/project-completions', {
         courseKey: this.course['.key'],
         lessonKey: this.lesson['.key'],
@@ -44,6 +52,7 @@ export default {
       })
       .then(() => { this.error = '' })
       .catch(() => {
+        this.starting = false
         this.error = `There was a problem creating the project repo on GitHub. Make sure you're connected to the Internet. If you've confirmed you are, tell your instructor about this and we'll work to resolve it as soon as possible.`
       })
     }
