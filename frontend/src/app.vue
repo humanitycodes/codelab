@@ -449,7 +449,6 @@ p, div
       content: 'RESULT'
       background-color: rgba(0,0,0,.1)
       color: inherit
-    $poetry-bg = $design.branding.default.light
     &.poetry
       line-height: 1.7
       &:after
