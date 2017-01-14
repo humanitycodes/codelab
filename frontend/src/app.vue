@@ -73,6 +73,9 @@ p
 img
   max-width: 100%
 
+video, audio
+  width: 100%
+
 a
   color: lighten($design.branding.primary.light, 5%)
   text-decoration: none
