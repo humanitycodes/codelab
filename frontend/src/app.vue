@@ -337,6 +337,8 @@ label, legend
   color: $design.body.text.color
   margin-bottom: $design.layout.gutterWidth * .2
   font-weight: 600
+  font-family: Lato
+  font-size: 1.1em
 
 label.with-inline-input
   cursor: pointer
