@@ -68,10 +68,27 @@ export default {
       ].join('')
     },
     projectHostedUrl () {
-      if (!this.projectCompletion) return ''
+      if (!this.project || !this.projectCompletion) return ''
+      if (this.projectCompletion.hostedUrl) {
+        return this.projectCompletion.hostedUrl
+      }
+      if (this.project.hosting === 'Surge') {
+        return (
+          'https://' +
+          this.projectName.toLowerCase() +
+          '.surge.sh/'
+        )
+      }
+      if (this.project.hosting === 'Heroku') {
+        return (
+          'https://' +
+          this.projectName.toLowerCase() +
+          '.herokuapp.com/'
+        )
+      }
       const githubUsername = this.currentUser.profile.github.login
       return this.projectCompletion.hostedUrl ||
-        `https://${githubUsername}.github.io/${this.projectName}/`
+      `https://${githubUsername}.github.io/${this.projectName}/`
     }
   }
 }

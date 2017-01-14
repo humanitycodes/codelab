@@ -122,7 +122,7 @@ export default {
               hosting: {
                 type: String,
                 validate: isOneOfTheseStrings(
-                  'GitHub Pages', 'Heroku'
+                  'GitHub Pages', 'Surge', 'Heroku'
                 )
               }
             }

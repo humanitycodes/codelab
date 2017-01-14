@@ -76,6 +76,10 @@ img
 video, audio
   width: 100%
 
+iframe
+  width: 100%
+  border: none
+
 a
   color: lighten($design.branding.primary.light, 5%)
   text-decoration: none
