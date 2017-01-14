@@ -125,6 +125,9 @@ blockquote
 strong, b
   font-weight: 700
 
+summary
+  cursor: pointer
+
 // -----------
 // CODE BLOCKS
 // -----------
