@@ -216,6 +216,7 @@ export default {
     isLessonProjectApproved (lesson) {
       const projectCompletion = this.findProjectCompletion(lesson)
       return (
+        projectCompletion &&
         projectCompletion.submission &&
         projectCompletion.submission.isApproved
       )
@@ -223,6 +224,7 @@ export default {
     isLessonProjectAwaitingRequestedChanges (lesson) {
       const projectCompletion = this.findProjectCompletion(lesson)
       return (
+        projectCompletion &&
         projectCompletion.submission &&
         !projectCompletion.submission.isApproved &&
         projectCompletion.submission.instructorCommentedLast
@@ -231,6 +233,7 @@ export default {
     isLessonProjectAwaitingFeedback (lesson) {
       const projectCompletion = this.findProjectCompletion(lesson)
       return (
+        projectCompletion &&
         projectCompletion.submission &&
         !projectCompletion.submission.isApproved &&
         !projectCompletion.submission.instructorCommentedLast
