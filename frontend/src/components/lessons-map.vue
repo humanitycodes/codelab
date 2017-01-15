@@ -331,6 +331,7 @@ export default {
     border-color: $design.branding.primary.light
     height: auto !important
     opacity: 1
+    z-index: 1
     > h3
       white-space: normal
   &.recommended
