@@ -1,5 +1,8 @@
 <template>
-  <div class="lesson-graph-container">
+  <div
+    ref="container"
+    class="lesson-graph-container"
+  >
     <svg :width="graph.width" :height="graph.height">
       <path
         v-for="edge in lessonEdges"
@@ -160,13 +163,31 @@ export default {
       })
     }
   },
+  mounted () {
+    const recommendedLessonsOffsets = this.lessonNodes
+      .filter(node => {
+        return this.isLessonRecommended(node.lesson)
+      })
+      .map(node => {
+        return this.nodeOffsetX(node)
+      })
+    this.$nextTick(() => {
+      this.$refs.container.scrollLeft = Math.min(...recommendedLessonsOffsets)
+    })
+  },
   methods: {
     canUpdateLesson,
+    nodeOffsetX (node) {
+      return node.x - this.nodeWidth / 2
+    },
+    nodeOffsetY (node) {
+      return node.y - this.nodeHeight / 2
+    },
     nodeTransform (node) {
       return `translate(${
-        node.x - this.nodeWidth / 2 + 'px'
+        this.nodeOffsetX(node) + 'px'
       },${
-        node.y - this.nodeHeight / 2 + 'px'
+        this.nodeOffsetY(node) + 'px'
       })`
     },
     edgePath (edge) {
