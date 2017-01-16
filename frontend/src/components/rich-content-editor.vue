@@ -13,6 +13,14 @@
       pagination-placement="top"
       :content="contentToPreview"
     />
+    <div
+      v-if="isExpanded && someoneElseIsEditing"
+      class="rich-content-editor-someone-else-is-editing-warning"
+    >
+      <p class="warning">
+        <strong>Warning!</strong> Someone else is currently editing this lesson. Simultaneous editing is <strong>not</strong> currently supported. This message will disappear when they are done.
+      </p>
+    </div>
   </div>
 </template>
 
@@ -45,7 +53,9 @@ export default {
     return {
       editor: null,
       isExpanded: false,
-      contentToPreview: this.value
+      contentToPreview: this.value,
+      someoneElseIsEditing: false,
+      someoneElseIsEditingTimeout: null
     }
   },
   mounted () {
@@ -75,9 +85,16 @@ export default {
     })
   },
   watch: {
-    value (newValue) {
-      if (this.editor.getValue() !== newValue) {
-        this.editor.setValue(newValue)
+    value (newValue, oldValue) {
+      const { editor } = this
+      if (editor.getValue() !== newValue) {
+        const { left, top } = editor.getScrollInfo()
+        editor.setValue(newValue)
+        if (oldValue) {
+          editor.scrollTo(left, top)
+          editor.getInputField().blur()
+          this.flashSomeoneElseIsEditingWarning()
+        }
       }
       this.updateContentToPreview()
     }
@@ -103,6 +120,13 @@ export default {
       if (event.keyCode === 27) {
         this.collapseEditor()
       }
+    },
+    flashSomeoneElseIsEditingWarning () {
+      clearTimeout(this.someoneElseIsEditingTimeout)
+      this.someoneElseIsEditing = true
+      this.someoneElseIsEditingTimeout = setTimeout(() => {
+        this.someoneElseIsEditing = false
+      }, 5000)
     }
   }
 }
@@ -136,4 +160,15 @@ export default {
       padding: $design.layout.gutterWidth
       > .rendered-content
         flex-grow: 1
+    .rich-content-editor-someone-else-is-editing-warning
+      position: fixed
+      top: 40%
+      left: 0
+      width: 100%
+      z-index: 20
+      .warning
+        max-width: 80%
+        margin: 0 auto
+        box-shadow: 0 0 40px rgba(0,0,0,.4), 0 0 60px rgba(0,0,0,.4), 0 0 80px rgba(0,0,0,.4), 0 0 120px rgba(0,0,0,.4)
+
 </style>
