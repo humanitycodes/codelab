@@ -150,6 +150,8 @@ export default {
     .cm-searching
       background-color: white
       color: black
+    .CodeMirror-selected
+      background-color: darkslategray
 
   &.expanded
     .CodeMirror, .rendered-content-container
