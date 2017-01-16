@@ -304,7 +304,7 @@ th, td
 // FORMS
 // -----
 
-input:not([type]), input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="date"], input[type="url"], input[type="password"], textarea, select
+input:not([type]), input[type="email"], input[type="number"], input[type="search"], input[type="text"]:not(.CodeMirror-search-field), input[type="tel"], input[type="date"], input[type="url"], input[type="password"], textarea, select
   height: $design.control.height
   // The 6px vertically centers text on FF, ignored by Webkit
   padding: $design.control.padding.vertical $design.control.padding.horizontal

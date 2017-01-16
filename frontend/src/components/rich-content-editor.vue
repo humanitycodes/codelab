@@ -35,6 +35,10 @@ import 'codemirror/mode/css/css'
 import 'codemirror/mode/markdown/markdown'
 import 'codemirror/mode/gfm/gfm'
 import 'codemirror/keymap/sublime'
+import 'codemirror/addon/search/search'
+import 'codemirror/addon/search/searchcursor'
+import 'codemirror/addon/dialog/dialog.js'
+import 'codemirror/addon/dialog/dialog.css'
 import CodeMirror from 'codemirror/lib/codemirror.js'
 import RenderedContent from './rendered-content'
 
@@ -143,6 +147,9 @@ export default {
       font-family: $design.code.font.family
     .CodeMirror-lines
       padding: $design.layout.gutterWidth
+    .cm-searching
+      background-color: white
+      color: black
 
   &.expanded
     .CodeMirror, .rendered-content-container
