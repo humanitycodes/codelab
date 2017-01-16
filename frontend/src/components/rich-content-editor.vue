@@ -26,6 +26,7 @@ import 'codemirror/mode/javascript/javascript'
 import 'codemirror/mode/css/css'
 import 'codemirror/mode/markdown/markdown'
 import 'codemirror/mode/gfm/gfm'
+import 'codemirror/keymap/sublime'
 import CodeMirror from 'codemirror/lib/codemirror.js'
 import RenderedContent from './rendered-content'
 
@@ -55,6 +56,7 @@ export default {
         lineNumbers: false,
         tabSize: 2,
         lineWrapping: true,
+        keyMap: 'sublime',
         extraKeys: {
           Tab: editor => {
             var spaces = Array(editor.getOption('indentUnit') + 1).join(' ')
