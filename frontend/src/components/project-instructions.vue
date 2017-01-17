@@ -83,6 +83,7 @@ export default {
         return (
           'https://' +
           this.projectName.toLowerCase() +
+          this.currentUser.uid.toLowerCase() +
           '.herokuapp.com/'
         )
       }
