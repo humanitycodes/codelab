@@ -67,6 +67,13 @@ export default {
         this.projectName
       ].join('')
     },
+    projectHostedSubdomain () {
+      return (
+        this.projectName.toLowerCase() +
+        '-' +
+        this.currentUser.profile.github.login
+      )
+    },
     projectHostedUrl () {
       if (!this.project || !this.projectCompletion) return ''
       if (this.projectCompletion.hostedUrl) {
@@ -75,16 +82,14 @@ export default {
       if (this.project.hosting === 'Surge') {
         return (
           'https://' +
-          this.projectName.toLowerCase() +
-          this.currentUser.uid.toLowerCase() +
+          this.projectHostedSubdomain +
           '.surge.sh/'
         )
       }
       if (this.project.hosting === 'Heroku') {
         return (
           'https://' +
-          this.projectName.toLowerCase() +
-          this.currentUser.uid.toLowerCase() +
+          this.projectHostedSubdomain +
           '.herokuapp.com/'
         )
       }
