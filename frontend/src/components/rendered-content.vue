@@ -24,7 +24,7 @@
 <script>
 import compact from 'lodash/compact'
 import chunk from 'lodash/chunk'
-import { highlight, highlightAuto } from 'highlight.js'
+import { highlight, highlightAuto } from '@helpers/syntax-highlight'
 import toHtml from '@helpers/to-html'
 
 export default {
@@ -163,14 +163,13 @@ export default {
       this.$nextTick(() => {
         if (!this.$refs.renderedContent) return
         const codeElements = this.$refs.renderedContent.querySelectorAll('pre > code')
-        const codeLangs = ['sh', 'html', 'js', 'md', 'css', 'scss']
         const codeElementsCount = codeElements.length
         for (let i = 0; i < codeElementsCount; i++) {
           const codeEl = codeElements[i]
           const preEl = codeEl.parentNode
           if (preEl.classList.length) {
             const lang = preEl.classList[0]
-            if (codeLangs.indexOf(lang) !== -1) {
+            if (lang) {
               codeEl.innerHTML = highlight(lang, codeEl.textContent).value
             }
             const preClassesCount = preEl.classList.length
@@ -178,7 +177,7 @@ export default {
               codeEl.classList.add(preEl.classList[j])
             }
           } else {
-            codeEl.innerHTML = highlightAuto(codeEl.textContent, codeLangs).value
+            codeEl.innerHTML = highlightAuto(codeEl.textContent).value
           }
           codeEl.classList.add('hljs')
         }

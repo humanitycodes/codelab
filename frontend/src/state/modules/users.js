@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash'
+import isEqual from 'lodash/isEqual'
 import firebase from 'firebase'
 import db from '@plugins/firebase'
 import jwtDecode from 'jwt-decode'
