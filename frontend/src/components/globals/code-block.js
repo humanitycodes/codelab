@@ -1,4 +1,4 @@
-import { highlight, highlightAuto } from 'highlight.js'
+import { highlight, highlightAuto } from '@helpers/syntax-highlight'
 
 export default {
   render (h) {
@@ -17,7 +17,7 @@ export default {
       vnode.text = vnode.text.trim()
       return this.lang
         ? highlight(this.lang, vnode.text).value
-        : highlightAuto(vnode.text, ['sh', 'html', 'js', 'md', 'css', 'scss']).value
+        : highlightAuto(vnode.text).value
     }).join('')
     return <pre class={{ [this.lang]: !!this.lang }}><code
       class={{
