@@ -1,10 +1,10 @@
 <template>
   <div class="flex-row">
     <div class="flex-col">
-      <div v-for="(codeReviews, instructorKey) in codeReviewsAwaitingFeedback">
-        <h2>{{ getUser(instructorKey).fullName }}</h2>
+      <div v-for="reviewGroup in codeReviewsAwaitingFeedback">
+        <h2>{{ reviewGroup.instructor.fullName }}</h2>
         <ul>
-          <li v-for="codeReview in codeReviews">
+          <li v-for="codeReview in reviewGroup.reviews">
             {{ codeReview.student.fullName }}
             (<router-link :to="'/courses/' + codeReview.course['.key'] + '/lessons/' + codeReview.lesson['.key']">Lesson</router-link>)
             (<a :href="getIssuesUrl(codeReview)" target="_blank">GitHub Issue</a>)
@@ -23,6 +23,7 @@ import {
   coursePermissionMethods, userGetters, lessonGetters
 } from '@state/helpers'
 import store from '@state/store'
+import sortBy from 'lodash/sortBy'
 
 export default {
   props: {
@@ -66,16 +67,16 @@ export default {
     ...userGetters,
     ...lessonGetters,
     codeReviewsAwaitingFeedback () {
-      let codeReviews = {}
+      let instructorReviews = {}
       this.courses.forEach(course => {
         course.projectCompletions.forEach(project => {
           if (!project.submission || project.submission.instructorCommentedLast) return
 
-          if (!codeReviews[project.submission.assignedInstructor]) {
-            codeReviews[project.submission.assignedInstructor] = []
+          if (!instructorReviews[project.submission.assignedInstructor]) {
+            instructorReviews[project.submission.assignedInstructor] = []
           }
 
-          codeReviews[project.submission.assignedInstructor].push({
+          instructorReviews[project.submission.assignedInstructor].push({
             course,
             project,
             lesson: this.getLesson(project.lessonKey),
@@ -83,7 +84,15 @@ export default {
           })
         })
       })
-      return codeReviews
+
+      let reviewGroups = []
+      Object.keys(instructorReviews).forEach(instructorKey => {
+        reviewGroups.push({
+          instructor: this.getUser(instructorKey),
+          reviews: instructorReviews[instructorKey]
+        })
+      })
+      return sortBy(reviewGroups, ['instructor.fullName'])
     }
   }
 }
