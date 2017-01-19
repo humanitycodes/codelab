@@ -62,6 +62,43 @@ To prepare a new Firebase database for the MSU Code Lab application, perform the
    - In the Firebase Console for the new database, navigate to the Database page.
    - Click the vertical ellipses, select "Import JSON", and upload the exported JSON file.
 
+## Restoring from Backups
+
+The production database (`MsuLansingCodes`) is configured to take daily backups. If you ever need to restore the database from a backup, follow the steps below:
+
+1. Determine the date in the past that you want to restore.
+2. Deploy the version of the code that matches the restore date:
+   1. _**Note:** This step can be skipped if you are sure no model changes have been made since the restore date._
+   2. If you expect the recover process to take a long or unknown time, enable "Maintenance Mode" for `msu-lansing-codes` in Heroku.
+   3. Checkout the code version that matches the data you are restoring and manually deploy it to `msu-lansing-codes` in Heroku.
+3. Download the Firebase backups that match the restore date:
+   1. Sign into the [Firebase Console][2] using the humanitycodes@gmail.com account.
+   2. Select `MsuLansingCodes` from the dropdown in the top left corner of the window.
+   3. Click on "Database" in the left panel.
+   4. Click on "Backups" in the top middle portion of the page.
+   5. In the table labeled "Activity", find the row with a Start Time that matches the restore date.
+   6. Click on `msulansingcodes_data.json.gz` and `msulansingcodes_rules.json.gz` to download them.
+   7. Unzip each file you downloaded using a graphical tool or command line:
+      ```sh
+      gunzip *.json.gz
+      ```
+4. Restore the Firebase data:
+   1. Click on "Database" in the left panel.
+   2. Click on the `⋮` on the "Data" table and select "Import JSON".
+   3. Click "Browse" in the dialog that appears and select the `*-msulansingcodes_data.json` that you downloaded and unzipped.
+   4. Click "Import" to restore the data.
+5. Restore the Firebase rules:
+   1. Open the `*-msulansingcodes_rules.json` file and copy the contents to your clipboard. Alternatively, on macOS you can use the following terminal command:
+      ```sh
+      cat *-msulansingcodes_rules.json | pbcopy
+      ```
+   2. Click on "Rules" tab on the Database page.
+   3. Delete the contents of the Rules edit box.
+   4. Paste the rules from your clipboard into the edit box.
+   5. Click "Publish" at the top of the edit box.
+6. Disable "Maintenance Mode" for `msu-lansing-codes` in Heroku if it was enabled.
+7. Verify that you are able to sign into [msu.lansing.codes][3] and access the restored data in the website.
 
 [1]: https://firebase.google.com/docs/cli/ "Firebase CLI Reference"
 [2]: https://console.firebase.google.com/ "Firebase Console"
+[3]: https://msu.lansing.codes/ "MSU Codes Homepage"
