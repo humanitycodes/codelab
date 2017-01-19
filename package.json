@@ -54,11 +54,6 @@
   },
   "cacheDirectories": [
     "~./yarn",
-    "~/.cache/yarn",
-    "node_modules",
-    "frontend/node_modules",
-    "backend/node_modules",
-    "firebase/node_modules",
-    "test/node_modules"
+    "~/.cache/yarn"
   ]
 }
