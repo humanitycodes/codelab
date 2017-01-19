@@ -5,8 +5,10 @@
         <h2>{{ reviewGroup.instructor.fullName }}</h2>
         <ul>
           <li v-for="codeReview in reviewGroup.reviews">
+            {{ codeReview.course['.key'] }}
+            -
             {{ codeReview.student.fullName }}
-            (<router-link :to="'/courses/' + codeReview.course['.key'] + '/lessons/' + codeReview.lesson['.key']">Lesson</router-link>)
+            (<router-link :to="getCourseLessonUrl(codeReview)">Lesson</router-link>)
             (<a :href="getIssuesUrl(codeReview)" target="_blank">GitHub Issue</a>)
           </li>
         </ul>
@@ -52,6 +54,14 @@ export default {
         ].join('-'),
         '/issues'
       ].join('')
+    },
+    getCourseLessonUrl (codeReview) {
+      return [
+        '/courses/',
+        codeReview.course['.key'],
+        '/lessons/',
+        codeReview.lesson['.key']
+      ].join('')
     }
   },
   created () {
@@ -67,6 +77,7 @@ export default {
     ...userGetters,
     ...lessonGetters,
     codeReviewsAwaitingFeedback () {
+      // Collection information about pending code reviews, grouped by instructor
       let instructorReviews = {}
       this.courses.forEach(course => {
         course.projectCompletions.forEach(project => {
@@ -85,13 +96,19 @@ export default {
         })
       })
 
+      // Reorganize and sort code reviews for each instructor
       let reviewGroups = []
       Object.keys(instructorReviews).forEach(instructorKey => {
         reviewGroups.push({
           instructor: this.getUser(instructorKey),
-          reviews: instructorReviews[instructorKey]
+          reviews: sortBy(instructorReviews[instructorKey], [
+            'course[\'.key\']',
+            'student.fullName',
+            'lesson[\'.key\']'
+          ])
         })
       })
+      // Order code review groups by instructor name
       return sortBy(reviewGroups, ['instructor.fullName'])
     }
   }
