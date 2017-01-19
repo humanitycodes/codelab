@@ -79,6 +79,7 @@ import {
 } from '@state/helpers'
 import courseLessonGradePoints from '@helpers/course-lesson-grade-points'
 import toInlineHtml from '@helpers/to-inline-html'
+import getScrollTop from '@helpers/get-scroll-top'
 
 export default {
   components: {
@@ -132,10 +133,10 @@ export default {
         newPage
       )
       window.history.replaceState({}, null, newUrl)
-      const { scrollTop } = document.body
+      const scrollTop = getScrollTop()
       const contentTop = document.querySelector('.course-lesson-content .rendered-content').offsetTop
       if (scrollTop > contentTop) {
-        document.body.scrollTop = contentTop
+        window.scrollTo(0, contentTop)
       }
     }
   }
