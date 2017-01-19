@@ -19,6 +19,13 @@
       />
     </div>
   </div>
+  <div v-else>
+    <img
+      src="../assets/images/loading.gif"
+      alt="Loading"
+      class="rendered-content-loading-image"
+    >
+  </div>
 </template>
 
 <script>
@@ -255,4 +262,9 @@ export default {
       fill: $design.branding.primary.dark
       stroke-width: 1px
       stroke: $design.branding.primary.dark
+
+.rendered-content-loading-image
+  max-width: 50px
+  display: block
+  margin: 0 auto
 </style>
