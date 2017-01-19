@@ -329,7 +329,7 @@ export default {
 
 .lesson-graph-container
   position: relative
-  padding-bottom: 15px
+  padding-bottom: 16px
   overflow-x: auto
 
 .lesson-graph-card
