@@ -4,7 +4,8 @@ import { readUserByGitHubLogin } from '../db/user-repo'
 import { readInstructorsByCourseKey } from '../db/instructor-repo'
 import {
   readProjectCompletionByPartialKey,
-  updateProjectCompletion
+  updateProjectCompletion,
+  deleteProjectCompletion
 } from '../db/project-completion-repo'
 
 // Capture Group 1. GitHub Username: ([^/]+)
@@ -60,66 +61,66 @@ function* findProjectCompletionFromRepoName (repoName) {
 }
 
 export default {
-  push: function* (push) {
+  push: function* (pushEvent) {
     // Make sure there was at least one commit
-    if (!push.commits.length) return
+    if (!pushEvent.commits.length) return
 
-    const results = yield findProjectCompletionFromRepoName(push.repository.full_name)
+    const projectMeta = yield findProjectCompletionFromRepoName(pushEvent.repository.full_name)
 
     // Set committed to true
-    if (!results.projectCompletion.committed) {
-      results.projectCompletion.committed = true
+    if (!projectMeta.projectCompletion.committed) {
+      projectMeta.projectCompletion.committed = true
       yield updateProjectCompletion({
-        courseKey: results.courseKey,
-        projectCompletionKey: results.projectCompletionKey
-      }, results.projectCompletion)
+        courseKey: projectMeta.courseKey,
+        projectCompletionKey: projectMeta.projectCompletionKey
+      }, projectMeta.projectCompletion)
     }
   },
 
-  issues: function* (issue) {
-    if (issue.action !== 'opened') return
+  issues: function* (issuesEvent) {
+    if (issuesEvent.action !== 'opened') return
 
-    const results = yield findProjectCompletionFromRepoName(issue.repository.full_name)
+    const projectMeta = yield findProjectCompletionFromRepoName(issuesEvent.repository.full_name)
 
     // Find the assigned instructor
     let assignedInstructor = null
-    const instructors = yield readInstructorsByCourseKey(results.courseKey)
+    const instructors = yield readInstructorsByCourseKey(projectMeta.courseKey)
     Object.keys(instructors).forEach(instructorUid => {
       const instructor = instructors[instructorUid]
       if (!instructor.github) return
       const instructorMentionRegex = new RegExp(`@${instructor.github.login}\\b`)
-      if (issue.issue.body.search(instructorMentionRegex) !== -1) {
+      if (issuesEvent.issue.body.search(instructorMentionRegex) !== -1) {
         assignedInstructor = instructorUid
       }
     })
 
     // Set submission to awaiting approval
-    let projectCompletion = results.projectCompletion
+    let projectCompletion = projectMeta.projectCompletion
     projectCompletion.submission = projectCompletion.submission || {}
     projectCompletion.submission.isApproved = false
     projectCompletion.submission.instructorCommentedLast = false
     projectCompletion.submission.assignedInstructor = assignedInstructor
 
     yield updateProjectCompletion({
-      courseKey: results.courseKey,
-      projectCompletionKey: results.projectCompletionKey
+      courseKey: projectMeta.courseKey,
+      projectCompletionKey: projectMeta.projectCompletionKey
     }, projectCompletion)
   },
 
-  issue_comment: function* (issueComment) {
-    if (['created', 'edited'].indexOf(issueComment.action) === -1) return
+  issue_comment: function* (issueCommentEvent) {
+    if (['created', 'edited'].indexOf(issueCommentEvent.action) === -1) return
 
-    const results = yield findProjectCompletionFromRepoName(issueComment.repository.full_name)
+    const projectMeta = yield findProjectCompletionFromRepoName(issueCommentEvent.repository.full_name)
 
-    let projectCompletion = results.projectCompletion
+    let projectCompletion = projectMeta.projectCompletion
     projectCompletion.submission = projectCompletion.submission || {}
 
     // If submission is already approved, do nothing
     if (projectCompletion.submission.isApproved) return
 
     // Is this an instructor comment?
-    const instructors = yield readInstructorsByCourseKey(results.courseKey)
-    const commenterLogin = issueComment.comment.user.login
+    const instructors = yield readInstructorsByCourseKey(projectMeta.courseKey)
+    const commenterLogin = issueCommentEvent.comment.user.login
     let isInstructorComment = false
     Object.values(instructors).forEach(instructor => {
       if (instructor.github && commenterLogin === instructor.github.login) {
@@ -128,7 +129,7 @@ export default {
     })
 
     // Does the comment contain an approval (:shipit:)?
-    let isApproved = issueComment.comment.body.search(':shipit:') !== -1
+    let isApproved = issueCommentEvent.comment.body.search(':shipit:') !== -1
 
     // If the instructor approved it, make it so
     if (isInstructorComment && isApproved) {
@@ -136,13 +137,24 @@ export default {
     }
 
     // Accurately reflect who was the last commenter on the submission
-    if (issueComment.action === 'created') {
+    if (issueCommentEvent.action === 'created') {
       projectCompletion.submission.instructorCommentedLast = isInstructorComment
     }
 
     yield updateProjectCompletion({
-      courseKey: results.courseKey,
-      projectCompletionKey: results.projectCompletionKey
+      courseKey: projectMeta.courseKey,
+      projectCompletionKey: projectMeta.projectCompletionKey
     }, projectCompletion)
+  },
+
+  repository: function* (repositoryEvent) {
+    if (repositoryEvent.action !== 'deleted') return
+
+    const projectMeta = yield findProjectCompletionFromRepoName(repositoryEvent.repository.full_name)
+
+    yield deleteProjectCompletion({
+      courseKey: projectMeta.courseKey,
+      projectCompletionKey: projectMeta.projectCompletionKey
+    })
   }
 }

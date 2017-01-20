@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { config } from '../../env/config'
+import githubEventHandlers from './github-event-handlers'
 
 function getFromGitHub (path, token) {
   return axios({
@@ -32,14 +33,14 @@ export function createRepository (token, { name }) {
   return postToGitHub('/user/repos', token, { name: name })
 }
 
-export function createWebhooks (token, { owner, repo, events }) {
+export function createWebhooks (token, { owner, repo }) {
   let failureCount = 0
 
   const attemptToCreateWebhooks = (resolve, reject) => {
     return postToGitHub(`/repos/${owner}/${repo}/hooks`, token, {
       name: 'web',
       active: true,
-      events: events,
+      events: Object.keys(githubEventHandlers),
       config: {
         url: `${config.githubEventsBaseURL}${config.githubEventsPath}`,
         content_type: 'json'
