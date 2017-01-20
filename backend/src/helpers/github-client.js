@@ -33,10 +33,9 @@ export function createRepository (token, { name }) {
 }
 
 export function createWebhooks (token, { owner, repo, events }) {
-  return new Promise(resolve => {
-    setTimeout(resolve, 1000)
-  })
-  .then(() => {
+  let failureCount = 0
+
+  const attemptToCreateWebhooks = (resolve, reject) => {
     return postToGitHub(`/repos/${owner}/${repo}/hooks`, token, {
       name: 'web',
       active: true,
@@ -46,5 +45,20 @@ export function createWebhooks (token, { owner, repo, events }) {
         content_type: 'json'
       }
     })
+    .then(resolve)
+    .catch(error => {
+      failureCount++
+      if (failureCount > 20) {
+        reject(error)
+      } else {
+        setTimeout(() => {
+          return attemptToCreateWebhooks(resolve, reject)
+        }, 500)
+      }
+    })
+  }
+
+  return new Promise((resolve, reject) => {
+    return attemptToCreateWebhooks(resolve, reject)
   })
 }
