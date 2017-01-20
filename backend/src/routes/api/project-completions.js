@@ -1,7 +1,6 @@
 import joi from 'joi'
 import boom from 'boom'
 
-import githubEventHandlers from '../../helpers/github-event-handlers'
 import * as ghclient from '../../helpers/github-client'
 import { readUserById } from '../../db/user-repo'
 import { createProjectCompletion } from '../../db/project-completion-repo'
@@ -37,8 +36,7 @@ export default {
       yield ghclient.createRepository(user.github.token, { name: repoName })
       yield ghclient.createWebhooks(user.github.token, {
         owner: user.github.login,
-        repo: repoName,
-        events: Object.keys(githubEventHandlers)
+        repo: repoName
       })
       yield createProjectCompletion({ uid, courseKey, lessonKey, projectKey })
 

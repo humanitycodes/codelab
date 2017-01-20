@@ -83,3 +83,12 @@ export async function updateProjectCompletion ({ courseKey, projectCompletionKey
     .child(projectCompletionKey)
     .update(projectCompletion)
 }
+
+export async function deleteProjectCompletion ({ courseKey, projectCompletionKey }) {
+  return firebase.database()
+    .ref('courses/fieldGroups/large/student')
+    .child(courseKey)
+    .child('projectCompletions')
+    .child(projectCompletionKey)
+    .remove()
+}
