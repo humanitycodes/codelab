@@ -102,14 +102,14 @@ export default {
         reviewGroups.push({
           instructor: this.getUser(instructorKey),
           reviews: sortBy(instructorReviews[instructorKey], [
-            'course[\'.key\']',
-            'student.fullName',
-            'lesson[\'.key\']'
+            review => review.course['.key'],
+            review => review.student.fullName,
+            review => review.lesson['.key']
           ])
         })
       })
       // Order code review groups by instructor name
-      return sortBy(reviewGroups, ['instructor.fullName'])
+      return sortBy(reviewGroups, [group => group.instructor.fullName])
     }
   }
 }
