@@ -94,6 +94,13 @@ export default {
       }
     })
 
+    // An instructor may not be found if the student did not @mention one
+    if (!assignedInstructor) {
+      const availableInstructors = Object.keys(instructors)
+      const random = Math.floor(Math.random() * availableInstructors.length)
+      assignedInstructor = availableInstructors[random]
+    }
+
     // Set submission to awaiting approval
     let projectCompletion = projectMeta.projectCompletion
     projectCompletion.submission = projectCompletion.submission || {}
