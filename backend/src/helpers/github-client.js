@@ -33,6 +33,10 @@ export function createRepository (token, { name }) {
   return postToGitHub('/user/repos', token, { name: name })
 }
 
+export function getRepository (token, { owner, repo }) {
+  return getFromGitHub(`/repos/${owner}/${repo}`, token)
+}
+
 export function createWebhooks (token, { owner, repo }) {
   let failureCount = 0
 

@@ -33,11 +33,18 @@ export default {
 
       const { courseKey, lessonKey, projectKey } = request.payload
       const repoName = `${courseKey}-${lessonKey}-${projectKey.slice(-6)}`
-      yield ghclient.createRepository(user.github.token, { name: repoName })
-      yield ghclient.createWebhooks(user.github.token, {
+      const ownerAndRepo = {
         owner: user.github.login,
         repo: repoName
-      })
+      }
+
+      try {
+        yield ghclient.getRepository(user.github.token, ownerAndRepo)
+      } catch (notfound) {
+        yield ghclient.createRepository(user.github.token, { name: repoName })
+      }
+
+      yield ghclient.createWebhooks(user.github.token, ownerAndRepo)
       yield createProjectCompletion({ uid, courseKey, lessonKey, projectKey })
 
       reply({ repo: { name: repoName } })
