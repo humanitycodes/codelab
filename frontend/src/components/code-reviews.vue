@@ -83,6 +83,12 @@ export default {
         course.projectCompletions.forEach(project => {
           if (!project.submission || project.submission.instructorCommentedLast) return
 
+          // Manually assign the current user as an instructor
+          // if no one else is assigned
+          if (!project.submission.assignedInstructor) {
+            project.submission.assignedInstructor = this.currentUser.uid
+          }
+
           if (!instructorReviews[project.submission.assignedInstructor]) {
             instructorReviews[project.submission.assignedInstructor] = []
           }
