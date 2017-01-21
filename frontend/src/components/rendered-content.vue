@@ -31,7 +31,7 @@
 <script>
 import compact from 'lodash/compact'
 import chunk from 'lodash/chunk'
-import { highlight, highlightAuto } from '@helpers/syntax-highlight'
+import { highlight, highlightAuto, codeExtensions } from '@helpers/syntax-highlight'
 import toHtml from '@helpers/to-html'
 
 export default {
@@ -176,7 +176,7 @@ export default {
           const preEl = codeEl.parentNode
           if (preEl.classList.length) {
             const lang = preEl.classList[0]
-            if (lang) {
+            if (codeExtensions.indexOf(lang) !== -1) {
               codeEl.innerHTML = highlight(lang, codeEl.textContent).value
             }
             const preClassesCount = preEl.classList.length

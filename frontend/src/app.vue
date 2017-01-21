@@ -198,11 +198,9 @@ pre:not(.CodeMirror-line)
   &.output
     cursor: not-allowed
     user-select: none
-    > code
-      padding-top: $code-tag-font-size * 1.7 + $code-tag-padding-vertical * 2 + $design.layout.gutterWidth * .3 !important
-      &:after
-        content: 'OUTPUT'
-  + .result
+    > code:after
+      content: 'OUTPUT'
+  + .result, + .output
     margin-top: "calc(-1em - %s)" % $design.control.border.radius
     border-top: $design.control.border.radius solid $design.code.block.background
     border-top-left-radius: 0
@@ -210,6 +208,8 @@ pre:not(.CodeMirror-line)
     background-color: $design.branding.default.light
     position: relative
     z-index: 1
+  + .output
+    border-top: 1px solid transparentify($design.code.block.background, white, .6)
 
 .xml, .html
   .css, .javascript
