@@ -127,6 +127,8 @@ strong, b
 
 summary
   cursor: pointer
+  &:focus
+    outline: none
 
 // -----------
 // CODE BLOCKS

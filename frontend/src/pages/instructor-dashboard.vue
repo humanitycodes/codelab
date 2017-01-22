@@ -4,21 +4,20 @@
     <CodeReviews :courses="courses"/>
 
     <h1>Course Progress</h1>
-    <div v-for="course in sortByCourseKey(courses)">
-      <h2>{{ course['.key'] }}</h2>
-    </div>
+    <CourseProgress v-for="course in sortByCourseKey(courses)" :course="course"/>
   </Layout>
 </template>
 
 <script>
 import Layout from '@layouts/main'
 import CodeReviews from '@components/code-reviews'
+import CourseProgress from '@components/course-progress'
 import { courseGetters } from '@state/helpers'
 import sortBy from 'lodash/sortBy'
 
 export default {
   components: {
-    Layout, CodeReviews
+    Layout, CodeReviews, CourseProgress
   },
   methods: {
     sortByCourseKey (courses) {
