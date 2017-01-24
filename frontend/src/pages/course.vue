@@ -86,13 +86,18 @@
 
 <script>
 import formatDate from 'date-fns/format'
-import differenceInDays from 'date-fns/difference_in_days'
 import Layout from '@layouts/main'
 import CourseNotFound from '@components/course-not-found'
 import LessonsMap from '@components/lessons-map'
 import RenderedContent from '@components/rendered-content'
 import { userGetters, courseGetters, lessonGetters } from '@state/helpers'
 import achievedGradePoints from '@helpers/achieved-grade-points'
+import totalDaysInCourse from '@helpers/total-days-in-course'
+import daysSoFarInCourse from '@helpers/days-so-far-in-course'
+import percentThroughCourse from '@helpers/percent-through-course'
+import percentToMaxGrade from '@helpers/percent-to-max-grade'
+import minGradeExpectation from '@helpers/min-grade-expectation'
+import { maxGrade, gradeMilestones } from '@helpers/grades'
 
 const dateFormat = 'MMMM Do, YYYY'
 
@@ -118,8 +123,8 @@ export default {
   },
   data () {
     return {
-      maxGrade: 4,
-      gradeMilestones: [0.5, 1, 1.5, 2, 2.5, 3, 3.5]
+      maxGrade,
+      gradeMilestones
     }
   },
   computed: {
@@ -144,27 +149,19 @@ export default {
       return achievedGradePoints(this.currentUser, this.currentCourse)
     },
     totalDaysInCourse () {
-      const { startDate, endDate } = this.currentCourse
-      const totalDays = differenceInDays(endDate, startDate)
-      return Math.max(0, totalDays)
+      return totalDaysInCourse(this.currentCourse)
     },
     daysSoFarInCourse () {
-      const { startDate } = this.currentCourse
-      const daysSoFar = differenceInDays(Date.now(), startDate)
-      return Math.max(0, daysSoFar)
+      return daysSoFarInCourse(this.currentCourse)
     },
     minGradeExpectation () {
-      const daysOfPadding = Math.min(21, this.totalDaysInCourse * 0.1)
-      const realGradeExpectation = this.daysSoFarInCourse / (this.totalDaysInCourse - daysOfPadding) * this.maxGrade
-      return isNaN(realGradeExpectation)
-        ? 0
-        : Math.floor(realGradeExpectation * 100) / 100
+      return minGradeExpectation(this.currentCourse)
     },
     percentThroughCourse () {
-      return Math.min(100, this.daysSoFarInCourse / this.totalDaysInCourse * 100)
+      return percentThroughCourse(this.currentCourse)
     },
     percentToMaxGrade () {
-      return Math.min(100, this.achievedGradePoints / this.maxGrade * 100)
+      return percentToMaxGrade(this.currentUser, this.currentCourse)
     }
   },
   methods: {
