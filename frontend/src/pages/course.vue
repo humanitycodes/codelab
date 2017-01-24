@@ -92,7 +92,7 @@ import CourseNotFound from '@components/course-not-found'
 import LessonsMap from '@components/lessons-map'
 import RenderedContent from '@components/rendered-content'
 import { userGetters, courseGetters, lessonGetters } from '@state/helpers'
-import courseLessonGradePoints from '@helpers/course-lesson-grade-points'
+import achievedGradePoints from '@helpers/achieved-grade-points'
 
 const dateFormat = 'MMMM Do, YYYY'
 
@@ -141,21 +141,7 @@ export default {
       return this.currentCourse.studentKeys.some(key => key === this.currentUser.uid)
     },
     achievedGradePoints () {
-      const realGradePoints = this.currentCourse.projectCompletions.filter(completion => {
-        return (
-          completion.submission &&
-          completion.submission.isApproved &&
-          completion.students.some(student => {
-            return student['.key'] === this.currentUser.uid
-          })
-        )
-      }).map(completion => {
-        const lesson = this.lessons.find(lesson => lesson['.key'] === completion.lessonKey)
-        return courseLessonGradePoints(this.currentCourse, lesson)
-      }).reduce((a, b) => a + b, 0)
-      return isNaN(realGradePoints)
-        ? 0
-        : Math.floor(realGradePoints * 100) / 100
+      return achievedGradePoints(this.currentUser, this.currentCourse)
     },
     totalDaysInCourse () {
       const { startDate, endDate } = this.currentCourse
