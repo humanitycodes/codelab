@@ -19,9 +19,12 @@ export default [
       isPublic: true
     },
     redirect: to => {
-      return store.state.users.currentUser
-        ? '/courses'
-        : '/msu-sign-in'
+      if (store.state.users.currentUser) {
+        return canReadAllCourses()
+          ? '/instructor-dashboard'
+          : '/courses'
+      }
+      return '/msu-sign-in'
     }
   },
   {
