@@ -3,16 +3,32 @@
     <summary>{{ course['.key'] }}</summary>
     <table>
       <tr>
-        <th>Expected Grade Points</th>
-        <th>{{ expectedGradePoints }}</th>
+        <th></th>
+        <th>
+          Grade Points<br/>
+          Expected: {{ expectedGradePoints }}
+        </th>
+        <th>
+          # Lessons<br/>
+          Behind/Ahead
+        </th>
       </tr>
       <tr v-for="student in studentsInCourse">
-        <td>{{ student.fullName }}</td>
-        <td>{{ achievedGradePoints(student) }}</td>
-      </tr>
-      <tr>
-        <th>Expected Grade Points</th>
-        <th>{{ expectedGradePoints }}</th>
+        <td :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }">
+          {{ student.fullName }}
+        </td>
+        <td
+          class="numeric-cell"
+          :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }"
+        >
+          {{ achievedGradePoints(student) }}
+        </td>
+        <td
+          class="numeric-cell"
+          :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }"
+        >
+          {{ behindByLessonCount(student) }}
+        </td>
       </tr>
     </table>
   </details>
@@ -22,6 +38,7 @@
 import { userGetters } from '@state/helpers'
 import achievedGradePoints from '@helpers/achieved-grade-points'
 import minGradeExpectation from '@helpers/min-grade-expectation'
+import averageLessonGradePoints from '@helpers/average-lesson-grade-points'
 
 export default {
   props: {
@@ -30,10 +47,15 @@ export default {
       required: true
     }
   },
+  data () {
+    return {
+      lessonWarningThreshold: -3
+    }
+  },
   computed: {
     ...userGetters,
     expectedGradePoints () {
-      return minGradeExpectation(this.course)
+      return Number(minGradeExpectation(this.course)).toFixed(2)
     },
     isCourseInProgress () {
       const now = Date.now()
@@ -58,7 +80,25 @@ export default {
     achievedGradePoints (student) {
       const gpa = achievedGradePoints(student, this.course)
       return Number(gpa).toFixed(2)
+    },
+    behindByLessonCount (student) {
+      const achievedGradePoints = this.achievedGradePoints(student)
+      return Math.round((achievedGradePoints - this.expectedGradePoints) / averageLessonGradePoints(this.course))
     }
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+@import '../meta'
+
+table
+  border-collapse: separate
+  empty-cells: hide
+
+.numeric-cell
+  text-align: right
+
+.warning-grade
+  color: $design.branding.danger.light
+</style>
