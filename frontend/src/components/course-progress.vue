@@ -21,6 +21,7 @@
 <script>
 import { userGetters } from '@state/helpers'
 import achievedGradePoints from '@helpers/achieved-grade-points'
+import minGradeExpectation from '@helpers/min-grade-expectation'
 
 export default {
   props: {
@@ -32,7 +33,7 @@ export default {
   computed: {
     ...userGetters,
     expectedGradePoints () {
-      return 0
+      return minGradeExpectation(this.course)
     },
     isCourseInProgress () {
       const now = Date.now()
