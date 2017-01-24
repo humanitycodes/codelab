@@ -1,7 +1,8 @@
-const maxGradePoints = 4
+import { maxGrade } from '@helpers/grades'
+
 const normalizedSemesterWeeks = 15
 
 export default (course, lesson) => {
-  const gradePointsPerHour = maxGradePoints / (normalizedSemesterWeeks * course.credits)
+  const gradePointsPerHour = maxGrade / (normalizedSemesterWeeks * course.credits)
   return gradePointsPerHour * lesson.estimatedHours
 }
