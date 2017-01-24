@@ -1,5 +1,6 @@
 import store from '@state/store'
 import courseLessonGradePoints from '@helpers/course-lesson-grade-points'
+import normalizeGradePoints from '@helpers/normalize-grade-points'
 
 export default (user, course) => {
   const realGradePoints = course.projectCompletions.filter(completion => {
@@ -7,7 +8,7 @@ export default (user, course) => {
     const userKey = user.uid || user['.key']
     return (
       completion.submission &&
-       completion.submission.isApproved &&
+      completion.submission.isApproved &&
       completion.students.some(student => {
         return student['.key'] === userKey
       })
@@ -19,7 +20,5 @@ export default (user, course) => {
     return courseLessonGradePoints(course, lesson)
   }).reduce((a, b) => a + b, 0)
 
-  return isNaN(realGradePoints)
-    ? 0
-    : Math.floor(realGradePoints * 100) / 100
+  return normalizeGradePoints(realGradePoints)
 }
