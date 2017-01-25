@@ -1,5 +1,5 @@
 export default {
-  msuAuthClientId: '',
+  msuAuthClientId: 'OAuth-MI-MSU-Lansing-Codes-Staging',
   githubAuthClientId: '473069becdcae15254ea',
   githubAuthRedirectURL: 'https://msu-codes-staging.herokuapp.com/auth/github/callback',
 
