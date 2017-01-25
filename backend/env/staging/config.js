@@ -2,8 +2,8 @@ module.exports = {
   serverBaseURL: 'https://msu-codes-staging.herokuapp.com',
 
   msuAuthBaseURL: 'https://oauth.ais.msu.edu',
-  msuAuthClientID: '',
-  msuAuthClientSecret: '',
+  msuAuthClientID: 'OAuth-MI-MSU-Lansing-Codes-Staging',
+  msuAuthClientSecret: 'NeS2eD3cU5YEVG39DWBjAXzjhMqRMYGXaXyC9W4y',
 
   githubAuthBaseURL: 'https://api.github.com',
   githubAuthClientID: '473069becdcae15254ea',
