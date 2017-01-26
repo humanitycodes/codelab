@@ -6,11 +6,13 @@ import javascript from 'highlight.js/lib/languages/javascript'
 import scss from 'highlight.js/lib/languages/scss'
 
 export const codeLangs = {
-  sh: bash,
-  html: xml,
-  js: javascript,
   css: scss,
-  scss: scss
+  scss: scss,
+  js: javascript,
+  json: javascript,
+  javascript: javascript,
+  html: xml,
+  sh: bash
 }
 
 export const codeExtensions = Object.keys(codeLangs)
