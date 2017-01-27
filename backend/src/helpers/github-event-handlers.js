@@ -4,8 +4,7 @@ import { readUserByGitHubLogin } from '../db/user-repo'
 import { readInstructorsByCourseKey } from '../db/instructor-repo'
 import {
   readProjectCompletionByPartialKey,
-  updateProjectCompletion,
-  deleteProjectCompletion
+  updateProjectCompletion
 } from '../db/project-completion-repo'
 
 // Capture Group 1. GitHub Username: ([^/]+)
@@ -152,16 +151,5 @@ export default {
       courseKey: projectMeta.courseKey,
       projectCompletionKey: projectMeta.projectCompletionKey
     }, projectCompletion)
-  },
-
-  repository: function* (repositoryEvent) {
-    if (repositoryEvent.action !== 'deleted') return
-
-    const projectMeta = yield findProjectCompletionFromRepoName(repositoryEvent.repository.full_name)
-
-    yield deleteProjectCompletion({
-      courseKey: projectMeta.courseKey,
-      projectCompletionKey: projectMeta.projectCompletionKey
-    })
   }
 }
