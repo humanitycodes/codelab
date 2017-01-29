@@ -5,6 +5,43 @@
       :hosted-url="projectHostedUrl"
     />
     <p>An instructor will review your project as soon as possible. You may still continue to improve it while you wait, or move on to another lesson. However, it's not recommended to start a new lesson for which this one is a prerequisite until it's approved.</p>
+
+    <h4>If you make changes</h4>
+
+    <p>Make sure that your latest work is on GitHub:</p>
+    <CodeBlock lang="sh">
+      # 1) Navigate to your project directory (unless you're already there)
+      cd PATH/TO/{{ projectName }}
+
+      # 2) Add all the files you worked on to the list of changes you want to commit
+      git add -A .
+
+      # 3) Commit your changes with a message
+      git commit -m "a short message describing your changes"
+
+      # 4) Upload all commits to your GitHub repository
+      git push origin master
+    </CodeBlock>
+
+    <p>Update the live result with your changes:</p>
+    <CodeBlock v-if="project.hosting === 'Surge'" lang="sh">
+      # 1) Navigate to your project directory (unless you're already there)
+      cd PATH/TO/{{ projectName }}
+
+      # 2) Push the files in your project directory to Surge
+      surge --project . --domain {{ projectHostedUrl }}
+    </CodeBlock>
+    <CodeBlock v-else-if="project.hosting === 'Heroku'" lang="sh">
+      # 1) Navigate to your project directory (unless you're already there)
+      cd PATH/TO/{{ projectName }}
+
+      # 3) Push your committed code to Heroku
+      git push heroku master
+    </CodeBlock>
+    <CodeBlock v-else lang="sh">
+      # Push your committed code to GitHub Pages
+      git push origin master:gh-pages
+    </CodeBlock>
   </div>
 </template>
 
@@ -16,6 +53,10 @@ export default {
     ProjectCompletionLinks
   },
   props: {
+    project: {
+      type: Object,
+      required: true
+    },
     projectRepoUrl: {
       type: String,
       required: true
