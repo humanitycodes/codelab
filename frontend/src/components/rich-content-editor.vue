@@ -26,6 +26,7 @@
 
 <script>
 import throttle from 'lodash/throttle'
+import debounce from 'lodash/debounce'
 import 'codemirror/lib/codemirror.css'
 import '@assets/css/codemirror-theme-one-dark.css'
 import 'codemirror/mode/xml/xml'
@@ -84,7 +85,7 @@ export default {
       this.editor.setValue(this.value)
       this.editor.on('change', throttle(editor => {
         this.$emit('input', editor.getValue())
-      }, 3000))
+      }, 450))
       this.editor.on('focus', this.expandEditor)
     })
   },
@@ -104,9 +105,9 @@ export default {
     }
   },
   methods: {
-    updateContentToPreview: throttle(function (content) {
+    updateContentToPreview: debounce(function (content) {
       this.contentToPreview = this.value
-    }, 3000),
+    }, 1000),
     expandEditor () {
       if (this.isExpanded) return
       this.isExpanded = true
