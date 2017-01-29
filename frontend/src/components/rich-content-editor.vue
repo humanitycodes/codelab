@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import debounce from 'lodash/debounce'
+import throttle from 'lodash/throttle'
 import 'codemirror/lib/codemirror.css'
 import '@assets/css/codemirror-theme-one-dark.css'
 import 'codemirror/mode/xml/xml'
@@ -82,9 +82,9 @@ export default {
         }
       })
       this.editor.setValue(this.value)
-      this.editor.on('change', editor => {
+      this.editor.on('change', throttle(editor => {
         this.$emit('input', editor.getValue())
-      })
+      }, 3000))
       this.editor.on('focus', this.expandEditor)
     })
   },
@@ -104,9 +104,9 @@ export default {
     }
   },
   methods: {
-    updateContentToPreview: debounce(function (content) {
+    updateContentToPreview: throttle(function (content) {
       this.contentToPreview = this.value
-    }, 300),
+    }, 3000),
     expandEditor () {
       if (this.isExpanded) return
       this.isExpanded = true
@@ -179,5 +179,4 @@ export default {
         max-width: 80%
         margin: 0 auto
         box-shadow: 0 0 40px rgba(0,0,0,.4), 0 0 60px rgba(0,0,0,.4), 0 0 80px rgba(0,0,0,.4), 0 0 120px rgba(0,0,0,.4)
-
 </style>
