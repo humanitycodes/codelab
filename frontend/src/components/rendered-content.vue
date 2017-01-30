@@ -24,8 +24,12 @@
       />
     </div>
   </div>
-  <div v-else>
+  <div v-else class="rendered-content-container rendered-content-no-content">
+    <p v-if="noContentMessage" class="note">
+      {{ noContentMessage }}
+    </p>
     <img
+      v-else
       src="../assets/images/loading.gif"
       alt="Loading"
       class="rendered-content-loading-image"
@@ -119,7 +123,8 @@ export default {
       default: 1
     },
     content: String,
-    paginationPlacement: String
+    paginationPlacement: String,
+    noContentMessage: String
   },
   data () {
     return {
@@ -272,4 +277,7 @@ export default {
   max-width: 50px
   display: block
   margin: 0 auto
+
+.rendered-content-no-content > .note
+  margin-top: 0
 </style>
