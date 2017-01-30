@@ -113,6 +113,9 @@ export default {
       this.isExpanded = true
       document.documentElement.style.overflowY = 'hidden'
       window.addEventListener('keydown', this.collapseEditorIfEscapeKey)
+      this.$nextTick(() => {
+        this.editor.refresh()
+      })
     },
     collapseEditor () {
       if (!this.isExpanded) return
