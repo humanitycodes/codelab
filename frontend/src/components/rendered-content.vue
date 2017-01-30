@@ -7,10 +7,15 @@
         :pages="pages"
       />
       <div
-        v-html="pages[validatedCurrentPage - 1].content"
         ref="renderedContent"
         class="rendered-content"
-      />
+      >
+        <span
+          v-for="content in pages[validatedCurrentPage - 1].contentPartitions"
+          v-html="content"
+          :key="content"
+        />
+      </div>
       <PageNavigation
         v-if="!paginationPlacement || paginationPlacement === 'bottom'"
         v-model="currentPage"
@@ -130,10 +135,10 @@ export default {
         const [ title, content ] = page
         return {
           title: this.decodeHtml(title),
-          content: `
-            <h2>${title}</h2>
-            ${content}
-          `
+          contentPartitions: `<h2>${title}</h2>${content}`
+            .replace(/<iframe\s/ig, '__IFRAME_SPLIT__$&')
+            .replace(/<\/iframe>/ig, '$&__IFRAME_SPLIT__')
+            .split('__IFRAME_SPLIT__')
         }
       })
     },
@@ -169,7 +174,7 @@ export default {
     highlightCode () {
       this.$nextTick(() => {
         if (!this.$refs.renderedContent) return
-        const codeElements = this.$refs.renderedContent.querySelectorAll('pre > code')
+        const codeElements = this.$refs.renderedContent.querySelectorAll('pre > code:not(.hljs)')
         const codeElementsCount = codeElements.length
         for (let i = 0; i < codeElementsCount; i++) {
           const codeEl = codeElements[i]
