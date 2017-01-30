@@ -11,6 +11,7 @@
     <RenderedContent
       v-if="isExpanded"
       pagination-placement="top"
+      no-content-message="Start writing some content and you'll see a preview here!"
       :content="contentToPreview"
     />
     <div
