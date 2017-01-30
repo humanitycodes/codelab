@@ -15,10 +15,15 @@ dependencies:
         curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
       fi
     # Ensure correct permissions for yarn files
+    - sudo mkdir -p ~/.cache/yarn
     - sudo chmod -R 777 ~/.cache/yarn
+    - sudo mkdir -p frontend/node_modules
     - sudo chmod -R 777 frontend/node_modules
+    - sudo mkdir -p backend/node_modules
     - sudo chmod -R 777 backend/node_modules
+    - sudo mkdir -p firebase/node_modules
     - sudo chmod -R 777 firebase/node_modules
+    - sudo mkdir -p test/node_modules
     - sudo chmod -R 777 test/node_modules
   cache_directories:
     # These directories also contain dependencies
