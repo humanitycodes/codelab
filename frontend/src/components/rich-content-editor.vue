@@ -37,12 +37,18 @@ import 'codemirror/mode/css/css'
 import 'codemirror/mode/markdown/markdown'
 import 'codemirror/mode/gfm/gfm'
 import 'codemirror/keymap/sublime'
+import 'codemirror/addon/selection/active-line'
 import 'codemirror/addon/search/search'
 import 'codemirror/addon/search/searchcursor'
 import 'codemirror/addon/dialog/dialog.js'
 import 'codemirror/addon/dialog/dialog.css'
 import CodeMirror from 'codemirror/lib/codemirror.js'
+import CodeMirrorSpellChecker from 'codemirror-spell-checker'
 import RenderedContent from './rendered-content'
+
+CodeMirrorSpellChecker({
+  codeMirrorInstance: CodeMirror
+})
 
 export default {
   components: {
@@ -67,11 +73,13 @@ export default {
   mounted () {
     this.$nextTick(() => {
       this.editor = CodeMirror.fromTextArea(this.$refs.textarea, {
-        mode: 'gfm',
+        mode: 'spell-checker',
+        backdrop: 'gfm',
         theme: 'one-dark',
         lineNumbers: false,
         tabSize: 2,
         lineWrapping: true,
+        styleActiveLine: true,
         keyMap: 'sublime',
         extraKeys: {
           Tab: editor => {
@@ -157,6 +165,13 @@ export default {
       color: black
     .CodeMirror-selected
       background-color: darkslategray
+    .cm-spell-error:not(.cm-comment)
+      border-bottom: 1px solid #55296b
+      transition: border-bottom 1s ease-in-out
+    .CodeMirror-activeline .cm-spell-error:not(.cm-comment)
+      border-bottom: 1px dotted #b3436c
+    .CodeMirror-linebackground
+      background-color: transparent
 
   &.expanded
     .CodeMirror, .rendered-content-container
