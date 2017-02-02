@@ -5,7 +5,7 @@
         <h2>{{ reviewGroup.instructor.fullName }}</h2>
         <ul>
           <li v-for="codeReview in reviewGroup.reviews">
-            {{ codeReview.course['.key'] }}
+            {{ codeReview.studentPoints }}
             -
             {{ codeReview.student.fullName }}
             (<router-link :to="getCourseLessonUrl(codeReview)">Lesson</router-link>)
@@ -88,11 +88,13 @@ export default {
             instructorReviews[project.submission.assignedInstructor] = []
           }
 
+          const student = this.getUser(project.students[0]['.key'])
           instructorReviews[project.submission.assignedInstructor].push({
             course,
             project,
+            student,
             lesson: this.getLesson(project.lessonKey),
-            student: this.getUser(project.students[0]['.key'])
+            studentPoints: achievedGradePoints(student, course)
           })
         })
       })
@@ -103,7 +105,7 @@ export default {
         reviewGroups.push({
           instructor: this.getUser(instructorKey),
           reviews: sortBy(instructorReviews[instructorKey], [
-            review => achievedGradePoints(review.student, review.course)
+            review => review.studentPoints
           ])
         })
       })
