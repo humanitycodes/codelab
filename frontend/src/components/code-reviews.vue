@@ -34,6 +34,19 @@
                   👀
                 </a>
               </td>
+              <td
+                v-if="reviewGroup.instructor['.key'] === currentUser.uid"
+                class="review-reassignment-control"
+              >
+                <select v-model="codeReview.project.submission.assignedInstructor">
+                  <option
+                    v-for="instructorKey in codeReview.course.instructorKeys"
+                    :value="instructorKey"
+                  >
+                    {{ getInstructorInitialsFromKey(instructorKey) }}
+                  </option>
+                </select>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -92,6 +105,10 @@ export default {
     humanizeCourseKey (key) {
       const keyParts = key.split('-')
       return keyParts[0] + keyParts[1] + ' (' + keyParts[3] + ')'
+    },
+    getInstructorInitialsFromKey (intructorKey) {
+      const instructor = this.getUser(intructorKey)
+      return instructor.fullName.replace(/[^A-Z]/g, '')
     }
   },
   created () {
@@ -156,4 +173,11 @@ td:hover .review-info-sensitive-data
 
 .review-info-key
   white-space: nowrap
+
+.review-reassignment-control
+  background-color: transparent
+  border: none
+  padding-top: 0
+  padding-right: 0
+  padding-bottom: 0
 </style>
