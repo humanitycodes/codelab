@@ -3,15 +3,40 @@
     <div class="flex-col">
       <div v-for="reviewGroup in codeReviewsAwaitingFeedback">
         <h2>{{ reviewGroup.instructor.fullName }}</h2>
-        <ul>
-          <li v-for="codeReview in reviewGroup.reviews">
-            {{ codeReview.studentPoints }}
-            -
-            {{ codeReview.student.fullName }}
-            (<router-link :to="getCourseLessonUrl(codeReview)">Lesson</router-link>)
-            (<a :href="getIssuesUrl(codeReview)" target="_blank">GitHub Issue</a>)
-          </li>
-        </ul>
+        <table>
+          <thead>
+            <th>GP</th>
+            <th>Student</th>
+            <th>Course</th>
+            <th>Lesson</th>
+            <th>Issue</th>
+          </thead>
+          <tbody>
+            <tr v-for="codeReview in reviewGroup.reviews">
+              <td>
+                <span class="review-info-sensitive-data">
+                  {{ codeReview.studentPoints }}
+                </span>
+              </td>
+              <td>{{ codeReview.student.fullName }}</td>
+              <td class="review-info-key">
+                {{ humanizeCourseKey(codeReview.course['.key']) }}
+              </td>
+              <td class="review-info-key">
+                <router-link :to="getCourseLessonUrl(codeReview)">
+                  {{
+                    codeReview.lesson['.key'].slice(0,20)
+                  }}<span v-if="codeReview.lesson['.key'].length > 20">...</span>
+                </router-link>
+              </td>
+              <td>
+                <a :href="getIssuesUrl(codeReview)" target="_blank">
+                  👀
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div v-if="!Object.keys(codeReviewsAwaitingFeedback).length">
         There are no code reviews awaiting feedback.
@@ -63,6 +88,10 @@ export default {
         '/lessons/',
         codeReview.lesson['.key']
       ].join('')
+    },
+    humanizeCourseKey (key) {
+      const keyParts = key.split('-')
+      return keyParts[0] + keyParts[1] + ' (' + keyParts[3] + ')'
     }
   },
   created () {
@@ -115,3 +144,16 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+@import '../meta'
+
+td .review-info-sensitive-data
+  filter: blur(7px)
+  transition: filter .3s
+td:hover .review-info-sensitive-data
+  filter: none
+
+.review-info-key
+  white-space: nowrap
+</style>
