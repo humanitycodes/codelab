@@ -15,6 +15,11 @@ if (process.env.NODE_ENV === 'production') {
     credential: fullCert('../env/production/firebase-service-account.json'),
     databaseURL: 'https://msulansingcodes.firebaseio.com'
   }
+} else if (process.env.NODE_ENV === 'staging') {
+  firebaseAppConfig = {
+    credential: fullCert('../env/staging/firebase-service-account.json'),
+    databaseURL: 'https://msulansingcodesstaging.firebaseio.com'
+  }
 } else {
   try {
     // Try to use user-specific dev config
