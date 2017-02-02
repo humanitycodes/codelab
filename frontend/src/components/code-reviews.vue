@@ -24,6 +24,7 @@
 import {
   coursePermissionMethods, userGetters, lessonGetters
 } from '@state/helpers'
+import achievedGradePoints from '@helpers/achieved-grade-points'
 import store from '@state/store'
 import sortBy from 'lodash/sortBy'
 
@@ -102,9 +103,7 @@ export default {
         reviewGroups.push({
           instructor: this.getUser(instructorKey),
           reviews: sortBy(instructorReviews[instructorKey], [
-            review => review.course['.key'],
-            review => review.student.fullName,
-            review => review.lesson['.key']
+            review => achievedGradePoints(review.student, review.course)
           ])
         })
       })
