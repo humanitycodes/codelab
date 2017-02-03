@@ -45,8 +45,12 @@ test:
     - yarn test-all
 
 deployment:
-  # Deploy to master branch to Heroku
+  # Deploy master branch to staging and production branch to prod
   staging:
     branch: master
     heroku:
       appname: msu-codes-staging
+  production:
+    branch: production
+    heroku:
+      appname: msu-lansing-codes
