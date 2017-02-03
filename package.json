@@ -41,6 +41,7 @@
     "predeploy": "npm-run-all lint-all test-all",
     "firebase:deploy": "cd firebase && yarn run deploy",
     "deploy": "git push heroku `git rev-parse --abbrev-ref HEAD`:master",
+    "deploy:prod": "git fetch origin && git push --force origin origin/master:production",
     "ssl:renew": "sudo certbot certonly --manual -d msu.lansing.codes && sudo heroku certs:update /etc/letsencrypt/live/msu.lansing.codes/fullchain.pem /etc/letsencrypt/live/msu.lansing.codes/privkey.pem --confirm msu-lansing-codes"
   },
   "dependencies": {
