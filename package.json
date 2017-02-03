@@ -18,7 +18,7 @@
     "install:frontend": "cd frontend && NODE_ENV=development yarn --pure-lockfile",
     "install:firebase": "cd firebase && NODE_ENV=development yarn --pure-lockfile",
     "install:test": "cd test && NODE_ENV=development yarn --pure-lockfile",
-    "postinstall": "npm-run-all install:* build-all firebase:deploy",
+    "postinstall": "npm-run-all install:* build-all deploy:firebase",
     "lint:backend": "cd backend && yarn run lint",
     "lint:frontend": "cd frontend && yarn run lint",
     "test:backend": "cd backend && yarn run test",
@@ -39,8 +39,8 @@
     "serve-all": "npm-run-all --parallel serve:*",
     "start": "npm-run-all serve-all",
     "predeploy": "npm-run-all lint-all test-all",
-    "firebase:deploy": "cd firebase && yarn run deploy",
     "deploy": "git push heroku `git rev-parse --abbrev-ref HEAD`:master",
+    "deploy:firebase": "cd firebase && yarn run deploy",
     "deploy:prod": "git fetch origin && git push --force origin origin/master:production",
     "ssl:renew": "sudo certbot certonly --manual -d msu.lansing.codes && sudo heroku certs:update /etc/letsencrypt/live/msu.lansing.codes/fullchain.pem /etc/letsencrypt/live/msu.lansing.codes/privkey.pem --confirm msu-lansing-codes"
   },
