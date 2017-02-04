@@ -15,83 +15,99 @@ const defineField = ({
   }
   fieldRef = fieldRef.child(fieldName)
 
-  if (typeof fieldDef === 'object' && fieldDef.type === Array) {
-    resourceItem[fieldName] = []
-    const subFieldStateDefs = fieldValue || {}
-    const subFieldDefs = fieldDef.fields
-    const subFieldStateKeys = sortBy(Object.keys(subFieldStateDefs), key => {
-      return subFieldStateDefs[key].position
-    })
-    for (const subFieldKey of subFieldStateKeys) {
-      const subResourceItem = {}
-      defineKey({
-        resourceItem: subResourceItem,
-        resourceKey: subFieldKey
+  if (typeof fieldDef === 'object') {
+    if (fieldDef.type === Array) {
+      resourceItem[fieldName] = []
+      const subFieldStateDefs = fieldValue || {}
+      const subFieldDefs = fieldDef.fields
+      const subFieldStateKeys = sortBy(Object.keys(subFieldStateDefs), key => {
+        return subFieldStateDefs[key].position
       })
-      Object.defineProperty(subResourceItem, '.position', {
-        value: subFieldStateDefs[subFieldKey].position
-      })
-      const subFieldFields = subFieldStateDefs[subFieldKey]
-      for (const subFieldFieldName in subFieldDefs) {
-        const subFieldFieldValue = subFieldFields[subFieldFieldName]
-        defineField({
+      for (const subFieldKey of subFieldStateKeys) {
+        const subResourceItem = {}
+        defineKey({
           resourceItem: subResourceItem,
-          resourceName, resourceKey,
-          fieldPathArray: fieldPathArray.concat([
-            fieldName, subFieldKey
-          ]),
-          fieldName: subFieldFieldName,
-          fieldDef: subFieldDefs[subFieldFieldName],
-          fieldValue: subFieldFieldValue,
+          resourceKey: subFieldKey
+        })
+        Object.defineProperty(subResourceItem, '.position', {
+          value: subFieldStateDefs[subFieldKey].position
+        })
+        const subFieldFields = subFieldStateDefs[subFieldKey]
+        for (const subFieldFieldName in subFieldDefs) {
+          const subFieldFieldValue = subFieldFields[subFieldFieldName]
+          defineField({
+            resourceItem: subResourceItem,
+            resourceName, resourceKey,
+            fieldPathArray: fieldPathArray.concat([
+              fieldName, subFieldKey
+            ]),
+            fieldName: subFieldFieldName,
+            fieldDef: subFieldDefs[subFieldFieldName],
+            fieldValue: subFieldFieldValue,
+            uid,
+            db
+          })
+        }
+        resourceItem[fieldName].push(subResourceItem)
+      }
+
+      resourceItem[fieldName].updateOrder = function () {
+        let currentPosition = 1
+        for (const item of resourceItem[fieldName]) {
+          fieldRef
+            .child(encodeKey(item['.key']))
+            .child('position')
+            .set(currentPosition++)
+        }
+      }
+      resourceItem[fieldName].add = function (fields = {}, key) {
+        const subFieldRecordCount = subFieldStateKeys.length
+        const data = {
+          ...fields,
+          position: subFieldRecordCount + 1
+        }
+        if (key) {
+          fieldRef.child(encodeKey(key)).set(data)
+        } else {
+          fieldRef.push(data)
+        }
+        updateMeta()
+      }
+      resourceItem[fieldName].remove = function (key) {
+        const encodedKey = encodeKey(key)
+        fieldRef.child(encodedKey).remove()
+        let currentPosition = 1
+        for (const otherKey of subFieldStateKeys) {
+          if (otherKey !== encodedKey) {
+            fieldRef.child(otherKey).child('position').set(currentPosition++)
+          }
+        }
+        updateMeta()
+      }
+
+      return
+    } else if (fieldDef.fields && fieldValue) {
+      resourceItem[fieldName] = {}
+
+      for (const subFieldName in fieldDef.fields) {
+        const subFieldValue = fieldValue[subFieldName]
+        defineField({
+          resourceItem: resourceItem[fieldName],
+          resourceName,
+          resourceKey,
+          fieldPathArray: fieldPathArray.concat([fieldName]),
+          fieldName: subFieldName,
+          fieldDef: fieldDef.fields[subFieldName],
+          fieldValue: subFieldValue,
           uid,
           db
         })
       }
-      resourceItem[fieldName].push(subResourceItem)
-    }
 
-    resourceItem[fieldName].updateOrder = function () {
-      let currentPosition = 1
-      for (const item of resourceItem[fieldName]) {
-        fieldRef
-          .child(encodeKey(item['.key']))
-          .child('position')
-          .set(currentPosition++)
-      }
+      return
     }
-    resourceItem[fieldName].add = function (fields = {}, key) {
-      const subFieldRecordCount = subFieldStateKeys.length
-      const data = {
-        ...fields,
-        position: subFieldRecordCount + 1
-      }
-      if (key) {
-        fieldRef.child(encodeKey(key)).set(data)
-      } else {
-        fieldRef.push(data)
-      }
-      updateMeta()
-    }
-    resourceItem[fieldName].remove = function (key) {
-      const encodedKey = encodeKey(key)
-      fieldRef.child(encodedKey).remove()
-      let currentPosition = 1
-      for (const otherKey of subFieldStateKeys) {
-        if (otherKey !== encodedKey) {
-          fieldRef.child(otherKey).child('position').set(currentPosition++)
-        }
-      }
-      updateMeta()
-    }
-
-    // - define order update
-    // - define add
-    // - define remove
-    // - for each item
-    //   - define key
-    //   - define fields
-    return
   }
+
   // Define the field as on the item/record, with a setter
   // that actually updates the field in Firebase
   Object.defineProperty(resourceItem, fieldName, {
