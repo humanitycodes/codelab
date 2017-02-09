@@ -39,8 +39,6 @@ export default {
             type: Array,
             fields: {
               committed: Boolean,
-              firstSubmittedAt: Date,
-              lastCommentedAt: Date,
               students: { type: Array },
               lessonKey: {
                 validate: keyInResource('newData.val()', 'lessons')
@@ -50,6 +48,8 @@ export default {
               },
               submission: {
                 fields: {
+                  firstSubmittedAt: Date,
+                  lastCommentedAt: Date,
                   hostedUrl: String,
                   instructorCommentedLast: Boolean,
                   isApproved: Boolean,
