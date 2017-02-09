@@ -106,6 +106,9 @@ export default {
     projectCompletion.submission.isApproved = false
     projectCompletion.submission.instructorCommentedLast = false
     projectCompletion.submission.assignedInstructor = assignedInstructor
+    if (!projectCompletion.submission.firstSubmittedAt) {
+      projectCompletion.submission.firstSubmittedAt = new Date(issuesEvent.issue.created_at).getTime()
+    }
 
     yield updateProjectCompletion({
       courseKey: projectMeta.courseKey,
@@ -145,6 +148,15 @@ export default {
     // Accurately reflect who was the last commenter on the submission
     if (issueCommentEvent.action === 'created') {
       projectCompletion.submission.instructorCommentedLast = isInstructorComment
+    }
+
+    // Set the most recent comment timestamp
+    const issueCommentedAt = issueCommentEvent.comment.updated_at
+      ? new Date(issueCommentEvent.comment.updated_at)
+      : new Date(issueCommentEvent.comment.created_at)
+    if (!projectCompletion.submission.lastCommentedAt ||
+        projectCompletion.submission.lastCommentedAt < issueCommentedAt.getTime()) {
+      projectCompletion.submission.lastCommentedAt = issueCommentedAt.getTime()
     }
 
     yield updateProjectCompletion({
