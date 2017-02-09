@@ -39,6 +39,8 @@ export default {
             type: Array,
             fields: {
               committed: Boolean,
+              firstSubmittedAt: Date,
+              lastCommentedAt: Date,
               students: { type: Array },
               lessonKey: {
                 validate: keyInResource('newData.val()', 'lessons')
