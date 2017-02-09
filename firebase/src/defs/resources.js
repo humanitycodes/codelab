@@ -1,4 +1,4 @@
-import { all, any, isGreaterThan, hasRole, childIsFalsy, isOneOfTheseStrings, keyInResource, matches } from '../generators/conditions'
+import { any, isGreaterThan, hasRole, childIsFalsy, isOneOfTheseStrings, keyInResource } from '../generators/conditions'
 
 export default {
   courses: {
