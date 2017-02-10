@@ -5,12 +5,16 @@
       <tr>
         <th></th>
         <th>
-          Grade Points<br/>
+          Grade Points<br>
           Expected: {{ expectedGradePoints }}
         </th>
         <th>
-          # Lessons<br/>
+          # Lessons<br>
           Behind/Ahead
+        </th>
+        <th>
+          # Lessons<br>
+          In Progress
         </th>
       </tr>
       <tr v-for="student in studentsInCourse">
@@ -28,6 +32,9 @@
           :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }"
         >
           {{ behindByLessonCount(student) }}
+        </td>
+        <td class="numeric-cell">
+          {{ inProgressLessonCount(student) }}
         </td>
       </tr>
     </table>
@@ -84,6 +91,20 @@ export default {
     behindByLessonCount (student) {
       const achievedGradePoints = this.achievedGradePoints(student)
       return Math.round((achievedGradePoints - this.expectedGradePoints) / averageLessonGradePoints(this.course))
+    },
+    inProgressLessonCount (student) {
+      return this.course.projectCompletions.filter(completion => {
+        return (
+          completion.students[0]['.key'] === student['.key'] &&
+          (
+            !completion.submission ||
+            (
+              !completion.submission.isApproved &&
+              completion.submission.instructorCommentedLast
+            )
+          )
+        )
+      }).length
     }
   }
 }
