@@ -1,12 +1,9 @@
-import startOfDay from 'date-fns/start_of_day'
-import endOfDay from 'date-fns/end_of_day'
-
 import totalDaysInCourse from '@helpers/total-days-in-course'
 
 function newCourse (startString, endString) {
   return {
-    startDate: startOfDay(startString),
-    endDate: endOfDay(endString)
+    startDate: new Date(startString),
+    endDate: new Date(endString)
   }
 }
 
