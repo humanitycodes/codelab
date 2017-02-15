@@ -25,7 +25,16 @@
       </tr>
       <tr v-for="student in studentsInCourse">
         <td :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }">
-          {{ student.fullName }}
+          <a
+            v-if="student.github"
+            :href="courseReposFor(course, student)"
+            target="_blank"
+          >
+            {{ student.fullName }}
+          </a>
+          <span v-else>
+            {{ student.fullName }}
+          </span>
         </td>
         <td
           class="numeric-cell"
@@ -46,7 +55,7 @@
           {{ maxDaysProjectStaleFor(student) }}
         </td>
         <td class="numeric-cell">
-          {{ maxDaysProjectUnapprovedFor(student) }}
+          {{ maxDaysProjectOngoingFor(student) }}
         </td>
       </tr>
     </table>
@@ -129,9 +138,7 @@ export default {
       }).map(completion => {
         if (!completion.submission.lastCommentedAt) return 0
         return differenceInDays(Date.now(), completion.submission.lastCommentedAt)
-      }).reduce((a, b) => {
-        return Math.max(a, b)
-      }, 0)
+      }).reduce((a, b) => Math.max(a, b), 0)
     },
     maxDaysProjectOngoingFor (student) {
       return this.course.projectCompletions.filter(completion => {
@@ -143,9 +150,18 @@ export default {
       }).map(completion => {
         if (!completion.submission.firstSubmittedAt) return 0
         return differenceInDays(Date.now(), completion.submission.firstSubmittedAt)
-      }).reduce((a, b) => {
-        return Math.max(a, b)
-      }, 0)
+      }).reduce((a, b) => Math.max(a, b), 0)
+    },
+    courseReposFor (course, student) {
+      return [
+        'https://github.com/',
+        student.github.login,
+        '?utf8=✓&tab=repositories&type=source'
+        // NOTE: Not including course key for now, because
+        // providing a query makes the results sort by
+        // repository creation, ascending, which is Not
+        // very useful. 😕
+      ].join('')
     }
   }
 }
