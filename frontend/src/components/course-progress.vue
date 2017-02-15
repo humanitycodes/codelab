@@ -8,13 +8,19 @@
           Grade Points<br>
           Expected: {{ expectedGradePoints }}
         </th>
-        <th>
-          # Lessons<br>
-          Behind/Ahead
+        <th title="The number of lesson behind/ahead the student is">
+          Proj.<br>
+          Delta
         </th>
-        <th>
-          # Lessons<br>
-          In Progress
+        <th title="The number of lessons that have been started, but are unapproved">
+          Proj.<br>
+          Active
+        </th>
+        <th title="Maximum number of days since a project has had changes requested">
+          Days<br> Stale
+        </th>
+        <th title="Maximum number of days a submitted project has gone unapproved">
+          Days<br> Active
         </th>
       </tr>
       <tr v-for="student in studentsInCourse">
@@ -36,12 +42,19 @@
         <td class="numeric-cell">
           {{ inProgressLessonCount(student) }}
         </td>
+        <td class="numeric-cell">
+          {{ maxDaysProjectStaleFor(student) }}
+        </td>
+        <td class="numeric-cell">
+          {{ maxDaysProjectUnapprovedFor(student) }}
+        </td>
       </tr>
     </table>
   </details>
 </template>
 
 <script>
+import differenceInDays from 'date-fns/difference_in_days'
 import { userGetters } from '@state/helpers'
 import achievedGradePoints from '@helpers/achieved-grade-points'
 import minGradeExpectation from '@helpers/min-grade-expectation'
@@ -105,6 +118,37 @@ export default {
           )
         )
       }).length
+    },
+    maxDaysProjectStaleFor (student) {
+      return this.course.projectCompletions.filter(completion => {
+        return (
+          completion.students[0]['.key'] === student['.key'] &&
+          completion.submission &&
+          (
+            !completion.submission.isApproved &&
+            completion.submission.instructorCommentedLast
+          )
+        )
+      }).map(completion => {
+        if (!completion.submission.lastCommentedAt) return 0
+        return differenceInDays(Date.now(), completion.submission.lastCommentedAt)
+      }).reduce((a, b) => {
+        return Math.max(a, b)
+      }, 0)
+    },
+    maxDaysProjectOngoingFor (student) {
+      return this.course.projectCompletions.filter(completion => {
+        return (
+          completion.students[0]['.key'] === student['.key'] &&
+          completion.submission &&
+          !completion.submission.isApproved
+        )
+      }).map(completion => {
+        if (!completion.submission.firstSubmittedAt) return 0
+        return differenceInDays(Date.now(), completion.submission.firstSubmittedAt)
+      }).reduce((a, b) => {
+        return Math.max(a, b)
+      }, 0)
     }
   }
 }
