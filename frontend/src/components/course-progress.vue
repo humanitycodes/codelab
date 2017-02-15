@@ -111,10 +111,7 @@ export default {
           completion.students[0]['.key'] === student['.key'] &&
           (
             !completion.submission ||
-            (
-              !completion.submission.isApproved &&
-              completion.submission.instructorCommentedLast
-            )
+            !completion.submission.isApproved
           )
         )
       }).length
