@@ -42,7 +42,6 @@ describe('achieved-grade-points.js', () => {
 
   before(() => {
     store.getters.lessons = lessons
-    console.error('before find:', Array.prototype.find)
   })
 
   beforeEach(() => {
