@@ -27,11 +27,10 @@ describe('min-grade-expectation.js', () => {
     expect(minGradeExpectation(newCourse('2016-01-15', '2016-01-25'))).to.equal(0.4)
   })
 
-  it(`expects 3.37 with 18 days left in 100 day course`, () => {
-    expect(minGradeExpectation(newCourse('2015-10-24', '2016-02-01'))).to.equal(3.37)
-  })
-
-  it(`expects 3.37 with 21 days left in 100 day course`, () => {
-    expect(minGradeExpectation(newCourse('2015-10-24', '2016-02-04'))).to.equal(3.28)
+  it(`expect better than 3.0 when more than 3/4 through course`, () => {
+    expect(minGradeExpectation(newCourse('2015-10-24', '2016-02-01'))).to.be.above(3)
+    expect(minGradeExpectation(newCourse('2015-10-24', '2016-02-04'))).to.be.above(3)
+    expect(minGradeExpectation(newCourse('2015-10-24', '2016-02-14'))).to.be.above(3)
+    expect(minGradeExpectation(newCourse('2016-01-01', '2016-01-20'))).to.be.above(3)
   })
 })
