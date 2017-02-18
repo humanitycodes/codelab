@@ -52,6 +52,7 @@ function* findProjectCompletionFromRepoName (repoName) {
 
   return {
     uid: userId,
+    username: username,
     courseKey: courseKey,
     lessonKey: lessonKey,
     projectCompletionKey: projectCompletionKeys[0],
@@ -132,7 +133,9 @@ export default {
     const commenterLogin = issueCommentEvent.comment.user.login
     let isInstructorComment = false
     Object.values(instructors).forEach(instructor => {
-      if (instructor.github && commenterLogin === instructor.github.login) {
+      if (commenterLogin !== projectMeta.username &&
+          instructor.github &&
+          commenterLogin === instructor.github.login) {
         isInstructorComment = true
       }
     })
