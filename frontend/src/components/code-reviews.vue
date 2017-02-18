@@ -130,6 +130,13 @@ export default {
         course.projectCompletions.forEach(project => {
           if (!project.submission || project.submission.instructorCommentedLast) return
 
+          // Handle edge case where a project has been submitted without an
+          // assigned instructor. Should only ever happen when manually
+          // manipulating the database.
+          if (!project.submission.assignedInstructor) {
+            project.submission.assignedInstructor = course.instructorKeys[0]
+          }
+
           if (!instructorReviews[project.submission.assignedInstructor]) {
             instructorReviews[project.submission.assignedInstructor] = []
           }
