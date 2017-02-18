@@ -8,11 +8,27 @@
           •
           {{ currentCourse.credits || '?' }} Credits
         </div>
+        <div v-if="!currentUserIsStudent" class="flex-col">
+          <label class="with-inline-input">
+            <input v-model="studentViewForced" type="checkbox">
+            Force student view
+          </label>
+        </div>
       </div>
       <h1>
         {{ currentCourse.title }}
+        <span
+          v-if="shouldShowStudentView && achievedGradePoints"
+          class="course-projected-grade"
+        >
+          <span class="course-projected-grade-label">
+            (projected grade:
+          </span>{{
+            projectedGrade.toFixed(1)
+          }}<span class="course-projected-grade-label">)</span>
+        </span>
       </h1>
-      <div v-if="currentUserIsStudent" class="flex-row">
+      <div v-if="shouldShowStudentView" class="flex-row">
         <div class="flex-col">
           <div class="course-meter">
             <div class="course-meter-text">{{ formattedStartDate }}</div>
@@ -62,6 +78,20 @@
           </div>
         </div>
       </div>
+      <div v-if="shouldShowStudentView && achievedGradePoints">
+        <p
+          v-if="projectedGrade < 1"
+          class="warning"
+        >
+          At your current rate of progress, you will <strong>not</strong> pass the course. If you're not already working with an instructor to get back on track, reach out as soon as possible.
+        </p>
+        <p
+          v-else-if="projectedGrade < 3"
+          class="warning"
+        >
+          At your current rate of progress, you will receive a <strong>{{ projectedGrade }}</strong> in the course. We just want to make sure you know this. If you'd like help getting caught up, reach out to an instructor as soon as possible.
+        </p>
+      </div>
       <div class="flex-row" v-if="courseLessons.length">
         <div class="flex-col">
           <h2>Lessons</h2>
@@ -99,6 +129,7 @@ import daysSoFarInCourse from '@helpers/days-so-far-in-course'
 import percentThroughCourse from '@helpers/percent-through-course'
 import percentToMaxGrade from '@helpers/percent-to-max-grade'
 import minGradeExpectation from '@helpers/min-grade-expectation'
+import projectedGrade from '@helpers/projected-grade'
 import { maxGrade, gradeMilestones } from '@helpers/grades'
 
 const dateFormat = 'MMMM Do, YYYY'
@@ -126,7 +157,8 @@ export default {
   data () {
     return {
       maxGrade,
-      gradeMilestones
+      gradeMilestones,
+      studentViewForced: false
     }
   },
   computed: {
@@ -147,6 +179,9 @@ export default {
     currentUserIsStudent () {
       return this.currentCourse.studentKeys.some(key => key === this.currentUser.uid)
     },
+    shouldShowStudentView () {
+      return this.currentUserIsStudent || this.studentViewForced
+    },
     achievedGradePoints () {
       return achievedGradePoints(this.currentUser, this.currentCourse)
     },
@@ -164,6 +199,9 @@ export default {
     },
     percentToMaxGrade () {
       return percentToMaxGrade(this.currentUser, this.currentCourse)
+    },
+    projectedGrade () {
+      return projectedGrade(this.currentUser, this.currentCourse)
     }
   },
   methods: {
@@ -198,6 +236,14 @@ $course-meter-active-text-size = 1.2em
     display: inline-block
     width: 6em
 
+.course-projected-grade
+  opacity: .7
+  margin-left: $design.layout.gutterWidth
+  font-size: .7em
+
+.course-projected-grade-label
+  font-weight: normal
+
 .course-meter
   display: flex
   position: relative
@@ -208,14 +254,6 @@ $course-meter-active-text-size = 1.2em
   border: 1px solid $design.control.border.color
   border-top: 0
   z-index: 1
-  // &:before
-  //   content: ''
-  //   position: absolute
-  //   left: 0
-  //   right: 0
-  //   height: 100%
-  //   background-color: $course-meter-bg
-  //   z-index: -1
   &:first-child
     border-top: 1px solid $design.control.border.color
     border-top-left-radius: $design.control.border.radius
