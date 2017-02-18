@@ -34,8 +34,7 @@
             class="flex-col"
           />
           <div class="flex-col">
-            ~{{ node.lesson.estimatedHours }}
-            {{ node.lesson.estimatedHours === 1 ? 'hr' : 'hrs' }}
+            ⏱ &nbsp;{{ node.lesson.estimatedHours }}
           </div>
           <div class="flex-col" v-if="node.lesson.categories && node.lesson.categories.length">
             <ul v-for="category in node.lesson.categories">
