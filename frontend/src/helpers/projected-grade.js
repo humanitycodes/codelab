@@ -7,6 +7,7 @@ export default (user, course) => {
   const gradeRoundedDownToNearestPointFive = Math.floor(realGrade * 2) / 2
   return Math.min(
     maxGrade,
+    !gradeRoundedDownToNearestPointFive ||
     gradeRoundedDownToNearestPointFive === 0.5
       ? 0
       : gradeRoundedDownToNearestPointFive
