@@ -4,5 +4,10 @@
     ["transform-runtime", {"polyfill": false}],
     "transform-vue-jsx"
   ],
-  "comments": false
+  "comments": false,
+  "env": {
+    "testing": {
+      "plugins": ["rewire"]
+    }
+  }
 }

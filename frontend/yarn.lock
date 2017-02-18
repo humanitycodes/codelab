@@ -225,6 +225,14 @@ babel-code-frame@^6.11.0, babel-code-frame@^6.16.0, babel-code-frame@^6.20.0:
     esutils "^2.0.2"
     js-tokens "^2.0.0"
 
+babel-code-frame@^6.22.0:
+  version "6.22.0"
+  resolved "https://registry.yarnpkg.com/babel-code-frame/-/babel-code-frame-6.22.0.tgz#027620bee567a88c32561574e7fd0801d33118e4"
+  dependencies:
+    chalk "^1.1.0"
+    esutils "^2.0.2"
+    js-tokens "^3.0.0"
+
 babel-core@^6.1.4, babel-core@^6.18.0, babel-core@^6.21.0:
   version "6.21.0"
   resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-6.21.0.tgz#75525480c21c803f826ef3867d22c19f080a3724"
@@ -402,6 +410,12 @@ babel-loader@^6.2.10:
     mkdirp "^0.5.1"
     object-assign "^4.0.1"
 
+babel-messages@^6.23.0:
+  version "6.23.0"
+  resolved "https://registry.yarnpkg.com/babel-messages/-/babel-messages-6.23.0.tgz#f3cdf4703858035b2a2951c6ec5edf6c62f2630e"
+  dependencies:
+    babel-runtime "^6.22.0"
+
 babel-messages@^6.8.0:
   version "6.8.0"
   resolved "https://registry.yarnpkg.com/babel-messages/-/babel-messages-6.8.0.tgz#bf504736ca967e6d65ef0adb5a2a5f947c8e0eb9"
@@ -413,6 +427,10 @@ babel-plugin-check-es2015-constants@^6.3.13:
   resolved "https://registry.yarnpkg.com/babel-plugin-check-es2015-constants/-/babel-plugin-check-es2015-constants-6.8.0.tgz#dbf024c32ed37bfda8dee1e76da02386a8d26fe7"
   dependencies:
     babel-runtime "^6.0.0"
+
+babel-plugin-rewire@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-rewire/-/babel-plugin-rewire-1.0.0.tgz#398d4dc7a01d6c682e221b197398c370731b3dd3"
 
 babel-plugin-syntax-async-functions@^6.8.0:
   version "6.13.0"
@@ -764,6 +782,13 @@ babel-runtime@^6.0.0, babel-runtime@^6.11.6, babel-runtime@^6.20.0, babel-runtim
     core-js "^2.4.0"
     regenerator-runtime "^0.10.0"
 
+babel-runtime@^6.22.0:
+  version "6.23.0"
+  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.23.0.tgz#0a9489f144de70efb3ce4300accdb329e2fc543b"
+  dependencies:
+    core-js "^2.4.0"
+    regenerator-runtime "^0.10.0"
+
 babel-template@^6.14.0, babel-template@^6.15.0, babel-template@^6.16.0, babel-template@^6.8.0:
   version "6.16.0"
   resolved "https://registry.yarnpkg.com/babel-template/-/babel-template-6.16.0.tgz#e149dd1a9f03a35f817ddbc4d0481988e7ebc8ca"
@@ -771,6 +796,16 @@ babel-template@^6.14.0, babel-template@^6.15.0, babel-template@^6.16.0, babel-te
     babel-runtime "^6.9.0"
     babel-traverse "^6.16.0"
     babel-types "^6.16.0"
+    babylon "^6.11.0"
+    lodash "^4.2.0"
+
+babel-template@^6.23.0:
+  version "6.23.0"
+  resolved "https://registry.yarnpkg.com/babel-template/-/babel-template-6.23.0.tgz#04d4f270adbb3aa704a8143ae26faa529238e638"
+  dependencies:
+    babel-runtime "^6.22.0"
+    babel-traverse "^6.23.0"
+    babel-types "^6.23.0"
     babylon "^6.11.0"
     lodash "^4.2.0"
 
@@ -788,6 +823,20 @@ babel-traverse@^6.15.0, babel-traverse@^6.16.0, babel-traverse@^6.18.0, babel-tr
     invariant "^2.2.0"
     lodash "^4.2.0"
 
+babel-traverse@^6.23.0:
+  version "6.23.1"
+  resolved "https://registry.yarnpkg.com/babel-traverse/-/babel-traverse-6.23.1.tgz#d3cb59010ecd06a97d81310065f966b699e14f48"
+  dependencies:
+    babel-code-frame "^6.22.0"
+    babel-messages "^6.23.0"
+    babel-runtime "^6.22.0"
+    babel-types "^6.23.0"
+    babylon "^6.15.0"
+    debug "^2.2.0"
+    globals "^9.0.0"
+    invariant "^2.2.0"
+    lodash "^4.2.0"
+
 babel-types@^6.13.0, babel-types@^6.15.0, babel-types@^6.16.0, babel-types@^6.18.0, babel-types@^6.21.0, babel-types@^6.8.0, babel-types@^6.9.0:
   version "6.21.0"
   resolved "https://registry.yarnpkg.com/babel-types/-/babel-types-6.21.0.tgz#314b92168891ef6d3806b7f7a917fdf87c11a4b2"
@@ -797,9 +846,22 @@ babel-types@^6.13.0, babel-types@^6.15.0, babel-types@^6.16.0, babel-types@^6.18
     lodash "^4.2.0"
     to-fast-properties "^1.0.1"
 
+babel-types@^6.23.0:
+  version "6.23.0"
+  resolved "https://registry.yarnpkg.com/babel-types/-/babel-types-6.23.0.tgz#bb17179d7538bad38cd0c9e115d340f77e7e9acf"
+  dependencies:
+    babel-runtime "^6.22.0"
+    esutils "^2.0.2"
+    lodash "^4.2.0"
+    to-fast-properties "^1.0.1"
+
 babylon@^6.11.0, babylon@^6.13.0:
   version "6.14.1"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.14.1.tgz#956275fab72753ad9b3435d7afe58f8bf0a29815"
+
+babylon@^6.15.0:
+  version "6.15.0"
+  resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.15.0.tgz#ba65cfa1a80e1759b0e89fb562e27dccae70348e"
 
 backo2@1.0.2:
   version "1.0.2"
@@ -2900,6 +2962,10 @@ js-beautify@^1.6.3:
 js-tokens@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-2.0.0.tgz#79903f5563ee778cc1162e6dcf1a0027c97f9cb5"
+
+js-tokens@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.1.tgz#08e9f132484a2c45a30907e9dc4d5567b7f114d7"
 
 js-yaml@3.x, js-yaml@^3.5.1:
   version "3.7.0"
