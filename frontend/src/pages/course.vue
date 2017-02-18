@@ -9,26 +9,28 @@
           {{ currentCourse.credits || '?' }} Credits
         </div>
       </div>
-      <h1>{{ currentCourse.title }}</h1>
+      <h1>
+        {{ currentCourse.title }}
+      </h1>
       <div v-if="currentUserIsStudent" class="flex-row">
         <div class="flex-col">
           <div class="course-meter">
+            <div class="course-meter-text">{{ formattedStartDate }}</div>
             <div
               class="meter-percent-through-course"
               :style="{ width: percentThroughCourse + '%' }"
             />
-            <div class="course-meter-text">{{ formattedStartDate }}</div>
             <div class="course-meter-text">{{ formattedEndDate }}</div>
           </div>
           <div class="course-meter">
             <div
-              :style="{ width: percentToMaxGrade + '%' }"
-              class="meter-percent-to-max-grade"
-            />
-            <div
               class="course-meter-text"
               :class="{ active: achievedGradePoints < gradeMilestones[0] }"
             >0</div>
+            <div
+              :style="{ width: percentToMaxGrade + '%' }"
+              class="meter-percent-to-max-grade"
+            />
             <div
               v-for="milestone in gradeMilestones"
               :data-grade="milestone"
@@ -202,17 +204,18 @@ $course-meter-active-text-size = 1.2em
   justify-content: space-between
   font-family: Lato
   color: $course-meter-text-color
+  background: $course-meter-bg
   border: 1px solid $design.control.border.color
   border-top: 0
   z-index: 1
-  &:before
-    content: ''
-    position: absolute
-    left: 0
-    right: 0
-    height: 100%
-    background-color: $course-meter-bg
-    z-index: -1
+  // &:before
+  //   content: ''
+  //   position: absolute
+  //   left: 0
+  //   right: 0
+  //   height: 100%
+  //   background-color: $course-meter-bg
+  //   z-index: -1
   &:first-child
     border-top: 1px solid $design.control.border.color
     border-top-left-radius: $design.control.border.radius
@@ -232,6 +235,7 @@ $course-meter-active-text-size = 1.2em
 
 .meter-percent-through-course, .meter-percent-to-max-grade
   position: absolute
+  left: 0
   height: 100%
   z-index: -1
 
