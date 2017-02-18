@@ -133,9 +133,11 @@ export default {
     const commenterLogin = issueCommentEvent.comment.user.login
     let isInstructorComment = false
     Object.values(instructors).forEach(instructor => {
-      if (commenterLogin !== projectMeta.username &&
-          instructor.github &&
-          commenterLogin === instructor.github.login) {
+      if (
+        commenterLogin !== projectMeta.username &&
+        instructor.github &&
+        commenterLogin === instructor.github.login
+      ) {
         isInstructorComment = true
       }
     })
@@ -157,8 +159,10 @@ export default {
     const issueCommentedAt = issueCommentEvent.comment.updated_at
       ? new Date(issueCommentEvent.comment.updated_at)
       : new Date(issueCommentEvent.comment.created_at)
-    if (!projectCompletion.submission.lastCommentedAt ||
-        projectCompletion.submission.lastCommentedAt < issueCommentedAt.getTime()) {
+    if (
+      !projectCompletion.submission.lastCommentedAt ||
+      projectCompletion.submission.lastCommentedAt < issueCommentedAt.getTime()
+    ) {
       projectCompletion.submission.lastCommentedAt = issueCommentedAt.getTime()
     }
 
