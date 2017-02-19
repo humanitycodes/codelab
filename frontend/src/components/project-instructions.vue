@@ -76,7 +76,10 @@ export default {
       if (this.project.hosting === 'GitHub Pages') {
         return this.projectName
       }
-      const msuUsername = this.currentUser.profile.email.replace('@msu.edu', '').slice(0, 15)
+      const msuUsername = this.currentUser.profile.email
+        .replace(/@.+/, '')
+        .replace(/\W/g, '')
+        .slice(0, 15)
       const projectKey = this.project['.key'].slice(msuUsername.length - maxChars)
       identifiers.push(msuUsername)
       identifiers.push(projectKey)
