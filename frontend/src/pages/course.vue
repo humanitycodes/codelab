@@ -89,7 +89,7 @@
           v-else-if="projectedGrade < 3"
           class="warning"
         >
-          At your current rate of progress, you will receive a <strong>{{ projectedGrade }}</strong> in the course. We just want to make sure you know this. If you'd like help getting caught up, reach out to an instructor as soon as possible.
+          At your current rate of progress, you will receive a <strong>{{ projectedGrade }}</strong> in the course. If you'd like help getting caught up, reach out to an instructor as soon as possible.
         </p>
       </div>
       <div class="flex-row" v-if="courseLessons.length">
