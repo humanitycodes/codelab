@@ -13,6 +13,9 @@
       <p v-if="lesson.estimatedHours && lesson.estimatedHours > 3" class="warning">
         That's a pretty complex lesson. If possible, it would be good to break it up.
       </p>
+      <p v-if="!lesson.estimatedHours" class="warning">
+        Estimated hours must be defined before a lesson can be added to a course.
+      </p>
     </div>
   </div>
 </template>
