@@ -181,8 +181,12 @@ pre:not(.CodeMirror-line)
     content: 'HTML'
   &.css > code:after
     content: 'CSS'
+  &.scss > code:after
+    content: 'SCSS'
   &.js > code:after
     content: 'JAVASCRIPT'
+  &.json > code:after
+    content: 'JSON'
   &.txt > code:after
     content: 'TEXT'
   &.notepad
