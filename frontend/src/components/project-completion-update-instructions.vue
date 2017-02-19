@@ -47,7 +47,7 @@
       cd PATH/TO/{{ projectName }}
 
       # 2) Create the app on Heroku (if you haven't already)
-      heroku create {{ projectName.toLowerCase() }}
+      heroku create {{ projectHostedSubdomain }}
 
       # 3) Push your committed code to Heroku
       git push heroku master
@@ -92,6 +92,10 @@ export default {
       required: true
     },
     projectHostedUrl: {
+      type: String,
+      required: true
+    },
+    projectHostedSubdomain: {
       type: String,
       required: true
     },

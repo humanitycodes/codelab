@@ -9,6 +9,7 @@
       :projectName="projectName"
       :projectRepoUrl="projectRepoUrl"
       :projectHostedUrl="projectHostedUrl"
+      :projectHostedSubdomain="projectHostedSubdomain"
     />
 
     <template v-if="instructors.length > 1">
@@ -23,7 +24,7 @@
 
     <h4>Submit for review</h4>
     <p>Final step! But first, make sure you've met the following criteria (check each box to confirm):</p>
-    <label v-for="criterion in project.criteria">
+    <label v-for="criterion in project.criteria" class="with-inline-input">
       <input type="checkbox" v-model="metCriteria[criterion['.key']]">
       <span v-html="toInlineHtml(criterion.content)"/>
     </label>
@@ -74,6 +75,10 @@ export default {
     projectHostedUrl: {
       type: String,
       required: true
+    },
+    projectHostedSubdomain: {
+      type: String,
+      required: true
     }
   },
   data () {
@@ -115,6 +120,7 @@ export default {
         })
       ].join('')
 
+      this.projectCompletion.hostedUrl = this.projectHostedUrl
       window.open(newIssueUrl, '_blank').focus()
     },
     fetchInstructors () {
