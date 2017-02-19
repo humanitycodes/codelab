@@ -46,11 +46,11 @@ export default {
               projectKey: {
                 validate: `root.child('lessons/large/student/'+data.parent().child('lessonKey').val()+'/projects/'+newData.val()).exists()`
               },
+              hostedUrl: String,
               submission: {
                 fields: {
                   firstSubmittedAt: Date,
                   lastCommentedAt: Date,
-                  hostedUrl: String,
                   instructorCommentedLast: Boolean,
                   isApproved: Boolean,
                   assignedInstructor: {

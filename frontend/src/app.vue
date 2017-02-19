@@ -348,7 +348,7 @@ label.with-inline-input
   > input
     margin-right: 5px
     position: relative
-    bottom: 2px
+    bottom: 1px
 
 label > input[type=checkbox]
   height: 1rem

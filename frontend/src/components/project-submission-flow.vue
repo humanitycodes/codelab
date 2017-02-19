@@ -40,15 +40,12 @@ export default {
   computed: {
     ...userGetters,
     projectCompletion () {
-      const rawProjectCompletion = this.course.projectCompletions.find(completion => {
-        return completion['.key'] === [this.project['.key'], this.currentUser.uid].join('-')
+      return this.course.projectCompletions.find(completion => {
+        return completion['.key'] === [
+          this.project['.key'],
+          this.currentUser.uid
+        ].join('-')
       })
-      if (rawProjectCompletion) {
-        const projectCompletion = { ...rawProjectCompletion }
-        projectCompletion.studentKey = projectCompletion.students[0]['.key']
-        delete projectCompletion.students
-        return projectCompletion
-      }
     },
     projectStatus () {
       if (!this.projectCompletion) return 'unstarted'

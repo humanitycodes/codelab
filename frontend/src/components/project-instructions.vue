@@ -1,13 +1,14 @@
 <template>
   <component
     :is="currentInstructions"
-    :project-completion="this.projectCompletion"
+    :project-completion="projectCompletion"
     :course="course"
     :lesson="lesson"
     :project="project"
     :project-name="projectName"
     :project-repo-url="projectRepoUrl"
     :project-hosted-url="projectHostedUrl"
+    :project-hosted-subdomain="projectHostedSubdomain"
     :class="currentStyleClass"
   />
 </template>
@@ -68,11 +69,18 @@ export default {
       ].join('')
     },
     projectHostedSubdomain () {
-      return (
-        this.projectName.toLowerCase() +
-        '-' +
-        this.currentUser.profile.github.login
-      )
+      // Max size for Heroku subdomains is 30 characters,
+      // so just limiting all subdomain that length max.
+      const maxChars = 30
+      const identifiers = []
+      if (this.project.hosting === 'GitHub Pages') {
+        return this.projectName
+      }
+      const msuUsername = this.currentUser.profile.email.replace('@msu.edu', '').slice(0, 15)
+      const projectKey = this.project['.key'].slice(msuUsername.length - maxChars)
+      identifiers.push(msuUsername)
+      identifiers.push(projectKey)
+      return identifiers.join('').toLowerCase()
     },
     projectHostedUrl () {
       if (!this.project || !this.projectCompletion) return ''
@@ -80,22 +88,13 @@ export default {
         return this.projectCompletion.hostedUrl
       }
       if (this.project.hosting === 'Surge') {
-        return (
-          'https://' +
-          this.projectHostedSubdomain +
-          '.surge.sh/'
-        )
+        return `https://${this.projectHostedSubdomain}.surge.sh/`
       }
       if (this.project.hosting === 'Heroku') {
-        return (
-          'https://' +
-          this.projectHostedSubdomain +
-          '.herokuapp.com/'
-        )
+        return `https://${this.projectHostedSubdomain}.herokuapp.com/`
       }
       const githubUsername = this.currentUser.profile.github.login
-      return this.projectCompletion.hostedUrl ||
-      `https://${githubUsername}.github.io/${this.projectName}/`
+      return `https://${githubUsername}.github.io/${this.projectName}/`
     }
   }
 }

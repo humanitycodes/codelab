@@ -12,6 +12,7 @@
       :projectName="projectName"
       :projectRepoUrl="projectRepoUrl"
       :projectHostedUrl="projectHostedUrl"
+      :projectHostedSubdomain="projectHostedSubdomain"
       :updating="true"
     />
 
@@ -42,6 +43,10 @@ export default {
       required: true
     },
     projectHostedUrl: {
+      type: String,
+      required: true
+    },
+    projectHostedSubdomain: {
       type: String,
       required: true
     }
