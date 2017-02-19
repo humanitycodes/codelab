@@ -45,7 +45,32 @@ The development environment can be launched for either the frontend or the backe
 
 ## Continuous Integration and Deployment
 
-Commits to master are automatically deployed to Heroku after tests pass.
+When builds pass on CircleCI, GitHub's:
+
+- `master` branch deploys to the [staging server](https://msu-codes-staging.herokuapp.com)
+- `production` branch deploys to the [production server](https://msu.lansing.codes/)
+
+There are also several commands you can use:
+
+### `yarn deploy:staging-to-production`
+
+When code on staging passes QA, this promotes the `master` branch on GitHub to `production` and pushes to the production server on a successful build.
+
+### `yarn deploy-force:local-to-staging`
+
+Bypasses GitHub to deploy your current branch directly to staging, skipping any linting or tests. This should ONLY be used when all of these are true:
+
+1. What's currently on staging has already been approved for production
+2. You want to do some QA before completing the code review
+
+### `yarn deploy-force:local-to-production`
+
+To be used ONLY for hotfixes in emergency situations. For example:
+
+- The app isn't working on production and it's blocking students from doing any work
+- Students are seeing incorrect information, which is causing a great deal of confusion
+
+Since this bypasses linting, tests, and QA, it is up to you to confirm that your changes do not cause more harm than good.
 
 ## SSL Certificate Renewal
 
