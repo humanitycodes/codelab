@@ -48,13 +48,14 @@
               class="meter-percent-to-max-grade"
             />
             <div
-              v-for="milestone in gradeMilestones"
+              v-for="(milestone, milestoneIndex) in gradeMilestones"
               :data-grade="milestone"
               :style="{ left: milestone / maxGrade * 100 + '%' }"
               :class="{
                 active: (
                   achievedGradePoints >= milestone &&
-                  achievedGradePoints < milestone + gradeMilestones[0]
+                  achievedGradePoints < maxGrade &&
+                  achievedGradePoints < gradeMilestones[milestoneIndex + 1]
                 )
               }"
               class="course-grade-milestone"
