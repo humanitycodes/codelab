@@ -186,6 +186,11 @@ export default {
           const preEl = codeEl.parentNode
           if (preEl.classList.length) {
             const lang = preEl.classList[0]
+            const fileName = preEl.id
+            if (fileName) {
+              codeEl.setAttribute('data-filename', `${fileName}.${lang}`)
+              preEl.removeAttribute('id')
+            }
             if (codeExtensions.indexOf(lang) !== -1) {
               codeEl.innerHTML = highlight(lang, codeEl.textContent).value
             }

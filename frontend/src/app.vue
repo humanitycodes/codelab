@@ -171,6 +171,9 @@ pre:not(.CodeMirror-line)
       border-bottom-left-radius: $design.control.border.radius
       color: #FFF
       z-index: 2
+    &[data-filename][data-filename]:after
+      content: attr(data-filename)
+      text-transform: uppercase
   &.sh > code
   &.sh > code
     &:after
