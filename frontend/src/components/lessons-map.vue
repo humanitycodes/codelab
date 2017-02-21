@@ -90,7 +90,7 @@ import { canUpdateLesson } from '@state/auth/lessons'
 import { userGetters } from '@state/helpers'
 import design from '@config/design'
 
-const gutterWidth = design.layout.gutterWidth.replace('px', '')
+const gutterWidth = parseInt(design.layout.gutterWidth)
 
 export default {
   props: {
@@ -103,7 +103,9 @@ export default {
   data () {
     return {
       nodeWidth: 320,
-      nodeHeight: 114
+      nodeHeight: 114,
+      nodeMarginHorizontal: gutterWidth * 3,
+      nodeMarginVertical: gutterWidth
     }
   },
   computed: {
@@ -118,8 +120,8 @@ export default {
         rankDir: 'LR',
         // Number of pixels that separate nodes horizontally
         // in the layout
-        nodesep: gutterWidth,
-        ranksep: gutterWidth * 3
+        nodesep: this.nodeMarginVertical,
+        ranksep: this.nodeMarginHorizontal
       })
       // Set default object for edge labels,
       // otherwise we can't assign points
@@ -164,12 +166,8 @@ export default {
   },
   mounted () {
     const recommendedLessonsOffsets = this.lessonNodes
-      .filter(node => {
-        return this.isLessonRecommended(node.lesson)
-      })
-      .map(node => {
-        return this.nodeOffsetX(node)
-      })
+      .filter(node => this.isLessonRecommended(node.lesson))
+      .map(node => node.x + this.nodeMarginHorizontal + this.nodeWidth / 2)
     this.$nextTick(() => {
       this.$refs.container.scrollLeft = Math.min(...recommendedLessonsOffsets)
     })
