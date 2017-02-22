@@ -176,9 +176,9 @@ export default {
   mounted () {
     const recommendedLessonsOffsets = this.lessonNodes
       .filter(node => this.lessonStatus(node.lesson).recommended)
-      .map(node => node.x + this.nodeMarginHorizontal + this.nodeWidth / 2)
+      .map(node => node.x - this.nodeWidth / 2)
     this.$nextTick(() => {
-      this.$refs.container.scrollLeft = Math.min(...recommendedLessonsOffsets)
+      this.$refs.container.scrollLeft = Math.max(0, Math.min(...recommendedLessonsOffsets))
     })
   },
   methods: {
