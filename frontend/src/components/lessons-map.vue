@@ -193,7 +193,7 @@ export default {
       return `translate(${
         this.nodeOffsetX(node) + 'px'
       },${
-        this.nodeOffsetY(node) + 'px'
+        this.nodeOffsetY(node) + gutterWidth + 'px'
       })`
     },
     edgePath (edge) {
@@ -274,7 +274,7 @@ export default {
   position: relative
   padding-bottom: 16px
   overflow-x: auto
-  padding: 0 $design.layout.gutterWidth
+  padding: $design.layout.gutterWidth
 
 .lesson-graph-card
   display: flex
