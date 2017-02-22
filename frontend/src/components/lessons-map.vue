@@ -19,7 +19,9 @@
       }"
       :to="nodeClickPath(node.lesson)"
       class="lesson-graph-card container-link"
-      :class="{ recommended: isLessonRecommended(node.lesson) }"
+      :class="lessonStatus(node.lesson)"
+      @mouseenter.native="$emit('lesson-hover', node.lesson)"
+      @mouseleave.native="$emit('lesson-hover', null)"
     >
       <router-link
         v-if="course && canUpdateLesson({ lessonKey: node.lesson['.key'] })"
@@ -48,13 +50,9 @@
           </div>
           <div class="flex-col">
             <a
-              v-if="findProjectCompletion(node.lesson)"
+              v-if="lessonStatus(node.lesson).started"
               class="button inline lessons-map-project-status"
-              :class="{
-                approved: isLessonProjectApproved(node.lesson),
-                'changes-requested': isLessonProjectAwaitingRequestedChanges(node.lesson),
-                'awaiting-feedback': isLessonProjectAwaitingFeedback(node.lesson)
-              }"
+              :class="lessonStatus(node.lesson)"
               :href="
                 'https://github.com/' +
                 currentUser.profile.github.login +
@@ -62,21 +60,21 @@
                 [
                   course['.key'],
                   node.lesson['.key'],
-                  findProjectCompletion(node.lesson).projectKey.slice(-6)
+                  getProjectCompletion(node.lesson).projectKey.slice(-6)
                 ].join('-')
               "
               target="_blank"
               @click.stop
             >
-              <span v-if="isLessonProjectApproved(node.lesson)">
+              <span v-if="lessonStatus(node.lesson).approved">
                 <span class="fa fa-check"/>
                 Approved
               </span>
-              <span v-else-if="isLessonProjectAwaitingRequestedChanges(node.lesson)">
+              <span v-else-if="lessonStatus(node.lesson).changesRequested">
                 <span class="fa fa-exclamation-circle"/>
                 Changes<br>Requested
               </span>
-              <span v-else-if="isLessonProjectAwaitingFeedback(node.lesson)">
+              <span v-else-if="lessonStatus(node.lesson).awaitingFeedback">
                 Awaiting<br>Feedback
               </span>
               <span v-else>
@@ -97,6 +95,8 @@ import { canUpdateLesson } from '@state/auth/lessons'
 import { userGetters } from '@state/helpers'
 import design from '@config/design'
 import roundedCourseLessonGradePoints from '@helpers/rounded-course-lesson-grade-points'
+import courseLessonStatus from '@helpers/course-lesson-status'
+import getProjectCompletion from '@helpers/get-project-completion'
 
 const gutterWidth = parseInt(design.layout.gutterWidth)
 
@@ -113,7 +113,8 @@ export default {
       nodeWidth: 320,
       nodeHeight: 114,
       nodeMarginHorizontal: gutterWidth * 3,
-      nodeMarginVertical: gutterWidth
+      nodeMarginVertical: gutterWidth,
+      hoveredLesson: null
     }
   },
   computed: {
@@ -174,7 +175,7 @@ export default {
   },
   mounted () {
     const recommendedLessonsOffsets = this.lessonNodes
-      .filter(node => this.isLessonRecommended(node.lesson))
+      .filter(node => this.lessonStatus(node.lesson).recommended)
       .map(node => node.x + this.nodeMarginHorizontal + this.nodeWidth / 2)
     this.$nextTick(() => {
       this.$refs.container.scrollLeft = Math.min(...recommendedLessonsOffsets)
@@ -222,78 +223,8 @@ export default {
     editLessonPath (lesson) {
       return '/lessons/' + lesson['.key'] + '/edit'
     },
-    findProjectCompletion (lesson) {
-      if (!this.course || !this.course.projectCompletions) return null
-      const rawProjectCompletion = this.course.projectCompletions.find(completion => {
-        return (
-          completion.students.some(student => {
-            return student['.key'] === this.currentUser.uid
-          }) &&
-          completion.lessonKey === lesson['.key']
-        )
-      })
-      if (rawProjectCompletion) {
-        const projectCompletion = { ...rawProjectCompletion }
-        projectCompletion.studentKey = projectCompletion.students[0]['.key']
-        delete projectCompletion.students
-        return projectCompletion
-      }
-    },
-    isLessonProjectApproved (lesson) {
-      const projectCompletion = this.findProjectCompletion(lesson)
-      return (
-        projectCompletion &&
-        projectCompletion.submission &&
-        projectCompletion.submission.isApproved
-      )
-    },
-    isLessonProjectAwaitingRequestedChanges (lesson) {
-      const projectCompletion = this.findProjectCompletion(lesson)
-      return (
-        projectCompletion &&
-        projectCompletion.submission &&
-        !projectCompletion.submission.isApproved &&
-        projectCompletion.submission.instructorCommentedLast
-      )
-    },
-    isLessonProjectAwaitingFeedback (lesson) {
-      const projectCompletion = this.findProjectCompletion(lesson)
-      return (
-        projectCompletion &&
-        projectCompletion.submission &&
-        !projectCompletion.submission.isApproved &&
-        !projectCompletion.submission.instructorCommentedLast
-      )
-    },
-    isLessonRecommended (lesson) {
-      const projectCompletion = this.findProjectCompletion(lesson)
-      return (
-        // Project is not approved for this lesson
-        (
-          !projectCompletion ||
-          !projectCompletion.submission ||
-          !projectCompletion.submission.isApproved
-        ) && (
-          // Lesson does not have any prereqs
-          !lesson.prereqKeys.length ||
-          // Projects for prereqs are all approved
-          lesson.prereqKeys
-            .map(prereqKey => {
-              return this.lessons.find(potentialPrereq => {
-                return potentialPrereq['.key'] === prereqKey
-              })
-            })
-            .filter(prereq => prereq)
-            .every(prereq => {
-              const prereqProjectCompletion = this.findProjectCompletion(prereq)
-              return (
-                prereqProjectCompletion &&
-                prereqProjectCompletion.submission &&
-                prereqProjectCompletion.submission.isApproved
-              )
-            })
-        )
-      )
+    lessonStatus (lesson) {
+      return courseLessonStatus(this.course, lesson)
     },
     lessonLang (lesson) {
       return lesson['.key'].match(/^(\w+?)-/)[1]
@@ -316,6 +247,9 @@ export default {
     },
     lessonGradePoints (lesson) {
       return roundedCourseLessonGradePoints(this.course, lesson)
+    },
+    getProjectCompletion (lesson) {
+      return getProjectCompletion(this.course, lesson)
     }
   }
 }
