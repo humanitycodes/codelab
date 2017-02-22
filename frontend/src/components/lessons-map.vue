@@ -178,7 +178,7 @@ export default {
       .filter(node => this.lessonStatus(node.lesson).recommended)
       .map(node => node.x + this.nodeMarginHorizontal + this.nodeWidth / 2)
     this.$nextTick(() => {
-      this.$refs.container.scrollLeft = Math.min(...recommendedLessonsOffsets) - gutterWidth
+      this.$refs.container.scrollLeft = Math.min(...recommendedLessonsOffsets)
     })
   },
   methods: {
@@ -274,6 +274,7 @@ export default {
   position: relative
   padding-bottom: 16px
   overflow-x: auto
+  padding: 0 $design.layout.gutterWidth
 
 .lesson-graph-card
   display: flex
@@ -324,12 +325,12 @@ export default {
 
 .lessons-map-corner-action-lesson-button
   position: absolute
-  top: 0
-  right: 0
+  top: -1px
+  right: -1px
   border-top: none
   border-right: none
   border-top-left-radius: 0
-  border-top-right-radius: 0
+  border-top-right-radius: $design.control.border.radius
   border-bottom-right-radius: 0
   margin-top: 0
 
