@@ -1,3 +1,5 @@
+// NODE_ENV=development yarn build && node dist/scripts/170221-set-missing-approved-dates.js 
+
 import firebase from 'firebase-admin'
 import { appConfig } from '../firebase-settings'
 
