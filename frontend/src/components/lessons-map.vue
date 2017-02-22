@@ -39,7 +39,7 @@
             <span class="fa fa-clock-o"/>
             {{ node.lesson.estimatedHours }}
           </div>
-          <div class="flex-col">
+          <div v-if="course" class="flex-col">
             <span class="fa fa-graduation-cap"/>
             {{ lessonGradePoints(node.lesson) }}
           </div>
@@ -224,6 +224,7 @@ export default {
       return '/lessons/' + lesson['.key'] + '/edit'
     },
     lessonStatus (lesson) {
+      if (!this.course) return {}
       return courseLessonStatus(this.course, lesson)
     },
     lessonLang (lesson) {
