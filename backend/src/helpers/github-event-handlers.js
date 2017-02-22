@@ -70,6 +70,7 @@ export default {
     // Set committed to true
     if (!projectMeta.projectCompletion.committed) {
       projectMeta.projectCompletion.committed = true
+      projectMeta.projectCompletion.firstCommittedAt = new Date(pushEvent.commits[0].timestamp).getTime()
       yield updateProjectCompletion({
         courseKey: projectMeta.courseKey,
         projectCompletionKey: projectMeta.projectCompletionKey
@@ -142,12 +143,19 @@ export default {
       }
     })
 
+    // Determine the comment timestamp
+    const issueCommentedAt = (issueCommentEvent.comment.updated_at
+      ? new Date(issueCommentEvent.comment.updated_at)
+      : new Date(issueCommentEvent.comment.created_at)
+    ).getTime()
+
     // Does the comment contain an approval (:shipit:)?
     let isApproved = issueCommentEvent.comment.body.search(':shipit:') !== -1
 
     // If the instructor approved it, make it so
     if (isInstructorComment && isApproved) {
       projectCompletion.submission.isApproved = true
+      projectCompletion.submission.approvedAt = issueCommentedAt
     }
 
     // Accurately reflect who was the last commenter on the submission
@@ -156,14 +164,11 @@ export default {
     }
 
     // Set the most recent comment timestamp
-    const issueCommentedAt = issueCommentEvent.comment.updated_at
-      ? new Date(issueCommentEvent.comment.updated_at)
-      : new Date(issueCommentEvent.comment.created_at)
     if (
       !projectCompletion.submission.lastCommentedAt ||
-      projectCompletion.submission.lastCommentedAt < issueCommentedAt.getTime()
+      projectCompletion.submission.lastCommentedAt < issueCommentedAt
     ) {
-      projectCompletion.submission.lastCommentedAt = issueCommentedAt.getTime()
+      projectCompletion.submission.lastCommentedAt = issueCommentedAt
     }
 
     yield updateProjectCompletion({
