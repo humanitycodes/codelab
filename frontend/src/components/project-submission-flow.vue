@@ -9,7 +9,7 @@
       :project="project"
     />
   </div>
-  <p v-else class="danger">
+  <p v-else class="error">
     You can't begin this project until at least one instructor is available for the course.
   </p>
 </template>
