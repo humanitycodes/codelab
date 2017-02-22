@@ -82,7 +82,7 @@
       <div v-if="shouldShowStudentView && achievedGradePoints">
         <p
           v-if="projectedGrade < 1"
-          class="warning"
+          class="danger"
         >
           At your current rate of progress, you will <strong>not</strong> pass the course. If you're not already working with an instructor to get back on track, reach out as soon as possible.
         </p>

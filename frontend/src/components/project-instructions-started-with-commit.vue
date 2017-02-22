@@ -2,7 +2,7 @@
   <div>
     <ProjectCompletionLinks :repo-url="projectRepoUrl"/>
 
-    <p v-if="error" class="danger">{{ error }}</p>
+    <p v-if="error" class="error">{{ error }}</p>
 
     <ProjectCompletionUpdateInstructions
       :project="project"

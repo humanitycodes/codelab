@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <div v-if="currentCourse">
-      <p v-if="!shouldUpdateCurrentCourse" class="danger">
+      <p v-if="!shouldUpdateCurrentCourse" class="error">
         It's not recommended to continue editing this course. If you want to use the same curriculum for a new semester, you should clone it.
       </p>
       <DoneButton fallback-route="/courses"/>

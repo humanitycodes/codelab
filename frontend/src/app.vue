@@ -411,7 +411,7 @@ p:empty
   display: none
 
 p, div
-  &.warning, &.danger, &.note, &.muted, &.result
+  &.warning, &.danger, &.error, &.note, &.muted, &.result
     position: relative
     border-radius: $design.control.border.radius
     margin: $design.layout.gutterWidth 0
@@ -437,13 +437,16 @@ p, div
     &:after
       content: 'WARNING'
       background-color: $design.branding.warning.dark
-  &.danger
+  &.danger, &.error
     padding: $design.layout.gutterWidth
     background-color: $design.branding.muted.light.red
     border: 1px solid $design.branding.danger.light
     &:after
-      content: 'ERROR'
       background-color: $design.branding.danger.dark
+  &.error:after
+    content: 'ERROR'
+  &.danger:after
+    content: 'DANGER'
   &.note
     padding: $design.layout.gutterWidth
     background: $design.branding.muted.light.note

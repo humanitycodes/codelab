@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p v-if="error" class="danger">{{ error }}</p>
+    <p v-if="error" class="error">{{ error }}</p>
     <button
       v-if="!projectCompletion"
       class="block"
