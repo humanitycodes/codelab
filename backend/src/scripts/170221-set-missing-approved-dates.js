@@ -1,4 +1,4 @@
-// NODE_ENV=development yarn build && node dist/scripts/170221-set-missing-approved-dates.js 
+// NODE_ENV=development yarn build && node dist/scripts/170221-set-missing-approved-dates.js
 
 import firebase from 'firebase-admin'
 import { appConfig } from '../firebase-settings'
@@ -18,7 +18,8 @@ firebase.database()
           const projectCompletion = projectCompletionSnapshot.val()
           if (
             projectCompletion.submission &&
-            projectCompletion.submission.isApproved
+            projectCompletion.submission.isApproved &&
+            !projectCompletion.submission.approvedAt
           ) {
             console.log(
               'Updating course',
