@@ -227,6 +227,7 @@ export default {
         this.hoveredLessonStatus.approved
       ) return 0
       let addedGradePoints = courseLessonGradePoints(this.currentCourse, this.hoveredLesson)
+      const alreadyAddedLessons = {}
       const addGradePointsOfPrereqs = lesson => {
         if (lesson.prereqKeys) {
           lesson.prereqKeys.forEach(prereqKey => {
@@ -234,8 +235,9 @@ export default {
               return lesson['.key'] === prereqKey
             })
             const prereqStatus = courseLessonStatus(this.currentCourse, prereq)
-            if (!prereqStatus.approved) {
+            if (!prereqStatus.approved && !alreadyAddedLessons[prereq['.key']]) {
               addedGradePoints += courseLessonGradePoints(this.currentCourse, prereq)
+              alreadyAddedLessons[prereq['.key']] = true
               addGradePointsOfPrereqs(prereq)
             }
           })
