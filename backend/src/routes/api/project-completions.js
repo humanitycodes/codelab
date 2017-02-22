@@ -38,14 +38,18 @@ export default {
         repo: repoName
       }
 
+      let repository
       try {
-        yield ghclient.getRepository(user.github.token, ownerAndRepo)
+        repository = yield ghclient.getRepository(user.github.token, ownerAndRepo)
       } catch (notfound) {
-        yield ghclient.createRepository(user.github.token, { name: repoName })
+        repository = yield ghclient.createRepository(user.github.token, { name: repoName })
       }
 
+      let projectCompletion = { uid, courseKey, lessonKey, projectKey }
+      projectCompletion.repositoryCreatedAt = new Date(repository.created_at).getTime()
+
       yield ghclient.createWebhooks(user.github.token, ownerAndRepo)
-      yield createProjectCompletion({ uid, courseKey, lessonKey, projectKey })
+      yield createProjectCompletion(projectCompletion)
 
       reply({ repo: { name: repoName } })
     } catch (error) {
