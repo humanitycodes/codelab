@@ -226,8 +226,23 @@ export default {
         !this.hoveredLesson ||
         this.hoveredLessonStatus.approved
       ) return 0
-      const lessonGradePoints = courseLessonGradePoints(this.currentCourse, this.hoveredLesson)
-      return lessonGradePoints / maxGrade * 100
+      let addedGradePoints = courseLessonGradePoints(this.currentCourse, this.hoveredLesson)
+      const addGradePointsOfPrereqs = lesson => {
+        if (lesson.prereqKeys) {
+          lesson.prereqKeys.forEach(prereqKey => {
+            const prereq = this.courseLessons.find(lesson => {
+              return lesson['.key'] === prereqKey
+            })
+            const prereqStatus = courseLessonStatus(this.currentCourse, prereq)
+            if (!prereqStatus.approved) {
+              addedGradePoints += courseLessonGradePoints(this.currentCourse, prereq)
+              addGradePointsOfPrereqs(prereq)
+            }
+          })
+        }
+      }
+      addGradePointsOfPrereqs(this.hoveredLesson)
+      return addedGradePoints / maxGrade * 100
     },
     projectedPercentToMaxGrade () {
       return projectedPercentToMaxGrade(this.currentUser, this.currentCourse)
@@ -323,9 +338,9 @@ $course-meter-active-text-size = 1.2em
 
 .meter-percent-to-max-grade-with-hovered-lesson
   background-color: $course-meter-grade-filled-bg
-  background-image: linear-gradient(-45deg, rgba(0, 0, 0, .1) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, .1) 50%, rgba(0, 0, 0, .1) 75%, transparent 75%, transparent)
+  background-image: linear-gradient(-45deg, rgba(0, 0, 0, .05) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, .05) 50%, rgba(0, 0, 0, .05) 75%, transparent 75%, transparent)
   background-size: 8px 8px
-  transition: width .3s
+  transition: width .3s cubic-bezier(1,.01,.51,.66)
 
 .course-grade-milestone
   width: 2px
