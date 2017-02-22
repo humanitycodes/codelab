@@ -77,7 +77,7 @@ import ProjectSubmissionFlow from '@components/project-submission-flow'
 import {
   userGetters, courseGetters, lessonGetters, courseLessonGetters
 } from '@state/helpers'
-import courseLessonGradePoints from '@helpers/course-lesson-grade-points'
+import roundedCourseLessonGradePoints from '@helpers/rounded-course-lesson-grade-points'
 import toInlineHtml from '@helpers/to-inline-html'
 import getScrollTop from '@helpers/get-scroll-top'
 
@@ -115,10 +115,7 @@ export default {
       return this.currentUser.profile.github && !this.hasNewGitHubScopes
     },
     gradePoints () {
-      const realGradePoints = courseLessonGradePoints(this.currentCourse, this.currentLesson)
-      return isNaN(realGradePoints)
-        ? 0
-        : Math.floor(realGradePoints * 100) / 100
+      return roundedCourseLessonGradePoints(this.currentCourse, this.currentLesson)
     }
   },
   methods: {
