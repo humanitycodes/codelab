@@ -38,6 +38,8 @@ export default {
           projectCompletions: {
             type: Array,
             fields: {
+              repositoryCreatedAt: Date,
+              firstCommittedAt: Date,
               committed: Boolean,
               students: { type: Array },
               lessonKey: {
@@ -51,6 +53,7 @@ export default {
                 fields: {
                   firstSubmittedAt: Date,
                   lastCommentedAt: Date,
+                  approvedAt: Date,
                   instructorCommentedLast: Boolean,
                   isApproved: Boolean,
                   assignedInstructor: {
