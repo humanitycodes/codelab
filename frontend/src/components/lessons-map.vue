@@ -34,7 +34,12 @@
             class="flex-col"
           />
           <div class="flex-col">
-            ⏱ &nbsp;{{ node.lesson.estimatedHours }}
+            <span class="fa fa-clock-o"/>
+            {{ node.lesson.estimatedHours }}
+          </div>
+          <div class="flex-col">
+            <span class="fa fa-graduation-cap"/>
+            {{ lessonGradePoints(node.lesson) }}
           </div>
           <div class="flex-col" v-if="node.lesson.categories && node.lesson.categories.length">
             <ul v-for="category in node.lesson.categories">
@@ -64,10 +69,12 @@
               @click.stop
             >
               <span v-if="isLessonProjectApproved(node.lesson)">
-                ✓ Approved
+                <span class="fa fa-check"/>
+                Approved
               </span>
               <span v-else-if="isLessonProjectAwaitingRequestedChanges(node.lesson)">
-                ⚠️ &nbsp;Changes<br>Requested
+                <span class="fa fa-exclamation-circle"/>
+                Changes<br>Requested
               </span>
               <span v-else-if="isLessonProjectAwaitingFeedback(node.lesson)">
                 Awaiting<br>Feedback
@@ -89,6 +96,7 @@ import { path as D3Path } from 'd3-path'
 import { canUpdateLesson } from '@state/auth/lessons'
 import { userGetters } from '@state/helpers'
 import design from '@config/design'
+import roundedCourseLessonGradePoints from '@helpers/rounded-course-lesson-grade-points'
 
 const gutterWidth = parseInt(design.layout.gutterWidth)
 
@@ -305,6 +313,9 @@ export default {
           ${lang.toUpperCase()}
         </span>
       `
+    },
+    lessonGradePoints (lesson) {
+      return roundedCourseLessonGradePoints(this.course, lesson)
     }
   }
 }
