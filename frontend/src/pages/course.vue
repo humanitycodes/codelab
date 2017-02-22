@@ -44,6 +44,10 @@
               :class="{ active: achievedGradePoints < gradeMilestones[0] }"
             >0</div>
             <div
+              :style="{ width: projectedPercentToMaxGrade + '%' }"
+              class="meter-projected-percent-to-max-grade"
+            />
+            <div
               :style="{ width: percentToMaxGrade + '%' }"
               class="meter-percent-to-max-grade"
             />
@@ -131,6 +135,7 @@ import percentThroughCourse from '@helpers/percent-through-course'
 import percentToMaxGrade from '@helpers/percent-to-max-grade'
 import minGradeExpectation from '@helpers/min-grade-expectation'
 import projectedGrade from '@helpers/projected-grade'
+import projectedPercentToMaxGrade from '@helpers/projected-percent-to-max-grade'
 import { maxGrade, gradeMilestones } from '@helpers/grades'
 
 const dateFormat = 'MMMM Do, YYYY'
@@ -200,6 +205,9 @@ export default {
     },
     percentToMaxGrade () {
       return percentToMaxGrade(this.currentUser, this.currentCourse)
+    },
+    projectedPercentToMaxGrade () {
+      return projectedPercentToMaxGrade(this.currentUser, this.currentCourse)
     },
     projectedGrade () {
       return projectedGrade(this.currentUser, this.currentCourse)
@@ -272,7 +280,7 @@ $course-meter-active-text-size = 1.2em
     font-size: $course-meter-active-text-size
     opacity: 1
 
-.meter-percent-through-course, .meter-percent-to-max-grade
+.meter-percent-through-course, .meter-percent-to-max-grade, .meter-projected-percent-to-max-grade
   position: absolute
   left: 0
   height: 100%
@@ -283,6 +291,9 @@ $course-meter-active-text-size = 1.2em
 
 .meter-percent-to-max-grade
   background-color: $course-meter-grade-filled-bg
+
+.meter-projected-percent-to-max-grade
+  background-color: lighten($course-meter-grade-filled-bg, 80%)
 
 .course-grade-milestone
   width: 2px
