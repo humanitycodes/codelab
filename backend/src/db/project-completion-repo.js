@@ -1,6 +1,6 @@
 import firebase from 'firebase-admin'
 
-export async function createProjectCompletion ({ uid, courseKey, lessonKey, projectKey }) {
+export async function createProjectCompletion ({ uid, courseKey, lessonKey, projectKey, repositoryCreatedAt }) {
   const db = firebase.database()
   const projectCompletionKey = [projectKey, uid].join('-')
 
@@ -41,6 +41,7 @@ export async function createProjectCompletion ({ uid, courseKey, lessonKey, proj
   .then(() => {
     // Create the project completion
     return updateProjectCompletion({ courseKey, projectCompletionKey }, {
+      repositoryCreatedAt,
       position: 1,
       students: { [uid]: { position: 1 } },
       lessonKey,
