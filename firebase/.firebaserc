@@ -4,7 +4,6 @@
     "testing": "msulansingcodesdev",
     "staging": "msulansingcodesstaging",
     "production": "msulansingcodes",
-    "playground": "msulansingcodesplayground",
     "egillespie": "msulansingcodesdev-egillespie",
     "fritzc": "msulansingcodesdev-fritzc",
     "ubuntu": "msulansingcodesdev"
