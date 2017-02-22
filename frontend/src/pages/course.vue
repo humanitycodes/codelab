@@ -44,8 +44,16 @@
               :class="{ active: achievedGradePoints < gradeMilestones[0] }"
             >0</div>
             <div
+              v-if="projectedGrade"
               :style="{ width: projectedPercentToMaxGrade + '%' }"
               class="meter-projected-percent-to-max-grade"
+            />
+            <div
+              :style="{
+                left: percentToMaxGrade + '%',
+                width: percentGradeAddedWithHoveredLesson + '%'
+              }"
+              class="meter-percent-to-max-grade-with-hovered-lesson"
             />
             <div
               :style="{ width: percentToMaxGrade + '%' }"
@@ -100,7 +108,11 @@
       <div class="flex-row" v-if="courseLessons.length">
         <div class="flex-col">
           <h2>Lessons</h2>
-          <LessonsMap :course="currentCourse" :lessons="courseLessons"/>
+          <LessonsMap
+            :course="currentCourse"
+            :lessons="courseLessons"
+            @lesson-hover="hoveredLesson = $event"
+          />
         </div>
       </div>
       <div class="flex-row">
@@ -136,7 +148,9 @@ import percentToMaxGrade from '@helpers/percent-to-max-grade'
 import minGradeExpectation from '@helpers/min-grade-expectation'
 import projectedGrade from '@helpers/projected-grade'
 import projectedPercentToMaxGrade from '@helpers/projected-percent-to-max-grade'
+import courseLessonGradePoints from '@helpers/course-lesson-grade-points'
 import { maxGrade, gradeMilestones } from '@helpers/grades'
+import courseLessonStatus from '@helpers/course-lesson-status'
 
 const dateFormat = 'MMMM Do, YYYY'
 
@@ -164,7 +178,8 @@ export default {
     return {
       maxGrade,
       gradeMilestones,
-      studentViewForced: false
+      studentViewForced: false,
+      hoveredLesson: null
     }
   },
   computed: {
@@ -206,11 +221,22 @@ export default {
     percentToMaxGrade () {
       return percentToMaxGrade(this.currentUser, this.currentCourse)
     },
+    percentGradeAddedWithHoveredLesson () {
+      if (
+        !this.hoveredLesson ||
+        this.hoveredLessonStatus.approved
+      ) return 0
+      const lessonGradePoints = courseLessonGradePoints(this.currentCourse, this.hoveredLesson)
+      return lessonGradePoints / maxGrade * 100
+    },
     projectedPercentToMaxGrade () {
       return projectedPercentToMaxGrade(this.currentUser, this.currentCourse)
     },
     projectedGrade () {
       return projectedGrade(this.currentUser, this.currentCourse)
+    },
+    hoveredLessonStatus () {
+      return courseLessonStatus(this.currentCourse, this.hoveredLesson)
     }
   },
   methods: {
@@ -280,7 +306,7 @@ $course-meter-active-text-size = 1.2em
     font-size: $course-meter-active-text-size
     opacity: 1
 
-.meter-percent-through-course, .meter-percent-to-max-grade, .meter-projected-percent-to-max-grade
+.meter-percent-through-course, .meter-percent-to-max-grade, .meter-projected-percent-to-max-grade, .meter-percent-to-max-grade-with-hovered-lesson
   position: absolute
   left: 0
   height: 100%
@@ -294,6 +320,12 @@ $course-meter-active-text-size = 1.2em
 
 .meter-projected-percent-to-max-grade
   background-color: lighten($course-meter-grade-filled-bg, 80%)
+
+.meter-percent-to-max-grade-with-hovered-lesson
+  background-color: $course-meter-grade-filled-bg
+  background-image: linear-gradient(-45deg, rgba(0, 0, 0, .1) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, .1) 50%, rgba(0, 0, 0, .1) 75%, transparent 75%, transparent)
+  background-size: 8px 8px
+  transition: width .3s
 
 .course-grade-milestone
   width: 2px
