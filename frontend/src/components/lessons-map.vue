@@ -178,7 +178,7 @@ export default {
       .filter(node => this.lessonStatus(node.lesson).recommended)
       .map(node => node.x + this.nodeMarginHorizontal + this.nodeWidth / 2)
     this.$nextTick(() => {
-      this.$refs.container.scrollLeft = Math.min(...recommendedLessonsOffsets)
+      this.$refs.container.scrollLeft = Math.min(...recommendedLessonsOffsets) - gutterWidth
     })
   },
   methods: {
@@ -290,6 +290,9 @@ export default {
     white-space: nowrap
     text-overflow: ellipsis
     overflow: hidden
+  &.recommended
+    opacity: 1
+    box-shadow: 0 0 20px 5px rgba($design.branding.primary.light, .2)
   &:hover
     border-color: $design.branding.primary.light
     height: auto !important
@@ -297,8 +300,6 @@ export default {
     z-index: 1
     > h3
       white-space: normal
-  &.recommended
-    opacity: 1
 
 .lesson-graph-card-details
   > .flex-row
