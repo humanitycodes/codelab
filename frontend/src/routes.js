@@ -80,7 +80,7 @@ export default [
     redirect: '/courses/:courseKey/lessons/:lessonKey/1'
   },
   {
-    path: '/courses/:courseKey/lessons/:lessonKey/:currentPage',
+    path: '/courses/:courseKey/lessons/:lessonKey/:currentPage/:currentView?',
     component: require('@pages/course-lesson'),
     meta: {
       isAuthorized: canReadCourse
