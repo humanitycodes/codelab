@@ -8,8 +8,13 @@
     />
     <ul class="main-nav-group-left">
       <li v-if="canReadAllCourses()">
-        <router-link to="/instructor-dashboard">
-          Dashboard
+        <router-link to="/code-reviews">
+          Code Reviews
+        </router-link>
+      </li>
+      <li v-if="canReadAllCourses()">
+        <router-link to="/student-progress">
+          Student Progress
         </router-link>
       </li>
       <li v-if="isUserSignedIn">

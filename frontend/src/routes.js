@@ -22,7 +22,7 @@ export default [
       const courses = store.getters.courses
       if (store.state.users.currentUser) {
         return canReadAllCourses()
-          ? '/instructor-dashboard'
+        ? '/code-reviews'
           : courses.length === 1
             ? '/courses/' + courses[0]['.key']
             : '/courses'
@@ -90,8 +90,15 @@ export default [
     }
   },
   {
-    path: '/instructor-dashboard',
-    component: require('@pages/instructor-dashboard'),
+    path: '/code-reviews',
+    component: require('@pages/code-reviews'),
+    meta: {
+      isAuthorized: canReadAllCourses
+    }
+  },
+  {
+    path: '/student-progress',
+    component: require('@pages/student-progress'),
     meta: {
       isAuthorized: canReadAllCourses
     }
