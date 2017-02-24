@@ -20,7 +20,7 @@
           Days<br> Stale
         </th>
         <th title="Maximum number of days a submitted project has gone unapproved">
-          Days<br> Active
+          Days<br> Open
         </th>
       </tr>
       <tr v-for="student in studentsInCourse">
