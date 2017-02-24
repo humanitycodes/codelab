@@ -197,6 +197,7 @@ export default {
         const endNodeX = this.nodeOffsetX(endNode)
         const horizontalDistance = endNodeX - startNodeX
         const cardWidthWithMargin = this.nodeWidth + this.nodeMarginHorizontal
+        const halfCardHeight = this.nodeHeight / 2
         const cardHeightWithMargin = this.nodeHeight + this.nodeMarginVertical
         const halfCardHeightWithMargin = cardHeightWithMargin / 2
         const halfNodeMarginHorizontal = this.nodeMarginHorizontal / 2
@@ -204,12 +205,22 @@ export default {
         // Pulls the final resting point upwards or downwards
         // on the card, depending on the horizontal and
         // vertical distance from the starting card.
+        const connectPointMinPercentFromEdge = 0.1 // 10%
+        const connectPointMaxDrift = halfCardHeight - halfCardHeight * connectPointMinPercentFromEdge
+        // This is an arbitrary number, chosen for aesthetic
+        // appeal with our particular layout. If we're
+        // generally getting too much pull, we can increase
+        // this number. To increase pull, we can decrease it.
+        const connectPointResistanceFactor = 6
         const yPull = Math.min(
-          this.nodeHeight / 2.5,
-          this.nodeHeight / 6 *
+          // Max pull
+          connectPointMaxDrift,
+          // Base pull
+          this.nodeHeight / connectPointResistanceFactor *
+            // More pull for cards further away, horizontally
             (cardsAwayCount + 1) *
-            Math.abs(startNode.y - endNode.y) /
-            this.nodeHeight
+            // More pull for cards further away, vertically
+            Math.abs(startNode.y - endNode.y) / this.nodeHeight
         )
         const startNodeY = startNode.y
         const endNodeY = startNode.y === endNode.y
