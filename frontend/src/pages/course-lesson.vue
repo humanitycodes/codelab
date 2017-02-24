@@ -31,7 +31,7 @@
       <RenderedContent
         :initial-page="Number($route.params.currentPage)"
         :content="currentLesson.content"
-        @page-update="updateCurrentPage"
+        @page-update="currentPage = $event"
         class="course-lesson-content"
       />
     </div>
@@ -103,7 +103,8 @@ export default {
   },
   data () {
     return {
-      currentView: 'content'
+      currentPage: this.$route.params.currentPage,
+      currentView: this.$route.params.currentView || 'content'
     }
   },
   computed: {
@@ -116,6 +117,21 @@ export default {
     },
     gradePoints () {
       return roundedCourseLessonGradePoints(this.currentCourse, this.currentLesson)
+    }
+  },
+  watch: {
+    currentPage: 'updateCurrentPage',
+    currentView (newView) {
+      const newUrl = (
+        '/courses/' +
+        this.currentCourse['.key'] +
+        '/lessons/' +
+        this.currentLesson['.key'] +
+        '/' +
+        this.currentPage +
+        (newView === 'content' ? '' : '/' + newView)
+      )
+      window.history.replaceState({}, null, newUrl)
     }
   },
   methods: {
