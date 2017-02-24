@@ -7,6 +7,7 @@
       <path
         v-for="edge in lessonEdges"
         :d="edgePath(edge)"
+        :style="{ stroke: langColorDark(edge.toLang) }"
       />
     </svg>
     <router-link
@@ -90,7 +91,8 @@
 
 <script>
 import Dagre from 'dagre'
-import { path as D3Path } from 'd3-path'
+import { line as d3Line, curveBundle } from 'd3-shape'
+import sortBy from 'lodash/sortBy'
 import { canUpdateLesson } from '@state/auth/lessons'
 import { userGetters } from '@state/helpers'
 import design from '@config/design'
@@ -110,15 +112,31 @@ export default {
   },
   data () {
     return {
+      gutterWidth,
       nodeWidth: 320,
       nodeHeight: 114,
-      nodeMarginHorizontal: gutterWidth * 3,
-      nodeMarginVertical: gutterWidth,
+      nodeMarginHorizontal: gutterWidth * 4,
+      nodeMarginVertical: gutterWidth * 1.5,
       hoveredLesson: null
     }
   },
   computed: {
     ...userGetters,
+    preSortedLessons () {
+      const categoryOrder = [
+        'css',
+        'html',
+        'js'
+      ]
+      // Presort lessons, so that nodes with more postreqs are
+      // calculated first, followed by general groupings by language,
+      // so that more difficult to place nodes are given priority,
+      // but language groups are still generally placed togetherq
+      return sortBy(this.lessons, [
+        lesson => this.getExtendedPostreqsCount(lesson),
+        lesson => categoryOrder.indexOf(this.lessonLang(lesson))
+      ])
+    },
     layout () {
       const layout = new Dagre.graphlib.Graph()
       // Layout options
@@ -137,21 +155,25 @@ export default {
       layout.setDefaultEdgeLabel(() => ({}))
       // For each lesson, register the nodes and edges
       // of the directive acyclic graph
-      this.lessons.forEach(lesson => {
+      this.preSortedLessons.forEach(lesson => {
         const lessonKey = lesson['.key']
         layout.setNode(lessonKey, {
           lesson,
           width: this.nodeWidth,
           height: this.nodeHeight
         })
-        lesson.prereqKeys.forEach(prereqKey => {
-          // If the prereq is actually part of this lessons list
-          const prereqInLessons = this.lessons.some(includedLesson => {
-            return includedLesson['.key'] === prereqKey
+        const postreqsIncludedInCourse = lesson.postreqKeys.map(postreqKey => {
+          return this.lessons.find(lesson => {
+            return lesson['.key'] === postreqKey
           })
-          if (prereqInLessons) {
-            layout.setEdge(prereqKey, lessonKey)
-          }
+        }).filter(postreq => postreq)
+        // Sort postreqs by their number of immediate prereqs, descending,
+        // so that more difficult to place nodes are given priority
+        sortBy(
+          postreqsIncludedInCourse,
+          postreq => -1 * this.getImmediatePrereqsCount(postreq)
+        ).forEach(postreq => {
+          layout.setEdge(lessonKey, postreq['.key'])
         })
       })
       // Calculate the layout, adding "x" and "y" to
@@ -168,15 +190,64 @@ export default {
       })
     },
     lessonEdges () {
-      return this.layout.edges().map(edgeKeys => {
-        return this.layout.edge(edgeKeys)
+      return this.layout.edges().map(nodeKeys => {
+        const startNode = this.layout.node(nodeKeys.v)
+        const endNode = this.layout.node(nodeKeys.w)
+        const startNodeX = this.nodeOffsetX(startNode) + startNode.width
+        const endNodeX = this.nodeOffsetX(endNode)
+        const horizontalDistance = endNodeX - startNodeX
+        const cardWidthWithMargin = this.nodeWidth + this.nodeMarginHorizontal
+        const cardHeightWithMargin = this.nodeHeight + this.nodeMarginVertical
+        const halfCardHeightWithMargin = cardHeightWithMargin / 2
+        const halfNodeMarginHorizontal = this.nodeMarginHorizontal / 2
+        const cardsAwayCount = Math.floor(horizontalDistance / cardWidthWithMargin)
+        // Pulls the final resting point upwards or downwards
+        // on the card, depending on the horizontal and
+        // vertical distance from the starting card.
+        const yPull = Math.min(
+          this.nodeHeight / 2.5,
+          this.nodeHeight / 6 *
+            (cardsAwayCount + 1) *
+            Math.abs(startNode.y - endNode.y) /
+            this.nodeHeight
+        )
+        const startNodeY = startNode.y
+        const endNodeY = startNode.y === endNode.y
+          ? endNode.y
+          : startNode.y > endNode.y
+            ? endNode.y + yPull
+            : endNode.y - yPull
+        const startMidWayX = startNodeX + halfNodeMarginHorizontal
+        const startMidWayY = startNodeY < endNodeY
+          ? Math.min(endNodeY, startNode.y + halfCardHeightWithMargin)
+          : Math.max(endNodeY, startNode.y - halfCardHeightWithMargin)
+        const endMidWayX = endNodeX - halfNodeMarginHorizontal
+        const points = [
+          { x: startNodeX, y: startNodeY },
+          { x: startMidWayX, y: startNodeY }
+        ]
+        if (cardsAwayCount) {
+          for (let i = 0; i <= cardsAwayCount; i++) {
+            points.push({
+              x: startMidWayX + cardWidthWithMargin * i,
+              y: startMidWayY
+            })
+          }
+        }
+        points.push({ x: endMidWayX, y: endNodeY })
+        points.push({ x: endNodeX, y: endNodeY })
+        return {
+          points,
+          cardsAwayCount,
+          toLang: this.lessonLang(endNode.lesson)
+        }
       })
     }
   },
   mounted () {
     const recommendedLessonsOffsets = this.lessonNodes
       .filter(node => this.lessonStatus(node.lesson).recommended)
-      .map(node => node.x - this.nodeWidth / 2)
+      .map(node => this.nodeOffsetX(node))
     this.$nextTick(() => {
       this.$refs.container.scrollLeft = Math.max(0, Math.min(...recommendedLessonsOffsets))
     })
@@ -184,10 +255,10 @@ export default {
   methods: {
     canUpdateLesson,
     nodeOffsetX (node) {
-      return node.x - this.nodeWidth / 2
+      return node.x - node.width / 2
     },
     nodeOffsetY (node) {
-      return node.y - this.nodeHeight / 2
+      return node.y - node.height / 2
     },
     nodeTransform (node) {
       return `translate(${
@@ -197,20 +268,12 @@ export default {
       })`
     },
     edgePath (edge) {
-      const path = D3Path()
-      const [ startingPoint, ...points ] = edge.points
-      path.moveTo(startingPoint.x, startingPoint.y)
-      let i
-      for (i = 0; i < points.length - 2; i++) {
-        const xc = (points[i].x + points[i + 1].x) / 2
-        const yc = (points[i].y + points[i + 1].y) / 2
-        path.quadraticCurveTo(points[i].x, points[i].y, xc, yc)
-      }
-      path.quadraticCurveTo(
-        points[i].x, points[i].y,
-        points[i + 1].x, points[i + 1].y
-      )
-      return path.toString()
+      const drawPath = d3Line().x(d => d.x).y(d => d.y)
+        // https://github.com/d3/d3-shape#curveBundle
+        .curve(curveBundle.beta(
+          edge.cardsAwayCount > 0 ? 1 : 0.8
+        ))
+      return drawPath(edge.points)
     },
     nodeClickPath (lesson) {
       return this.course
@@ -237,6 +300,13 @@ export default {
         js: '#f3e9a6'
       }[lang]
     },
+    langColorDark (lang) {
+      return {
+        html: '#bf8f8f',
+        css: '#8ba0b1',
+        js: '#b5a53c'
+      }[lang]
+    },
     lessonLangTag (lesson) {
       const lang = this.lessonLang(lesson)
       const color = this.langColor(lang)
@@ -251,6 +321,22 @@ export default {
     },
     getProjectCompletion (lesson) {
       return getProjectCompletion(this.course, lesson)
+    },
+    getExtendedPostreqsCount (lesson) {
+      const immediatePostreqs = lesson.postreqKeys.map(postreqKey => {
+        return this.lessons.find(lesson => lesson['.key'] === postreqKey)
+      }).filter(postreq => postreq)
+      return (
+        immediatePostreqs.length +
+        immediatePostreqs
+          .map(postreq => this.getExtendedPostreqsCount(postreq))
+          .reduce((a, b) => a + b, 0)
+      )
+    },
+    getImmediatePrereqsCount (lesson) {
+      return lesson.prereqKeys.filter(prereqKey => {
+        return this.lessons.some(lesson => lesson['.key'] === prereqKey)
+      }).length
     }
   }
 }
@@ -352,7 +438,6 @@ export default {
     bottom: -5px
 
 path
-  stroke: $design.branding.primary.light
   stroke-width: 2px
   fill: transparent
   pointer-events: none
