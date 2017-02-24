@@ -9,7 +9,7 @@
             <th>Student</th>
             <th>Course</th>
             <th>Lesson</th>
-            <th>Issue</th>
+            <th>Ext. Links</th>
           </thead>
           <tbody>
             <tr v-for="codeReview in reviewGroup.reviews">
@@ -29,9 +29,17 @@
                   }}<span v-if="codeReview.lesson['.key'].length > 20">...</span>
                 </router-link>
               </td>
-              <td>
-                <a :href="getIssuesUrl(codeReview)" target="_blank">
-                  👀
+              <td class="code-review-links">
+                <a :href="getFirstIssueUrl(codeReview)" target="_blank" class="external-icon" alt="Open the GitHub issue in a new tab" title="Open this issue on GitHub">
+                  <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
+                </a>
+                &nbsp;
+                <a :href="getGitHubProjectUrl(codeReview)" target="_blank" class="external-icon" alt="Open the GitHub code in a new tab" title="View the code on GitHub">
+                  <span class="fa fa-code" aria-hidden="true"></span>
+                </a>
+                &nbsp;
+                <a :href="getProjectHostedUrl(codeReview)" target="_blank" class="external-icon" alt="Open the hosted site in a new tab" title="View the hosted site">
+                  <span class="fa fa-globe" aria-hidden="true"></span>
                 </a>
               </td>
               <td
@@ -63,6 +71,8 @@ import {
   coursePermissionMethods, userGetters, lessonGetters
 } from '@state/helpers'
 import achievedGradePoints from '@helpers/achieved-grade-points'
+import projectName from '@helpers/project-name'
+import projectHostedUrl from '@helpers/project-hosted-url'
 import store from '@state/store'
 import sortBy from 'lodash/sortBy'
 
@@ -81,17 +91,15 @@ export default {
     getLesson (lessonKey) {
       return this.lessons.find(lesson => lesson['.key'] === lessonKey)
     },
-    getIssuesUrl (codeReview) {
+    getFirstIssueUrl (codeReview) {
+      return this.getGitHubProjectUrl(codeReview) + '/issues/1'
+    },
+    getGitHubProjectUrl (codeReview) {
       return [
         'https://github.com/',
         codeReview.student.github.login,
         '/',
-        [
-          codeReview.course['.key'],
-          codeReview.lesson['.key'],
-          codeReview.project.projectKey.slice(-6)
-        ].join('-'),
-        '/issues'
+        this.getProjectName(codeReview)
       ].join('')
     },
     getCourseLessonUrl (codeReview) {
@@ -101,6 +109,22 @@ export default {
         '/lessons/',
         codeReview.lesson['.key']
       ].join('')
+    },
+    getProjectHostedUrl (codeReview) {
+      console.error('lesson', codeReview.lesson)
+      return projectHostedUrl(
+        codeReview.student,
+        codeReview.lesson.projects[0],
+        codeReview.project,
+        this.getProjectName(codeReview)
+      )
+    },
+    getProjectName (codeReview) {
+      return projectName(
+        codeReview.course,
+        codeReview.lesson,
+        codeReview.project
+      )
     },
     humanizeCourseKey (key) {
       const keyParts = key.split('-')
@@ -117,6 +141,13 @@ export default {
       store.dispatch('syncLargeFieldsOfResource', {
         resourceName: 'courses',
         resourceKey: course['.key']
+      })
+    })
+    // Retrieve the large fields so projects are available
+    this.lessons.forEach(lesson => {
+      store.dispatch('syncLargeFieldsOfResource', {
+        resourceName: 'lessons',
+        resourceKey: lesson['.key']
       })
     })
   },
@@ -171,6 +202,12 @@ export default {
 
 <style lang="stylus" scoped>
 @import '../meta'
+
+.fa
+  font-size: 1.4em
+
+.code-review-links
+  text-align: center
 
 td .review-info-sensitive-data
   filter: blur(7px)
