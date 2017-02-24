@@ -22,7 +22,9 @@ export default [
       if (store.state.users.currentUser) {
         return canReadAllCourses()
           ? '/instructor-dashboard'
-          : '/courses'
+          : store.getters.courses.length > 1
+            ? '/courses'
+            : '/courses/' + store.getters.courses[0]['.key']
       }
       return '/msu-sign-in'
     }
