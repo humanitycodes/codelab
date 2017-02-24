@@ -129,12 +129,20 @@ export default {
         this.error = ''
         this.instructors = []
         Object.keys(response.data).forEach(uid => {
-          const instructor = response.data[uid]
+          const instructor = {
+            ...response.data[uid],
+            uid
+          }
           if (instructor.github) {
             this.instructors.push(instructor)
           }
         })
         if (this.instructors.length) {
+          if (this.instructors.length > 1) {
+            this.instructors = this.instructors.filter(instructor => {
+              return instructor.uid !== this.currentUser.uid
+            })
+          }
           const random = Math.floor(Math.random() * this.instructors.length)
           this.chosenInstructor = this.instructors[random].github.login
         } else {
