@@ -19,12 +19,13 @@ export default [
       isPublic: true
     },
     redirect: to => {
+      const courses = store.getters.courses
       if (store.state.users.currentUser) {
         return canReadAllCourses()
           ? '/instructor-dashboard'
-          : store.getters.courses.length > 1
-            ? '/courses'
-            : '/courses/' + store.getters.courses[0]['.key']
+          : courses.length === 1
+            ? '/courses/' + courses[0]['.key']
+            : '/courses'
       }
       return '/msu-sign-in'
     }
