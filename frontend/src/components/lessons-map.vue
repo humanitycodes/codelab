@@ -245,12 +245,10 @@ export default {
     }
   },
   mounted () {
-    const recommendedLessonsOffsets = this.lessonNodes
-      .filter(node => this.lessonStatus(node.lesson).recommended)
-      .map(node => this.nodeOffsetX(node))
-    this.$nextTick(() => {
-      this.$refs.container.scrollLeft = Math.max(0, Math.min(...recommendedLessonsOffsets))
-    })
+    this.$nextTick(this.scrollToRecommendedLessons)
+  },
+  watch: {
+    'course.projectCompletions': 'scrollToRecommendedLessons'
   },
   methods: {
     canUpdateLesson,
@@ -337,6 +335,13 @@ export default {
       return lesson.prereqKeys.filter(prereqKey => {
         return this.lessons.some(lesson => lesson['.key'] === prereqKey)
       }).length
+    },
+    scrollToRecommendedLessons () {
+      const recommendedLessonsOffsets = this.lessonNodes
+        .filter(node => this.lessonStatus(node.lesson).recommended)
+        .map(node => this.nodeOffsetX(node))
+      const minRecommendedOffset = Math.min(...recommendedLessonsOffsets)
+      this.$refs.container.scrollLeft = minRecommendedOffset
     }
   }
 }
