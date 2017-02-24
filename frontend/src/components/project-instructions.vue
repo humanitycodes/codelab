@@ -15,6 +15,10 @@
 
 <script>
 import { userGetters } from '@state/helpers'
+import projectName from '@helpers/project-name'
+import projectRepoUrl from '@helpers/project-repo-url'
+import projectHostedSubdomain from '@helpers/project-hosted-subdomain'
+import projectHostedUrl from '@helpers/project-hosted-url'
 
 const statusInstructions = {
   unstarted: require('./project-instructions-unstarted'),
@@ -54,50 +58,29 @@ export default {
       return this.projectCompletion ? 'project-instructions' : ''
     },
     projectName () {
-      return [
-        this.course['.key'],
-        this.lesson['.key'],
-        this.project['.key'].slice(-6)
-      ].join('-')
+      return projectName(this.course, this.lesson, this.project)
     },
     projectRepoUrl () {
-      return [
-        'https://github.com/',
+      return projectRepoUrl(
         this.currentUser.profile.github.login,
-        '/',
         this.projectName
-      ].join('')
+      )
     },
     projectHostedSubdomain () {
-      // Max size for Heroku subdomains is 30 characters,
-      // so just limiting all subdomain that length max.
-      const maxChars = 30
-      const identifiers = []
-      if (this.project.hosting === 'GitHub Pages') {
-        return this.projectName
-      }
-      const msuUsername = this.currentUser.profile.email
-        .replace(/@.+/, '')
-        .replace(/\W/g, '')
-        .slice(0, 15)
-      const projectKey = this.project['.key'].slice(msuUsername.length - maxChars)
-      identifiers.push(msuUsername)
-      identifiers.push(projectKey)
-      return identifiers.join('').toLowerCase()
+      return projectHostedSubdomain(
+        this.project.hosting,
+        this.currentUser.profile.email,
+        this.project['.key'],
+        this.projectName
+      )
     },
     projectHostedUrl () {
-      if (!this.project || !this.projectCompletion) return ''
-      if (this.projectCompletion.hostedUrl) {
-        return this.projectCompletion.hostedUrl
-      }
-      if (this.project.hosting === 'Surge') {
-        return `https://${this.projectHostedSubdomain}.surge.sh/`
-      }
-      if (this.project.hosting === 'Heroku') {
-        return `https://${this.projectHostedSubdomain}.herokuapp.com/`
-      }
-      const githubUsername = this.currentUser.profile.github.login
-      return `https://${githubUsername}.github.io/${this.projectName}/`
+      return projectHostedUrl(
+        this.currentUser.profile,
+        this.project,
+        this.projectCompletion,
+        this.projectName
+      )
     }
   }
 }
