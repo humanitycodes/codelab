@@ -1,5 +1,6 @@
 const db = require('../helpers/db').init()
 const dgen = require('../helpers/data-generator')
+const waitTime = 30000
 
 const enrolledStudent = dgen.user()
 enrolledStudent.fullName = 'Test Enrolled Student'
@@ -33,20 +34,20 @@ module.exports = {
     browser
       // Sign in
       .url(`${browser.globals.devServerURL}/email-sign-in`)
-      .waitForElementVisible('button', 5000)
+      .waitForElementVisible('button', 30000)
       .setValue('input[type=text]', enrolledStudent.email)
       .setValue('input[type=password]', db.getDefaultPassword())
       .click('button')
 
       // Navigate to course list
-      .waitForElementVisible(`.main-nav a[href^='/courses']`, 5000)
+      .waitForElementVisible(`.main-nav a[href^='/courses']`, 30000)
       .click(`.main-nav a[href^='/courses']`)
       .pause(200).refresh() // todo: Content below 'Courses' does not render w/o this. Can sometimes recreate manually.
 
       // Navigate to the course
-      .waitForElementVisible(`a[href^='/courses/${course.key}']`, 5000)
+      .waitForElementVisible(`a[href^='/courses/${course.key}']`, 30000)
       .click(`a[href^='/courses/${course.key}']`)
-      .waitForElementVisible('.lesson-graph-container', 5000)
+      .waitForElementVisible('.lesson-graph-container', 30000)
 
     // Make sure syllabus and lessons are visible
     browser.expect.element('.rendered-content').text.to.contain(course.syllabus)
@@ -56,7 +57,7 @@ module.exports = {
       // Navigate to the lesson
       .click(`a[href^='/courses/${course.key}/lessons/${lesson.key}']`)
       .pause(200).refresh() // todo: Sometimes lesson content doesn't render w/o refreshing first.
-      .waitForElementVisible('.rendered-content', 5000)
+      .waitForElementVisible('.rendered-content', 30000)
 
     // Make sure the lesson content is visible
     browser.expect.element('.rendered-content').text.to.contain(lesson.content)
@@ -71,13 +72,13 @@ module.exports = {
     browser
       // Sign in
       .url(`${baseURL}/email-sign-in`)
-      .waitForElementVisible('button', 5000)
+      .waitForElementVisible('button', 30000)
       .setValue('input[type=text]', hackerStudent.email)
       .setValue('input[type=password]', db.getDefaultPassword())
       .click('button')
 
       // Navigate to course list
-      .waitForElementVisible(`.main-nav a[href^='/courses']`, 5000)
+      .waitForElementVisible(`.main-nav a[href^='/courses']`, 30000)
       .click(`.main-nav a[href^='/courses']`)
       .pause(200).refresh() // todo: Content below 'Courses' does not render w/o this. Can sometimes recreate manually.
 
@@ -86,7 +87,7 @@ module.exports = {
 
     // Try to navigate to course anyway
     browser.url(`${baseURL}/courses/${course.key}`)
-      .waitForElementVisible(`.main-nav`, 5000)
+      .waitForElementVisible(`.main-nav`, 30000)
 
     // Should not see course content
     browser.expect.element('.rendered-content').to.not.be.present
@@ -101,16 +102,16 @@ module.exports = {
     browser
       // Sign in
       .url(`${baseURL}/email-sign-in`)
-      .waitForElementVisible('button', 5000)
+      .waitForElementVisible('button', 30000)
       .setValue('input[type=text]', enrolledStudent.email)
       .setValue('input[type=password]', db.getDefaultPassword())
       .click('button')
 
       // Navigate to course list
-      .waitForElementVisible(`.main-nav a[href^='/courses']`, 5000)
+      .waitForElementVisible(`.main-nav a[href^='/courses']`, 30000)
       .click(`.main-nav a[href^='/courses']`)
       .pause(200).refresh() // todo: Content below 'Courses' does not render w/o this. Can sometimes recreate manually.
-      .waitForElementVisible(`a[href^='/courses/${course.key}']`, 5000)
+      .waitForElementVisible(`a[href^='/courses/${course.key}']`, 30000)
 
     // New and Edit links should not be present
     browser.expect.element(`a[href^='/courses/new']`).to.not.be.present
@@ -118,14 +119,14 @@ module.exports = {
 
     // Try to create a new course via URL
     browser.url(`${baseURL}/courses/new`)
-      .waitForElementVisible(`.main-nav`, 5000)
+      .waitForElementVisible(`.main-nav`, 30000)
 
     // Should not see new course form
     browser.expect.element('.key-field').to.not.be.present
 
     // Try to edit a course via URL
     browser.url(`${baseURL}/courses/${course.key}`)
-      .waitForElementVisible(`.main-nav`, 5000)
+      .waitForElementVisible(`.main-nav`, 30000)
 
     // Should not see editable course fields
     browser.expect.element('input').to.not.be.present

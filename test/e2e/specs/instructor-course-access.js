@@ -1,6 +1,8 @@
 const randomatic = require('randomatic')
 const datefns = require('date-fns')
 
+const waitTime = 30000
+
 const db = require('../helpers/db').init()
 const dgen = require('../helpers/data-generator')
 
@@ -48,23 +50,23 @@ module.exports = {
     browser
       // Sign in
       .url(`${baseURL}/email-sign-in`)
-      .waitForElementVisible('button', 5000)
+      .waitForElementVisible('button', waitTime)
       .setValue('input[type=text]', instructor.email)
       .setValue('input[type=password]', db.getDefaultPassword())
       .click('button')
 
       // Navigate to lesson list
-      .waitForElementVisible(`.main-nav a[href^='/lessons']`, 5000)
+      .waitForElementVisible(`.main-nav a[href^='/lessons']`, waitTime)
       .click(`.main-nav a[href^='/lessons']`)
-      .waitForElementVisible(`a[href^='/lessons/new']`, 5000)
+      .waitForElementVisible(`a[href^='/lessons/new']`, waitTime)
 
       // Create new lesson
       .click(`a[href^='/lessons/new']`)
-      .waitForElementVisible('input[name=lesson-key]', 5000)
+      .waitForElementVisible('input[name=lesson-key]', waitTime)
       .setValue('select[name=lesson-category]', lessonKeyPrefix)
       .setValue('input[name=lesson-key]', lessonKeySuffix)
       .click('button')
-      .waitForElementVisible('input[name=lesson-title]', 5000)
+      .waitForElementVisible('input[name=lesson-title]', waitTime)
       .assert.urlContains(`/lessons/${lesson.key}/edit`)
 
       // Edit lesson fields
@@ -77,17 +79,17 @@ module.exports = {
       ])
 
       .setValue(`input[name=lesson-prereq-query]`, prereqLesson.title)
-      .waitForElementVisible('input[name=lesson-prereq-query] + .dropdown-results > .dropdown-result', 5000)
+      .waitForElementVisible('input[name=lesson-prereq-query] + .dropdown-results > .dropdown-result', waitTime)
       .click('input[name=lesson-prereq-query] + .dropdown-results > .dropdown-result')
 
       // Make sure the lesson is in the master list
       .click(`.main-nav a[href^='/lessons']`)
-      .waitForElementVisible(`a[href^='/lessons/new']`, 5000)
+      .waitForElementVisible(`a[href^='/lessons/new']`, waitTime)
       .assert.visible(`a[href^='/lessons/${lesson.key}/edit']`)
 
       // View the recently edited lesson
       .click(`a[href^='/lessons/${lesson.key}/edit']`)
-      .waitForElementVisible('input[name=lesson-title]', 5000)
+      .waitForElementVisible('input[name=lesson-title]', waitTime)
       .assert.value(`input[name=lesson-title]`, lesson.title)
       .assert.value(`input[name=lesson-estimated-hours]`, lesson.estimatedHours.toString())
       .assert.value(`input[name=lesson-new-learning-objective] + ol input`,
@@ -104,27 +106,27 @@ module.exports = {
     browser
       // Sign in
       .url(`${baseURL}/email-sign-in`)
-      .waitForElementVisible('button', 5000)
+      .waitForElementVisible('button', waitTime)
       .setValue('input[type=text]', instructor.email)
       .setValue('input[type=password]', db.getDefaultPassword())
       .click('button')
 
       // Navigate to course list
-      .waitForElementVisible(`.main-nav a[href^='/courses']`, 5000)
+      .waitForElementVisible(`.main-nav a[href^='/courses']`, waitTime)
       .click(`.main-nav a[href^='/courses']`)
-      .waitForElementVisible(`a[href^='/courses/new']`, 5000)
+      .waitForElementVisible(`a[href^='/courses/new']`, waitTime)
 
       // Create new course
       .click(`a[href^='/courses/new']`)
-      .waitForElementVisible('input[name=course-number]', 5000)
+      .waitForElementVisible('input[name=course-number]', waitTime)
       .setValue('select[name=course-prefix]', courseKeyDep)
       .setValue('input[name=course-number]', courseKeyNum)
       .setValue('select[name=course-semester]', courseKeySem)
       .setValue('input[name=course-year]', courseKeyYear)
       .setValue('input[name=course-section]', courseKeySec)
-      .waitForElementPresent('button:not([DISABLED])', 5000)
+      .waitForElementPresent('button:not([DISABLED])', waitTime)
       .click('button:not([DISABLED])')
-      .waitForElementVisible('input[name=course-title]', 5000)
+      .waitForElementVisible('input[name=course-title]', waitTime)
       .assert.urlContains(`/courses/${course.key}/edit`)
 
       // Edit course fields
@@ -136,21 +138,21 @@ module.exports = {
       .setValue(`input[name=course-end-date]`, datefns.format(course.endDate, 'MMDDYYYY'))
 
       .setValue(`input[name=course-student-query]`, student.fullName)
-      .waitForElementVisible('input[name=course-student-query] + .dropdown-results > .dropdown-result', 5000)
+      .waitForElementVisible('input[name=course-student-query] + .dropdown-results > .dropdown-result', waitTime)
       .click('input[name=course-student-query] + .dropdown-results > .dropdown-result')
 
       .setValue(`input[name=course-lesson-query]`, lesson.title)
-      .waitForElementVisible('input[name=course-lesson-query] + .dropdown-results > .dropdown-result', 5000)
+      .waitForElementVisible('input[name=course-lesson-query] + .dropdown-results > .dropdown-result', waitTime)
       .click('input[name=course-lesson-query] + .dropdown-results > .dropdown-result')
 
       // Make sure the course is in the master list
       .click(`.main-nav a[href^='/courses']`)
-      .waitForElementVisible(`a[href^='/courses/new']`, 5000)
+      .waitForElementVisible(`a[href^='/courses/new']`, waitTime)
       .assert.visible(`a[href^='/courses/${course.key}/edit']`)
 
       // View the recently edited course
       .click(`a[href^='/courses/${course.key}/edit']`)
-      .waitForElementVisible('input[name=course-title]', 5000)
+      .waitForElementVisible('input[name=course-title]', waitTime)
       .assert.value(`input[name=course-title]`, course.title)
       .assert.value(`input[name=course-credits]`, course.credits.toString())
       .assert.value(`input[name=course-start-date]`, datefns.format(course.startDate, 'YYYY-MM-DD'))
