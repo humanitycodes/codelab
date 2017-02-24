@@ -13,8 +13,8 @@ describe('lessons-map.vue', () => {
           startDate: Date.now()
         },
         lessons: [
-          { title: 'foo', '.key': 'js-foo', prereqKeys: [] },
-          { title: 'bar', '.key': 'js-bar', prereqKeys: [] }
+          { title: 'foo', '.key': 'js-foo', prereqKeys: [], postreqKeys: [] },
+          { title: 'bar', '.key': 'js-bar', prereqKeys: [], postreqKeys: [] }
         ]
       }
     }).$mount()
