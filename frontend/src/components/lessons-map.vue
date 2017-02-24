@@ -292,18 +292,10 @@ export default {
       return lesson['.key'].match(/^(\w+?)-/)[1]
     },
     langColor (lang) {
-      return {
-        html: '#ffc5c5',
-        css: '#d5e2ec',
-        js: '#f3e9a6'
-      }[lang]
+      return design.code.langColors.light[lang]
     },
     langColorDark (lang) {
-      return {
-        html: '#bf8f8f',
-        css: '#8ba0b1',
-        js: '#b5a53c'
-      }[lang]
+      return design.code.langColors.dark[lang]
     },
     lessonLangTag (lesson) {
       const lang = this.lessonLang(lesson)
