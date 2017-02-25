@@ -245,8 +245,10 @@ export default {
             Math.abs(startNode.y - endNode.y) / this.nodeHeight
         )
         const startNodeY = startNode.y
-        const endNodeY = startNode.y === endNode.y
-          ? endNode.y
+        const endNodeY = (
+          startNode.y === endNode.y ||
+          endNode.lesson.prereqKeys.length === 1
+        ) ? endNode.y
           : startNode.y > endNode.y
             ? endNode.y + yPull
             : endNode.y - yPull
