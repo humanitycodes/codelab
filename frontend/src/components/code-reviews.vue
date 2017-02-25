@@ -209,6 +209,10 @@ export default {
 .code-review-links
   text-align: center
 
+table
+  font-family: Lato, Verdana, Arial, sans-serif
+  font-weight: 400
+
 td .review-info-sensitive-data
   filter: blur(7px)
   transition: filter .3s
