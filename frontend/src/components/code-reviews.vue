@@ -9,7 +9,7 @@
             <th>Student</th>
             <th>Course</th>
             <th>Lesson</th>
-            <th>Ext. Links</th>
+            <th>Links</th>
           </thead>
           <tbody>
             <tr v-for="codeReview in reviewGroup.reviews">
