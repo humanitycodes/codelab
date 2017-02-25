@@ -7,16 +7,6 @@
       @click="$router.push('/')"
     />
     <ul class="main-nav-group-left">
-      <li v-if="canReadAllCourses()">
-        <router-link to="/code-reviews">
-          Code Reviews
-        </router-link>
-      </li>
-      <li v-if="canReadAllCourses()">
-        <router-link to="/student-progress">
-          Student Progress
-        </router-link>
-      </li>
       <li v-if="isUserSignedIn">
         <router-link to="/courses">
           Courses
@@ -29,6 +19,17 @@
       </li>
     </ul>
     <ul class="main-nav-group-right">
+      <li v-if="canReadAllCourses()">
+        <router-link to="/code-reviews">
+          Code Reviews
+        </router-link>
+      </li>
+      <li v-if="canReadAllCourses()">
+        <router-link to="/student-progress">
+          Student Progress
+        </router-link>
+      </li>
+      <li v-if="canReadAllCourses()" class="main-nav-separator"/>
       <li v-if="!isUserSignedIn">
         <AuthLink provider="msu">Sign in</AuthLink>
       </li>
@@ -99,6 +100,10 @@ ul
     white-space: nowrap
     &:last-child
       padding-right: 0
+    &.main-nav-separator
+      border-right: 1px solid $design.control.border.color
+      padding: 0
+      margin-right: $design.layout.gutterWidth
     >
       a
   &.main-nav-group-left
