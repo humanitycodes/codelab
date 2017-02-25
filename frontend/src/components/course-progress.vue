@@ -1,63 +1,67 @@
 <template>
   <details v-if="isCourseInProgress && studentsInCourse.length">
     <summary>{{ course['.key'] }}</summary>
-    <table>
-      <tr>
-        <th></th>
+    <table class="dashboard-info">
+      <thead>
         <th>
+          Name
+        </th>
+        <th class="numeric-cell">
           Grade Points<br>
           Expected: {{ expectedGradePoints }}
         </th>
-        <th title="The number of lesson behind/ahead the student is">
+        <th class="numeric-cell" title="The number of lesson behind/ahead the student is">
           Proj.<br>
           Delta
         </th>
-        <th title="The number of lessons that have been started, but are unapproved">
+        <th class="numeric-cell" title="The number of lessons that have been started, but are unapproved">
           Proj.<br>
           Active
         </th>
-        <th title="Maximum number of days since a project has had changes requested">
+        <th class="numeric-cell" title="Maximum number of days since a project has had changes requested">
           Days<br> Stale
         </th>
-        <th title="Maximum number of days a submitted project has gone unapproved">
+        <th class="numeric-cell" title="Maximum number of days a submitted project has gone unapproved">
           Days<br> Open
         </th>
-      </tr>
-      <tr v-for="student in studentsInCourse">
-        <td :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }">
-          <a
-            v-if="student.github"
-            :href="courseReposFor(course, student)"
-            target="_blank"
+      </thead>
+      <tbody>
+        <tr v-for="student in studentsInCourse">
+          <td :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }">
+            <a
+              v-if="student.github"
+              :href="courseReposFor(course, student)"
+              target="_blank"
+            >
+              {{ student.fullName }}
+            </a>
+            <span v-else>
+              {{ student.fullName }}
+            </span>
+          </td>
+          <td
+            class="numeric-cell"
+            :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }"
           >
-            {{ student.fullName }}
-          </a>
-          <span v-else>
-            {{ student.fullName }}
-          </span>
-        </td>
-        <td
-          class="numeric-cell"
-          :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }"
-        >
-          {{ achievedGradePoints(student) }}
-        </td>
-        <td
-          class="numeric-cell"
-          :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }"
-        >
-          {{ behindByLessonCount(student) }}
-        </td>
-        <td class="numeric-cell">
-          {{ inProgressLessonCount(student) }}
-        </td>
-        <td class="numeric-cell">
-          {{ maxDaysProjectStaleFor(student) }}
-        </td>
-        <td class="numeric-cell">
-          {{ maxDaysProjectOngoingFor(student) }}
-        </td>
-      </tr>
+            {{ achievedGradePoints(student) }}
+          </td>
+          <td
+            class="numeric-cell"
+            :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }"
+          >
+            {{ behindByLessonCount(student) }}
+          </td>
+          <td class="numeric-cell">
+            {{ inProgressLessonCount(student) }}
+          </td>
+          <td class="numeric-cell">
+            {{ maxDaysProjectStaleFor(student) }}
+          </td>
+          <td class="numeric-cell">
+            {{ maxDaysProjectOngoingFor(student) }}
+          </td>
+        </tr>
+      </tbody>
     </table>
   </details>
 </template>
@@ -169,13 +173,6 @@ export default {
 
 <style lang="stylus" scoped>
 @import '../meta'
-
-table
-  border-collapse: separate
-  empty-cells: hide
-
-.numeric-cell
-  text-align: right
 
 .warning-grade
   color: $design.branding.danger.light

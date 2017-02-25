@@ -244,6 +244,33 @@ th, td
   border: 1px solid $design.control.border.color
   background-color: $design.branding.muted.light.tan
 
+table.dashboard-info
+  font-family: Lato, Verdana, Arial, sans-serif
+  font-weight: 400
+  padding: 3px
+  background-color: $design.branding.default.light
+  border-radius: $design.control.border.radius
+  border-spacing: 0
+  border-collapse: separate
+  box-shadow: 0 0 2px 1px #ddd
+  th
+    background-color: transparent
+    border: 0
+    border-left: 1px solid $design.control.border.color
+    border-bottom: 1px solid $design.control.border.color
+    vertical-align: bottom
+  td
+    background-color: transparent
+    border: 0
+    border-left: 1px solid $design.control.border.color
+  th:first-child, td:first-child
+    border-left: 0
+  tr:nth-of-type(even)
+    background-color: darken($design.branding.default.light, 5%)
+
+.numeric-cell
+  text-align: right
+
 // -------
 // BUTTONS
 // -------
