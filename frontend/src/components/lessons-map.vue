@@ -398,6 +398,7 @@ export default {
       )
     },
     startNodeHover (node) {
+      if (node.lessonStatus.approved) return
       this.hoverTimeout = setTimeout(() => {
         this.hoveredLesson = node.lesson
       }, 500)
