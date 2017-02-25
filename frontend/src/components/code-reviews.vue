@@ -111,7 +111,6 @@ export default {
       ].join('')
     },
     getProjectHostedUrl (codeReview) {
-      console.error('lesson', codeReview.lesson)
       return projectHostedUrl(
         codeReview.student,
         codeReview.lesson.projects[0],
