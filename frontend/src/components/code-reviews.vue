@@ -3,9 +3,9 @@
     <div class="flex-col">
       <div v-for="reviewGroup in codeReviewsAwaitingFeedback">
         <h2>{{ reviewGroup.instructor.fullName }}</h2>
-        <table>
+        <table class="dashboard-info">
           <thead>
-            <th>GP</th>
+            <th class="numeric-cell">GP</th>
             <th>Student</th>
             <th>Course</th>
             <th>Lesson</th>
@@ -13,7 +13,7 @@
           </thead>
           <tbody>
             <tr v-for="codeReview in reviewGroup.reviews">
-              <td>
+              <td class="numeric-cell">
                 <span class="review-info-sensitive-data">
                   {{ codeReview.studentPoints }}
                 </span>
@@ -208,10 +208,6 @@ export default {
 
 .code-review-links
   text-align: center
-
-table
-  font-family: Lato, Verdana, Arial, sans-serif
-  font-weight: 400
 
 td .review-info-sensitive-data
   filter: blur(7px)
