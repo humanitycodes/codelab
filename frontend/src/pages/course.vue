@@ -28,6 +28,14 @@
           }}<span class="course-projected-grade-label">)</span>
         </span>
       </h1>
+      <div v-if="shouldShowStudentView && achievedGradePoints">
+        <p v-if="projectedGrade < 1" class="danger">
+          At your current rate of progress, you will <strong>not</strong> pass the course. If you're not already working with an instructor to get back on track, reach out as soon as possible.
+        </p>
+        <p v-else-if="projectedGrade < 3" class="warning">
+          At your current rate of progress, you will receive a <strong>{{ projectedGrade }}</strong> in the course. If you'd like help getting caught up, reach out to an instructor as soon as possible.
+        </p>
+      </div>
       <div v-if="shouldShowStudentView" class="flex-row">
         <div class="flex-col">
           <div class="course-meter">
@@ -91,23 +99,8 @@
           </div>
         </div>
       </div>
-      <div v-if="shouldShowStudentView && achievedGradePoints">
-        <p
-          v-if="projectedGrade < 1"
-          class="danger"
-        >
-          At your current rate of progress, you will <strong>not</strong> pass the course. If you're not already working with an instructor to get back on track, reach out as soon as possible.
-        </p>
-        <p
-          v-else-if="projectedGrade < 3"
-          class="warning"
-        >
-          At your current rate of progress, you will receive a <strong>{{ projectedGrade }}</strong> in the course. If you'd like help getting caught up, reach out to an instructor as soon as possible.
-        </p>
-      </div>
       <div class="flex-row" v-if="courseLessons.length">
         <div class="flex-col">
-          <h2>Lessons</h2>
           <LessonsMap
             :course="currentCourse"
             :lessons="courseLessons"
@@ -342,7 +335,7 @@ $course-meter-active-text-size = 1.2em
   background-color: $course-meter-grade-filled-bg
   background-image: linear-gradient(-45deg, rgba(0, 0, 0, .05) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, .05) 50%, rgba(0, 0, 0, .05) 75%, transparent 75%, transparent)
   background-size: 8px 8px
-  transition: width .3s cubic-bezier(1,.01,.51,.66)
+  transition: width .3s ease-in-out
 
 .course-grade-milestone
   width: 2px

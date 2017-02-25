@@ -8,6 +8,14 @@
         v-for="edge in lessonEdges"
         :d="edgePath(edge)"
         :style="{ stroke: langColorDark(edge.toLang) }"
+        :class="Object.assign({}, edge.endNode.lessonStatus, {
+          'postreq-selected': edgeHasSelectedPostreq(edge),
+          'other-is-selected': (
+            hoveredLesson &&
+            hoveredLesson['.key'] !== edge.endNode.lesson['.key']
+          )
+        })"
+        class="lesson-graph-edge"
       />
     </svg>
     <router-link
@@ -19,10 +27,21 @@
         minHeight: nodeHeight + 'px'
       }"
       :to="nodeClickPath(node.lesson)"
+      @mouseenter.native="startNodeHover(node)"
+      @mouseleave.native="endNodeHover(node)"
+      :class="Object.assign({}, node.lessonStatus, {
+        selected: (
+          hoveredLesson &&
+          hoveredLesson['.key'] === node.lesson['.key']
+        ),
+        'other-is-selected': (
+          hoveredLesson &&
+          hoveredLesson['.key'] !== node.lesson['.key']
+        ),
+        ['lang-' + lessonLang(node.lesson)]: true,
+        'postreq-selected': nodeHasSelectedPostreq(node)
+      })"
       class="lesson-graph-card container-link"
-      :class="lessonStatus(node.lesson)"
-      @mouseenter.native="$emit('lesson-hover', node.lesson)"
-      @mouseleave.native="$emit('lesson-hover', null)"
     >
       <router-link
         v-if="course && canUpdateLesson({ lessonKey: node.lesson['.key'] })"
@@ -51,9 +70,9 @@
           </div>
           <div class="flex-col">
             <a
-              v-if="lessonStatus(node.lesson).started"
+              v-if="node.lessonStatus.started"
               class="button inline lessons-map-project-status"
-              :class="lessonStatus(node.lesson)"
+              :class="node.lessonStatus"
               :href="
                 'https://github.com/' +
                 currentUser.profile.github.login +
@@ -67,15 +86,15 @@
               target="_blank"
               @click.stop
             >
-              <span v-if="lessonStatus(node.lesson).approved">
+              <span v-if="node.lessonStatus.approved">
                 <span class="fa fa-check"/>
                 Approved
               </span>
-              <span v-else-if="lessonStatus(node.lesson).changesRequested">
+              <span v-else-if="node.lessonStatus.changesRequested">
                 <span class="fa fa-exclamation-circle"/>
                 Changes<br>Requested
               </span>
-              <span v-else-if="lessonStatus(node.lesson).awaitingFeedback">
+              <span v-else-if="node.lessonStatus.awaitingFeedback">
                 Awaiting<br>Feedback
               </span>
               <span v-else>
@@ -116,8 +135,9 @@ export default {
       nodeWidth: 320,
       nodeHeight: 114,
       nodeMarginHorizontal: gutterWidth * 4,
-      nodeMarginVertical: gutterWidth * 1.5,
-      hoveredLesson: null
+      nodeMarginVertical: gutterWidth,
+      hoveredLesson: null,
+      hoverTimeout: null
     }
   },
   computed: {
@@ -133,7 +153,7 @@ export default {
       // so that more difficult to place nodes are given priority,
       // but language groups are still generally placed togetherq
       return sortBy(this.lessons, [
-        lesson => this.getExtendedPostreqsCount(lesson),
+        lesson => this.getExtendedPostreqs(lesson).length,
         lesson => categoryOrder.indexOf(this.lessonLang(lesson))
       ])
     },
@@ -159,6 +179,8 @@ export default {
         const lessonKey = lesson['.key']
         layout.setNode(lessonKey, {
           lesson,
+          lessonStatus: this.lessonStatus(lesson),
+          extendedPostreqs: this.getExtendedPostreqs(lesson),
           width: this.nodeWidth,
           height: this.nodeHeight
         })
@@ -248,6 +270,8 @@ export default {
         points.push({ x: endMidWayX, y: endNodeY })
         points.push({ x: endNodeX, y: endNodeY })
         return {
+          startNode,
+          endNode,
           points,
           cardsAwayCount,
           toLang: this.lessonLang(endNode.lesson)
@@ -259,7 +283,10 @@ export default {
     this.$nextTick(this.scrollToRecommendedLessons)
   },
   watch: {
-    'course.projectCompletions': 'scrollToRecommendedLessons'
+    'course.projectCompletions': 'scrollToRecommendedLessons',
+    hoveredLesson (newHoveredLesson) {
+      this.$emit('lesson-hover', newHoveredLesson)
+    }
   },
   methods: {
     canUpdateLesson,
@@ -323,15 +350,16 @@ export default {
     getProjectCompletion (lesson) {
       return getProjectCompletion(this.course, lesson)
     },
-    getExtendedPostreqsCount (lesson) {
+    getExtendedPostreqs (lesson) {
       const immediatePostreqs = lesson.postreqKeys.map(postreqKey => {
         return this.lessons.find(lesson => lesson['.key'] === postreqKey)
       }).filter(postreq => postreq)
       return (
-        immediatePostreqs.length +
-        immediatePostreqs
-          .map(postreq => this.getExtendedPostreqsCount(postreq))
-          .reduce((a, b) => a + b, 0)
+        immediatePostreqs.concat(
+          immediatePostreqs
+            .map(postreq => this.getExtendedPostreqs(postreq))
+            .reduce((a, b) => a.concat(b), [])
+        )
       )
     },
     getImmediatePrereqsCount (lesson) {
@@ -341,10 +369,40 @@ export default {
     },
     scrollToRecommendedLessons () {
       const recommendedLessonsOffsets = this.lessonNodes
-        .filter(node => this.lessonStatus(node.lesson).recommended)
+        .filter(node => node.lessonStatus.recommended)
         .map(node => this.nodeOffsetX(node))
       const minRecommendedOffset = Math.min(...recommendedLessonsOffsets)
       this.$refs.container.scrollLeft = minRecommendedOffset
+    },
+    nodeHasSelectedPostreq (node) {
+      return (
+        this.hoveredLesson &&
+        !node.lessonStatus.approved &&
+        node.extendedPostreqs.some(postreq => {
+          return postreq['.key'] === this.hoveredLesson['.key']
+        })
+      )
+    },
+    edgeHasSelectedPostreq (edge) {
+      return (
+        this.hoveredLesson &&
+        !edge.endNode.lessonStatus.approved &&
+        (
+          edge.endNode.lesson['.key'] === this.hoveredLesson['.key'] ||
+          edge.endNode.extendedPostreqs.some(postreq => {
+            return postreq['.key'] === this.hoveredLesson['.key']
+          })
+        )
+      )
+    },
+    startNodeHover (node) {
+      this.hoverTimeout = setTimeout(() => {
+        this.hoveredLesson = node.lesson
+      }, 500)
+    },
+    endNodeHover (node) {
+      clearTimeout(this.hoverTimeout)
+      this.hoveredLesson = null
     }
   }
 }
@@ -370,6 +428,10 @@ export default {
   overflow-x: auto
   padding: $design.layout.gutterWidth
 
+$lesson-card-default-opacity = .7
+$lesson-card-transition-duration = .3s
+$lesson-card-other-is-selected-opacity = .3
+$lesson-card-other-is-selected-blur = 1px
 .lesson-graph-card
   display: flex
   flex-direction: column
@@ -379,23 +441,33 @@ export default {
   background-color: $design.branding.default.light
   border: 1px solid $design.control.border.color
   border-radius: $design.control.border.radius
-  opacity: .7
-  transition: all .3s
+  opacity: $lesson-card-default-opacity
+  transition: border-color $lesson-card-transition-duration
+  &.recommended
+    opacity: 1 !important
+    box-shadow: 0 0 20px 5px rgba($design.branding.primary.light, .2)
+  &.postreq-selected
+    border-color: $design.branding.primary.light
+  &.approved
+    border-color: $design.branding.primary.light
+  &:hover
+    border-color: $design.branding.primary.light
+    box-shadow: 0 0 0 1px $design.branding.primary.light
+    height: auto !important
+    opacity: 1
+    z-index: 1
+    &.recommended
+      box-shadow: 0 0 20px 5px rgba($design.branding.primary.light, .2), 0 0 0 1px $design.branding.primary.light
+    > h3
+      white-space: normal
+  &.other-is-selected:not(.postreq-selected):not(.approved)
+    filter: blur($lesson-card-other-is-selected-blur)
+    opacity: $lesson-card-other-is-selected-opacity
   > h3
     margin-top: 0
     white-space: nowrap
     text-overflow: ellipsis
     overflow: hidden
-  &.recommended
-    opacity: 1
-    box-shadow: 0 0 20px 5px rgba($design.branding.primary.light, .2)
-  &:hover
-    border-color: $design.branding.primary.light
-    height: auto !important
-    opacity: 1
-    z-index: 1
-    > h3
-      white-space: normal
 
 .lesson-graph-card-details
   > .flex-row
@@ -445,8 +517,16 @@ export default {
   &.awaiting-feedback
     bottom: -5px
 
-path
+.lesson-graph-edge
   stroke-width: 2px
   fill: transparent
   pointer-events: none
+  transition: stroke $lesson-card-transition-duration
+  &.postreq-selected, &.approved
+    stroke-width: 3px
+    opacity: $lesson-card-default-opacity
+    stroke: $design.branding.primary.light !important
+  &.other-is-selected:not(.postreq-selected):not(.approved)
+    filter: blur($lesson-card-other-is-selected-blur)
+    opacity: $lesson-card-other-is-selected-opacity
 </style>
