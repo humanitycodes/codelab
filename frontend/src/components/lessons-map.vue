@@ -430,10 +430,12 @@ export default {
   overflow-x: auto
   padding: $design.layout.gutterWidth
 
-$lesson-card-default-opacity = .7
+$lesson-card-default-opacity = .8
 $lesson-card-transition-duration = .3s
 $lesson-card-other-is-selected-opacity = .3
 $lesson-card-other-is-selected-blur = 1px
+$lesson-card-approved-opacity = $lesson-card-default-opacity * .8
+$lesson-card-approved-bg = lighten($design.branding.muted.light.success, 50%)
 .lesson-graph-card
   display: flex
   flex-direction: column
@@ -449,9 +451,9 @@ $lesson-card-other-is-selected-blur = 1px
     opacity: 1 !important
     box-shadow: 0 0 20px 5px rgba($design.branding.primary.light, .2)
   &.postreq-selected
-    border-color: $design.branding.primary.light
+    opacity: 1
   &.approved
-    border-color: $design.branding.primary.light
+    background-color: $lesson-card-approved-bg
   &:hover
     border-color: $design.branding.primary.light
     box-shadow: 0 0 0 1px $design.branding.primary.light
@@ -512,7 +514,10 @@ $lesson-card-other-is-selected-blur = 1px
   bottom: 0
   background-color: $design.branding.muted.light.tan
   &.approved
-    background-color: $design.branding.muted.light.success
+    background-color: $lesson-card-approved-bg
+    border: 1px solid transparent
+    &:hover
+      border: 1px solid $design.control.border.color
   &.changes-requested
     background-color: $design.branding.muted.light.yellow
     bottom: -5px
@@ -524,9 +529,12 @@ $lesson-card-other-is-selected-blur = 1px
   fill: transparent
   pointer-events: none
   transition: stroke $lesson-card-transition-duration
-  &.postreq-selected, &.approved
+  &.approved
+    stroke: $design.branding.primary.light !important
+    opacity: $lesson-card-approved-opacity
+  &.postreq-selected
     stroke-width: 3px
-    opacity: $lesson-card-default-opacity
+    opacity: $lesson-card-approved-opacity
     stroke: $design.branding.primary.light !important
   &.other-is-selected:not(.postreq-selected):not(.approved)
     filter: blur($lesson-card-other-is-selected-blur)
