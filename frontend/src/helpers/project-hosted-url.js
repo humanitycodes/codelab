@@ -1,8 +1,6 @@
 import projectHostedSubdomain from '@helpers/project-hosted-subdomain'
 
 export default (userProfile, project, projectCompletion, projectName) => {
-  console.error('project', project)
-  console.error('projectCompletion', projectCompletion)
   if (!project || !projectCompletion) return ''
   if (projectCompletion.hostedUrl) {
     return projectCompletion.hostedUrl
