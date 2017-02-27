@@ -8,7 +8,7 @@
         </th>
         <th class="numeric-cell">
           Grade Points<br>
-          Expected: {{ expectedGradePoints }}
+          Expected: {{ expectedGrade }}
         </th>
         <th class="numeric-cell" title="The number of lesson behind/ahead the student is">
           Proj.<br>
@@ -43,7 +43,7 @@
             class="numeric-cell"
             :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }"
           >
-            {{ achievedGradePoints(student) }}
+            {{ getCurrentGrade(student) }}
           </td>
           <td
             class="numeric-cell"
@@ -69,9 +69,9 @@
 <script>
 import differenceInDays from 'date-fns/difference_in_days'
 import { userGetters } from '@state/helpers'
-import achievedGradePoints from '@helpers/achieved-grade-points'
-import minGradeExpectation from '@helpers/min-grade-expectation'
-import averageLessonGradePoints from '@helpers/average-lesson-grade-points'
+import courseUserGradeCurrentRounded from '@helpers/computed/course-user-grade-current-rounded'
+import courseGradeMinExpectedRounded from '@helpers/computed/course-grade-min-expected-rounded'
+import courseAverageLessonGradePointsReal from '@helpers/computed/course-average-lesson-grade-points-real'
 
 export default {
   props: {
@@ -87,8 +87,8 @@ export default {
   },
   computed: {
     ...userGetters,
-    expectedGradePoints () {
-      return Number(minGradeExpectation(this.course)).toFixed(2)
+    expectedGrade () {
+      return courseGradeMinExpectedRounded(this.course)
     },
     isCourseInProgress () {
       const now = Date.now()
@@ -98,8 +98,8 @@ export default {
       return this.course.studentKeys.map(studentKey => {
         return this.users.find(user => user['.key'] === studentKey)
       }).sort((student1, student2) => {
-        const student1Progress = this.achievedGradePoints(student1)
-        const student2Progress = this.achievedGradePoints(student2)
+        const student1Progress = this.getCurrentGrade(student1)
+        const student2Progress = this.getCurrentGrade(student2)
 
         // Sort by course progress, then by name
         if (student1Progress === student2Progress) {
@@ -110,13 +110,15 @@ export default {
     }
   },
   methods: {
-    achievedGradePoints (student) {
-      const gpa = achievedGradePoints(student, this.course)
-      return Number(gpa).toFixed(2)
+    getCurrentGrade (student) {
+      return courseUserGradeCurrentRounded(this.course, student)
     },
     behindByLessonCount (student) {
-      const achievedGradePoints = this.achievedGradePoints(student)
-      return Math.round((achievedGradePoints - this.expectedGradePoints) / averageLessonGradePoints(this.course))
+      const currentGrade = this.getCurrentGrade(student)
+      return Math.round(
+        (currentGrade - this.expectedGrade) /
+        courseAverageLessonGradePointsReal(this.course)
+      )
     },
     inProgressLessonCount (student) {
       return this.course.projectCompletions.filter(completion => {

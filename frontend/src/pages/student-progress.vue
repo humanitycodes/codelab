@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    <h1>Course Progress</h1>
+    <h1>Student Progress</h1>
     <CourseProgress v-for="course in sortByCourseKey(courses)" :course="course"/>
   </Layout>
 </template>

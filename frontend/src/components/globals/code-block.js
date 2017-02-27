@@ -1,4 +1,4 @@
-import { highlight, highlightAuto } from '@helpers/syntax-highlight'
+import { highlight, highlightAuto } from '@helpers/utils/dom/syntax-highlight'
 
 export default {
   render (h) {

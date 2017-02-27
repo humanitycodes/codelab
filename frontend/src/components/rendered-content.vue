@@ -40,8 +40,8 @@
 <script>
 import compact from 'lodash/compact'
 import chunk from 'lodash/chunk'
-import { highlight, highlightAuto, codeExtensions } from '@helpers/syntax-highlight'
-import toHtml from '@helpers/to-html'
+import { highlight, highlightAuto, codeExtensions } from '@helpers/utils/dom/syntax-highlight'
+import convertRichContentToHtml from '@helpers/utils/convert-rich-content-to-html'
 
 export default {
   components: {
@@ -133,7 +133,7 @@ export default {
   },
   computed: {
     contentHtml () {
-      return toHtml(this.content)
+      return convertRichContentToHtml(this.content)
     },
     pages () {
       return chunk(compact(this.contentHtml.split(/<h2>(.+?)<\/h2>/)), 2).map(page => {

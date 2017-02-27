@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import suggestedCourseKey from '@helpers/suggested-resource-key'
+import getSuggestedKey from '@helpers/utils/get-suggested-key'
 import { courseGetters } from '@state/helpers'
 
 export default {
@@ -16,7 +16,10 @@ export default {
       return this.$route.params.courseKey
     },
     suggestedKey () {
-      return suggestedCourseKey(this.badKey, this.courses)
+      return getSuggestedKey(
+        this.badKey,
+        this.courses.map(course => course['.key'])
+      )
     },
     suggestedLink () {
       return this.$route.fullPath.replace(this.badKey, this.suggestedKey)

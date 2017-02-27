@@ -56,7 +56,7 @@
 
 <script>
 import { userGetters } from '@state/helpers'
-import buildDirectoryTree from '@helpers/directory-tree-builders/us-geography'
+import buildDirectoryTree from '@helpers/utils/directory-tree-builders/us-geography'
 const stateCapitolsDirectoryTree = buildDirectoryTree()
 const randomStateGoal = currentStateGoal => {
   const getRandomState = () => {

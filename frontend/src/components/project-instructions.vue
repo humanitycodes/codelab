@@ -15,10 +15,10 @@
 
 <script>
 import { userGetters } from '@state/helpers'
-import projectName from '@helpers/project-name'
-import projectRepoUrl from '@helpers/project-repo-url'
-import projectHostedSubdomain from '@helpers/project-hosted-subdomain'
-import projectHostedUrl from '@helpers/project-hosted-url'
+import courseProjectCompletionRepoName from '@helpers/computed/course-project-completion-repo-name'
+import courseProjectCompletionRepoUrl from '@helpers/computed/course-project-completion-repo-url'
+import courseProjectCompletionHostedSubdomain from '@helpers/computed/course-project-completion-hosted-subdomain'
+import courseProjectCompletionHostedUrl from '@helpers/computed/course-project-completion-hosted-url'
 
 const statusInstructions = {
   unstarted: require('./project-instructions-unstarted'),
@@ -58,28 +58,31 @@ export default {
       return this.projectCompletion ? 'project-instructions' : ''
     },
     projectName () {
-      return projectName(this.course, this.lesson, this.project)
+      if (!this.projectCompletion) return
+      return courseProjectCompletionRepoName(
+        this.course,
+        this.projectCompletion
+      )
     },
     projectRepoUrl () {
-      return projectRepoUrl(
-        this.currentUser.profile.github.login,
-        this.projectName
+      if (!this.projectCompletion) return
+      return courseProjectCompletionRepoUrl(
+        this.course,
+        this.projectCompletion
       )
     },
     projectHostedSubdomain () {
-      return projectHostedSubdomain(
-        this.project.hosting,
-        this.currentUser.profile.email,
-        this.project['.key'],
-        this.projectName
+      if (!this.projectCompletion) return
+      return courseProjectCompletionHostedSubdomain(
+        this.course,
+        this.projectCompletion
       )
     },
     projectHostedUrl () {
-      return projectHostedUrl(
-        this.currentUser.profile,
-        this.project,
-        this.projectCompletion,
-        this.projectName
+      if (!this.projectCompletion) return
+      return courseProjectCompletionHostedUrl(
+        this.course,
+        this.projectCompletion
       )
     }
   }

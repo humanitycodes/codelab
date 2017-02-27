@@ -38,7 +38,7 @@
                   <span class="fa fa-code" aria-hidden="true"></span>
                 </a>
                 &nbsp;
-                <a :href="getProjectHostedUrl(codeReview)" target="_blank" class="icon-link" alt="Open the hosted site in a new tab" title="View the hosted site">
+                <a :href="getHostedUrl(codeReview)" target="_blank" class="icon-link" alt="Open the hosted site in a new tab" title="View the hosted site">
                   <span class="fa fa-globe" aria-hidden="true"></span>
                 </a>
               </td>
@@ -46,7 +46,7 @@
                 v-if="reviewGroup.instructor['.key'] === currentUser.uid"
                 class="review-reassignment-control"
               >
-                <select v-model="codeReview.project.submission.assignedInstructor">
+                <select v-model="codeReview.projectCompletion.submission.assignedInstructor">
                   <option
                     v-for="instructorKey in codeReview.course.instructorKeys"
                     :value="instructorKey"
@@ -70,9 +70,9 @@
 import {
   coursePermissionMethods, userGetters, lessonGetters
 } from '@state/helpers'
-import achievedGradePoints from '@helpers/achieved-grade-points'
-import projectName from '@helpers/project-name'
-import projectHostedUrl from '@helpers/project-hosted-url'
+import courseUserGradeCurrentRounded from '@helpers/computed/course-user-grade-current-rounded'
+import courseProjectCompletionRepoName from '@helpers/computed/course-project-completion-repo-name'
+import courseProjectCompletionHostedUrl from '@helpers/computed/course-project-completion-hosted-url'
 import store from '@state/store'
 import sortBy from 'lodash/sortBy'
 
@@ -99,7 +99,7 @@ export default {
         'https://github.com/',
         codeReview.student.github.login,
         '/',
-        this.getProjectName(codeReview)
+        this.getRepoName(codeReview)
       ].join('')
     },
     getCourseLessonUrl (codeReview) {
@@ -110,19 +110,16 @@ export default {
         codeReview.lesson['.key']
       ].join('')
     },
-    getProjectHostedUrl (codeReview) {
-      return projectHostedUrl(
-        codeReview.student,
-        codeReview.lesson.projects[0],
-        codeReview.project,
-        this.getProjectName(codeReview)
+    getHostedUrl (codeReview) {
+      return courseProjectCompletionHostedUrl(
+        codeReview.course,
+        codeReview.projectCompletion,
       )
     },
-    getProjectName (codeReview) {
-      return projectName(
+    getRepoName (codeReview) {
+      return courseProjectCompletionRepoName(
         codeReview.course,
-        codeReview.lesson,
-        codeReview.project
+        codeReview.projectCompletion
       )
     },
     humanizeCourseKey (key) {
@@ -157,27 +154,27 @@ export default {
       // Collection information about pending code reviews, grouped by instructor
       let instructorReviews = {}
       this.courses.forEach(course => {
-        course.projectCompletions.forEach(project => {
-          if (!project.submission || project.submission.instructorCommentedLast) return
+        course.projectCompletions.forEach(projectCompletion => {
+          if (!projectCompletion.submission || projectCompletion.submission.instructorCommentedLast) return
 
-          // Handle edge case where a project has been submitted without an
-          // assigned instructor. Should only ever happen when manually
-          // manipulating the database.
-          if (!project.submission.assignedInstructor) {
-            project.submission.assignedInstructor = course.instructorKeys[0]
+          // Handle edge case where a project completion has been submitted
+          // without an assigned instructor. Should only ever happen when
+          // manually manipulating the database.
+          if (!projectCompletion.submission.assignedInstructor) {
+            projectCompletion.submission.assignedInstructor = course.instructorKeys[0]
           }
 
-          if (!instructorReviews[project.submission.assignedInstructor]) {
-            instructorReviews[project.submission.assignedInstructor] = []
+          if (!instructorReviews[projectCompletion.submission.assignedInstructor]) {
+            instructorReviews[projectCompletion.submission.assignedInstructor] = []
           }
 
-          const student = this.getUser(project.students[0]['.key'])
-          instructorReviews[project.submission.assignedInstructor].push({
+          const student = this.getUser(projectCompletion.students[0]['.key'])
+          instructorReviews[projectCompletion.submission.assignedInstructor].push({
             course,
-            project,
+            projectCompletion,
             student,
-            lesson: this.getLesson(project.lessonKey),
-            studentPoints: achievedGradePoints(student, course)
+            lesson: this.getLesson(projectCompletion.lessonKey),
+            studentPoints: courseUserGradeCurrentRounded(course, student)
           })
         })
       })
