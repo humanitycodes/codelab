@@ -5,9 +5,9 @@
 <script>
 import env from '@env'
 import store from '@state/store'
-import requiredGitHubScopes from '@helpers/required-github-scopes'
+import requiredGitHubScopes from '@constants/github-scopes'
 
-const githubScopesPath = encodeURIComponent(requiredGitHubScopes().join(' '))
+const githubScopesPath = encodeURIComponent(requiredGitHubScopes.join(' '))
 
 export default {
   props: {

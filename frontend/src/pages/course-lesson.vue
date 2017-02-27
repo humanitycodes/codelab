@@ -42,12 +42,12 @@
     >
       <h2>
         Project:
-        <span v-html="toInlineHtml(currentLesson.projects[0].title)"/>
+        <span v-html="convertRichContentToInlineHtml(currentLesson.projects[0].title)"/>
       </h2>
       <ol v-if="currentLesson.projects[0].criteria.length">
         <li
           v-for="criterion in currentLesson.projects[0].criteria"
-          v-html="toInlineHtml(criterion.content)"
+          v-html="convertRichContentToInlineHtml(criterion.content)"
         />
       </ol>
       <p v-else>No criteria for this project yet.</p>
@@ -77,9 +77,9 @@ import ProjectSubmissionFlow from '@components/project-submission-flow'
 import {
   userGetters, courseGetters, lessonGetters, courseLessonGetters
 } from '@state/helpers'
-import roundedCourseLessonGradePoints from '@helpers/rounded-course-lesson-grade-points'
-import toInlineHtml from '@helpers/to-inline-html'
-import getScrollTop from '@helpers/get-scroll-top'
+import courseLessonGradePointsRounded from '@helpers/computed/course-lesson-grade-points-rounded'
+import convertRichContentToInlineHtml from '@helpers/utils/convert-rich-content-to-inline-html'
+import getScrollTop from '@helpers/utils/dom/get-scroll-top'
 
 export default {
   components: {
@@ -116,7 +116,10 @@ export default {
       return this.currentUser.profile.github && !this.hasNewGitHubScopes
     },
     gradePoints () {
-      return roundedCourseLessonGradePoints(this.currentCourse, this.currentLesson)
+      return courseLessonGradePointsRounded(
+        this.currentCourse,
+        this.currentLesson
+      )
     }
   },
   watch: {
@@ -135,7 +138,7 @@ export default {
     }
   },
   methods: {
-    toInlineHtml,
+    convertRichContentToInlineHtml,
     updateCurrentPage (newPage) {
       const newUrl = (
         '/courses/' +

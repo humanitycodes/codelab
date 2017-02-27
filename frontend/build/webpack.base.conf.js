@@ -44,6 +44,7 @@ module.exports = {
       '@plugins': path.resolve(__dirname, '../src/plugins'),
       '@state': path.resolve(__dirname, '../src/state'),
       '@helpers': path.resolve(__dirname, '../src/helpers'),
+      '@constants': path.resolve(__dirname, '../src/constants'),
       '@env': chooseEnvironmentFile()
     }
   },

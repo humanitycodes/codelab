@@ -3,7 +3,7 @@ import firebase from 'firebase'
 import db from '@plugins/firebase'
 import jwtDecode from 'jwt-decode'
 import { createFirebaseVM } from './_helpers'
-import requiredGitHubScopes from '@helpers/required-github-scopes'
+import requiredGitHubScopes from '@constants/github-scopes'
 import Axios from 'axios'
 
 const syncCache = {}
@@ -22,7 +22,7 @@ export default {
 
       if (state.currentUser.profile.github) {
         const userScopes = state.currentUser.profile.github.scope.split(',')
-        return !isEqual(requiredGitHubScopes().sort(), userScopes.sort())
+        return !isEqual(requiredGitHubScopes.sort(), userScopes.sort())
       }
       return true
     }

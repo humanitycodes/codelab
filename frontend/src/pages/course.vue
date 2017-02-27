@@ -18,7 +18,7 @@
       <h1>
         {{ currentCourse.title }}
         <span
-          v-if="shouldShowStudentView && achievedGradePoints"
+          v-if="shouldShowStudentView && currentGrade"
           class="course-projected-grade"
         >
           <span class="course-projected-grade-label">
@@ -28,7 +28,7 @@
           }}<span class="course-projected-grade-label">)</span>
         </span>
       </h1>
-      <div v-if="shouldShowStudentView && achievedGradePoints">
+      <div v-if="shouldShowStudentView && currentGrade">
         <p v-if="projectedGrade < 1" class="danger">
           At your current rate of progress, you will <strong>not</strong> pass the course. If you're not already working with an instructor to get back on track, reach out as soon as possible.
         </p>
@@ -42,29 +42,29 @@
             <div class="course-meter-text">{{ formattedStartDate }}</div>
             <div
               class="meter-percent-through-course"
-              :style="{ width: percentThroughCourse + '%' }"
+              :style="{ width: coursePercentThrough + '%' }"
             />
             <div class="course-meter-text">{{ formattedEndDate }}</div>
           </div>
           <div class="course-meter">
             <div
               class="course-meter-text"
-              :class="{ active: achievedGradePoints < gradeMilestones[0] }"
+              :class="{ active: currentGrade < gradeMilestones[0] }"
             >0</div>
             <div
               v-if="projectedGrade"
-              :style="{ width: projectedPercentToMaxGrade + '%' }"
+              :style="{ width: courseUserProjectedPercentToMaxGrade + '%' }"
               class="meter-projected-percent-to-max-grade"
             />
             <div
               :style="{
-                left: percentToMaxGrade + '%',
+                left: courseUserPercentToMaxGrade + '%',
                 width: percentGradeAddedWithHoveredLesson + '%'
               }"
               class="meter-percent-to-max-grade-with-hovered-lesson"
             />
             <div
-              :style="{ width: percentToMaxGrade + '%' }"
+              :style="{ width: courseUserPercentToMaxGrade + '%' }"
               class="meter-percent-to-max-grade"
             />
             <div
@@ -73,16 +73,16 @@
               :style="{ left: milestone / maxGrade * 100 + '%' }"
               :class="{
                 active: (
-                  achievedGradePoints >= milestone &&
-                  achievedGradePoints < maxGrade &&
-                  achievedGradePoints < gradeMilestones[milestoneIndex + 1]
+                  currentGrade >= milestone &&
+                  currentGrade < maxGrade &&
+                  currentGrade < gradeMilestones[milestoneIndex + 1]
                 )
               }"
               class="course-grade-milestone"
             />
             <div
               class="course-meter-text"
-              :class="{ active: achievedGradePoints >= maxGrade }"
+              :class="{ active: currentGrade >= maxGrade }"
             >{{ maxGrade.toFixed(1) }}</div>
           </div>
         </div>
@@ -133,17 +133,18 @@ import CourseNotFound from '@components/course-not-found'
 import LessonsMap from '@components/lessons-map'
 import RenderedContent from '@components/rendered-content'
 import { userGetters, courseGetters, lessonGetters } from '@state/helpers'
-import achievedGradePoints from '@helpers/achieved-grade-points'
-import totalDaysInCourse from '@helpers/total-days-in-course'
-import daysSoFarInCourse from '@helpers/days-so-far-in-course'
-import percentThroughCourse from '@helpers/percent-through-course'
-import percentToMaxGrade from '@helpers/percent-to-max-grade'
-import minGradeExpectation from '@helpers/min-grade-expectation'
-import projectedGrade from '@helpers/projected-grade'
-import projectedPercentToMaxGrade from '@helpers/projected-percent-to-max-grade'
-import courseLessonGradePoints from '@helpers/course-lesson-grade-points'
-import { maxGrade, gradeMilestones } from '@helpers/grades'
-import courseLessonStatus from '@helpers/course-lesson-status'
+import courseUserGradeCurrentRounded from '@helpers/computed/course-user-grade-current-rounded'
+import courseDaysTotal from '@helpers/computed/course-days-total'
+import courseDaysSoFar from '@helpers/computed/course-days-so-far'
+import coursePercentThrough from '@helpers/computed/course-percent-through'
+import courseUserPercentToMaxGrade from '@helpers/computed/course-user-percent-to-max-grade'
+import courseGradeMinExpectedRounded from '@helpers/computed/course-grade-min-expected-rounded'
+import courseUserGradeProjectedReported from '@helpers/computed/course-user-grade-projected-reported'
+import courseUserProjectedPercentToMaxGrade from '@helpers/computed/course-user-projected-percent-to-max-grade'
+import courseLessonGradePointsReal from '@helpers/computed/course-lesson-grade-points-real'
+import maxGrade from '@constants/grade-max'
+import gradeMilestones from '@constants/grade-milestones'
+import courseLessonUserStatus from '@helpers/computed/course-lesson-user-status'
 
 const dateFormat = 'MMMM Do, YYYY'
 
@@ -196,30 +197,30 @@ export default {
     shouldShowStudentView () {
       return this.currentUserIsStudent || this.studentViewForced
     },
-    achievedGradePoints () {
-      return achievedGradePoints(this.currentUser, this.currentCourse)
+    currentGrade () {
+      return courseUserGradeCurrentRounded(this.currentCourse, this.currentUser)
     },
-    totalDaysInCourse () {
-      return totalDaysInCourse(this.currentCourse)
+    courseDaysTotal () {
+      return courseDaysTotal(this.currentCourse)
     },
-    daysSoFarInCourse () {
-      return daysSoFarInCourse(this.currentCourse)
+    courseDaysSoFar () {
+      return courseDaysSoFar(this.currentCourse)
     },
-    minGradeExpectation () {
-      return minGradeExpectation(this.currentCourse)
+    courseGradeMinExpectedRounded () {
+      return courseGradeMinExpectedRounded(this.currentCourse)
     },
-    percentThroughCourse () {
-      return percentThroughCourse(this.currentCourse)
+    coursePercentThrough () {
+      return coursePercentThrough(this.currentCourse)
     },
-    percentToMaxGrade () {
-      return percentToMaxGrade(this.currentUser, this.currentCourse)
+    courseUserPercentToMaxGrade () {
+      return courseUserPercentToMaxGrade(this.currentCourse, this.currentUser)
     },
     percentGradeAddedWithHoveredLesson () {
       if (
         !this.hoveredLesson ||
         this.hoveredLessonStatus.approved
       ) return 0
-      let addedGradePoints = courseLessonGradePoints(this.currentCourse, this.hoveredLesson)
+      let addedGradePoints = courseLessonGradePointsReal(this.currentCourse, this.hoveredLesson)
       const alreadyAddedLessons = {}
       const addGradePointsOfPrereqs = lesson => {
         if (lesson.prereqKeys) {
@@ -227,9 +228,9 @@ export default {
             const prereq = this.courseLessons.find(lesson => {
               return lesson['.key'] === prereqKey
             })
-            const prereqStatus = courseLessonStatus(this.currentCourse, prereq)
+            const prereqStatus = courseLessonUserStatus(this.currentCourse, prereq, this.currentUser)
             if (!prereqStatus.approved && !alreadyAddedLessons[prereq['.key']]) {
-              addedGradePoints += courseLessonGradePoints(this.currentCourse, prereq)
+              addedGradePoints += courseLessonGradePointsReal(this.currentCourse, prereq)
               alreadyAddedLessons[prereq['.key']] = true
               addGradePointsOfPrereqs(prereq)
             }
@@ -239,14 +240,14 @@ export default {
       addGradePointsOfPrereqs(this.hoveredLesson)
       return addedGradePoints / maxGrade * 100
     },
-    projectedPercentToMaxGrade () {
-      return projectedPercentToMaxGrade(this.currentUser, this.currentCourse)
+    courseUserProjectedPercentToMaxGrade () {
+      return courseUserProjectedPercentToMaxGrade(this.currentCourse, this.currentUser)
     },
     projectedGrade () {
-      return projectedGrade(this.currentUser, this.currentCourse)
+      return courseUserGradeProjectedReported(this.currentCourse, this.currentUser)
     },
     hoveredLessonStatus () {
-      return courseLessonStatus(this.currentCourse, this.hoveredLesson)
+      return courseLessonUserStatus(this.currentCourse, this.hoveredLesson, this.currentUser)
     }
   },
   methods: {

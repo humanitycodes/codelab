@@ -115,9 +115,9 @@ import sortBy from 'lodash/sortBy'
 import { canUpdateLesson } from '@state/auth/lessons'
 import { userGetters } from '@state/helpers'
 import design from '@config/design'
-import roundedCourseLessonGradePoints from '@helpers/rounded-course-lesson-grade-points'
-import courseLessonStatus from '@helpers/course-lesson-status'
-import getProjectCompletion from '@helpers/get-project-completion'
+import courseLessonGradePointsRounded from '@helpers/computed/course-lesson-grade-points-rounded'
+import courseLessonUserStatus from '@helpers/computed/course-lesson-user-status'
+import courseLessonUserProjectCompletion from '@helpers/finders/course-lesson-user-project-completion'
 
 const gutterWidth = parseInt(design.layout.gutterWidth)
 
@@ -326,7 +326,7 @@ export default {
     },
     lessonStatus (lesson) {
       if (!this.course) return {}
-      return courseLessonStatus(this.course, lesson)
+      return courseLessonUserStatus(this.course, lesson, this.currentUser)
     },
     lessonLang (lesson) {
       return lesson['.key'].match(/^(\w+?)-/)[1]
@@ -347,10 +347,10 @@ export default {
       `
     },
     lessonGradePoints (lesson) {
-      return roundedCourseLessonGradePoints(this.course, lesson)
+      return courseLessonGradePointsRounded(this.course, lesson)
     },
     getProjectCompletion (lesson) {
-      return getProjectCompletion(this.course, lesson)
+      return courseLessonUserProjectCompletion(this.course, lesson, this.currentUser)
     },
     getExtendedPostreqs (lesson) {
       const immediatePostreqs = lesson.postreqKeys.map(postreqKey => {

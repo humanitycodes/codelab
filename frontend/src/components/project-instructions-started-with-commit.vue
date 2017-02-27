@@ -26,7 +26,7 @@
     <p>Final step! But first, make sure you've met the following criteria (check each box to confirm):</p>
     <label v-for="criterion in project.criteria" class="with-inline-input">
       <input type="checkbox" v-model="metCriteria[criterion['.key']]">
-      <span v-html="toInlineHtml(criterion.content)"/>
+      <span v-html="convertRichContentToInlineHtml(criterion.content)"/>
     </label>
 
     <button
@@ -45,7 +45,7 @@ import QueryString from 'querystring'
 import { userGetters } from '@state/helpers'
 import ProjectCompletionUpdateInstructions from './project-completion-update-instructions'
 import ProjectCompletionLinks from './project-completion-links'
-import toInlineHtml from '@helpers/to-inline-html'
+import convertRichContentToInlineHtml from '@helpers/utils/convert-rich-content-to-inline-html'
 
 export default {
   components: {
@@ -104,7 +104,7 @@ export default {
     }
   },
   methods: {
-    toInlineHtml,
+    convertRichContentToInlineHtml,
     submitForReview () {
       const criteria = this.project.criteria.map(criterion => criterion.content)
 
