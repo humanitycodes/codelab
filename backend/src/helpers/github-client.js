@@ -10,7 +10,11 @@ function getFromGitHub (path, token) {
       Accept: 'application/vnd.github.v3+json',
       Authorization: `token ${token}`
     }
-  }).then(response => response.data)
+  })
+  .then(response => response.data)
+  .catch(error => {
+    throw new Error(`GET ${path} failed. Reason: ${error}`)
+  })
 }
 
 function postToGitHub (path, token, body) {
@@ -22,7 +26,11 @@ function postToGitHub (path, token, body) {
       Authorization: `token ${token}`
     },
     data: body
-  }).then(response => response.data)
+  })
+  .then(response => response.data)
+  .catch(error => {
+    throw new Error(`POST ${path} failed. Reason: ${error}`)
+  })
 }
 
 export function getUserProfile (token) {
@@ -38,11 +46,11 @@ export function getRepository (token, { owner, repo }) {
 }
 
 export function getCommits (token, { owner, repo }) {
-  return getFromGitHub(`/repos/${owner}/${repo}/commits`)
+  return getFromGitHub(`/repos/${owner}/${repo}/commits`, token)
 }
 
 export function getIssueComments (token, { owner, repo, issueNumber }) {
-  return getFromGitHub(`/repos/${owner}/${repo}/issues/${issueNumber}/comments`)
+  return getFromGitHub(`/repos/${owner}/${repo}/issues/${issueNumber}/comments`, token)
 }
 
 export function createWebhooks (token, { owner, repo }) {
