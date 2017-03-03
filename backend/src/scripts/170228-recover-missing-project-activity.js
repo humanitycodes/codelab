@@ -47,14 +47,20 @@ const fetchStudentGitHubInfo = projectCompletion => {
 const updateCommittedFields = (token, {
   courseKey, githubLogin, projectCompletionKey, projectCompletion
 }) => {
-  if (projectCompletion.committed) return Promise.resolve()
+  if (projectCompletion.committed) return
 
   const owner = githubLogin
-  const repo = computeRepoName(token, { courseKey, projectCompletion })
+  const repo = computeRepoName(courseKey, projectCompletion)
 
-  getCommits(token, { owner, repo })
+  return getCommits(token, { owner, repo })
     .then(commits => {
-      if (!commits || !commits.length) return Promise.resolve()
+      if (!commits || !commits.length) return
+
+      const firstCommit = commits.reduce((commit1, commit2) => {
+        const committedAt1 = new Date(commit1.commit.author.date).getTime()
+        const committedAt2 = new Date(commit2.commit.author.date).getTime()
+        return committedAt1 < committedAt2 ? commit1 : commit2
+      })
 
       console.log(
         'Updating committed fields for course',
@@ -63,18 +69,12 @@ const updateCommittedFields = (token, {
         projectCompletionKey,
       )
 
-      const firstCommittedAt = commits.reduce((commit1, commit2) => {
-        const committedAt1 = new Date(commit1.commit.author.date).getTime()
-        const committedAt2 = new Date(commit2.commit.author.date).getTime()
-        return Math.min(committedAt1, committedAt2)
-      })
-
       return db.ref('courses/fieldGroups/large/student')
         .child(courseKey)
         .child('projectCompletions')
         .child(projectCompletionKey)
         .update({
-          firstCommittedAt: firstCommittedAt,
+          firstCommittedAt: new Date(firstCommit.commit.author.date).getTime(),
           committed: true
         })
         .then(() => {
@@ -84,7 +84,6 @@ const updateCommittedFields = (token, {
             'and project completion',
             projectCompletionKey,
           )
-          return Promise.resolve()
         })
     })
     .catch(error => {
@@ -98,21 +97,14 @@ const updateCommittedFields = (token, {
 const updateLastCommentFields = (token, {
   courseKey, githubLogin, projectCompletionKey, projectCompletion
 }) => {
-  if (!projectCompletion.submission) return Promise.resolve()
+  if (!projectCompletion.submission) return
 
   const owner = githubLogin
-  const repo = computeRepoName(token, { courseKey, projectCompletion })
+  const repo = computeRepoName(courseKey, projectCompletion)
 
-  console.log(
-    'Updating last commented fields for course',
-    courseKey,
-    'and project completion',
-    projectCompletionKey,
-  )
-
-  getIssueComments(token, { owner, repo, issueNumber: 1 })
+  return getIssueComments(token, { owner, repo, issueNumber: 1 })
     .then(comments => {
-      if (!comments || !comments.length) return Promise.resolve()
+      if (!comments || !comments.length) return
 
       const lastComment = comments.reduce((comment1, comment2) => {
         const commentedAt1 = new Date(comment1.updated_at).getTime()
@@ -124,7 +116,7 @@ const updateLastCommentFields = (token, {
         lastCommentedAt: new Date(lastComment.updated_at).getTime()
       }
 
-      readInstructorsByCourseKey(courseKey)
+      return readInstructorsByCourseKey(courseKey)
         .then(instructorMap => {
           let instructorGitHubLogins = []
           Object.keys(instructorMap).forEach(instructorUid => {
@@ -136,8 +128,14 @@ const updateLastCommentFields = (token, {
 
           commentValues.instructorCommentedLast =
             instructorGitHubLogins.indexOf[lastComment.user.login] >= 0
-        })
-        .then(() => {
+
+            console.log(
+              'Updating last commented fields for course',
+              courseKey,
+              'and project completion',
+              projectCompletionKey,
+            )
+
           return db.ref('courses/fieldGroups/large/student')
             .child(courseKey)
             .child('projectCompletions')
@@ -151,12 +149,47 @@ const updateLastCommentFields = (token, {
                 'and project completion',
                 projectCompletionKey,
               )
-              return Promise.resolve()
             })
+            .catch(error => {
+              throw new Error(`Firebase error: ${error}`)
+            })
+        })
+        .catch(error => {
+          throw new Error(`Unable to retrieve instructors: ${error}`)
         })
     })
     .catch(error => {
       throw new Error(`Unable to update last commented fields. Reason: ${error}`)
+    })
+}
+
+const recoverProjectActivity = (courseKey, projectCompletionKey, projectCompletion) => {
+  return fetchStudentGitHubInfo(projectCompletion)
+    .then(githubUser => {
+      return Promise.all([
+        updateCommittedFields(githubUser.token, {
+          courseKey: courseKey,
+          githubLogin: githubUser.login,
+          projectCompletionKey: projectCompletionKey,
+          projectCompletion: projectCompletion
+        }),
+        updateLastCommentFields(githubUser.token, {
+          courseKey: courseKey,
+          githubLogin: githubUser.login,
+          projectCompletionKey: projectCompletionKey,
+          projectCompletion: projectCompletion
+        })
+      ])
+    })
+    .catch(error => {
+      console.error(
+        'Unable to recover project activity for course',
+        courseKey,
+        'and project completion',
+        projectCompletionKey,
+        'Reason:',
+        error.message
+      )
     })
 }
 
@@ -166,6 +199,7 @@ db.ref('courses/fieldGroups/large/student')
   .orderByChild('projectCompletions')
   .once('value')
   .then(allCoursesSnapshot => {
+    let updates = []
     allCoursesSnapshot.forEach(courseSnapshot => {
       courseSnapshot.forEach(allProjectCompletionsSnapshot => {
         allProjectCompletionsSnapshot.forEach(projectCompletionSnapshot => {
@@ -173,41 +207,21 @@ db.ref('courses/fieldGroups/large/student')
           const projectCompletion = projectCompletionSnapshot.val()
           const courseKey = courseSnapshot.key
 
-          fetchStudentGitHubInfo(projectCompletion)
-            .then(githubUser => {
-              const githubLogin = githubUser.login
-
-              return Promise.all([
-                updateCommittedFields(githubUser.token, {
-                  courseKey,
-                  githubLogin,
-                  projectCompletionKey,
-                  projectCompletion
-                }),
-                updateLastCommentFields(githubUser.token, {
-                  courseKey,
-                  githubLogin,
-                  projectCompletionKey,
-                  projectCompletion
-                })
-              ])
-            })
-            .catch(error => {
-              console.error(
-                'Unable to recover project activity for course',
-                courseKey,
-                'and project completion',
-                projectCompletionKey,
-                'Reason:',
-                error.message
-              )
-            })
+          updates.push(recoverProjectActivity(
+            courseKey,
+            projectCompletionKey,
+            projectCompletion
+          ))
         })
       })
     })
+    Promise.all(updates).then(() => {
+      // The most terrifying function name to cleanly disconnect from a service ever
+      app.delete()
+      console.log('Done recovering missing project activity!')
+    })
   })
-  .then(() => {
-    // The most terrifying function name to cleanly disconnect from a service ever
+  .catch(error => {
     app.delete()
-    console.log('Done recovering missing project activity!')
+    console.error('Unhandled error encountered:', error)
   })
