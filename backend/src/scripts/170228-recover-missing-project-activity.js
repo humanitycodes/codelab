@@ -129,12 +129,12 @@ const updateLastCommentFields = (token, {
           commentValues.instructorCommentedLast =
             instructorGitHubLogins.indexOf[lastComment.user.login] >= 0
 
-            console.log(
-              'Updating last commented fields for course',
-              courseKey,
-              'and project completion',
-              projectCompletionKey,
-            )
+          console.log(
+            'Updating last commented fields for course',
+            courseKey,
+            'and project completion',
+            projectCompletionKey,
+          )
 
           return db.ref('courses/fieldGroups/large/student')
             .child(courseKey)
