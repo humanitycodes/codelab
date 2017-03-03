@@ -37,6 +37,14 @@ export function getRepository (token, { owner, repo }) {
   return getFromGitHub(`/repos/${owner}/${repo}`, token)
 }
 
+export function getCommits (token, { owner, repo }) {
+  return getFromGitHub(`/repos/${owner}/${repo}/commits`)
+}
+
+export function getIssueComments (token, { owner, repo, issueNumber }) {
+  return getFromGitHub(`/repos/${owner}/${repo}/issues/${issueNumber}/comments`)
+}
+
 export function createWebhooks (token, { owner, repo }) {
   let failureCount = 0
 
