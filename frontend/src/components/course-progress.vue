@@ -185,7 +185,7 @@ export default {
       }).map(completion => {
         const activityDate = this.getMostRecentStudentActivityDate(completion)
         if (!activityDate) return 999
-        return differenceInDays(Date.now(), activityDate) - 1
+        return differenceInDays(Date.now(), activityDate)
       }).reduce((a, b) => Math.min(a, b), 999)
       return result !== 999 ? result : '😵'
     },
