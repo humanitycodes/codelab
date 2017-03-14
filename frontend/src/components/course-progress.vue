@@ -24,6 +24,9 @@
         <th class="numeric-cell" title="Maximum number of days a submitted project has gone unapproved">
           Days<br> Open
         </th>
+        <th class="numeric-cell" title="Number of days since the most recent project submission">
+          Days<br> Inactive
+        </th>
       </thead>
       <tbody>
         <tr v-for="student in studentsInCourse">
@@ -59,6 +62,9 @@
           </td>
           <td class="numeric-cell">
             {{ maxDaysProjectOngoingFor(student) }}
+          </td>
+          <td class="numeric-cell">
+            {{ daysSinceLastProjectSubmission(student) }}
           </td>
         </tr>
       </tbody>
@@ -157,6 +163,18 @@ export default {
         if (!completion.submission.firstSubmittedAt) return 0
         return differenceInDays(Date.now(), completion.submission.firstSubmittedAt)
       }).reduce((a, b) => Math.max(a, b), 0)
+    },
+    daysSinceLastProjectSubmission (student) {
+      const result = this.course.projectCompletions.filter(completion => {
+        return (
+          completion.students[0]['.key'] === student['.key'] &&
+          completion.submission
+        )
+      }).map(completion => {
+        if (!completion.submission.firstSubmittedAt) return 999
+        return differenceInDays(Date.now(), completion.submission.firstSubmittedAt)
+      }).reduce((a, b) => Math.min(a, b), 999)
+      return result !== 999 ? result : '😵'
     },
     courseReposFor (course, student) {
       return [
