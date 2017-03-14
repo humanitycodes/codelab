@@ -9,10 +9,10 @@ describe('@helpers/computed/course-user-grade-current-rounded.js', () => {
   }
 
   const lessons = [
-    { '.key': 'lesson1', estimatedHours: 7.5 },
-    { '.key': 'lesson2', estimatedHours: 7.5 },
+    { '.key': 'lesson1', estimatedHours: 7.0 },
+    { '.key': 'lesson2', estimatedHours: 7.0 },
     { '.key': 'lesson3', estimatedHours: 8.0 },
-    { '.key': 'lesson4', estimatedHours: 7.0 }
+    { '.key': 'lesson4', estimatedHours: 6.0 }
   ]
   if (!lessons.find) {
     // Array.prototype.find is undefined, provide substitute
@@ -62,9 +62,9 @@ describe('@helpers/computed/course-user-grade-current-rounded.js', () => {
     expect(courseUserGradeCurrentRounded(course, { '.key': 'user' })).to.equal(2)
   })
 
-  it('returns 0.93 for 7 of 30 lesson hours approved', () => {
+  it('returns 0.85 for 6 of 28 lesson hours approved', () => {
     addProject('lesson4', 'user', true, true)
-    expect(courseUserGradeCurrentRounded(course, { '.key': 'user' })).to.equal(0.93)
+    expect(courseUserGradeCurrentRounded(course, { '.key': 'user' })).to.equal(0.85)
   })
 
   it('returns 4.0 for all projects approved', () => {

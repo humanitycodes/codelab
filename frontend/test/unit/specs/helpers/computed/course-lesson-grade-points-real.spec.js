@@ -17,7 +17,7 @@ describe('@helpers/computed/course-lesson-grade-points-real.js', () => {
     expect(courseLessonGradePointsReal(newCourse(2), newLesson(2))).to.equal(gradePerWeekForOneCreditCourse)
   })
 
-  it('allows 15 hour lesson to ace a 1 credit course', () => {
-    expect(courseLessonGradePointsReal(newCourse(1), newLesson(15))).to.equal(maxGrade)
+  it('allows 14 hour lesson to ace a 1 credit course', () => {
+    expect(courseLessonGradePointsReal(newCourse(1), newLesson(14))).to.equal(maxGrade)
   })
 })
