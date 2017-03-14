@@ -24,7 +24,7 @@
         <th class="numeric-cell" title="Maximum number of days a submitted project has gone unapproved">
           Days<br> Open
         </th>
-        <th class="numeric-cell" title="Number of days since the most recent project submission">
+        <th class="numeric-cell" title="Number of days since an update was made to a project">
           Days<br> Inactive
         </th>
       </thead>
@@ -64,7 +64,7 @@
             {{ maxDaysProjectOngoingFor(student) }}
           </td>
           <td class="numeric-cell">
-            {{ daysSinceLastProjectSubmission(student) }}
+            {{ daysSinceLastProjectActivity(student) }}
           </td>
         </tr>
       </tbody>
@@ -119,6 +119,16 @@ export default {
     getCurrentGrade (student) {
       return courseUserGradeCurrentRounded(this.course, student)
     },
+    getMostRecentStudentActivityDate (completion) {
+      if (!completion) return 0
+      const submission = completion.submission || {}
+      return Math.max(
+        completion.repositoryCreatedAt || 0,
+        completion.firstCommittedAt || 0,
+        submission.firstSubmittedAt || 0,
+        submission.lastCommentedAt || 0
+      )
+    },
     behindByLessonCount (student) {
       const currentGrade = this.getCurrentGrade(student)
       return Math.round(
@@ -166,15 +176,16 @@ export default {
       }).reduce((a, b) => Math.max(a, b), -1)
       return result !== -1 ? result : '--'
     },
-    daysSinceLastProjectSubmission (student) {
+    daysSinceLastProjectActivity (student) {
       const result = this.course.projectCompletions.filter(completion => {
         return (
           completion.students[0]['.key'] === student['.key'] &&
           completion.submission
         )
       }).map(completion => {
-        if (!completion.submission.firstSubmittedAt) return 999
-        return differenceInDays(Date.now(), completion.submission.firstSubmittedAt)
+        const activityDate = this.getMostRecentStudentActivityDate(completion)
+        if (!activityDate) return 999
+        return differenceInDays(Date.now(), activityDate) - 1
       }).reduce((a, b) => Math.min(a, b), 999)
       return result !== 999 ? result : '😵'
     },
