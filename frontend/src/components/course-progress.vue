@@ -138,7 +138,7 @@ export default {
       }).length
     },
     maxDaysProjectStaleFor (student) {
-      return this.course.projectCompletions.filter(completion => {
+      const result = this.course.projectCompletions.filter(completion => {
         return (
           completion.students[0]['.key'] === student['.key'] &&
           completion.submission &&
@@ -148,21 +148,23 @@ export default {
           )
         )
       }).map(completion => {
-        if (!completion.submission.lastCommentedAt) return 0
+        if (!completion.submission.lastCommentedAt) return -1
         return differenceInDays(Date.now(), completion.submission.lastCommentedAt)
-      }).reduce((a, b) => Math.max(a, b), 0)
+      }).reduce((a, b) => Math.max(a, b), -1)
+      return result !== -1 ? result : '--'
     },
     maxDaysProjectOngoingFor (student) {
-      return this.course.projectCompletions.filter(completion => {
+      const result = this.course.projectCompletions.filter(completion => {
         return (
           completion.students[0]['.key'] === student['.key'] &&
           completion.submission &&
           !completion.submission.isApproved
         )
       }).map(completion => {
-        if (!completion.submission.firstSubmittedAt) return 0
+        if (!completion.submission.firstSubmittedAt) return -1
         return differenceInDays(Date.now(), completion.submission.firstSubmittedAt)
-      }).reduce((a, b) => Math.max(a, b), 0)
+      }).reduce((a, b) => Math.max(a, b), -1)
+      return result !== -1 ? result : '--'
     },
     daysSinceLastProjectSubmission (student) {
       const result = this.course.projectCompletions.filter(completion => {
