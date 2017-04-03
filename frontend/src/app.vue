@@ -190,6 +190,8 @@ pre:not(.CodeMirror-line)
     content: 'JAVASCRIPT'
   &.json > code:after
     content: 'JSON'
+  &.ejs > code:after
+    content: 'EJS'
   &.txt > code:after
     content: 'TEXT'
   &.notepad
