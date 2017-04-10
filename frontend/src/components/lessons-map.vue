@@ -431,7 +431,7 @@ export default {
   overflow-x: auto
   padding: $design.layout.gutterWidth
 
-$lesson-card-default-opacity = .8
+$lesson-card-default-opacity = .5
 $lesson-card-transition-duration = .3s
 $lesson-card-other-is-selected-opacity = .3
 $lesson-card-other-is-selected-blur = 1px
