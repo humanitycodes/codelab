@@ -435,7 +435,7 @@ $lesson-card-default-opacity = .5
 $lesson-card-transition-duration = .3s
 $lesson-card-other-is-selected-opacity = .3
 $lesson-card-other-is-selected-blur = 1px
-$lesson-card-approved-opacity = $lesson-card-default-opacity * .8
+$lesson-card-approved-opacity = $lesson-card-default-opacity
 $lesson-card-approved-bg = lighten($design.branding.muted.light.success, 50%)
 .lesson-graph-card
   display: flex
