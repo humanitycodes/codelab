@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <div v-if="!allPrereqsComplete()">
+    <p class="warning">
+      This project cannot be started until all prerequisite lessons have been completed.
+    </p>
+  </div>
+  <div v-else>
     <p v-if="error" class="error">{{ error }}</p>
     <button
       v-if="!projectCompletion"
@@ -18,6 +23,8 @@
 </template>
 
 <script>
+import prereqsAreAllComplete from '@helpers/computed/course-lesson-user-prereqs-are-all-complete'
+import userGetters from '@state/helpers'
 import Axios from 'axios'
 
 export default {
@@ -42,7 +49,11 @@ export default {
       starting: false
     }
   },
+  computed: userGetters,
   methods: {
+    allPrereqsComplete () {
+      return prereqsAreAllComplete(this.course, this.lesson, this.currentUser)
+    },
     createProjectRepo () {
       this.starting = true
       Axios.post('/api/project-completions', {
