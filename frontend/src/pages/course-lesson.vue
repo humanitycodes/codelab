@@ -41,7 +41,6 @@
       class="course-lesson-tab-content"
     >
       <h2>
-        Project:
         <span v-html="convertRichContentToInlineHtml(currentLesson.projects[0].title)"/>
       </h2>
       <ol v-if="currentLesson.projects[0].criteria.length">
