@@ -169,12 +169,13 @@ export default {
           }
 
           const student = this.getUser(projectCompletion.students[0]['.key'])
+          const grade = courseUserGradeCurrentRounded(course, student)
           instructorReviews[projectCompletion.submission.assignedInstructor].push({
             course,
             projectCompletion,
             student,
             lesson: this.getLesson(projectCompletion.lessonKey),
-            studentPoints: courseUserGradeCurrentRounded(course, student)
+            studentPoints: grade > 0 ? parseFloat(grade).toFixed(2) : 0
           })
         })
       })
