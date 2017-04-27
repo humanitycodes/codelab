@@ -1,4 +1,5 @@
 import getGradeRounded from '@helpers/utils/get-grade-rounded'
+import gradeMax from '@constants/grade-max'
 
 describe('@helpers/utils/get-grade-rounded.js', () => {
   it('returns 0 for non-numbers', () => {
@@ -9,10 +10,14 @@ describe('@helpers/utils/get-grade-rounded.js', () => {
   })
 
   it('limits numbers to 2 decimal places', () => {
-    expect(getGradeRounded(73.12345)).to.equal(73.12)
+    expect(getGradeRounded(3.12345)).to.equal(3.12)
   })
 
   it('always rounds down', () => {
-    expect(getGradeRounded(12.11999)).to.equal(12.11)
+    expect(getGradeRounded(2.11999)).to.equal(2.11)
+  })
+
+  it('rounds down to max grade', () => {
+    expect(getGradeRounded(gradeMax + 0.5)).to.equal(gradeMax)
   })
 })
