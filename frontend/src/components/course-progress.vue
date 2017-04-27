@@ -117,7 +117,8 @@ export default {
   },
   methods: {
     getCurrentGrade (student) {
-      return courseUserGradeCurrentRounded(this.course, student)
+      const roundedGrade = courseUserGradeCurrentRounded(this.course, student)
+      return roundedGrade > 0 ? parseFloat(roundedGrade).toFixed(2) : 0
     },
     getMostRecentStudentActivityDate (completion) {
       if (!completion) return 0
