@@ -14,10 +14,6 @@
           Proj.<br>
           Delta
         </th>
-        <th class="numeric-cell" title="The number of lessons that have been started, but are unapproved">
-          Proj.<br>
-          Active
-        </th>
         <th class="numeric-cell" title="Maximum number of days since a project has had changes requested">
           Days<br> Stale
         </th>
@@ -53,9 +49,6 @@
             :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }"
           >
             {{ behindByLessonCount(student) }}
-          </td>
-          <td class="numeric-cell">
-            {{ inProgressLessonCount(student) }}
           </td>
           <td class="numeric-cell">
             {{ maxDaysProjectStaleFor(student) }}
