@@ -10,10 +10,6 @@
           Grade Points<br>
           Expected: {{ expectedGrade }}
         </th>
-        <th class="numeric-cell" title="The number of lesson behind/ahead the student is">
-          Proj.<br>
-          Delta
-        </th>
         <th class="numeric-cell" title="Maximum number of days since a project has had changes requested">
           Days<br> Stale
         </th>
@@ -43,12 +39,6 @@
             :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }"
           >
             {{ getCurrentGrade(student) }}
-          </td>
-          <td
-            class="numeric-cell"
-            :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }"
-          >
-            {{ behindByLessonCount(student) }}
           </td>
           <td class="numeric-cell">
             {{ maxDaysProjectStaleFor(student) }}
