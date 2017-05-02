@@ -106,7 +106,7 @@ export default {
   },
   methods: {
     formatGrade (grade) {
-      return grade > 0 ? parseFloat(grade).toFixed(2) : 0
+      return grade !== 0 ? parseFloat(grade).toFixed(2) : 0
     },
     getCurrentGrade (student) {
       const roundedGrade = courseUserGradeCurrentRounded(this.course, student)
@@ -114,8 +114,8 @@ export default {
     },
     getCurrentGradeDelta (student) {
       const currentGrade = courseUserGradeCurrentRounded(this.course, student)
-      const deltaGrade = this.formatGrade(currentGrade - this.expectedGrade)
-      return (deltaGrade >= 0 ? '+' : '-') + deltaGrade
+      const deltaGrade = currentGrade - this.expectedGrade
+      return (deltaGrade >= 0 ? '+' : '') + this.formatGrade(deltaGrade)
     },
     getMostRecentStudentActivityDate (completion) {
       if (!completion) return 0
