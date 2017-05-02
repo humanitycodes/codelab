@@ -117,12 +117,12 @@ export default {
     getCurrentGradeStyle (student) {
       const currentGrade = courseUserGradeCurrentRounded(this.course, student)
       const deltaGrade = currentGrade - this.expectedGrade
-      // Threshold is the expected grade after two weeks of lesson work
-      const warningThreshold = -2 * gradeMax / normalizedSemesterWeeks
+      // Threshold is the expected grade after one week of lesson work
+      const gradeThreshold = gradeMax / normalizedSemesterWeeks
 
-      if (deltaGrade >= 0) {
+      if (deltaGrade >= gradeThreshold) {
         return 'allstar-grade'
-      } else if (deltaGrade <= warningThreshold) {
+      } else if (deltaGrade <= -gradeThreshold) {
         return 'warning-grade'
       } else {
         return ''
