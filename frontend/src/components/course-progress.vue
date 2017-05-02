@@ -36,13 +36,13 @@
           </td>
           <td
             class="numeric-cell"
-            :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }"
+            :class="getCurrentGradeStyle(student)"
           >
             {{ getCurrentGrade(student) }}
           </td>
           <td
             class="numeric-cell grade-delta"
-            :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }"
+            :class="getCurrentGradeStyle(student)"
           >
             ({{ getCurrentGradeDelta(student) }})
           </td>
@@ -116,6 +116,18 @@ export default {
       const currentGrade = courseUserGradeCurrentRounded(this.course, student)
       const deltaGrade = currentGrade - this.expectedGrade
       return (deltaGrade >= 0 ? '+' : '') + this.formatGrade(deltaGrade)
+    },
+    getCurrentGradeStyle (student) {
+      const currentGrade = courseUserGradeCurrentRounded(this.course, student)
+      const deltaGrade = currentGrade - this.expectedGrade
+
+      if (deltaGrade >= 0) {
+        return 'allstar-grade'
+      } else if (deltaGrade < 0) {
+        return 'warning-grade'
+      } else {
+        return ''
+      }
     },
     getMostRecentStudentActivityDate (completion) {
       if (!completion) return 0
@@ -207,6 +219,8 @@ export default {
 
 .warning-grade
   color: $design.branding.danger.light
+.allstar-grade
+  color: $design.branding.success.light
 .grade-delta
   width: 1px
   white-space: nowrap
