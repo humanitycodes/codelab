@@ -77,11 +77,6 @@ export default {
       required: true
     }
   },
-  data () {
-    return {
-      lessonWarningThreshold: -3
-    }
-  },
   computed: {
     ...userGetters,
     expectedGrade () {
