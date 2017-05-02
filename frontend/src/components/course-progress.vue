@@ -6,7 +6,7 @@
         <th>
           Name
         </th>
-        <th class="numeric-cell">
+        <th class="numeric-cell" colspan="2">
           Grade Points<br>
           Expected: {{ expectedGrade }}
         </th>
@@ -22,7 +22,7 @@
       </thead>
       <tbody>
         <tr v-for="student in studentsInCourse">
-          <td :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }">
+          <td>
             <a
               v-if="student.github"
               :href="courseReposFor(course, student)"
@@ -39,6 +39,12 @@
             :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }"
           >
             {{ getCurrentGrade(student) }}
+          </td>
+          <td
+            class="numeric-cell grade-delta"
+            :class="{ 'warning-grade': behindByLessonCount(student) <= lessonWarningThreshold }"
+          >
+            ({{ getCurrentGradeDelta(student) }})
           </td>
           <td class="numeric-cell">
             {{ maxDaysProjectStaleFor(student) }}
@@ -99,9 +105,17 @@ export default {
     }
   },
   methods: {
+    formatGrade (grade) {
+      return grade > 0 ? parseFloat(grade).toFixed(2) : 0
+    },
     getCurrentGrade (student) {
       const roundedGrade = courseUserGradeCurrentRounded(this.course, student)
-      return roundedGrade > 0 ? parseFloat(roundedGrade).toFixed(2) : 0
+      return this.formatGrade(roundedGrade)
+    },
+    getCurrentGradeDelta (student) {
+      const currentGrade = courseUserGradeCurrentRounded(this.course, student)
+      const deltaGrade = this.formatGrade(currentGrade - this.expectedGrade)
+      return (deltaGrade >= 0 ? '+' : '-') + deltaGrade
     },
     getMostRecentStudentActivityDate (completion) {
       if (!completion) return 0
@@ -193,4 +207,8 @@ export default {
 
 .warning-grade
   color: $design.branding.danger.light
+.grade-delta
+  width: 1px
+  white-space: nowrap
+  border-left-style: dashed
 </style>
