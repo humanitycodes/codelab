@@ -67,6 +67,8 @@ import { userGetters } from '@state/helpers'
 import courseUserGradeCurrentRounded from '@helpers/computed/course-user-grade-current-rounded'
 import courseGradeMinExpectedRounded from '@helpers/computed/course-grade-min-expected-rounded'
 import courseAverageLessonGradePointsReal from '@helpers/computed/course-average-lesson-grade-points-real'
+import gradeMax from '@constants/grade-max'
+import normalizedSemesterWeeks from '@constants/normalized-semester-weeks'
 
 export default {
   props: {
@@ -120,10 +122,12 @@ export default {
     getCurrentGradeStyle (student) {
       const currentGrade = courseUserGradeCurrentRounded(this.course, student)
       const deltaGrade = currentGrade - this.expectedGrade
+      // Threshold is the expected grade after two weeks of lesson work
+      const warningThreshold = -2 * gradeMax / normalizedSemesterWeeks
 
       if (deltaGrade >= 0) {
         return 'allstar-grade'
-      } else if (deltaGrade < 0) {
+      } else if (deltaGrade <= warningThreshold) {
         return 'warning-grade'
       } else {
         return ''
