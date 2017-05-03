@@ -26,7 +26,7 @@
             target="_blank"
           >{{ student.email }}</a>)
           <button
-            @click="removeStudent(student)"
+            @click="showRemoveStudentModal(student)"
             class="inline danger"
             name="course-remove-student"
           >×</button>
@@ -42,7 +42,7 @@
             target="_blank"
           >{{ preenrollment['.key'] }}</a>
           <button
-            @click="removePreenrollment(preenrollment['.key'])"
+            @click="showRemovePreenrollmentModal(preenrollment['.key'])"
             class="inline danger"
             name="course-remove-student"
           >×</button>
@@ -55,16 +55,36 @@
         It's hardly a course without students. Add some when you feel the course is ready to share.
       </p>
     </div>
+    <ModalConfirm
+      :show="showModalConfirmRemoveStudent"
+      confirmClass="danger"
+      confirmLabel="Delete"
+      @close="onCloseRemoveStudentModal"
+    >
+      <p>Are you sure you want to remove <strong>{{ studentPendingRemoval.fullName }}</strong> from the course?</p>
+      <aside>This action cannot be undone.</aside>
+    </ModalConfirm>
+    <ModalConfirm
+      :show="showModalConfirmRemovePreenrollment"
+      confirmClass="danger"
+      confirmLabel="Delete"
+      @close="onCloseRemovePreenrollmentModal"
+    >
+      <p>Are you sure you want to remove <strong>{{ preenrollmentPendingRemoval }}</strong> from the course?</p>
+      <aside>This action cannot be undone.</aside>
+    </ModalConfirm>
   </div>
 </template>
 
 <script>
 import Dropdown from './dropdown'
+import ModalConfirm from './modal-confirm'
 import { userGetters } from '@state/helpers'
 
 export default {
   components: {
-    Dropdown
+    Dropdown,
+    ModalConfirm
   },
   props: {
     course: {
@@ -78,7 +98,11 @@ export default {
   },
   data () {
     return {
-      studentQuery: ''
+      studentQuery: '',
+      preenrollmentPendingRemoval: '',
+      showModalConfirmRemovePreenrollment: false,
+      studentPendingRemoval: {},
+      showModalConfirmRemoveStudent: false
     }
   },
   computed: {
@@ -117,8 +141,15 @@ export default {
       this.studentQuery = ''
       this.$refs.queryInput.focus()
     },
-    removeStudent (student) {
-      this.course.removeStudent(student['.key'])
+    showRemoveStudentModal (student) {
+      this.studentPendingRemoval = student
+      this.showModalConfirmRemoveStudent = true
+    },
+    onCloseRemoveStudentModal (confirmed) {
+      this.showModalConfirmRemoveStudent = false
+      if (confirmed) {
+        this.course.removeStudent(this.studentPendingRemoval['.key'])
+      }
     },
     addPreenrollment () {
       if (!this.queryResults.length &&
@@ -128,8 +159,15 @@ export default {
         this.$refs.queryInput.focus()
       }
     },
-    removePreenrollment (email) {
-      this.course.preenrollments.remove(email)
+    showRemovePreenrollmentModal (email) {
+      this.preenrollmentPendingRemoval = email
+      this.showModalConfirmRemovePreenrollment = true
+    },
+    onCloseRemovePreenrollmentModal (confirmed) {
+      this.showModalConfirmRemovePreenrollment = false
+      if (confirmed) {
+        this.course.preenrollments.remove(this.preenrollmentPendingRemoval)
+      }
     }
   }
 }
