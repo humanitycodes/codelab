@@ -46,10 +46,10 @@
           >
             ({{ getCurrentGradeDelta(student) }})
           </td>
-          <td class="numeric-cell">
+          <td class="numeric-cell" :title="isNaN(maxDaysProjectStaleFor(student)) ? 'This student has no submitted, unapproved projects where the instructor was last to comment' : ''">
             {{ maxDaysProjectStaleFor(student) }}
           </td>
-          <td class="numeric-cell">
+          <td class="numeric-cell" :title="isNaN(maxDaysProjectOngoingFor(student)) ? 'This student has no submitted, unapproved projects' : ''">
             {{ maxDaysProjectOngoingFor(student) }}
           </td>
           <td class="numeric-cell">
