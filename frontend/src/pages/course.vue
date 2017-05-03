@@ -36,7 +36,7 @@
           At your current rate of progress, you will receive a <strong>{{ projectedGrade }}</strong> in the course. If you'd like help getting caught up, reach out to an instructor as soon as possible.
         </p>
       </div>
-      <div v-if="shouldShowStudentView" class="flex-row">
+      <div v-if="shouldShowStudentView" class="flex-row" :title="'Your grade as of ' + formattedCurrentDate + ' is ' + currentGrade">
         <div class="flex-col">
           <div class="course-meter">
             <div class="course-meter-text">{{ formattedStartDate }}</div>
@@ -184,6 +184,9 @@ export default {
       return this.lessons.filter(lesson => {
         return this.currentCourse.lessonKeys.indexOf(lesson['.key']) !== -1
       })
+    },
+    formattedCurrentDate () {
+      return this.humanizeDate(new Date())
     },
     formattedStartDate () {
       return this.humanizeDate(this.currentCourse.startDate)
