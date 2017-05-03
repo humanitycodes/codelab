@@ -312,8 +312,10 @@ $course-meter-active-text-size = 1.2em
     border-bottom-right-radius: $design.control.border.radius
 
 .course-meter-text
+  margin: auto 0
   padding: $design.layout.gutterWidth * .5 $design.layout.gutterWidth
   opacity: $course-meter-text-opacity
+  line-height: $design.layout.gutterWidth
   &.active
     color: $course-meter-active-text-color
     font-weight: $course-meter-active-text-weight
