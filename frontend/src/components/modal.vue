@@ -45,7 +45,7 @@ export default {
   transition: opacity .3s ease
 
 .modal-container
-  width: 300px
+  max-width: 500px
   margin: 40px auto 0
   padding: 20px 30px
   background-color: $design.body.background
