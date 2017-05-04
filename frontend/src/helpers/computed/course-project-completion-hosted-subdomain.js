@@ -10,8 +10,10 @@ export default (course, projectCompletion) => {
     .replace(/@.+/, '')
     .replace(/[^a-z0-9]+/gi, '')
     .slice(0, 15)
-  const shortProjectKey = projectCompletion.projectKey
-    .replace(/[^a-z0-9]+/gi, '')
-    .slice(username.length - maxChars + 1)
-  return [username, shortProjectKey].join('-').toLowerCase()
+  const domainSuffix = projectCompletion.lessonKey
+    .replace(/[^a-z0-9-]+/gi, '')
+    .replace(/^-+/g, '')
+    .replace(/-+$/g, '')
+    .slice(0, maxChars - username.length - 1)
+  return [username, domainSuffix].join('-').toLowerCase()
 }
