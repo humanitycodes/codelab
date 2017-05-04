@@ -10,6 +10,8 @@ export default (course, projectCompletion) => {
     .replace(/@.+/, '')
     .replace(/\W/g, '')
     .slice(0, 15)
-  const shortProjectKey = projectCompletion.projectKey.slice(msuUsername.length - maxChars)
+  const shortProjectKey = projectCompletion.projectKey
+    .replace(/[^a-z0-9]+/gi, '')
+    .slice(msuUsername.length - maxChars)
   return [msuUsername, shortProjectKey].join('').toLowerCase()
 }
