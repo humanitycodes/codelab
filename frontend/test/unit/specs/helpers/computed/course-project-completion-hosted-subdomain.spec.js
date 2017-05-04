@@ -40,8 +40,8 @@ describe('@helpers/computed/course-project-completion-hosted-subdomain.js', () =
         projectKey: '-_/\\ABCabc123-_/\\'
       },
       user: {
-        email: 'homer.simpson@nucular-plant.com'
+        email: 'homer_simpson.1-1@nucular-plant.com'
       }
-    }, 'homersimpsonabcabc123')
+    }, 'homersimpson11abcabc123')
   })
 })

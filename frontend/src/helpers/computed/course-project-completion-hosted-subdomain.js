@@ -6,12 +6,12 @@ const maxChars = 30
 
 export default (course, projectCompletion) => {
   const user = userByKey(projectCompletion.students[0]['.key'])
-  const msuUsername = user.email
+  const username = user.email
     .replace(/@.+/, '')
-    .replace(/\W/g, '')
+    .replace(/[^a-z0-9]+/gi, '')
     .slice(0, 15)
   const shortProjectKey = projectCompletion.projectKey
     .replace(/[^a-z0-9]+/gi, '')
-    .slice(msuUsername.length - maxChars)
-  return [msuUsername, shortProjectKey].join('').toLowerCase()
+    .slice(username.length - maxChars)
+  return [username, shortProjectKey].join('').toLowerCase()
 }
