@@ -18,7 +18,9 @@ describe('@helpers/computed/course-project-completion-hosted-subdomain.js', () =
         lessonKey: 'project-key'
       },
       user: {
-        email: 'homer.j.simpson@nucular-plant.com'
+        github: {
+          login: 'homer.j.simpson'
+        }
       }
     }, 'homerjsimpson-project-key')
   })
@@ -29,7 +31,9 @@ describe('@helpers/computed/course-project-completion-hosted-subdomain.js', () =
         lessonKey: 'project-key-project-key-project-key-project-key'
       },
       user: {
-        email: 'abcdefghijklmnopqrstuvwxyz0123456789@nucular-plant.com'
+        github: {
+          login: 'abcdefghijklmnopqrstuvwxyz0123456789'
+        }
       }
     }, 'abcdefghijklmno-project-key-pr')
   })
@@ -40,7 +44,9 @@ describe('@helpers/computed/course-project-completion-hosted-subdomain.js', () =
         lessonKey: '-_/\\ABCabc123-_/\\'
       },
       user: {
-        email: 'homer_simpson.1-1@nucular-plant.com'
+        github: {
+          login: 'homer_simpson.1-1'
+        }
       }
     }, 'homersimpson11-abcabc123')
   })
@@ -52,9 +58,25 @@ describe('@helpers/computed/course-project-completion-hosted-subdomain.js', () =
         lessonKey: '-_/\\ABCabc123-_/\\'
       },
       user: {
-        email: 'homer_simpson.1-1@nucular-plant.com'
+        github: {
+          login: 'homer_simpson.1-1'
+        }
       }
     }, 'homersimpson11-abcabc123')
+  })
+
+  it('uses GitHub login instead of email', () => {
+    assertSubdomainWith({
+      projectCompletion: {
+        lessonKey: 'js-intro'
+      },
+      user: {
+        email: 'homer_simpson.1-1@nucular-plant.com',
+        github: {
+          login: 'Hsimpson'
+        }
+      }
+    }, 'hsimpson-js-intro')
   })
 
   it('produces non-cryptic subdomains for real users and projects', () => {
@@ -63,7 +85,9 @@ describe('@helpers/computed/course-project-completion-hosted-subdomain.js', () =
         lessonKey: 'html-terminal-and-git'
       },
       user: {
-        email: 'erik.gillespie@gmail.com'
+        github: {
+          login: 'erik.gillespie'
+        }
       }
     }, 'erikgillespie-html-terminal-an')
 
@@ -72,7 +96,9 @@ describe('@helpers/computed/course-project-completion-hosted-subdomain.js', () =
         lessonKey: 'css-frameworks'
       },
       user: {
-        email: 'katie@katiemfritz.com'
+        github: {
+          login: 'katie'
+        }
       }
     }, 'katie-css-frameworks')
   })
