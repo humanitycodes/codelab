@@ -12,6 +12,6 @@ export default (course, projectCompletion) => {
     .slice(0, 15)
   const shortProjectKey = projectCompletion.projectKey
     .replace(/[^a-z0-9]+/gi, '')
-    .slice(username.length - maxChars)
-  return [username, shortProjectKey].join('').toLowerCase()
+    .slice(username.length - maxChars + 1)
+  return [username, shortProjectKey].join('-').toLowerCase()
 }

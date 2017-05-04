@@ -20,7 +20,7 @@ describe('@helpers/computed/course-project-completion-hosted-subdomain.js', () =
       user: {
         email: 'homer.j.simpson@nucular-plant.com'
       }
-    }, 'homerjsimpsonprojectkey')
+    }, 'homerjsimpson-projectkey')
   })
 
   it('restricts subdomain to 30 characters', () => {
@@ -31,7 +31,7 @@ describe('@helpers/computed/course-project-completion-hosted-subdomain.js', () =
       user: {
         email: 'abcdefghijklmnopqrstuvwxyz0123456789@nucular-plant.com'
       }
-    }, 'abcdefghijklmnoctkeyprojectkey')
+    }, 'abcdefghijklmno-tkeyprojectkey')
   })
 
   it('removes non-alphanumeric characters', () => {
@@ -42,6 +42,6 @@ describe('@helpers/computed/course-project-completion-hosted-subdomain.js', () =
       user: {
         email: 'homer_simpson.1-1@nucular-plant.com'
       }
-    }, 'homersimpson11abcabc123')
+    }, 'homersimpson11-abcabc123')
   })
 })
