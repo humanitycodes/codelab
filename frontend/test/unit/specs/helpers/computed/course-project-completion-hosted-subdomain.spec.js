@@ -15,33 +15,65 @@ describe('@helpers/computed/course-project-completion-hosted-subdomain.js', () =
   it('removes special characters from email', () => {
     assertSubdomainWith({
       projectCompletion: {
-        projectKey: 'project-key'
+        lessonKey: 'project-key'
       },
       user: {
         email: 'homer.j.simpson@nucular-plant.com'
       }
-    }, 'homerjsimpson-projectkey')
+    }, 'homerjsimpson-project-key')
   })
 
   it('restricts subdomain to 30 characters', () => {
     assertSubdomainWith({
       projectCompletion: {
-        projectKey: 'project-key-project-key-project-key-project-key'
+        lessonKey: 'project-key-project-key-project-key-project-key'
       },
       user: {
         email: 'abcdefghijklmnopqrstuvwxyz0123456789@nucular-plant.com'
       }
-    }, 'abcdefghijklmno-tkeyprojectkey')
+    }, 'abcdefghijklmno-project-key-pr')
   })
 
   it('removes non-alphanumeric characters', () => {
     assertSubdomainWith({
       projectCompletion: {
-        projectKey: '-_/\\ABCabc123-_/\\'
+        lessonKey: '-_/\\ABCabc123-_/\\'
       },
       user: {
         email: 'homer_simpson.1-1@nucular-plant.com'
       }
     }, 'homersimpson11-abcabc123')
+  })
+
+  it('uses lesson key as subdomain suffix', () => {
+    assertSubdomainWith({
+      projectCompletion: {
+        projectKey: '-_/\\XYZxyz456-_/\\',
+        lessonKey: '-_/\\ABCabc123-_/\\'
+      },
+      user: {
+        email: 'homer_simpson.1-1@nucular-plant.com'
+      }
+    }, 'homersimpson11-abcabc123')
+  })
+
+  it('produces non-cryptic subdomains for real users and projects', () => {
+    assertSubdomainWith({
+      projectCompletion: {
+        lessonKey: 'html-terminal-and-git'
+      },
+      user: {
+        email: 'erik.gillespie@gmail.com'
+      }
+    }, 'erikgillespie-html-terminal-an')
+
+    assertSubdomainWith({
+      projectCompletion: {
+        lessonKey: 'css-frameworks'
+      },
+      user: {
+        email: 'katie@katiemfritz.com'
+      }
+    }, 'katie-css-frameworks')
   })
 })
