@@ -26,7 +26,7 @@
                 ? 'Lessons cannot be removed once students have started projects for these lessons'
                 : 'Remove the lesson from this course'
             "
-            @click="removeCourseLesson(lesson)"
+            @click="showRemoveLessonModal(lesson)"
             class="inline danger"
             name="course-remove-lesson"
           >×</button>
@@ -36,6 +36,14 @@
         If the course doesn't have any lessons, there won't be much for students to do!
       </p>
     </div>
+    <ModalConfirm
+      :show="showModalConfirmRemoveLesson"
+      confirmClass="danger"
+      confirmLabel="Delete"
+      @close="onCloseRemoveLessonModal"
+    >
+      <p>Are you sure you want to remove <strong>{{ lessonPendingRemoval.title || lessonPendingRemoval['.key'] }}</strong> from the course?</p>
+    </ModalConfirm>
   </div>
 </template>
 
@@ -43,11 +51,12 @@
 import { lessonGetters } from '@state/helpers'
 import { lessonCanBeAddedToCourse } from '@state/auth/courses'
 import Dropdown from './dropdown'
+import ModalConfirm from './modal-confirm'
 import LessonsMapLesson from './lessons-map-lesson'
 
 export default {
   components: {
-    Dropdown, LessonsMapLesson
+    Dropdown, LessonsMapLesson, ModalConfirm
   },
   props: {
     course: {
@@ -57,7 +66,9 @@ export default {
   },
   data () {
     return {
-      lessonQuery: ''
+      lessonQuery: '',
+      lessonPendingRemoval: {},
+      showModalConfirmRemoveLesson: false
     }
   },
   computed: {
@@ -94,13 +105,20 @@ export default {
       this.lessonQuery = ''
       this.$refs.queryInput.focus()
     },
-    removeCourseLesson (lesson) {
-      this.course.removeLesson(lesson['.key'])
-    },
     lessonHasProjectCompletions (lesson) {
       return this.course.projectCompletions.some(completion => {
         return completion.lessonKey === lesson['.key']
       })
+    },
+    showRemoveLessonModal (lesson) {
+      this.lessonPendingRemoval = lesson
+      this.showModalConfirmRemoveLesson = true
+    },
+    onCloseRemoveLessonModal (confirmed) {
+      this.showModalConfirmRemoveLesson = false
+      if (confirmed) {
+        this.course.removeLesson(this.lessonPendingRemoval['.key'])
+      }
     }
   }
 }
