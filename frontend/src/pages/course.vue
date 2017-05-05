@@ -36,7 +36,7 @@
           At your current rate of progress, you will receive a <strong>{{ projectedGrade }}</strong> in the course. If you'd like help getting caught up, reach out to an instructor as soon as possible.
         </p>
       </div>
-      <div v-if="shouldShowStudentView" class="flex-row" :title="'Your grade as of ' + formattedCurrentDate + ' is ' + currentGrade">
+      <div v-if="shouldShowStudentView" class="flex-row" :title="'Your grade as of ' + formattedCurrentDate + ' is ' + currentGrade + ', which will be reported as a ' + currentGradeReported">
         <div class="flex-col">
           <div class="course-meter">
             <div class="course-meter-text">{{ formattedStartDate }}</div>
@@ -145,6 +145,7 @@ import courseLessonGradePointsReal from '@helpers/computed/course-lesson-grade-p
 import maxGrade from '@constants/grade-max'
 import gradeMilestones from '@constants/grade-milestones'
 import courseLessonUserStatus from '@helpers/computed/course-lesson-user-status'
+import getGradeReported from '@helpers/utils/get-grade-reported'
 
 const dateFormat = 'MMMM Do, YYYY'
 
@@ -202,6 +203,9 @@ export default {
     },
     currentGrade () {
       return courseUserGradeCurrentRounded(this.currentCourse, this.currentUser)
+    },
+    currentGradeReported () {
+      return getGradeReported(this.currentGrade)
     },
     courseDaysTotal () {
       return courseDaysTotal(this.currentCourse)
