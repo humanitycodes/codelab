@@ -9,12 +9,21 @@
       <DoneButton fallback-route="/courses"/>
       <button
         v-if="canDestroyCurrentCourse"
-        @click="confirmDestroyCourse"
+        @click="showRemoveCourseModal"
         class="danger block"
       >
         Delete
       </button>
     </div>
+    <ModalConfirm
+      :show="showModalConfirmRemoveCourse"
+      confirmClass="danger"
+      confirmLabel="Delete"
+      @close="onCloseRemoveCourseModal"
+    >
+      <p>Are you sure you want to permanently delete <strong>{{ currentCourse.title || currentCourse['.key'] }}</strong>?</p>
+      <aside>This action cannot be undone.</aside>
+    </ModalConfirm>
   </Layout>
 </template>
 
@@ -23,23 +32,32 @@ import { mapActions } from 'vuex'
 import Layout from '@layouts/main'
 import CourseForm from '@components/course-form'
 import DoneButton from '@components/done-button'
+import ModalConfirm from '@components/modal-confirm'
 import { courseGetters } from '@state/helpers'
 
 export default {
   components: {
-    Layout, CourseForm, DoneButton
+    Layout, CourseForm, DoneButton, ModalConfirm
+  },
+  data () {
+    return {
+      showModalConfirmRemoveCourse: false
+    }
   },
   computed: courseGetters,
   methods: {
-    confirmDestroyCourse () {
-      const srsly = confirm('Are you sure you want to PERMANENTLY delete this course?')
-      if (srsly) {
-        this.destroyCourse(this.currentCourse).then(() => {
-          this.$router.push('/courses')
+    ...mapActions(['destroyCourse']),
+    showRemoveCourseModal () {
+      this.showModalConfirmRemoveCourse = true
+    },
+    onCloseRemoveCourseModal (confirmed) {
+      this.showModalConfirmRemoveCourse = false
+      if (confirmed) {
+        this.courses.remove(this.currentCourse['.key']).then(() => {
+          window.location.replace('/courses')
         })
       }
-    },
-    ...mapActions(['destroyCourse'])
+    }
   }
 }
 </script>
