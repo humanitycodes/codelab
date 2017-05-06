@@ -1,5 +1,5 @@
 <template>
-  <details v-if="isCourseInProgress && studentsInCourse.length">
+  <details v-if="studentsInCourse.length">
     <summary>{{ course['.key'] }}</summary>
     <table class="dashboard-info">
       <thead>
@@ -81,10 +81,6 @@ export default {
     ...userGetters,
     expectedGrade () {
       return courseGradeMinExpectedRounded(this.course)
-    },
-    isCourseInProgress () {
-      const now = Date.now()
-      return this.course.startDate <= now && now <= this.course.endDate
     },
     studentsInCourse () {
       return this.course.studentKeys.map(studentKey => {
