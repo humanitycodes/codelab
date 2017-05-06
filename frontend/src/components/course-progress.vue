@@ -10,11 +10,11 @@
           Grade Points<br>
           Expected: {{ expectedGrade }}
         </th>
-        <th class="numeric-cell" title="Maximum number of days since a project has had changes requested">
-          Days<br> Stale
-        </th>
         <th class="numeric-cell" title="Maximum number of days a submitted project has gone unapproved">
           Days<br> Open
+        </th>
+        <th class="numeric-cell" title="Maximum number of days since a project has had changes requested">
+          Days<br> Stale
         </th>
         <th class="numeric-cell" title="Number of days since an update was made to a project">
           Days<br> Inactive
@@ -46,11 +46,11 @@
           >
             ({{ getCurrentGradeDelta(student) }})
           </td>
-          <td class="numeric-cell" :title="isNaN(maxDaysProjectStaleFor(student)) ? 'This student has no submitted, unapproved projects where the instructor was last to comment' : ''">
-            {{ maxDaysProjectStaleFor(student) }}
-          </td>
           <td class="numeric-cell" :title="isNaN(maxDaysProjectOngoingFor(student)) ? 'This student has no submitted, unapproved projects' : ''">
             {{ maxDaysProjectOngoingFor(student) }}
+          </td>
+          <td class="numeric-cell" :title="isNaN(maxDaysProjectStaleFor(student)) ? 'This student has no submitted, unapproved projects where the instructor was last to comment' : ''">
+            {{ maxDaysProjectStaleFor(student) }}
           </td>
           <td class="numeric-cell">
             {{ daysSinceLastProjectActivity(student) }}
