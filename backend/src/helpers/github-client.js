@@ -2,6 +2,21 @@ import axios from 'axios'
 import { config } from '../../env/config'
 import githubEventHandlers from './github-event-handlers'
 
+function deleteFromGitHub (path, token) {
+  return axios({
+    method: 'delete',
+    url: `${config.githubAuthBaseURL}${path}`,
+    headers: {
+      Accept: 'application/vnd.github.v3+json',
+      Authorization: `token ${token}`
+    }
+  })
+  .then(response => response.data)
+  .catch(error => {
+    throw new Error(`DELETE ${path} failed. Reason: ${error}`)
+  })
+}
+
 function getFromGitHub (path, token) {
   return axios({
     method: 'get',
@@ -43,6 +58,10 @@ export function createRepository (token, { name }) {
 
 export function getRepository (token, { owner, repo }) {
   return getFromGitHub(`/repos/${owner}/${repo}`, token)
+}
+
+export function deleteRepository (token, { owner, repo }) {
+  return deleteFromGitHub(`/repos/${owner}/${repo}`, token)
 }
 
 export function getCommits (token, { owner, repo }) {

@@ -1,5 +1,6 @@
 export default [
   'user',
   'notifications',
-  'public_repo'
+  'public_repo',
+  'delete_repo'
 ]

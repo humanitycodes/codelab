@@ -13,6 +13,8 @@
       :class="currentStyleClass"
     />
     <ProjectStartOverButton
+      v-if="projectCanBeDeleted"
+      :course="course"
       :project-completion="projectCompletion"
     />
   </div>

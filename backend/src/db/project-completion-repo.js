@@ -50,6 +50,34 @@ export async function createProjectCompletion ({ uid, courseKey, lessonKey, proj
   })
 }
 
+export async function readProjectCompletion ({ courseKey, projectCompletionKey }) {
+  const db = firebase.database()
+
+  return new Promise((resolve, reject) => {
+    db.ref('courses/fieldGroups/large/student')
+      .child(courseKey)
+      .child('projectCompletions')
+      .child(projectCompletionKey)
+      .once('value')
+      .then(snapshot => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val())
+        } else {
+          reject(
+            'Project completion for course ' +
+            courseKey +
+            ' and project completion ' +
+            projectCompletionKey +
+            ' does not exist.'
+          )
+        }
+      })
+      .catch(error => {
+        reject('There was a problem communicating with Firebase:', error)
+      })
+  })
+}
+
 export async function readProjectCompletionByPartialKey ({ uid, courseKey, lessonKey, projectKeyPart }) {
   const db = firebase.database()
   const partialCompletionKey = [projectKeyPart, uid].join('-')
