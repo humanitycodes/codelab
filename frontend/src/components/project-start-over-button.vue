@@ -10,12 +10,23 @@
     </button>
     <ModalConfirm
       :show="showModalConfirmStartOver"
+      :confirmDisabled="confirmResetText.toLowerCase() !== requiredResetText"
       confirmClass="danger"
       confirmLabel="Reset"
       @close="onCloseStartOverModal"
     >
-      <p>Resetting this project will permanently delete your GitHub repository! Are you sure you want to proceed?</p>
-      <aside>This action cannot be undone.</aside>
+      <div class="danger">
+        This will <strong>permanently delete</strong> your project repository
+        &mdash; including all issues &mdash; on GitHub and cannot be undone!
+      </div>
+      <p>
+        If you want to undo your last commit, ask an instructor for help or look
+        up <code>git reset HEAD~</code> instead.
+      </p>
+      <label for="confirm-reset-text">
+        Please type "{{ requiredResetText }}" to confirm.
+      </label>
+      <input type="text" name="confirm-reset-text" v-model="confirmResetText">
     </ModalConfirm>
   </div>
 </template>
@@ -36,7 +47,9 @@ export default {
   },
   data () {
     return {
-      showModalConfirmStartOver: false
+      requiredResetText: 'delete my project',
+      showModalConfirmStartOver: false,
+      confirmResetText: ''
     }
   },
   computed: {

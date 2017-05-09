@@ -6,6 +6,7 @@
     <footer>
       <button
         :class="confirmClass"
+        :disabled="confirmDisabled"
         name="confirm-button"
         @click="() => { close(true) }"
       >
@@ -40,6 +41,10 @@ export default {
     confirmLabel: {
       type: String,
       default: 'OK'
+    },
+    confirmDisabled: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
