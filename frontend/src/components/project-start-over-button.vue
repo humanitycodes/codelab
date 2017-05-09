@@ -1,12 +1,19 @@
 <template>
   <div>
+    <p v-if="error" class="error">{{ error }}</p>
     <button
       type="button"
       name="start-over-button"
       class="danger block"
       @click="showStartOverModal"
+      :disabled="resetting"
     >
-      Reset Project
+      <span v-if="resetting">
+        Just a few seconds...
+      </span>
+      <span v-else>
+        Reset Project
+      </span>
     </button>
     <ModalConfirm
       :show="showModalConfirmStartOver"
@@ -34,12 +41,17 @@
 <script>
 import { userGetters } from '@state/helpers'
 import ModalConfirm from '@components/modal-confirm'
+import Axios from 'axios'
 
 export default {
   components: {
     ModalConfirm
   },
   props: {
+    course: {
+      type: Object,
+      required: true
+    },
     projectCompletion: {
       type: Object,
       required: true
@@ -49,7 +61,9 @@ export default {
     return {
       requiredResetText: 'delete my project',
       showModalConfirmStartOver: false,
-      confirmResetText: ''
+      confirmResetText: '',
+      resetting: false,
+      error: ''
     }
   },
   computed: {
@@ -59,8 +73,29 @@ export default {
     showStartOverModal () {
       this.showModalConfirmStartOver = true
     },
-    onCloseStartOverModal () {
+    onCloseStartOverModal (confirmed) {
       this.showModalConfirmStartOver = false
+      this.confirmResetText = ''
+      if (confirmed) {
+        this.resetProject()
+      }
+    },
+    resetProject () {
+      this.resetting = true
+      this.error = ''
+
+      const courseKey = this.course['.key']
+      const projectCompletionKey = this.projectCompletion['.key']
+
+      Axios.delete(`/api/project-completions/${courseKey}/${projectCompletionKey}`)
+      .then(() => {
+        this.resetting = false
+      })
+      .catch(error => {
+        this.resetting = false
+        this.error = `There was a problem resetting the project. Please tell your instructor so the issue can be resolved as soon as possible.`
+        console.error('Failed to reset project. Reason:', error)
+      })
     }
   }
 }
