@@ -1,16 +1,21 @@
 <template>
-  <component
-    :is="currentInstructions"
-    :project-completion="projectCompletion"
-    :course="course"
-    :lesson="lesson"
-    :project="project"
-    :project-name="projectName"
-    :project-repo-url="projectRepoUrl"
-    :project-hosted-url="projectHostedUrl"
-    :project-hosted-subdomain="projectHostedSubdomain"
-    :class="currentStyleClass"
-  />
+  <div>
+    <component
+      :is="currentInstructions"
+      :project-completion="projectCompletion"
+      :course="course"
+      :lesson="lesson"
+      :project="project"
+      :project-name="projectName"
+      :project-repo-url="projectRepoUrl"
+      :project-hosted-url="projectHostedUrl"
+      :project-hosted-subdomain="projectHostedSubdomain"
+      :class="currentStyleClass"
+    />
+    <ProjectStartOverButton
+      :project-completion="projectCompletion"
+    />
+  </div>
 </template>
 
 <script>
@@ -19,6 +24,7 @@ import courseProjectCompletionRepoName from '@helpers/computed/course-project-co
 import courseProjectCompletionRepoUrl from '@helpers/computed/course-project-completion-repo-url'
 import courseProjectCompletionHostedSubdomain from '@helpers/computed/course-project-completion-hosted-subdomain'
 import courseProjectCompletionHostedUrl from '@helpers/computed/course-project-completion-hosted-url'
+import ProjectStartOverButton from '@components/project-start-over-button'
 
 const statusInstructions = {
   unstarted: require('./project-instructions-unstarted'),
@@ -30,6 +36,9 @@ const statusInstructions = {
 }
 
 export default {
+  components: {
+    ProjectStartOverButton
+  },
   props: {
     course: {
       type: Object,
@@ -56,6 +65,10 @@ export default {
     },
     currentStyleClass () {
       return this.projectCompletion ? 'project-instructions' : ''
+    },
+    projectCanBeDeleted () {
+      return this.projectStatus !== 'unstarted' &&
+        this.projectStatus !== 'approved'
     },
     projectName () {
       if (!this.projectCompletion) return
