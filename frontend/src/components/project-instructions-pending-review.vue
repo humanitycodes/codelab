@@ -4,7 +4,12 @@
       :repo-url="projectRepoUrl"
       :hosted-url="projectHostedUrl"
     />
-    <p>An instructor will review your project as soon as possible. You may still continue to improve it while you wait, or move on to another lesson. However, it's not recommended to start a new lesson for which this one is a prerequisite until it's approved.</p>
+    <p>
+      An instructor will review your project as soon as possible. You may still
+      continue to improve it while you wait, or move on to another lesson.
+      If this lesson is a prerequisite for a lesson you would like to start,
+      you can contact an instructor to speed up the review.
+    </p>
 
     <h4>If you make changes</h4>
 
