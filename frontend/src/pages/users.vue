@@ -2,6 +2,14 @@
   <Layout>
     <h1>Users</h1>
 
+    <label>Search</label>
+    <input
+      type="text"
+      name="search-text"
+      v-model="searchText"
+      placeholder="e.g. name, email"
+    ></input>
+
     <table class="dashboard-info">
       <thead>
         <th>Name</th>
@@ -113,6 +121,7 @@ export default {
   },
   data () {
     return {
+      searchText: '',
       showEditUserModal: false,
       editingUser: {},
       roleNames
@@ -122,7 +131,12 @@ export default {
     ...userGetters,
     ...roleGetters,
     filteredUsers () {
-      return sortBy(this.users, [
+      const regex = new RegExp(this.searchText, 'gi')
+      const filteredUsers = this.users.filter(user => {
+        return user.fullName.search(regex) !== -1 ||
+          user.email.search(regex) !== -1
+      })
+      return sortBy(filteredUsers, [
         user => this.userRoleNames(user),
         'fullName'
       ])
