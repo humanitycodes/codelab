@@ -6,7 +6,7 @@ import { hasMatchingRole } from './_helpers'
 // ------
 
 export const canCreateLesson = () => {
-  return hasMatchingRole(['instructor', 'admin'])
+  return hasMatchingRole(['instructor'])
 }
 
 // ----
@@ -14,11 +14,11 @@ export const canCreateLesson = () => {
 // ----
 
 export const canReadLesson = ({ lessonKey }) => {
-  return hasMatchingRole(['instructor', 'admin'])
+  return hasMatchingRole(['instructor'])
 }
 
 export const canReadAllLessons = () => {
-  return hasMatchingRole(['instructor', 'admin'])
+  return hasMatchingRole(['instructor'])
 }
 
 // ------
@@ -26,7 +26,7 @@ export const canReadAllLessons = () => {
 // ------
 
 export const canUpdateLesson = ({ lessonKey }) => {
-  return hasMatchingRole(['instructor', 'admin'])
+  return hasMatchingRole(['instructor'])
 }
 
 // -------
@@ -35,7 +35,7 @@ export const canUpdateLesson = ({ lessonKey }) => {
 
 export const canDestroyLesson = ({ lessonKey }) => {
   return (
-    hasMatchingRole(['instructor', 'admin']) &&
+    hasMatchingRole(['instructor']) &&
     !lessonIsInACourse(lessonKey)
   )
 }

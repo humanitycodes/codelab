@@ -6,7 +6,7 @@ import { hasMatchingRole } from './_helpers'
 // ------
 
 export const canCreateCourse = () => {
-  return hasMatchingRole(['instructor', 'admin'])
+  return hasMatchingRole(['instructor'])
 }
 
 // ----
@@ -15,7 +15,7 @@ export const canCreateCourse = () => {
 
 export const canReadCourse = ({ courseKey }) => {
   return (
-    hasMatchingRole(['instructor', 'admin']) ||
+    hasMatchingRole(['instructor']) ||
     (
       isEnrolledInCourse(courseKey) &&
       courseHasBegun(courseKey)
@@ -24,7 +24,7 @@ export const canReadCourse = ({ courseKey }) => {
 }
 
 export const canReadAllCourses = () => {
-  return hasMatchingRole(['instructor', 'admin'])
+  return hasMatchingRole(['instructor'])
 }
 
 // ------
@@ -32,12 +32,12 @@ export const canReadAllCourses = () => {
 // ------
 
 export const canUpdateCourse = ({ courseKey }) => {
-  return hasMatchingRole(['instructor', 'admin'])
+  return hasMatchingRole(['instructor'])
 }
 
 export const shouldUpdateCourse = ({ courseKey }) => {
   return (
-    hasMatchingRole(['instructor', 'admin']) &&
+    hasMatchingRole(['instructor']) &&
     !(
       courseHasEnrolledStudents(courseKey) &&
       courseHasEnded(courseKey)

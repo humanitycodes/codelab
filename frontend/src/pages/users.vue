@@ -31,9 +31,19 @@
           </td>
           <td class="role-actions">
             <button
+              v-if="user['.key'] !== currentUser.uid"
               type="button"
               class="primary inline"
               @click="editUser(user)"
+            >
+              Edit
+            </button>
+            <button
+              v-else
+              disabled
+              type="button"
+              class="primary inline"
+              title="Editing your own roles is currently not permitted"
             >
               Edit
             </button>
@@ -90,11 +100,12 @@
 </template>
 
 <script>
+import store from '@state/store'
 import Layout from '@layouts/main'
 import Modal from '@components/modal'
-import { userGetters } from '@state/helpers'
+import { userGetters, roleGetters } from '@state/helpers'
 import sortBy from 'lodash/sortBy'
-import roleNames from '@constants/role-names'
+import roleNames from '@src/../../firebase/dist/defs/roles'
 
 export default {
   components: {
@@ -109,6 +120,7 @@ export default {
   },
   computed: {
     ...userGetters,
+    ...roleGetters,
     filteredUsers () {
       return sortBy(this.users, [
         user => this.userRoleNames(user),
@@ -125,6 +137,14 @@ export default {
       this.showEditUserModal = false
     },
     onChangeUserRole (roleName, event) {
+      const roles = this.userRoles(this.editingUser)
+      if (roles) {
+        store.dispatch('updateUserRole', {
+          userKey: this.editingUser['.key'],
+          roleName,
+          enabled: event.target.checked
+        })
+      }
     },
     githubRepoFor (user) {
       return `https://github.com/${user.github.login}`
