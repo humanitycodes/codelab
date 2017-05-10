@@ -1,4 +1,7 @@
 import {
+  canUpdateRoles
+} from '@state/auth/users'
+import {
   canCreateLesson, canReadAllLessons, canUpdateLesson
 } from '@state/auth/lessons'
 import {
@@ -101,6 +104,13 @@ export default [
     component: require('@pages/student-progress'),
     meta: {
       isAuthorized: canReadAllCourses
+    }
+  },
+  {
+    path: '/users',
+    component: require('@pages/users'),
+    meta: {
+      isAuthorized: canUpdateRoles
     }
   },
   // We do not need this live for now.
