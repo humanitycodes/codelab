@@ -31,7 +31,7 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 @import '../meta'
 
 .modal-mask
@@ -52,6 +52,11 @@ export default {
   border-radius: $design.control.border.radius
   box-shadow: 0 2px 8px rgba(0, 0, 0, .33)
   transition: all .3s ease
+
+.modal-container footer
+  border-top: 1px solid $design.control.border.color
+  text-align: right
+  padding-top: $design.layout.gutterWidth
 
 .modal-enter
 .modal-leave-to

@@ -33,6 +33,7 @@
             <button
               type="button"
               class="primary inline"
+              @click="editUser(user)"
             >
               Edit
             </button>
@@ -40,17 +41,66 @@
         </tr>
       </tbody>
     </table>
+
+    <Modal :show="showEditUserModal" @close="onCloseEditUserModal">
+      <main>
+        <div class="flex-row">
+          <div class="flex-col">
+            <label>Name</label>
+            <div>{{ editingUser.fullName }}</div>
+          </div>
+        </div>
+        <div class="flex-row">
+          <div class="flex-col">
+            <label>Email</label>
+            <div>{{ editingUser.email }}</div>
+          </div>
+        </div>
+        <div class="flex-row">
+          <div class="flex-col">
+            <label>Roles</label>
+            <ul>
+              <li v-for="securityRole in securityRoles">
+                <label class="role-label">
+                  <input type="checkbox" class="inline">
+                    {{ securityRole }}
+                  </input>
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </main>
+      <footer>
+        <button
+          name="done-button"
+          class="primary"
+          @click="onCloseEditUserModal"
+        >
+          Done
+        </button>
+      </footer>
+    </Modal>
   </Layout>
 </template>
 
 <script>
 import Layout from '@layouts/main'
+import Modal from '@components/modal'
 import { userGetters } from '@state/helpers'
 import sortBy from 'lodash/sortBy'
+import securityRoles from '@constants/security-roles'
 
 export default {
   components: {
-    Layout
+    Layout, Modal
+  },
+  data () {
+    return {
+      showEditUserModal: false,
+      editingUser: {},
+      securityRoles
+    }
   },
   computed: {
     ...userGetters,
@@ -62,6 +112,13 @@ export default {
     }
   },
   methods: {
+    editUser (user) {
+      this.editingUser = user
+      this.showEditUserModal = true
+    },
+    onCloseEditUserModal () {
+      this.showEditUserModal = false
+    },
     githubRepoFor (user) {
       return `https://github.com/${user.github.login}`
     },
@@ -87,6 +144,17 @@ export default {
 
 <style lang="stylus" scoped>
 @import '../meta'
+
+ul
+  list-style-type: none
+  margin-top: 0
+  padding-left: $design.layout.gutterWidth
+
+label.role-label
+  font-weight: normal
+
+input[type=checkbox]
+  margin-right: $design.control.padding.horizontal*0.5
 
 .user-name
 .user-email
