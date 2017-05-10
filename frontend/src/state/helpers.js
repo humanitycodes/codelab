@@ -1,17 +1,20 @@
 import { mapState, mapGetters } from 'vuex'
 import * as lessonPermissionMethods from '@state/auth/lessons'
 import * as coursePermissionMethods from '@state/auth/courses'
+import * as userPermissionMethods from '@state/auth/users'
 
 export const userGetters = {
   ...mapState({
     currentUser: state => state.users.currentUser,
-    users: state => state.users.all
+    users: state => state.users.all,
+    roles: state => state.users.allRoles
   }),
   ...mapGetters([
     'isUserSignedIn',
     'hasNewGitHubScopes'
   ])
 }
+export { userPermissionMethods }
 
 export const lessonGetters = {
   ...mapGetters([

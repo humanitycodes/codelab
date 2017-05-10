@@ -29,7 +29,12 @@
           Student Progress
         </router-link>
       </li>
-      <li v-if="canReadAllCourses()" class="main-nav-separator"/>
+      <li v-if="canUpdateRoles()">
+        <router-link to="/users">
+          Users
+        </router-link>
+      </li>
+      <li v-if="canReadAllCourses() || canUpdateRoles()" class="main-nav-separator"/>
       <li v-if="!isUserSignedIn">
         <AuthLink provider="msu">Sign in</AuthLink>
       </li>
@@ -56,7 +61,7 @@
 
 <script>
 import {
-  userGetters, lessonPermissionMethods, coursePermissionMethods
+  userGetters, userPermissionMethods, lessonPermissionMethods, coursePermissionMethods
 } from '@state/helpers'
 import AuthLink from '@components/auth-link'
 
@@ -66,6 +71,7 @@ export default {
   },
   computed: userGetters,
   methods: {
+    ...userPermissionMethods,
     ...lessonPermissionMethods,
     ...coursePermissionMethods
   }

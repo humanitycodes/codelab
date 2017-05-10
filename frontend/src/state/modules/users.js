@@ -11,7 +11,8 @@ export default {
   state: {
     currentUser: null,
     userRoles: null,
-    all: []
+    all: [],
+    allRoles: []
   },
   getters: {
     isUserSignedIn (state) {
@@ -83,13 +84,18 @@ export default {
       syncCache.users = true
       return new Promise((resolve, reject) => {
         createFirebaseVM({
-          users: db.ref('users')
+          users: db.ref('users'),
+          roles: db.ref('roles')
         })
         .then(vm => {
           commit('SET_USERS', vm.users)
+          commit('SET_ALL_ROLES', vm.roles)
           resolve(rootState)
           vm.$watch('users', (newUsers, oldUsers) => {
             commit('SET_USERS', newUsers)
+          })
+          vm.$watch('roles', (newRoles, oldRoles) => {
+            commit('SET_ALL_ROLES', newRoles)
           })
         })
         .catch(resolve)
@@ -125,6 +131,9 @@ export default {
     },
     SET_CURRENT_ROLES (state, newRoles) {
       state.userRoles = newRoles
+    },
+    SET_ALL_ROLES (state, newRoles) {
+      state.allRoles = newRoles
     },
     SET_USERS (state, newUsers) {
       state.all = newUsers
