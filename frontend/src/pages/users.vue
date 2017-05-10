@@ -60,10 +60,15 @@
           <div class="flex-col">
             <label>Roles</label>
             <ul>
-              <li v-for="securityRole in securityRoles">
+              <li v-for="roleName in roleNames">
                 <label class="role-label">
-                  <input type="checkbox" class="inline">
-                    {{ securityRole }}
+                  <input
+                    type="checkbox"
+                    class="inline"
+                    :checked="userHasRole(roleName)"
+                    @change="onChangeUserRole(roleName, $event)"
+                  >
+                    {{ roleName }}
                   </input>
                 </label>
               </li>
@@ -89,7 +94,7 @@ import Layout from '@layouts/main'
 import Modal from '@components/modal'
 import { userGetters } from '@state/helpers'
 import sortBy from 'lodash/sortBy'
-import securityRoles from '@constants/security-roles'
+import roleNames from '@constants/role-names'
 
 export default {
   components: {
@@ -99,7 +104,7 @@ export default {
     return {
       showEditUserModal: false,
       editingUser: {},
-      securityRoles
+      roleNames
     }
   },
   computed: {
@@ -119,23 +124,32 @@ export default {
     onCloseEditUserModal () {
       this.showEditUserModal = false
     },
+    onChangeUserRole (roleName, event) {
+    },
     githubRepoFor (user) {
       return `https://github.com/${user.github.login}`
     },
-    userRoleNames (user) {
-      const roles = this.roles.find(role => {
+    userRoles (user) {
+      return this.roles.find(role => {
         return user['.key'] === role['.key']
       })
-      let roleNames = []
+    },
+    userHasRole (roleName) {
+      const roles = this.userRoles(this.editingUser) || {}
+      return !!roles[roleName]
+    },
+    userRoleNames (user) {
+      const roles = this.userRoles(user)
+      let setRoleNames = []
       if (roles) {
         Object.keys(roles).forEach(roleName => {
           if (roleName !== '.key' && roles[roleName]) {
-            roleNames.push(roleName)
+            setRoleNames.push(roleName)
           }
         })
       }
-      return roleNames.length
-        ? roleNames.sort().join(', ')
+      return setRoleNames.length
+        ? setRoleNames.sort().join(', ')
         : 'none'
     }
   }
