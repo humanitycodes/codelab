@@ -5,10 +5,10 @@
       :hosted-url="projectHostedUrl"
     />
     <p>
-      An instructor will review your project as soon as possible. You may still
-      continue to improve it while you wait, or move on to another lesson.
-      If this lesson is a prerequisite for a lesson you would like to start,
-      you can contact an instructor to speed up the review.
+      An instructor will review your project as soon as possible. You may
+      continue to improve it, or move on to another lesson. If this lesson is a
+      prerequisite for a lesson you would like to start, contact an instructor
+      to speed up the review.
     </p>
 
     <h4>If you make changes</h4>
