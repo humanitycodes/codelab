@@ -14,6 +14,12 @@
             Force student view
           </label>
         </div>
+        <div v-else class="flex-col">
+          <a href="#syllabus">
+            Syllabus
+            <i class="fa fa-level-down" aria-hidden="true"></i>
+          </a>
+        </div>
       </div>
       <h1>
         {{ currentCourse.title }}
@@ -110,6 +116,7 @@
       </div>
       <div class="flex-row">
         <div class="flex-col">
+          <a name="syllabus"></a>
           <h2>Syllabus</h2>
           <div
             v-if="currentCourse.syllabus"
