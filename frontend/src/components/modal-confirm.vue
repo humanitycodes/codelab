@@ -55,16 +55,11 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 @import '../meta'
 
 .modal-container aside
   font-size: smaller
   font-style: italic
   margin: $design.layout.gutterWidth auto
-
-.modal-container footer
-  border-top: 1px solid $design.control.border.color
-  text-align: right
-  padding-top: $design.layout.gutterWidth
 </style>
