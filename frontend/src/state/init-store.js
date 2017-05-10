@@ -21,6 +21,7 @@ export default () => {
     const additionalFetches = [store.dispatch('syncResources')]
     if (store.state.users.userRoles && store.state.users.userRoles.instructor) {
       additionalFetches.push(store.dispatch('syncUsers'))
+      additionalFetches.push(store.dispatch('syncRoles'))
     }
     return Promise.all(additionalFetches).then(() => store)
   })
