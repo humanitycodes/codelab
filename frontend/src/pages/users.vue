@@ -5,18 +5,37 @@
     <table class="dashboard-info">
       <thead>
         <th>Name</th>
+        <th>Email</th>
         <th>Roles</th>
       </thead>
       <tbody>
         <tr v-for="user in filteredUsers">
-          <td>
+          <td class="user-name">
+            <a
+              v-if="user.github"
+              :href="githubRepoFor(user)"
+              target="_blank"
+            >{{ user.fullName }}</a>
+            <span v-else>
+              {{ user.fullName }}
+            </span>
+          </td>
+          <td class="user-email">
             <a
               :href="`mailto:${user.email}`"
               target="_blank"
-            >{{ user.fullName }}</a>
+            >{{ user.email }}</a>
           </td>
           <td class="role-list">
             {{ userRoleNames(user) }}
+          </td>
+          <td class="role-actions">
+            <button
+              type="button"
+              class="primary inline"
+            >
+              Edit
+            </button>
           </td>
         </tr>
       </tbody>
@@ -43,6 +62,9 @@ export default {
     }
   },
   methods: {
+    githubRepoFor (user) {
+      return `https://github.com/${user.github.login}`
+    },
     userRoleNames (user) {
       const roles = this.roles.find(role => {
         return user['.key'] === role['.key']
@@ -55,11 +77,9 @@ export default {
           }
         })
       }
-      if (roleNames.length) {
-        return roleNames.sort().join(', ')
-      } else {
-        return 'none'
-      }
+      return roleNames.length
+        ? roleNames.sort().join(', ')
+        : 'none'
     }
   }
 }
@@ -68,6 +88,15 @@ export default {
 <style lang="stylus" scoped>
 @import '../meta'
 
-td.role-list
+.user-name
+.user-email
+  white-space: nowrap
+
+.role-list
   text-align: right
+
+.role-actions
+  width: 1px
+  border: none
+  padding: 0 inherit
 </style>
