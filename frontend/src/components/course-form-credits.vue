@@ -1,10 +1,11 @@
 <template>
   <div class="flex-row">
     <div class="flex-col">
-      <label>Number of Credits</label>
+      <label for="course-credits">Number of Credits</label>
       <input
         ref="input"
         :value="course.credits"
+        id="course-credits"
         name="course-credits"
         @input="updateCredits($event.target.value)"
         @change="$event.target.value = course.credits"

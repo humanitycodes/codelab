@@ -1,7 +1,7 @@
 <template>
   <div class="flex-row">
     <div class="flex-col" :disabled="disabled">
-      <label>Instructors</label>
+      <label for="course-instructor-query">Instructors</label>
       <Dropdown
         :results="queryResults"
         :resultHandler="addInstructor"
@@ -13,6 +13,7 @@
           :disabled="disabled"
           ref="queryInput"
           v-model="instructorQuery"
+          id="course-instructor-query"
           name="course-instructor-query"
           placeholder="Add instructors to the course"
         >

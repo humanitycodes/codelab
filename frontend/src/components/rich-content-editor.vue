@@ -5,6 +5,7 @@
   >
     <textarea
       ref="textarea"
+      :id="id"
       :name="name"
       :value.dom-prop="value"
     />
@@ -59,6 +60,7 @@ export default {
       type: String,
       default: ''
     },
+    id: String,
     name: String
   },
   data () {
