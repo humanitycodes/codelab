@@ -1,24 +1,31 @@
 <template>
   <Layout>
-    <label>Unique Course Key</label>
+    <h1>Unique Course Key</h1>
     <p class="warning">This is the unique key for the course that will appear in URLs and project repos. <strong>It cannot be changed once the course is created.</strong></p>
     <div class="key-field">
-      <select v-model="prefix" name="course-prefix">
-        <option v-for="prefixOption in prefixOptions" :value="prefixOption">
-          {{ prefixOption }}
-        </option>
-      </select>
+      <label title="Department abbreviation">
+        <select v-model="prefix" name="course-prefix">
+          <option v-for="prefixOption in prefixOptions" :value="prefixOption">
+            {{ prefixOption }}
+          </option>
+        </select>
+      </label>
       <span>-</span>
-      <input v-model="number" name="course-number" placeholder="Number">
+      <label for="course-number" hidden>Couse number</label>
+      <input v-model="number" id="course-number" name="course-number" placeholder="Number" title="Course number">
       <span>-</span>
-      <select v-model="semester" name="course-semester">
-        <option v-for="(code, season) in semesterOptions" :value="code">
-          {{ season }}
-        </option>
-      </select>
-      <input v-model="year" name="course-year" placeholder="Year">
+      <label title="Semester/season">
+        <select v-model="semester" name="course-semester">
+          <option v-for="(code, season) in semesterOptions" :value="code">
+            {{ season }}
+          </option>
+        </select>
+      </label>
+      <label for="course-year" hidden>Course year</label>
+      <input v-model="year" id="course-year" name="course-year" placeholder="Year" title="Course year (2 or 4 digits)">
       <span>-</span>
-      <input v-model="section" name="course-section" placeholder="Section">
+      <label for="course-section" hidden>Course section</label>
+      <input v-model="section" id="course-section" name="course-section" placeholder="Section" title="Course section">
     </div>
     <button
       :disabled="!keyIsValid"
