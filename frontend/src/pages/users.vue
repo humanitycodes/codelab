@@ -2,8 +2,9 @@
   <Layout>
     <h1>Users</h1>
 
-    <label>Search</label>
+    <label for="search-text">Search</label>
     <input
+      id="search-text"
       type="text"
       name="search-text"
       v-model="searchText"
@@ -138,7 +139,7 @@ export default {
       })
       return sortBy(filteredUsers, [
         user => this.userRoleNames(user),
-        'fullName'
+        user => user.fullName
       ])
     }
   },
