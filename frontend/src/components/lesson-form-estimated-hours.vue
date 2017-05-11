@@ -1,12 +1,13 @@
 <template>
   <div class="flex-row">
     <div class="flex-col">
-      <label>Estimated Hours</label>
+      <label for="lesson-estimated-hours">Estimated Hours</label>
       <input
         ref="input"
         :value="lesson.estimatedHours"
         @input="updateHours($event.target.value)"
         @change="$event.target.value = lesson.estimatedHours"
+        id="lesson-estimated-hours"
         name="lesson-estimated-hours"
         placeholder="Estimated hours to complete the lesson"
       >
