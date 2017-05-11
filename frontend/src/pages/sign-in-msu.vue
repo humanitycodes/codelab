@@ -11,7 +11,7 @@
         extra-large
       "
     >
-      <img src="../assets/images/logo-white.png">
+      <img src="../assets/images/logo-white.png" alt="Site logo">
       Sign in
     </AuthLink>
   </div>
