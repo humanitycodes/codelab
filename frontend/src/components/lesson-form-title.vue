@@ -1,9 +1,10 @@
 <template>
   <div class="flex-row">
     <div class="flex-col">
-      <label>Title</label>
+      <label for="lesson-title">Title</label>
       <input
         v-model="lesson.title"
+        id="lesson-title"
         name="lesson-title"
         placeholder="A short description of the lesson in the infinitive form"
       >

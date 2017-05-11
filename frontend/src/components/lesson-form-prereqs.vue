@@ -1,7 +1,7 @@
 <template>
   <div class="flex-row">
     <div class="flex-col">
-      <label>Prerequisites</label>
+      <label for="lesson-prereq-query">Prerequisites</label>
       <Dropdown
         :results="queryResults"
         :resultHandler="addPrereq"
@@ -12,6 +12,7 @@
         <input
           ref="queryInput"
           v-model="prereqQuery"
+          id="lesson-prereq-query"
           name="lesson-prereq-query"
           placeholder="Add prerequisite lessons"
         >

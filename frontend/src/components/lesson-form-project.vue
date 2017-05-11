@@ -3,33 +3,46 @@
     <div class="flex-col">
       <div class="flex-row">
         <div class="flex-col">
-          <label>Project Title</label>
+          <label for="project-title">Project Title</label>
           <input
             v-model="project.title"
             placeholder="Project title"
+            id="project-title"
+            name="project-title"
             class="lesson-project-title-input"
           >
         </div>
       </div>
       <div class="flex-row">
         <div class="flex-col">
-          <label>Project Criteria</label>
+          <label for="project-new-criterion">Project Criteria</label>
           <input
             v-model="newProjectCriterion"
             @keydown.enter="addCriterion"
+            id="project-new-criterion"
+            name="project-new-criterion"
             placeholder="Add project criteria"
           >
           <OrderedEditableList :items="project.criteria">
             <template scope="list">
-              <input v-model="list.item.content">
+              <input
+                v-model="list.item.content"
+                :id="`project-criterion-${list.item['.position']}`"
+                :name="`project-criterion-${list.item['.position']}`"
+                :aria-label="`Project criterion ${list.item['.position']}`"
+              >
             </template>
           </OrderedEditableList>
         </div>
       </div>
       <div class="flex-row">
         <div class="flex-col">
-          <label>Project Hosting</label>
-          <select v-model="project.hosting">
+          <label for="project-hosting">Project Hosting</label>
+          <select
+            v-model="project.hosting"
+            id="project-hosting"
+            name="project-hosting"
+          >
             <option
               v-for="hostingOption in hostingOptions"
               :value="hostingOption"

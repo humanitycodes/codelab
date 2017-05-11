@@ -1,16 +1,22 @@
 <template>
   <div class="flex-row">
     <div class="flex-col">
-      <label>Learning Objectives</label>
+      <label for="lesson-new-learning-objective">Learning Objectives</label>
       <input
         v-model="newLearningObjective"
         @keydown.enter="addObjective"
+        id="lesson-new-learning-objective"
         name="lesson-new-learning-objective"
         placeholder="What new skills will students acquire?"
       >
       <OrderedEditableList :items="lesson.learningObjectives">
         <template scope="list">
-          <input v-model="list.item.content">
+          <input
+            v-model="list.item.content"
+            :id="`learning-objective-${list.item['.position']}`"
+            :name="`learning-objective-${list.item['.position']}`"
+            :aria-label="`Learning objective ${list.item['.position']}`"
+          >
         </template>
       </OrderedEditableList>
     </div>
