@@ -2,7 +2,7 @@
   <nav class="main-nav">
     <img
       src="../assets/images/logo.png"
-      alt="Logo"
+      alt="Go Home"
       class="main-nav-logo"
       @click="$router.push('/')"
     />
