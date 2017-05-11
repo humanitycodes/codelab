@@ -3,13 +3,12 @@
     <h1>Unique Lesson Key</h1>
     <p class="warning">This is the unique key for the lesson that will appear in URLs and project repos. <strong>It cannot be changed once the lesson is created.</strong></p>
     <div class="key-field">
-      <label title="Lesson category">
-        <select v-model="categoryPrefix" name="lesson-category">
-          <option v-for="category in lessonCategories">
-            {{ category }}
-          </option>
-        </select>
-      </label>
+      <label for="lesson-category" hidden>Lesson category</label>
+      <select v-model="categoryPrefix" id="lesson-category" name="lesson-category" title="Lesson category">
+        <option v-for="category in lessonCategories">
+          {{ category }}
+        </option>
+      </select>
       <span>-</span>
       <label for="lesson-key" hidden>Lesson key</label>
       <input v-model="key" id="lesson-key" name="lesson-key" placeholder="Lesson key (e.g. jquery-intro)" title="Lesson key">
