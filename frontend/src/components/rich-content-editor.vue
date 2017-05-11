@@ -162,6 +162,10 @@ export default {
       font-family: $design.code.font.family
     .CodeMirror-lines
       padding: $design.layout.gutterWidth
+    .cm-comment
+      color: #f9cc9d
+    .cm-header
+      color: #e5868e
     .cm-searching
       background-color: white
       color: black
@@ -187,7 +191,7 @@ export default {
       left: 0
     .rendered-content-container
       right: 0
-      background-color: #FFF
+      background-color: #fff
       padding: $design.layout.gutterWidth
       > .rendered-content
         flex-grow: 1
