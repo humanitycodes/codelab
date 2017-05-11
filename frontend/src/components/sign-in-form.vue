@@ -5,14 +5,14 @@
     </p>
     <div class="flex-row">
       <div class="flex-col">
-        <label>Email</label>
-        <input v-model="credentials.email" placeholder="you@domain.com" type="text" @keyup.enter="signIn">
+        <label for="email">Email</label>
+        <input v-model="credentials.email" id="email" placeholder="you@domain.com" type="text" @keyup.enter="signIn">
       </div>
     </div>
     <div class="flex-row">
       <div class="flex-col">
-        <label>Password</label>
-        <input v-model="credentials.password" type="password" @keyup.enter="signIn">
+        <label for="password">Password</label>
+        <input v-model="credentials.password" id="password" type="password" @keyup.enter="signIn">
       </div>
     </div>
     <button class="primary block" @click="signIn">
