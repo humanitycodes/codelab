@@ -1,15 +1,18 @@
 <template>
   <Layout>
-    <label>Unique Lesson Key</label>
+    <h1>Unique Lesson Key</h1>
     <p class="warning">This is the unique key for the lesson that will appear in URLs and project repos. <strong>It cannot be changed once the lesson is created.</strong></p>
     <div class="key-field">
-      <select v-model="categoryPrefix" name="lesson-category">
-        <option v-for="category in lessonCategories">
-          {{ category }}
-        </option>
-      </select>
+      <label title="Lesson category">
+        <select v-model="categoryPrefix" name="lesson-category">
+          <option v-for="category in lessonCategories">
+            {{ category }}
+          </option>
+        </select>
+      </label>
       <span>-</span>
-      <input v-model="key" name="lesson-key">
+      <label for="lesson-key" hidden>Lesson key</label>
+      <input v-model="key" id="lesson-key" name="lesson-key" placeholder="Lesson key (e.g. jquery-intro)" title="Lesson key">
       <button
         :disabled="!keyIsValid"
         @click="tryToCreateLesson"
