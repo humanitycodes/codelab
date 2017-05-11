@@ -14,8 +14,10 @@
 
     <template v-if="instructors.length > 1">
       <h4>Choose a reviewer</h4>
-      <label for="chosen-instructor" hidden>Choose a reviewer</label>
-      <select v-model="chosenInstructor" id="chosen-instructor">
+      <select
+        v-model="chosenInstructor"
+        aria-label="Choose a reviewer"
+      >
         <option
           v-for="instructor in instructors"
           :value="instructor.github.login"
