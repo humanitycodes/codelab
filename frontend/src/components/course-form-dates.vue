@@ -2,12 +2,12 @@
   <div>
     <div class="flex-row">
       <div class="flex-col">
-        <label>Start Date</label>
-        <DatePicker v-model="course.startDate" name="course-start-date"/>
+        <label for="course-start-date">Start Date</label>
+        <DatePicker v-model="course.startDate" id="course-start-date" name="course-start-date"/>
       </div>
       <div class="flex-col">
-        <label>End Date</label>
-        <DatePicker v-model="course.endDate" at-day="end" name="course-end-date"/>
+        <label for="course-end-date">End Date</label>
+        <DatePicker v-model="course.endDate" at-day="end" id="course-end-date" name="course-end-date"/>
       </div>
     </div>
     <p v-if="warning" class="warning">

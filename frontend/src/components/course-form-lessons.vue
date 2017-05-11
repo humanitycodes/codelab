@@ -1,7 +1,7 @@
 <template>
   <div class="flex-row">
     <div class="flex-col">
-      <label>Lessons</label>
+      <label for="course-lesson-query">Lessons</label>
       <Dropdown
         :results="queryResults"
         :resultHandler="addCourseLesson"
@@ -12,6 +12,7 @@
         <input
           ref="queryInput"
           v-model="lessonQuery"
+          id="course-lesson-query"
           name="course-lesson-query"
           placeholder="Add lessons to the course"
         >

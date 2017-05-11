@@ -1,7 +1,7 @@
 <template>
   <div class="flex-row">
     <div class="flex-col" :disabled="disabled">
-      <label>Enrolled Students</label>
+      <label for="course-student-query">Enrolled Students</label>
       <Dropdown
         :results="queryResults"
         :resultHandler="addStudent"
@@ -13,6 +13,7 @@
           :disabled="disabled"
           ref="queryInput"
           v-model="studentQuery"
+          id="course-student-query"
           name="course-student-query"
           placeholder="Add students to the course"
           @keyup.enter="addPreenrollment"

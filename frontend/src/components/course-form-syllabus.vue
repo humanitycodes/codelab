@@ -1,9 +1,10 @@
 <template>
   <div class="flex-row">
     <div class="flex-col">
-      <label>Syllabus</label>
+      <label for="course-syllabus">Syllabus</label>
       <RichContentEditor
         v-model="course.syllabus"
+        id="course-syllabus"
         name="course-syllabus"
       />
       <p v-if="!course.syllabus" class="warning">
