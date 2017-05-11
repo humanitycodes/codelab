@@ -46,14 +46,16 @@
                 v-if="reviewGroup.instructor['.key'] === currentUser.uid"
                 class="review-reassignment-control"
               >
-                <select v-model="codeReview.projectCompletion.submission.assignedInstructor">
-                  <option
-                    v-for="instructorKey in codeReview.course.instructorKeys"
-                    :value="instructorKey"
-                  >
-                    {{ getInstructorInitialsFromKey(instructorKey) }}
-                  </option>
-                </select>
+                <label title="Reassign this code review to another instructor">
+                  <select v-model="codeReview.projectCompletion.submission.assignedInstructor">
+                    <option
+                      v-for="instructorKey in codeReview.course.instructorKeys"
+                      :value="instructorKey"
+                    >
+                      {{ getInstructorInitialsFromKey(instructorKey) }}
+                    </option>
+                  </select>
+                </label>
               </td>
             </tr>
           </tbody>
