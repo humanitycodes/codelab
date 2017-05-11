@@ -33,7 +33,7 @@
       <label for="confirm-reset-text">
         Please type "{{ requiredResetText }}" to confirm.
       </label>
-      <input type="text" name="confirm-reset-text" v-model="confirmResetText">
+      <input type="text" id="confirm-reset-text" name="confirm-reset-text" v-model="confirmResetText">
     </ModalConfirm>
   </div>
 </template>
