@@ -30,16 +30,16 @@
                 </router-link>
               </td>
               <td class="code-review-links">
-                <a :href="getFirstIssueUrl(codeReview)" target="_blank" class="icon-link" alt="Open the GitHub issue in a new tab" title="Open this issue on GitHub">
-                  <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
+                <a :href="getFirstIssueUrl(codeReview)" target="_blank" class="icon-link" alt="Open the GitHub issue in a new tab" aria-label="GitHub Issue">
+                  <span class="fa fa-exclamation-circle" aria-hidden="true" title="Open this issue on GitHub"></span>
                 </a>
                 &nbsp;
-                <a :href="getGitHubProjectUrl(codeReview)" target="_blank" class="icon-link" alt="Open the GitHub code in a new tab" title="View the code on GitHub">
-                  <span class="fa fa-code" aria-hidden="true"></span>
+                <a :href="getGitHubProjectUrl(codeReview)" target="_blank" class="icon-link" alt="Open the GitHub code in a new tab" aria-label="GitHub Code">
+                  <span class="fa fa-code" aria-hidden="true" title="View the code on GitHub"></span>
                 </a>
                 &nbsp;
-                <a :href="getHostedUrl(codeReview)" target="_blank" class="icon-link" alt="Open the hosted site in a new tab" title="View the hosted site">
-                  <span class="fa fa-globe" aria-hidden="true"></span>
+                <a :href="getHostedUrl(codeReview)" target="_blank" class="icon-link" alt="Open the hosted site in a new tab" aria-label="Hosted Site">
+                  <span class="fa fa-globe" aria-hidden="true" title="View the hosted site"></span>
                 </a>
               </td>
               <td
