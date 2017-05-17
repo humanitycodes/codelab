@@ -63,7 +63,7 @@ p
 :not(pre) > code
   padding-top: 0.2em
   padding-bottom: 0.2em
-  background-color: rgba(0,0,0,0.04)
+  background-color: $design.branding.muted.light.gray
   border-radius: $design.control.border.radius
   vertical-align: baseline
   &:before, &:after
