@@ -172,7 +172,7 @@ $course-tab-content-bg = rgba($design.branding.default.light, .7)
   border-bottom-color: $design.control.border.color
   border-bottom-left-radius: 0
   border-bottom-right-radius: 0
-  background-color: #dfe6e6
+  background-color: $design.branding.muted.light.gray
   &:focus
     border-color: $design.control.border.color
   &:hover
