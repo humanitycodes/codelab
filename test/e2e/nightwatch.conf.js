@@ -30,15 +30,7 @@ module.exports = {
       desiredCapabilities: {
         browserName: 'chrome',
         javascriptEnabled: true,
-        acceptSslCerts: true,
-        chromeOptions: {
-          prefs: {
-            'credentials_enable_service': false,
-            'profile': {
-                'password_manager_enabled': false
-            }
-          }
-        }
+        acceptSslCerts: true
       }
     },
 
