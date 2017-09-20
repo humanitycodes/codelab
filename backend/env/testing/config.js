@@ -1,7 +1,7 @@
 module.exports = {
   serverBaseURL: 'https://localhost:8080',
 
-  msuAuthBaseURL: 'https://oauth.ais.msu.edu',
+  msuAuthBaseURL: 'https://oauth.itservices.msu.edu',
   msuAuthClientID: 'OAuth-MI-MSU-Lansing-Codes-Dev',
   msuAuthClientSecret: 'RhKmT7PVykyBKnutvDYFhSYKM93xyaXysykWQs53',
 

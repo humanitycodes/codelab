@@ -18,7 +18,7 @@ module.exports = {
       .url(browser.globals.devServerURL)
       .waitForElementVisible('.msu-standalone-signin-container', waitTime)
 
-    browser.expect.element('a[href^=\'https://oauth.ais.msu.edu/oauth/authorize\']').to.be.present
+    browser.expect.element('a[href^=\'https://oauth.itservices.msu.edu/oauth/authorize\']').to.be.present
     browser.end()
   },
 

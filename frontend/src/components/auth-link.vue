@@ -33,7 +33,7 @@ export default {
             '&redirect_uri=', env.githubAuthRedirectURL + this.$route.fullPath
           ].join('')
         case 'msu':
-          return `https://oauth.ais.msu.edu/oauth/authorize?response_type=code&client_id=${env.msuAuthClientId}`
+          return `https://oauth.itservices.msu.edu/oauth/authorize?response_type=code&client_id=${env.msuAuthClientId}`
         default:
           return null
       }
