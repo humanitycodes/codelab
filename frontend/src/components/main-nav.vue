@@ -29,7 +29,7 @@
           Student Progress
         </router-link>
       </li>
-      <li v-if="canReadAllCourses() || canUpdateRoles()" class="main-nav-separator"/>
+      <li v-if="canReadAllCourses()" class="main-nav-separator"/>
       <li v-if="!isUserSignedIn">
         <AuthLink provider="msu">Sign in</AuthLink>
       </li>
