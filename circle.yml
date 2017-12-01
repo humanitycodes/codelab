@@ -26,6 +26,9 @@ dependencies:
     - sudo chmod -R 777 firebase/node_modules
     - sudo mkdir -p test/node_modules
     - sudo chmod -R 777 test/node_modules
+    # Increase files that nodemon can watch
+    - sudo sysctl fs.inotify.max_user_watches=524288
+    - sudo sysctl -p
   cache_directories:
     # These directories also contain dependencies
     - ~/.yarn
