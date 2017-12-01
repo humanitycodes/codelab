@@ -2,12 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import LessonsMap from '@components/lessons-map'
 import router from '@plugins/router'
+import store from '@state/store'
 
 Vue.use(Vuex)
 
 describe('lessons-map.vue', () => {
   it('for users that cannot update lessons, renders a list item for each course lesson, but not an edit button', () => {
     LessonsMap.__Rewire__('courseLessonUserStatus', () => ({}))
+    store.getters.lessons = { find: () => true }
 
     const vm = new Vue({
       router,
