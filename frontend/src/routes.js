@@ -135,5 +135,9 @@ export default [
   {
     path: '/sign-out',
     component: require('@pages/sign-out')
+  },
+  {
+    path: '*',
+    component: require('@pages/not-found')
   }
 ]
