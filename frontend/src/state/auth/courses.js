@@ -14,13 +14,14 @@ export const canCreateCourse = () => {
 // ----
 
 export const canReadCourse = ({ courseKey }) => {
-  return (
-    hasMatchingRole(['instructor']) ||
+  return doesCourseExist(courseKey) &&
     (
-      isEnrolledInCourse(courseKey) &&
-      courseHasBegun(courseKey)
+      hasMatchingRole(['instructor']) ||
+      (
+        isEnrolledInCourse(courseKey) &&
+        courseHasBegun(courseKey)
+      )
     )
-  )
 }
 
 export const canReadAllCourses = () => {
@@ -32,32 +33,35 @@ export const canReadAllCourses = () => {
 // ------
 
 export const canUpdateCourse = ({ courseKey }) => {
-  return hasMatchingRole(['instructor'])
+  return doesCourseExist(courseKey) &&
+    hasMatchingRole(['instructor'])
 }
 
 export const shouldUpdateCourse = ({ courseKey }) => {
-  return (
-    hasMatchingRole(['instructor']) &&
-    !(
-      courseHasEnrolledStudents(courseKey) &&
-      courseHasEnded(courseKey)
+  return doesCourseExist(courseKey) &&
+    (
+      hasMatchingRole(['instructor']) &&
+      !(
+        courseHasEnrolledStudents(courseKey) &&
+        courseHasEnded(courseKey)
+      )
     )
-  )
 }
 
 export const lessonCanBeAddedToCourse = ({ courseKey, lessonKey }) => {
   const course = findCourse(courseKey)
   const lesson = findLesson(lessonKey)
-  return (
-    // Lesson is not already added
+  return course &&
     (
-      !course.lessonKeys ||
-      course.lessonKeys.indexOf(lessonKey) === -1
-    ) &&
-    // Lesson has the required fields
-    lesson.title &&
-    lesson.estimatedHours
-  )
+      // Lesson is not already added
+      (
+        !course.lessonKeys ||
+        course.lessonKeys.indexOf(lessonKey) === -1
+      ) &&
+      // Lesson has the required fields
+      lesson.title &&
+      lesson.estimatedHours
+    )
 }
 
 // -------
@@ -111,4 +115,8 @@ function courseHasBegun (courseKey) {
 function courseHasEnded (courseKey) {
   const course = findCourse(courseKey)
   return course.endDate <= Date.now()
+}
+
+function doesCourseExist (courseKey) {
+  return !!findCourse(courseKey)
 }

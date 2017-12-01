@@ -30,7 +30,7 @@ router.beforeEach((to, from, next) => {
     return next('/')
   }
   return !isAuthorized || isAuthorized(to.params)
-    ? next() : next('/')
+    ? next() : next({ name: 'not-found', params: [to.path] })
 })
 
 // Adds a `route` object on `store.state`, which is
