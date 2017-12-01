@@ -14,7 +14,8 @@ export const canCreateLesson = () => {
 // ----
 
 export const canReadLesson = ({ lessonKey }) => {
-  return hasMatchingRole(['instructor'])
+  return doesLessonExist(lessonKey) &&
+    hasMatchingRole(['instructor'])
 }
 
 export const canReadAllLessons = () => {
@@ -26,7 +27,8 @@ export const canReadAllLessons = () => {
 // ------
 
 export const canUpdateLesson = ({ lessonKey }) => {
-  return hasMatchingRole(['instructor'])
+  return doesLessonExist(lessonKey) &&
+    hasMatchingRole(['instructor'])
 }
 
 // -------
@@ -34,10 +36,11 @@ export const canUpdateLesson = ({ lessonKey }) => {
 // -------
 
 export const canDestroyLesson = ({ lessonKey }) => {
-  return (
-    hasMatchingRole(['instructor']) &&
-    !lessonIsInACourse(lessonKey)
-  )
+  return doesLessonExist(lessonKey) &&
+    (
+      hasMatchingRole(['instructor']) &&
+      !lessonIsInACourse(lessonKey)
+    )
 }
 
 // ---------------
@@ -53,4 +56,14 @@ function lessonIsInACourse (lessonKey) {
       lessonKeys.some(key => course.lessonKeys.includes(key))
     )
   })
+}
+
+function findLesson (lessonKey) {
+  return store.getters.lessons.find(lesson => {
+    return lesson['.key'] === lessonKey
+  })
+}
+
+function doesLessonExist (lessonKey) {
+  return !!findLesson(lessonKey)
 }

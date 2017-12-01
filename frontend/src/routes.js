@@ -138,6 +138,7 @@ export default [
   },
   {
     path: '*',
+    name: 'not-found',
     component: require('@pages/not-found')
   }
 ]
