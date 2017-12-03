@@ -20,6 +20,10 @@ dependencies:
     - sudo chmod -R 777 ~/.cache/yarn frontend/node_modules backend/node_modules firebase/node_modules test/node_modules
     # Increase files that nodemon can watch
     - sudo sysctl fs.inotify.max_user_watches=524288 && sudo sysctl -p
+  post:
+    # Install latest Chrome
+    - curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    - sudo dpkg -i google-chrome.deb
   cache_directories:
     # These directories also contain dependencies
     - ~/.yarn
