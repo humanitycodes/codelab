@@ -1,28 +1,21 @@
 <template>
   <div class="flex-row">
     <div class="flex-col" :disabled="disabled">
-      <label for="course-student-query">Enrolled Students</label>
-      <Dropdown
-        :results="queryResults"
-        :resultHandler="addStudent"
-        :resultContent="function (user) {
-          return user.fullName + ' (' + user.email + ')'
-        }"
+      <label for="course-student-email">Enrolled Students</label>
+      <input
+        :disabled="disabled"
+        ref="studentEmailInput"
+        v-model="studentEmail"
+        id="course-student-email"
+        name="course-student-email"
+        placeholder="Add students to the course"
+        @keyup.enter="addStudent"
       >
-        <input
-          :disabled="disabled"
-          ref="queryInput"
-          v-model="studentQuery"
-          id="course-student-query"
-          name="course-student-query"
-          placeholder="Add students to the course"
-          @keyup.enter="addPreenrollment"
-        >
-      </Dropdown>
       <ul v-if="students.length">
         <li v-for="student in students">
           {{ student.fullName }}
           (<a
+            :name="'student-' + student.email"
             :href="'mailto:' + student.email"
             target="_blank"
           >{{ student.email }}</a>)
@@ -39,6 +32,7 @@
       <ul v-if="preenrollments.length">
         <li v-for="preenrollment in preenrollments">
           <a
+            :name="'student-' + preenrollment['.key']"
             :href="'mailto:' + preenrollment['.key']"
             target="_blank"
           >{{ preenrollment['.key'] }}</a>
@@ -99,7 +93,7 @@ export default {
   },
   data () {
     return {
-      studentQuery: '',
+      studentEmail: '',
       preenrollmentPendingRemoval: '',
       showModalConfirmRemovePreenrollment: false,
       studentPendingRemoval: {},
@@ -108,23 +102,6 @@ export default {
   },
   computed: {
     ...userGetters,
-    queryResults () {
-      if (!this.studentQuery || !this.users.length) return []
-      const queryRegex = new RegExp(this.studentQuery, 'i')
-      return this.users.filter(user => {
-        return (
-          // User is not currentUser
-          this.currentUser.uid !== user['.key'] &&
-          // User is not already a student
-          this.course.studentKeys.indexOf(user['.key']) === -1 &&
-          // Course matches the query string
-          (
-            queryRegex.test(user.email) ||
-            queryRegex.test(user.fullName)
-          )
-        )
-      })
-    },
     students () {
       if (!this.course.studentKeys) return []
       return this.users.filter(user => {
@@ -136,11 +113,36 @@ export default {
     }
   },
   methods: {
-    addStudent (student) {
-      if (!student) return
-      this.course.addStudent(student['.key'])
-      this.studentQuery = ''
-      this.$refs.queryInput.focus()
+    addStudent () {
+      debugger
+      if (!this.studentEmail) return
+      const cleanStudentEmail = this.studentEmail.trim().toLowerCase()
+      // Student must have @msu.edu email
+      if (!/^[\w.]+@msu\.edu/.test(cleanStudentEmail)) return
+
+      const student = this.findStudentByEmail(cleanStudentEmail)
+      if (student) {
+        // Enroll existing student
+        this.course.addStudent(student['.key'])
+      } else {
+        // Pre-enroll student that hasn't signed in yet
+        this.course.preenrollments.add({}, cleanStudentEmail)
+      }
+      this.studentEmail = ''
+      this.$refs.studentEmailInput.focus()
+    },
+    findStudentByEmail (email) {
+      if (!this.users.length) return null
+      return this.users.find(user => {
+        return (
+          // User is not current user
+          this.currentUser.uid !== user['.key'] &&
+          // User is not already a student
+          this.course.studentKeys.indexOf(user['.key']) === -1 &&
+          // Email address matches user's email
+          user.email === email
+        )
+      })
     },
     showRemoveStudentModal (student) {
       this.studentPendingRemoval = student
@@ -150,14 +152,6 @@ export default {
       this.showModalConfirmRemoveStudent = false
       if (confirmed) {
         this.course.removeStudent(this.studentPendingRemoval['.key'])
-      }
-    },
-    addPreenrollment () {
-      if (!this.queryResults.length &&
-        /^[\w.]+@msu\.edu/.test(this.studentQuery)) {
-        this.course.preenrollments.add({}, this.studentQuery)
-        this.studentQuery = ''
-        this.$refs.queryInput.focus()
       }
     },
     showRemovePreenrollmentModal (email) {

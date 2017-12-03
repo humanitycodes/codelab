@@ -3,10 +3,11 @@ const randomatic = require('randomatic')
 
 module.exports = {
   user: () => {
-    let userKey = uuid.v4()
+    const userKey = uuid.v4()
+    const userEmail = userKey.replace(/-/g, '')
     return {
       key: userKey,
-      email: `${userKey}@test.com`,
+      email: `${userEmail}@msu.edu`,
       fullName: 'Test User'
     }
   },

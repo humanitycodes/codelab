@@ -137,9 +137,9 @@ module.exports = {
       .setValue(`input[name=course-start-date]`, datefns.format(course.startDate, 'MMDDYYYY'))
       .setValue(`input[name=course-end-date]`, datefns.format(course.endDate, 'MMDDYYYY'))
 
-      .setValue(`input[name=course-student-query]`, student.fullName)
-      .waitForElementVisible('input[name=course-student-query] + .dropdown-results > .dropdown-result', waitTime)
-      .click('input[name=course-student-query] + .dropdown-results > .dropdown-result')
+      // Type student email and press Enter (\n) to enroll
+      .setValue(`input[name=course-student-email]`, student.email + '\n')
+      .waitForElementVisible(`a[name='student-${student.email}']`, waitTime)
 
       .setValue(`input[name=course-lesson-query]`, lesson.title)
       .waitForElementVisible('input[name=course-lesson-query] + .dropdown-results > .dropdown-result', waitTime)
