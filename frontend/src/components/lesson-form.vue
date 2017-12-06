@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { courseGetters } from '@state/helpers'
 import LessonTitle from './lesson-form-title'
 import LessonLearningObjectives from './lesson-form-learning-objectives'
 import LessonEstimatedHours from './lesson-form-estimated-hours'
@@ -37,11 +38,22 @@ export default {
     }
   },
   computed: {
+    ...courseGetters,
     isLessonInActiveCourse () {
-      return true
+      const now = Date.now()
+      return this.courses.some(course => {
+        if (!course.startDate || !course.endDate) return false
+        return (
+          course.lessonKeys.includes(this.lesson['.key']) &&
+          course.startDate < now &&
+          course.endDate > now
+        )
+      })
     },
     isLessonInCourse () {
-      return true
+      return this.courses.some(course => {
+        return course.lessonKeys.includes(this.lesson['.key'])
+      })
     }
   }
 }
