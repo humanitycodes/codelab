@@ -41,7 +41,7 @@
 
 <script>
 import Dropdown from './dropdown'
-import { userGetters } from '@state/helpers'
+import { userGetters, roleGetters } from '@state/helpers'
 
 export default {
   components: {
@@ -63,6 +63,7 @@ export default {
     }
   },
   computed: {
+    ...roleGetters,
     ...userGetters,
     queryResults () {
       if (!this.instructorQuery || !this.users.length) return []
@@ -71,6 +72,8 @@ export default {
         return (
           // User is not already a instructor
           this.course.instructorKeys.indexOf(user['.key']) === -1 &&
+          // User has instructor role
+          this.hasInstructorRole(user) &&
           // Course matches the query string
           (
             queryRegex.test(user.email) ||
@@ -94,6 +97,12 @@ export default {
     },
     removeInstructor (instructor) {
       this.course.removeInstructor(instructor['.key'])
+    },
+    hasInstructorRole (user) {
+      const roles = this.roles.find(role => {
+        return user['.key'] === role['.key']
+      })
+      return roles && !!roles['instructor']
     }
   }
 }
