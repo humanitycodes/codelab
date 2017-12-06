@@ -1,5 +1,12 @@
 <template>
   <div v-if="lesson">
+    <p v-if="isLessonInActiveCourse" class="warning">
+      This lesson is part of an active course. Please check with other instructors before making changes.
+    </p>
+    <p v-else-if="isLessonInCourse" class="warning">
+      This lesson may be part of another active or archived course. Please be mindful when editing.
+    </p>
+
     <LessonTitle :lesson="lesson"/>
     <LessonLearningObjectives :lesson="lesson"/>
     <LessonEstimatedHours :lesson="lesson"/>
@@ -27,6 +34,14 @@ export default {
     lesson: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    isLessonInActiveCourse () {
+      return true
+    },
+    isLessonInCourse () {
+      return true
     }
   }
 }
