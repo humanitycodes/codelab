@@ -4,7 +4,13 @@
       <li v-for="course in courses" v-if="canReadCourse({ courseKey: course['.key'] })">
         <router-link v-if="canUpdateCourse({ courseKey: course['.key']})"
           :to="'/courses/' + course['.key'] + '/edit'"
-        ><button class="inline">Edit</button></router-link>
+        >
+          <button
+            class="inline"
+            :disabled="!isInstructorInCourse(course)"
+            :title="titleForCourseEditButton(course)"
+          >Edit</button>
+        </router-link>
         <router-link
           :to="'/courses/' + course['.key']"
         >
@@ -19,6 +25,7 @@
 </template>
 
 <script>
+import store from '@state/store'
 import { coursePermissionMethods } from '@state/helpers'
 
 export default {
@@ -29,7 +36,16 @@ export default {
     }
   },
   methods: {
-    ...coursePermissionMethods
+    ...coursePermissionMethods,
+    isInstructorInCourse (course) {
+      const currentUserKey = store.state.users.currentUser.uid
+      return course.instructorKeys.indexOf(currentUserKey) !== -1
+    },
+    titleForCourseEditButton (course) {
+      return this.isInstructorInCourse(course)
+        ? `Edit course ${course['.key']}`
+        : `Cannot edit course ${course['.key']} because you are not an instructor in the course`
+    }
   }
 }
 </script>
