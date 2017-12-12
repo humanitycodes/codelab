@@ -4,6 +4,7 @@ import {
 import {
   canCreateCourse, canReadCourse, canReadAllCourses, canUpdateCourse
 } from '@state/auth/courses'
+import courseByKey from '@helpers/finders/course-by-key'
 import store from '@state/store'
 
 // For routes that only staff are likely to access,
@@ -65,6 +66,12 @@ export default [
   },
   {
     path: '/courses/:courseKey/edit',
+    beforeEnter: (to, from, next) => {
+      const course = courseByKey(to.params.courseKey)
+      const currentUserKey = store.state.users.currentUser.uid
+      return course.instructorKeys.indexOf(currentUserKey) !== -1
+        ? next() : next({ name: 'course-view', params: to.params })
+    },
     component: cb => require.ensure([], () => cb(require('@pages/course-edit')), 'staff'),
     meta: {
       isAuthorized: canUpdateCourse
@@ -72,6 +79,7 @@ export default [
   },
   {
     path: '/courses/:courseKey',
+    name: 'course-view',
     component: require('@pages/course'),
     meta: {
       isAuthorized: canReadCourse,
