@@ -153,6 +153,7 @@ import maxGrade from '@constants/grade-max'
 import gradeMilestones from '@constants/grade-milestones'
 import courseLessonUserStatus from '@helpers/computed/course-lesson-user-status'
 import getGradeReported from '@helpers/utils/get-grade-reported'
+import store from '@state/store'
 
 const dateFormat = 'MMMM Do, YYYY'
 
@@ -167,13 +168,27 @@ export default {
         if (!this.canUpdateCurrentCourse) return ''
         return (
           <router-link to={this.editCurrentCoursePath}>
-            <button class='primary block'>
+            <button
+              class="primary block"
+              disabled={!this.isInstructorInCourse}
+              title={this.titleForCourseEditButton}
+            >
               Edit this course
             </button>
           </router-link>
         )
       },
-      computed: courseGetters
+      computed: {
+        ...courseGetters,
+        isInstructorInCourse () {
+          const currentUserKey = store.state.users.currentUser.uid
+          return this.currentCourse.instructorKeys.indexOf(currentUserKey) !== -1
+        },
+        titleForCourseEditButton () {
+          return this.isInstructorInCourse
+            ? '' : 'Only instructors assigned to this course can edit it'
+        }
+      }
     }
   },
   data () {

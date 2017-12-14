@@ -43,8 +43,7 @@ export default {
     },
     titleForCourseEditButton (course) {
       return this.isInstructorInCourse(course)
-        ? `Edit course ${course['.key']}`
-        : `Cannot edit course ${course['.key']} because you are not an instructor in the course`
+        ? '' : 'Only instructors assigned to this course can edit it'
     }
   }
 }
