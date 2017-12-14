@@ -61,6 +61,8 @@
 <script>
 import Layout from '@layouts/main'
 import { userGetters, courseGetters } from '@state/helpers'
+import store from '@state/store'
+import courseByKey from '@helpers/finders/course-by-key'
 
 export default {
   components: {
@@ -127,7 +129,11 @@ export default {
     tryToCreateCourse () {
       if (this.keyIsValid) {
         this.courses.add(this.key).then(() => {
-          window.location.replace(`/courses/${this.key}/edit`)
+          store.dispatch('syncResources', { ignoreCache: true }).then(() => {
+            const course = courseByKey(this.key)
+            course.addInstructor(this.currentUser.uid)
+            window.location.replace(`/courses/${this.key}/edit`)
+          })
         })
       }
     }
