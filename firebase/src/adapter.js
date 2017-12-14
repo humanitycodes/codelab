@@ -97,9 +97,9 @@ export default (store, db, uid, roles) => {
     },
     actions: {
       // Sync all the resources except for users and roles
-      syncResources ({ rootState, commit }) {
+      syncResources ({ rootState, commit }, { ignoreCache } = {}) {
         // Skip syncing if we've already synced once
-        if (alreadySyncedCache.allResources) return Promise.resolve()
+        if (alreadySyncedCache.allResources && !ignoreCache) return Promise.resolve()
         alreadySyncedCache.allResources = true
         // For all of the resources defined in defs/resources
         return Promise.all(resourceNames.map(resourceName => {
