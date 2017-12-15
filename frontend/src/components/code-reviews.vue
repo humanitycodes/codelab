@@ -73,7 +73,6 @@
 import {
   coursePermissionMethods, userGetters, lessonGetters
 } from '@state/helpers'
-import courseLessons from '@helpers/finders/course-lessons'
 import courseUserGradeCurrentRounded from '@helpers/computed/course-user-grade-current-rounded'
 import courseProjectCompletionRepoName from '@helpers/computed/course-project-completion-repo-name'
 import courseProjectCompletionHostedUrl from '@helpers/computed/course-project-completion-hosted-url'
@@ -138,16 +137,18 @@ export default {
   created () {
     // Retrieve the large fields so projectCompletions are available
     this.courses.forEach(course => {
+      if (!course) return
+
       store.dispatch('syncLargeFieldsOfResource', {
         resourceName: 'courses',
         resourceKey: course['.key']
       })
 
       // Retrieve the large fields so projects are available
-      courseLessons(course).forEach(lesson => {
+      course.lessonKeys.forEach(lessonKey => {
         store.dispatch('syncLargeFieldsOfResource', {
           resourceName: 'lessons',
-          resourceKey: lesson['.key']
+          resourceKey: lessonKey
         })
       })
     })
