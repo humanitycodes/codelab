@@ -97,8 +97,8 @@ The production database (`MsuLansingCodes`) is configured to take daily backups.
    4. Paste the rules from your clipboard into the edit box.
    5. Click "Publish" at the top of the edit box.
 6. Disable "Maintenance Mode" for `msu-lansing-codes` in Heroku if it was enabled.
-7. Verify that you are able to sign into [msu.lansing.codes][3] and access the restored data in the website.
+7. Verify that you are able to sign into [codelab.cas.msu.edu][3] and can access the restored data in the website.
 
 [1]: https://firebase.google.com/docs/cli/ "Firebase CLI Reference"
 [2]: https://console.firebase.google.com/ "Firebase Console"
-[3]: https://msu.lansing.codes/ "MSU Codes Homepage"
+[3]: https://codelab.cas.msu.edu/ "MSU Codes Homepage"
