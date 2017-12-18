@@ -48,7 +48,7 @@ The development environment can be launched for either the frontend or the backe
 When builds pass on CircleCI, GitHub's:
 
 - `master` branch deploys to the [staging server](https://msu-codes-staging.herokuapp.com)
-- `production` branch deploys to the [production server](https://msu.lansing.codes/)
+- `production` branch deploys to the [production server](https://codelab.cas.msu.edu/)
 
 There are also several commands you can use:
 
