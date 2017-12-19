@@ -114,7 +114,6 @@ export default {
   },
   methods: {
     addStudent () {
-      debugger
       if (!this.studentEmail) return
       const cleanStudentEmail = this.studentEmail.trim().toLowerCase()
       // Student must have @msu.edu email
