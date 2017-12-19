@@ -101,4 +101,4 @@ The production database (`MsuLansingCodes`) is configured to take daily backups.
 
 [1]: https://firebase.google.com/docs/cli/ "Firebase CLI Reference"
 [2]: https://console.firebase.google.com/ "Firebase Console"
-[3]: https://codelab.cas.msu.edu/ "MSU Codes Homepage"
+[3]: https://codelab.cas.msu.edu/ "MSU Code Lab Homepage"
