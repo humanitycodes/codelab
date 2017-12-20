@@ -116,8 +116,8 @@ export default {
     addStudent () {
       if (!this.studentEmail) return
       const cleanStudentEmail = this.studentEmail.trim().toLowerCase()
-      // Student must have @msu.edu email
-      if (!/^[\w.]+@msu\.edu/.test(cleanStudentEmail)) return
+      // Student must be added by email address
+      if (!/^[\w.]+@[\w.]+\.[\w.]+/.test(cleanStudentEmail)) return
 
       const student = this.findStudentByEmail(cleanStudentEmail)
       if (student) {
