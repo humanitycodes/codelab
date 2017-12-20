@@ -32,6 +32,21 @@ function getFromGitHub (path, token) {
   })
 }
 
+function patchToGitHub (path, token) {
+  return axios({
+    method: 'patch',
+    url: `${config.githubAuthBaseURL}${path}`,
+    headers: {
+      Accept: 'application/vnd.github.v3+json',
+      Authorization: `token ${token}`
+    }
+  })
+  .then(response => response.data)
+  .catch(error => {
+    throw new Error(`PATCH ${path} failed. Reason: ${error}`)
+  })
+}
+
 function postToGitHub (path, token, body) {
   return axios({
     method: 'post',
@@ -48,12 +63,33 @@ function postToGitHub (path, token, body) {
   })
 }
 
+function putToGitHub (path, token, body) {
+  let headers = {
+    Accept: 'application/vnd.github.v3+json',
+    Authorization: `token ${token}`
+  }
+  if (!body) {
+    headers['Content-Length'] = 0
+  }
+
+  return axios({
+    method: 'put',
+    url: `${config.githubAuthBaseURL}${path}`,
+    headers,
+    data: body
+  })
+  .then(response => response.data)
+  .catch(error => {
+    throw new Error(`PUT ${path} failed. Reason: ${error}`)
+  })
+}
+
 export function getUserProfile (token) {
   return getFromGitHub('/user', token)
 }
 
 export function createRepository (token, { name }) {
-  return postToGitHub('/user/repos', token, { name: name })
+  return postToGitHub('/user/repos', token, { name, private: true })
 }
 
 export function getRepository (token, { owner, repo }) {
@@ -101,4 +137,16 @@ export function createWebhooks (token, { owner, repo }) {
   return new Promise((resolve, reject) => {
     return attemptToCreateWebhooks(resolve, reject)
   })
+}
+
+export function inviteCollaborator (token, { owner, repo, invitee }) {
+  return putToGitHub(`/repos/${owner}/${repo}/collaborators/${invitee}`, token)
+}
+
+export function getRepositoryInvitations (token, { owner, repo }) {
+  return getFromGitHub(`/repos/${owner}/${repo}/invitations`, token)
+}
+
+export function acceptInvitation (token, { invitationId }) {
+  return patchToGitHub(`/user/repository_invitations/${invitationId}`, token)
 }
