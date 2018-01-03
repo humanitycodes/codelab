@@ -17,6 +17,14 @@
           Lessons
         </router-link>
       </li>
+      <li>
+        <a 
+          href="https://teams.microsoft.com/l/team/19%3aa868fa825a3445e7b7ed9b84e4e54483%40thread.skype/conversations?groupId=6128d6e2-b65b-4241-b297-40b0455aa007&tenantId=22177130-642f-41d9-9211-74237ad5687d"
+          target="_blank"
+          title="Open MSU Teams">
+          Community
+        </a>
+      </li>
     </ul>
     <ul class="main-nav-group-right">
       <li v-if="canReadAllCourses()">
