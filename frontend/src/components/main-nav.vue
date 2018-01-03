@@ -17,6 +17,11 @@
           Lessons
         </router-link>
       </li>
+      <li>
+        <router-link to="/community">
+          Community
+        </router-link>
+      </li>
     </ul>
     <ul class="main-nav-group-right">
       <li v-if="canReadAllCourses()">
