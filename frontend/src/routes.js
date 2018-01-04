@@ -145,6 +145,10 @@ export default [
     component: require('@pages/sign-out')
   },
   {
+    path: '/help',
+    component: require('@pages/help')
+  },
+  {
     path: '*',
     name: 'not-found',
     component: require('@pages/not-found')

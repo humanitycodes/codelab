@@ -28,7 +28,10 @@ module.exports = {
   },
   output: {
     path: config.build.assetsRoot,
-    publicPath: process.env.NODE_ENV === 'development' ? config.dev.assetsPublicPath : config.build.assetsPublicPath,
+    publicPath:
+      process.env.NODE_ENV === 'development'
+        ? config.dev.assetsPublicPath
+        : config.build.assetsPublicPath,
     filename: '[name].js'
   },
   resolve: {
@@ -96,6 +99,10 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
+      },
+      {
+        test: /\.md$/,
+        loaders: ['json-loader', 'front-matter-loader']
       }
     ]
   },
