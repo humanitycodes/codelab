@@ -9,6 +9,76 @@ import {
   readProjectCompletion,
   deleteProjectCompletion
 } from '../../db/project-completion-repo'
+import { readInstructorsByCourseKey } from '../../db/instructor-repo'
+
+function* getOrCreateRepository (githubToken, { owner, repo }) {
+  try {
+    return yield ghclient.getRepository(githubToken, { owner, repo })
+  } catch (notfound) {
+    return yield ghclient.createRepository(githubToken, { name: repo })
+  }
+}
+
+function inviteCollaborators (githubToken, { owner, repo, invitees }) {
+  const invitationRequests = invitees.map(invitee => {
+    return ghclient.inviteCollaborator(githubToken, { owner, repo, invitee })
+  })
+  return Promise.all(invitationRequests)
+}
+
+function acceptInvitations ({ invitations, inviteeTokens }) {
+  let acceptanceRequests = []
+  invitations.forEach(invitation => {
+    const inviteeToken = inviteeTokens[invitation.invitee.login]
+    const invitationId = invitation.id
+    if (!inviteeToken || !invitationId) return
+    acceptanceRequests.push(ghclient.acceptInvitation(inviteeToken, { invitationId }))
+  })
+  return Promise.all(acceptanceRequests)
+}
+
+function getInstructorGitHubLogins (instructors) {
+  // Example return value: ['elgillespie', 'KatieMFritz']
+  let instructorLogins = []
+  Object.keys(instructors).forEach(instructorKey => {
+    const instructor = instructors[instructorKey]
+    if (!instructor.github) return
+    instructorLogins.push(instructor.github.login)
+  })
+  return instructorLogins
+}
+
+function mapInstructorKeysToGitHubAccessTokens (instructors) {
+  // Example return value: { elgillespie: 1234 }
+  return Object.keys(instructors).reduce((loginTokens, instructorKey) => {
+    const githubInfo = instructors[instructorKey].github
+    if (githubInfo) {
+      loginTokens[githubInfo.login] = githubInfo.token
+    }
+    return loginTokens
+  }, {})
+}
+
+function* addInstructorsAsCollaborators (githubToken, { courseKey, owner, repo }) {
+  const instructors = yield readInstructorsByCourseKey(courseKey)
+  const invitees = getInstructorGitHubLogins(instructors)
+  const inviteeTokens = mapInstructorKeysToGitHubAccessTokens(instructors)
+
+  yield inviteCollaborators(githubToken, { owner, repo, invitees })
+  .then(() => {
+    return ghclient.getRepositoryInvitations(githubToken, { owner, repo })
+  })
+  .then(invitations => {
+    return acceptInvitations({ invitations, inviteeTokens })
+  })
+  .catch(error => {
+    console.error(
+      'Unable to create project completion with parameters:',
+      { courseKey, owner, repo, invitees },
+      '. Reason:',
+      error)
+  })
+}
 
 export default [
   {
@@ -39,22 +109,15 @@ export default [
 
         const { courseKey, lessonKey, projectKey } = request.payload
         const repo = repoName(courseKey, lessonKey, projectKey)
-        const ownerAndRepo = {
-          owner: user.github.login,
-          repo
-        }
+        const owner = user.github.login
 
-        let repository
-        try {
-          repository = yield ghclient.getRepository(user.github.token, ownerAndRepo)
-        } catch (notfound) {
-          repository = yield ghclient.createRepository(user.github.token, { name: repo })
-        }
+        const repository = yield getOrCreateRepository(user.github.token, { owner, repo })
+        yield addInstructorsAsCollaborators(user.github.token, { courseKey, owner, repo })
 
         let projectCompletion = { uid, courseKey, lessonKey, projectKey }
         projectCompletion.repositoryCreatedAt = new Date(repository.created_at).getTime()
 
-        yield ghclient.createWebhooks(user.github.token, ownerAndRepo)
+        yield ghclient.createWebhooks(user.github.token, { owner, repo })
         yield createProjectCompletion(projectCompletion)
 
         reply({ repo: { name: repo } })

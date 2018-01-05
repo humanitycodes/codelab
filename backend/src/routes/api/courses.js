@@ -21,7 +21,15 @@ export default {
     const courseKey = request.params.courseKey
 
     try {
-      const instructors = yield readInstructorsByCourseKey(courseKey)
+      let instructors = yield readInstructorsByCourseKey(courseKey)
+      // Don't let browser users see GitHub tokens
+      Object.keys(instructors).forEach(instructorKey => {
+        if (instructors[instructorKey].github) {
+          delete instructors[instructorKey].github.scope
+          delete instructors[instructorKey].github.token
+          delete instructors[instructorKey].github.tokenType
+        }
+      })
       reply(instructors)
     } catch (error) {
       console.error(`Unable to get instructors for course ${courseKey}. Reason:`, error)

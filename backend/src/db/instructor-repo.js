@@ -21,11 +21,6 @@ export async function readInstructorsByCourseKey (courseKey) {
     .then(instructorResults => {
       let instructors = {}
       instructorResults.forEach(([uid, user]) => {
-        if (user.github) {
-          delete user.github.scope
-          delete user.github.token
-          delete user.github.tokenType
-        }
         instructors[uid] = user
       })
       return instructors
