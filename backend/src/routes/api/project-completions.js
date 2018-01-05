@@ -73,7 +73,7 @@ function* addInstructorsAsCollaborators (githubToken, { courseKey, owner, repo }
   })
   .catch(error => {
     console.error(
-      'Unable to create project completion with parameters:',
+      'Unable to invite instructors as collaborators with parameters:',
       { courseKey, owner, repo, invitees },
       '. Reason:',
       error)
