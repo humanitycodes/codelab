@@ -7,7 +7,7 @@
       <p class="warning">
         Projects cannot be started until you are able to create private repositories in GitHub.
         Apply for the <a href="https://education.github.com/pack" target="_blank">Student Developer Pack</a>
-        and after your GitHub account has been upgrade, click the button below.
+        and after your GitHub account has been upgraded, try starting the project again.
         <button class="warning block" @click="fetchPrivileges">
           Check Again
         </button>
