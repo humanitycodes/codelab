@@ -41,6 +41,10 @@
                 <a :href="getHostedUrl(codeReview)" target="_blank" class="icon-link" alt="Open the hosted site in a new tab" aria-label="Hosted Site">
                   <span class="fa fa-globe" aria-hidden="true" title="View the hosted site"></span>
                 </a>
+                &nbsp;
+                <a :href="getValidatorUrl(codeReview)" target="_blank" class="icon-link" alt="Open validator errors in a new tab" aria-label="W3 Validator">
+                  <span class="fa fa-check-circle" aria-hidden="true" title="View the W3 validator"></span>
+                </a>
               </td>
               <td
                 v-if="reviewGroup.instructor['.key'] === currentUser.uid"
@@ -118,6 +122,12 @@ export default {
         codeReview.course,
         codeReview.projectCompletion,
       )
+    },
+    getValidatorUrl (codeReview) {
+      return [
+        'https://validator.w3.org/nu/?doc=',
+        this.getHostedUrl(codeReview)
+      ].join('')
     },
     getRepoName (codeReview) {
       return courseProjectCompletionRepoName(
