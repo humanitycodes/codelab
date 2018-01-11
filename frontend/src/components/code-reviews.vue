@@ -47,7 +47,6 @@
                 </a>
               </td>
               <td
-                v-if="reviewGroup.instructor['.key'] === currentUser.uid"
                 class="review-reassignment-control"
               >
                 <select
