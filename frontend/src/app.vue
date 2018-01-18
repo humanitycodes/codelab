@@ -90,7 +90,6 @@ a
     color: $design.branding.primary.dark
     position: relative
     &:hover:before
-      content: '#'
       position: absolute
       left: -0.8em
   &.container-link
