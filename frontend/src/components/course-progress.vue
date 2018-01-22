@@ -213,7 +213,7 @@ export default {
 @import '../meta'
 
 .warning-grade
-  color: $design.branding.danger.light
+  color: $design.branding.danger.dark
 .allstar-grade
   color: $design.branding.success.light
 .grade-delta
