@@ -18,29 +18,15 @@ export default {
   },
   computed: {
     ...courseGetters,
+    availableCourses () {
+      const currentUserKey = store.state.users.currentUser.uid
+      return this.courses.filter(
+        course => course.instructorKeys.indexOf(currentUserKey) !== -1
+      )
+    },
     coursesSortedByKey () {
       return sortBy(this.availableCourses, [course => course['.key']])
     }
-  },
-  data () {
-    return {
-      availableCourses: []
-    }
-  },
-  created () {
-    const currentUserKey = store.state.users.currentUser.uid
-
-    // Retrieve the large fields of the instructor's courses
-    // so project completions are available
-    this.courses.forEach(course => {
-      if (course.instructorKeys.indexOf(currentUserKey) !== -1) {
-        store.dispatch('syncLargeFieldsOfResource', {
-          resourceName: 'courses',
-          resourceKey: course['.key']
-        })
-        this.availableCourses.push(course)
-      }
-    })
   }
 }
 </script>

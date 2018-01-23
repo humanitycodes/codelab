@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import store from '@state/store'
 import differenceInDays from 'date-fns/difference_in_days'
 import { userGetters } from '@state/helpers'
 import courseUserGradeCurrentRounded from '@helpers/computed/course-user-grade-current-rounded'
@@ -76,6 +77,12 @@ export default {
       type: Object,
       required: true
     }
+  },
+  created () {
+    store.dispatch('syncLargeFieldsOfResource', {
+      resourceName: 'courses',
+      resourceKey: this.course['.key']
+    })
   },
   computed: {
     ...userGetters,
