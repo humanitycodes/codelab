@@ -222,7 +222,6 @@ export default {
   padding: $design.layout.gutterWidth
   background-color: $design.branding.default.light
   border-radius: $design.control.border.radius
-  overflow-y: auto
   img
     display: block
     margin: 0 auto
