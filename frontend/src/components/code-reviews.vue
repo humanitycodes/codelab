@@ -7,33 +7,54 @@
           <thead>
             <th
               id="grade-point-heading"
-              class="numeric-cell"
+              class="numeric-cell sortable"
+              @click="toggleOrderBy('grade-point')"
               @mouseover="showAllSensitiveData = true"
               @mouseout="showAllSensitiveData = false"
             >
               GP
             </th>
-            <th id="student-heading">Student</th>
-            <th id="course-heading">Course</th>
-            <th id="lesson-heading">Lesson</th>
+            <th
+              id="student-heading"
+              class="sortable"
+              @click="toggleOrderBy('student')"
+            >
+              Student
+            </th>
+            <th
+              id="course-heading"
+              class="sortable"
+              @click="toggleOrderBy('course')"
+            >
+              Course
+            </th>
+            <th
+              id="lesson-heading"
+              class="sortable"
+              @click="toggleOrderBy('lesson')"
+            >
+              Lesson
+            </th>
             <th
               id="project-age-heading"
-              class="numeric-cell"
+              class="numeric-cell sortable"
               title="The number of days since the project was first submitted"
+              @click="toggleOrderBy('project-age')"
             >
               Project Age
             </th>
             <th
               id="last-updated-heading"
-              class="numeric-cell"
+              class="numeric-cell sortable"
               title="The date on which the project was last updated"
+              @click="toggleOrderBy('last-updated')"
             >
               Last Updated
             </th>
             <th id="links-heading">Links</th>
           </thead>
           <tbody>
-            <tr v-for="codeReview in reviewGroup.reviews">
+            <tr v-for="codeReview in sortCodeReviews(reviewGroup.reviews)">
               <td class="numeric-cell">
                 <span :class="{ 'review-info-sensitive-data': !showAllSensitiveData }">
                   {{ codeReview.studentPoints }}
@@ -105,7 +126,7 @@ import courseUserGradeCurrentRounded from '@helpers/computed/course-user-grade-c
 import courseProjectCompletionRepoName from '@helpers/computed/course-project-completion-repo-name'
 import courseProjectCompletionHostedUrl from '@helpers/computed/course-project-completion-hosted-url'
 import store from '@state/store'
-import sortBy from 'lodash/sortBy'
+import orderBy from 'lodash/orderBy'
 import differenceInDays from 'date-fns/difference_in_days'
 import formatDate from 'date-fns/format'
 import mostRecentDate from 'date-fns/max'
@@ -119,7 +140,17 @@ export default {
   },
   data () {
     return {
-      showAllSensitiveData: false
+      showAllSensitiveData: false,
+      sortColumn: 'grade-point',
+      sortDirection: 'asc',
+      orderByIdentifier: {
+        'grade-point': codeReview => codeReview.studentPoints,
+        'student': codeReview => codeReview.student.fullName,
+        'course': codeReview => codeReview.course['.key'],
+        'lesson': codeReview => codeReview.lesson['.key'],
+        'project-age': this.getProjectCompletionAgeInDays,
+        'last-updated': this.getProjectCompletionLastUpdatedDate
+      }
     }
   },
   methods: {
@@ -178,16 +209,32 @@ export default {
     getProjectCompletionAgeInDays (codeReview) {
       return differenceInDays(Date.now(), codeReview.projectCompletion.submission.firstSubmittedAt) + 1
     },
-    getProjectCompletionLastUpdatedDateFormatted (codeReview) {
+    getProjectCompletionLastUpdatedDate (codeReview) {
       const projectSubmission = codeReview.projectCompletion.submission
-      const lastUpdatedDate = mostRecentDate(
+      return mostRecentDate(
         projectSubmission.approvedAt || 0,
         projectSubmission.firstSubmittedAt || 0,
         projectSubmission.lastCommentedAt || 0,
         codeReview.projectCompletion.repositoryCreatedAt || 0,
         codeReview.projectCompletion.firstCommittedAt || 0
       )
-      return formatDate(lastUpdatedDate, 'MMM D')
+    },
+    getProjectCompletionLastUpdatedDateFormatted (codeReview) {
+      return formatDate(this.getProjectCompletionLastUpdatedDate(codeReview), 'MMM D')
+    },
+    sortCodeReviews (codeReviews) {
+      return orderBy(codeReviews, [
+        this.orderByIdentifier[this.sortColumn],
+        codeReview => codeReview.student['.key']
+      ], [this.sortDirection, this.sortDirection])
+    },
+    toggleOrderBy (column) {
+      if (this.sortColumn === column) {
+        this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc'
+      } else {
+        this.sortColumn = column
+        this.sortDirection = 'asc'
+      }
     }
   },
   created () {
@@ -242,18 +289,17 @@ export default {
         })
       })
 
-      // Reorganize and sort code reviews for each instructor
+      // Reorganize code reviews for each instructor
       let reviewGroups = []
       Object.keys(instructorReviews).forEach(instructorKey => {
         reviewGroups.push({
           instructor: this.getUser(instructorKey),
-          reviews: sortBy(instructorReviews[instructorKey], [
-            review => review.studentPoints
-          ])
+          reviews: instructorReviews[instructorKey]
         })
       })
+
       // Order code review groups by instructor name
-      return sortBy(reviewGroups, [group => group.instructor.fullName])
+      return orderBy(reviewGroups, [group => group.instructor.fullName])
     }
   }
 }
@@ -261,6 +307,16 @@ export default {
 
 <style lang="stylus" scoped>
 @import '../meta'
+
+td
+  white-space: nowrap
+
+td .review-info-sensitive-data
+  filter: blur(7px)
+  transition: filter .3s
+
+td:hover .review-info-sensitive-data
+  filter: none
 
 #grade-point-heading
   width: 5%
@@ -289,16 +345,6 @@ export default {
 .code-review-links
   text-align: center
 
-td
-  white-space: nowrap
-
-td .review-info-sensitive-data
-  filter: blur(7px)
-  transition: filter .3s
-
-td:hover .review-info-sensitive-data
-  filter: none
-
 .review-info-key
   white-space: nowrap
 
@@ -309,4 +355,7 @@ td:hover .review-info-sensitive-data
   padding-top: 0
   padding-right: 0
   padding-bottom: 0
+
+.sortable
+  cursor: pointer
 </style>
