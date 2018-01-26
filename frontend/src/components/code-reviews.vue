@@ -5,7 +5,13 @@
         <h2>{{ reviewGroup.instructor.fullName }}</h2>
         <table class="dashboard-info">
           <thead>
-            <th class="numeric-cell">GP</th>
+            <th
+              class="numeric-cell"
+              @mouseover="showAllSensitiveData = true"
+              @mouseout="showAllSensitiveData = false"
+            >
+              GP
+            </th>
             <th>Student</th>
             <th>Course</th>
             <th>Lesson</th>
@@ -14,7 +20,7 @@
           <tbody>
             <tr v-for="codeReview in reviewGroup.reviews">
               <td class="numeric-cell">
-                <span class="review-info-sensitive-data">
+                <span :class="{ 'review-info-sensitive-data': !showAllSensitiveData }">
                   {{ codeReview.studentPoints }}
                 </span>
               </td>
@@ -87,6 +93,11 @@ export default {
     courses: {
       type: Array,
       required: true
+    }
+  },
+  data () {
+    return {
+      showAllSensitiveData: false
     }
   },
   methods: {
@@ -224,6 +235,7 @@ export default {
 td .review-info-sensitive-data
   filter: blur(7px)
   transition: filter .3s
+
 td:hover .review-info-sensitive-data
   filter: none
 
