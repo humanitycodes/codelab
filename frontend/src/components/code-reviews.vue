@@ -30,9 +30,7 @@
               </td>
               <td class="review-info-key">
                 <router-link :to="getCourseLessonUrl(codeReview)">
-                  {{
-                    codeReview.lesson['.key'].slice(0,20)
-                  }}<span v-if="codeReview.lesson['.key'].length > 20">...</span>
+                  {{ codeReview.lesson['.key'] }}
                 </router-link>
               </td>
               <td class="code-review-links">
