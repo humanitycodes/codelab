@@ -18,6 +18,9 @@
             <th class="numeric-cell" title="The number of days since the project was first submitted">
               Project Age
             </th>
+            <th class="numeric-cell" title="The date on which the project was last updated">
+              Last Updated
+            </th>
             <th>Links</th>
           </thead>
           <tbody>
@@ -38,6 +41,9 @@
               </td>
               <td class="numeric-cell">
                 {{ getProjectCompletionAgeInDays(codeReview) }}
+              </td>
+              <td class="numeric-cell">
+                {{ getProjectCompletionLastUpdatedDateFormatted(codeReview) }}
               </td>
               <td class="code-review-links">
                 <a :href="getFirstIssueUrl(codeReview)" target="_blank" class="icon-link" alt="Open the GitHub issue in a new tab" aria-label="GitHub Issue">
@@ -92,6 +98,8 @@ import courseProjectCompletionHostedUrl from '@helpers/computed/course-project-c
 import store from '@state/store'
 import sortBy from 'lodash/sortBy'
 import differenceInDays from 'date-fns/difference_in_days'
+import formatDate from 'date-fns/format'
+import mostRecentDate from 'date-fns/max'
 
 export default {
   props: {
@@ -160,6 +168,17 @@ export default {
     },
     getProjectCompletionAgeInDays (codeReview) {
       return differenceInDays(Date.now(), codeReview.projectCompletion.submission.firstSubmittedAt) + 1
+    },
+    getProjectCompletionLastUpdatedDateFormatted (codeReview) {
+      const projectSubmission = codeReview.projectCompletion.submission
+      const lastUpdatedDate = mostRecentDate(
+        projectSubmission.approvedAt || 0,
+        projectSubmission.firstSubmittedAt || 0,
+        projectSubmission.lastCommentedAt || 0,
+        codeReview.projectCompletion.repositoryCreatedAt || 0,
+        codeReview.projectCompletion.firstCommittedAt || 0
+      )
+      return formatDate(lastUpdatedDate, 'MMM D')
     }
   },
   created () {
