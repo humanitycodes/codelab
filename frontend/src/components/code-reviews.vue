@@ -29,9 +29,7 @@
                 {{ humanizeCourseKey(codeReview.course['.key']) }}
               </td>
               <td class="review-info-key">
-                <router-link :to="getCourseLessonUrl(codeReview)">
-                  {{ codeReview.lesson['.key'] }}
-                </router-link>
+                <a target="_blank" :href="getCourseLessonUrl(codeReview)">{{ codeReview.lesson['.key'] }}</a>
               </td>
               <td class="code-review-links">
                 <a :href="getFirstIssueUrl(codeReview)" target="_blank" class="icon-link" alt="Open the GitHub issue in a new tab" aria-label="GitHub Issue">
