@@ -101,7 +101,8 @@ export default [
     path: '/code-reviews',
     component: require('@pages/code-reviews'),
     meta: {
-      isAuthorized: canReadAllCourses
+      isAuthorized: canReadAllCourses,
+      layout: 'full'
     }
   },
   {
