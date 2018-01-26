@@ -6,22 +6,31 @@
         <table class="dashboard-info">
           <thead>
             <th
+              id="grade-point-heading"
               class="numeric-cell"
               @mouseover="showAllSensitiveData = true"
               @mouseout="showAllSensitiveData = false"
             >
               GP
             </th>
-            <th>Student</th>
-            <th>Course</th>
-            <th>Lesson</th>
-            <th class="numeric-cell" title="The number of days since the project was first submitted">
+            <th id="student-heading">Student</th>
+            <th id="course-heading">Course</th>
+            <th id="lesson-heading">Lesson</th>
+            <th
+              id="project-age-heading"
+              class="numeric-cell"
+              title="The number of days since the project was first submitted"
+            >
               Project Age
             </th>
-            <th class="numeric-cell" title="The date on which the project was last updated">
+            <th
+              id="last-updated-heading"
+              class="numeric-cell"
+              title="The date on which the project was last updated"
+            >
               Last Updated
             </th>
-            <th>Links</th>
+            <th id="links-heading">Links</th>
           </thead>
           <tbody>
             <tr v-for="codeReview in reviewGroup.reviews">
@@ -253,11 +262,35 @@ export default {
 <style lang="stylus" scoped>
 @import '../meta'
 
+#grade-point-heading
+  width: 5%
+
+#student-heading
+  width: 25%
+
+#course-heading
+  width: 10%
+
+#lesson-heading
+  width: 30%
+
+#project-age-heading
+  width: 10%
+
+#last-updated-heading
+  width: 10%
+
+#links-heading
+  width: 10%
+
 .fa
   font-size: 1.4em
 
 .code-review-links
   text-align: center
+
+td
+  white-space: nowrap
 
 td .review-info-sensitive-data
   filter: blur(7px)
