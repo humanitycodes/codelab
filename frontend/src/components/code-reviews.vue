@@ -15,6 +15,9 @@
             <th>Student</th>
             <th>Course</th>
             <th>Lesson</th>
+            <th class="numeric-cell" title="The number of days since the project was first submitted">
+              Project Age
+            </th>
             <th>Links</th>
           </thead>
           <tbody>
@@ -24,12 +27,17 @@
                   {{ codeReview.studentPoints }}
                 </span>
               </td>
-              <td>{{ codeReview.student.fullName }}</td>
+              <td>
+                {{ codeReview.student.fullName }}
+                </td>
               <td class="review-info-key">
                 {{ humanizeCourseKey(codeReview.course['.key']) }}
               </td>
               <td class="review-info-key">
                 <a target="_blank" :href="getCourseLessonUrl(codeReview)">{{ codeReview.lesson['.key'] }}</a>
+              </td>
+              <td class="numeric-cell">
+                {{ getProjectCompletionAgeInDays(codeReview) }}
               </td>
               <td class="code-review-links">
                 <a :href="getFirstIssueUrl(codeReview)" target="_blank" class="icon-link" alt="Open the GitHub issue in a new tab" aria-label="GitHub Issue">
@@ -83,6 +91,7 @@ import courseProjectCompletionRepoName from '@helpers/computed/course-project-co
 import courseProjectCompletionHostedUrl from '@helpers/computed/course-project-completion-hosted-url'
 import store from '@state/store'
 import sortBy from 'lodash/sortBy'
+import differenceInDays from 'date-fns/difference_in_days'
 
 export default {
   props: {
@@ -148,6 +157,9 @@ export default {
     getInstructorInitialsFromKey (intructorKey) {
       const instructor = this.getUser(intructorKey)
       return instructor.fullName.replace(/[^A-Z]/g, '')
+    },
+    getProjectCompletionAgeInDays (codeReview) {
+      return differenceInDays(Date.now(), codeReview.projectCompletion.submission.firstSubmittedAt) + 1
     }
   },
   created () {
