@@ -12,6 +12,11 @@
           @mouseout="showAllSensitiveData = false"
         >
           GP
+          <OrderByIndicator
+            column="grade-point"
+            :orderByColumn="orderByColumn"
+            :orderByDirection="orderByDirection"
+          />
         </th>
         <th
           id="student-heading"
@@ -20,6 +25,11 @@
           @click="toggleOrderBy('student')"
         >
           Student
+          <OrderByIndicator
+            column="student"
+            :orderByColumn="orderByColumn"
+            :orderByDirection="orderByDirection"
+          />
         </th>
         <th
           id="course-heading"
@@ -28,6 +38,11 @@
           @click="toggleOrderBy('course')"
         >
           Course
+          <OrderByIndicator
+            column="course"
+            :orderByColumn="orderByColumn"
+            :orderByDirection="orderByDirection"
+          />
         </th>
         <th
           id="lesson-heading"
@@ -36,6 +51,11 @@
           @click="toggleOrderBy('lesson')"
         >
           Lesson
+          <OrderByIndicator
+            column="lesson"
+            :orderByColumn="orderByColumn"
+            :orderByDirection="orderByDirection"
+          />
         </th>
         <th
           id="project-age-heading"
@@ -44,6 +64,11 @@
           @click="toggleOrderBy('project-age')"
         >
           Project Age
+          <OrderByIndicator
+            column="project-age"
+            :orderByColumn="orderByColumn"
+            :orderByDirection="orderByDirection"
+          />
         </th>
         <th
           id="last-updated-heading"
@@ -52,6 +77,11 @@
           @click="toggleOrderBy('last-updated')"
         >
           Last Updated
+          <OrderByIndicator
+            column="last-updated"
+            :orderByColumn="orderByColumn"
+            :orderByDirection="orderByDirection"
+          />
         </th>
         <th id="links-heading">Links</th>
       </thead>
@@ -111,6 +141,7 @@
 </template>
 
 <script>
+import OrderByIndicator from '@components/indicator-order-by'
 import { userGetters, lessonGetters } from '@state/helpers'
 import courseProjectCompletionRepoName from '@helpers/computed/course-project-completion-repo-name'
 import courseProjectCompletionHostedUrl from '@helpers/computed/course-project-completion-hosted-url'
@@ -120,6 +151,7 @@ import formatDate from 'date-fns/format'
 import mostRecentDate from 'date-fns/max'
 
 export default {
+  components: { OrderByIndicator },
   props: {
     instructor: {
       type: Object,
