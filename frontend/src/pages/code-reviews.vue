@@ -1,19 +1,19 @@
 <template>
   <Layout>
     <h1>Code Reviews</h1>
-    <CodeReviews :courses="availableCourses"/>
+    <CoursesCodeReviews :courses="availableCourses"/>
   </Layout>
 </template>
 
 <script>
 import store from '@state/store'
 import Layout from '@layouts/main'
-import CodeReviews from '@components/code-reviews'
+import CoursesCodeReviews from '@components/code-reviews-courses'
 import { courseGetters } from '@state/helpers'
 
 export default {
   components: {
-    Layout, CodeReviews
+    Layout, CoursesCodeReviews
   },
   computed: {
     ...courseGetters,
