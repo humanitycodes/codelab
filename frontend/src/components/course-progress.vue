@@ -10,6 +10,9 @@
           Grade Points<br>
           Expected: {{ expectedGrade }}
         </th>
+        <th class="numeric-cell" title="Student's final grade (unrounded) if they continue at this pace">
+          Projected<br> Grade
+        </th>
         <th class="numeric-cell" title="Maximum number of days a submitted project has gone unapproved">
           Days<br> Open
         </th>
@@ -22,6 +25,8 @@
       </thead>
       <tbody>
         <tr v-for="student in studentsInCourse">
+          
+          // Name and Github link
           <td>
             <a
               v-if="student.github"
@@ -34,6 +39,8 @@
               {{ student.fullName }}
             </span>
           </td>
+          
+          // Current grade
           <td
             class="numeric-cell"
             :class="getCurrentGradeStyle(student)"
@@ -46,12 +53,23 @@
           >
             ({{ getCurrentGradeDelta(student) }})
           </td>
+          
+          // Projected Grade
+          <td class="numeric-cell">
+            ({{ getProjectedGrade(student) }})
+          </td>
+          
+          // Days Open
           <td class="numeric-cell" :title="isNaN(maxDaysProjectOngoingFor(student)) ? 'This student has no submitted, unapproved projects' : ''">
             {{ maxDaysProjectOngoingFor(student) }}
           </td>
+          
+          // Days Stale
           <td class="numeric-cell" :title="isNaN(maxDaysProjectStaleFor(student)) ? 'This student has no submitted, unapproved projects where the instructor was last to comment' : ''">
             {{ maxDaysProjectStaleFor(student) }}
           </td>
+          
+          // Days Inactive
           <td class="numeric-cell">
             {{ daysSinceLastProjectActivity(student) }}
           </td>
@@ -67,6 +85,7 @@ import differenceInDays from 'date-fns/difference_in_days'
 import { userGetters } from '@state/helpers'
 import courseUserGradeCurrentRounded from '@helpers/computed/course-user-grade-current-rounded'
 import courseGradeMinExpectedRounded from '@helpers/computed/course-grade-min-expected-rounded'
+import courseUserGradeProjectedReal from '@helpers/computed/course-user-grade-projected-real'
 import courseAverageLessonGradePointsReal from '@helpers/computed/course-average-lesson-grade-points-real'
 import gradeMax from '@constants/grade-max'
 import normalizedSemesterWeeks from '@constants/normalized-semester-weeks'
@@ -130,6 +149,10 @@ export default {
       } else {
         return ''
       }
+    },
+    getProjectedGrade (student) {
+      const projectedGrade = courseUserGradeProjectedReal(this.course, student)
+      return this.formatGrade(projectedGrade)
     },
     getMostRecentStudentActivityDate (completion) {
       if (!completion) return 0
