@@ -26,7 +26,7 @@
       <tbody>
         <tr v-for="student in studentsInCourse">
           
-          // Name and Github link
+          <!-- Name and Github link -->
           <td>
             <a
               v-if="student.github"
@@ -40,7 +40,7 @@
             </span>
           </td>
           
-          // Current grade
+          <!-- Current grade -->
           <td
             class="numeric-cell"
             :class="getCurrentGradeStyle(student)"
@@ -54,22 +54,22 @@
             ({{ getCurrentGradeDelta(student) }})
           </td>
           
-          // Projected Grade
+          <!-- Projected Grade -->
           <td class="numeric-cell">
             ({{ getProjectedGrade(student) }})
           </td>
           
-          // Days Open
+          <!-- Days Open -->
           <td class="numeric-cell" :title="isNaN(maxDaysProjectOngoingFor(student)) ? 'This student has no submitted, unapproved projects' : ''">
             {{ maxDaysProjectOngoingFor(student) }}
           </td>
           
-          // Days Stale
+          <!-- Days Stale -->
           <td class="numeric-cell" :title="isNaN(maxDaysProjectStaleFor(student)) ? 'This student has no submitted, unapproved projects where the instructor was last to comment' : ''">
             {{ maxDaysProjectStaleFor(student) }}
           </td>
           
-          // Days Inactive
+          <!-- Days Inactive -->
           <td class="numeric-cell">
             {{ daysSinceLastProjectActivity(student) }}
           </td>
