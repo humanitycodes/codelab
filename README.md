@@ -41,6 +41,12 @@ And open a pull request.
 
 The development environment can be launched for either the frontend or the backend, by running `npm run dev` from those directories. The frontend launches to port 8080 and the backend to port 4000. On the frontend, `/api` is proxied to the backend. From the root directory, you can also run `npm run dev-all` to launch the entire app.
 
+To run locally (after installation):
+
+```sh
+yarn dev-all
+```
+
 ## Continuous Integration and Deployment
 
 When builds pass on CircleCI, GitHub's:
