@@ -10,7 +10,7 @@
     "predeploy": "yarn build:rules",
     "deploy": "firebase deploy --project \"${NODE_ENV}\" --token \"`cat token`\"",
     "predev:deploy": "yarn build:rules",
-    "dev:deploy": "firebase deploy --project ${USER} --token `cat token`"
+    "dev:deploy": "firebase deploy --project \"`whoami`\" --token \"`cat token`\""
   },
   "dependencies": {
     "js-beautify": "^1.6.4",

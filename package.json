@@ -14,10 +14,10 @@
     "url": "https://github.com/chrisvfritz/msu.lansing.codes/issues"
   },
   "scripts": {
-    "install:backend": "cd backend && NODE_ENV=development yarn --pure-lockfile",
-    "install:frontend": "cd frontend && NODE_ENV=development yarn --pure-lockfile",
-    "install:firebase": "cd firebase && NODE_ENV=development yarn --pure-lockfile",
-    "install:test": "cd test && NODE_ENV=development yarn --pure-lockfile",
+    "install:backend": "cd backend && cross-env NODE_ENV=development yarn --pure-lockfile",
+    "install:frontend": "cd frontend && cross-env NODE_ENV=development yarn --pure-lockfile",
+    "install:firebase": "cd firebase && cross-env NODE_ENV=development yarn --pure-lockfile",
+    "install:test": "cd test && cross-env NODE_ENV=development yarn --pure-lockfile",
     "postinstall": "npm-run-all install:* build-all deploy:firebase",
     "lint:backend": "cd backend && yarn run lint",
     "lint:frontend": "cd frontend && yarn run lint",
@@ -48,10 +48,11 @@
     "npm-run-all": "^3.1.0"
   },
   "devDependencies": {
+    "cross-env": "^5.1.3",
     "local-ssl-proxy": "^1.3.0"
   },
   "engines": {
-    "node": "8.8.0"
+    "node": ">=8.8.0"
   },
   "cacheDirectories": [
     "~./yarn",
