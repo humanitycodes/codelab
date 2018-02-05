@@ -2,74 +2,123 @@
   <details v-if="studentsInCourse.length">
     <summary>{{ course['.key'] }}</summary>
     <table class="dashboard-info">
+      <colgroup span="3"></colgroup>
+      <colgroup span="4"></colgroup>
+      <colgroup span="3"></colgroup>
       <thead>
-        <th>
-          Name
-        </th>
-        <th class="numeric-cell" colspan="2">
-          Grade Points<br>
-          Expected: {{ expectedGrade }}
-        </th>
-        <th class="numeric-cell" title="Student's final grade (unrounded) if they continue at this pace">
-          Projected<br> Grade
-        </th>
-        <th class="numeric-cell" title="Maximum number of days a submitted project has gone unapproved">
-          Days<br> Open
-        </th>
-        <th class="numeric-cell" title="Maximum number of days since a project has had changes requested">
-          Days<br> Stale
-        </th>
-        <th class="numeric-cell" title="Number of days since an update was made to a project">
-          Days<br> Inactive
-        </th>
+        <tr>
+          <th colspan="3" scope="colgroup">Student</th>
+          <th colspan="4" scope="colgroup">Grade</th>
+          <th colspan="3" scope="colgroup">Projects</th>
+        </tr>
+        <tr>
+          <th scope="col">
+            Name
+          </th>
+          <th scope="col">
+            Links
+          </th>
+          <th scope="col">
+            Absences
+          </th>
+          <th class="numeric-cell" scope="col">
+            Current
+          </th>
+          <th class="numeric-cell" scope="col">
+            Delta
+          </th>
+          <th class="numeric-cell" scope="col" title="Student's final grade (unrounded) if they continue at this pace">
+            Projected
+          </th>
+          <th class="numeric-cell" scope="col" title="Student's self-reported desired grade">
+            Desired
+          </th>
+          <th class="numeric-cell" scope="col" title="Maximum number of days a submitted project has gone unapproved">
+            Days Open
+          </th>
+          <th class="numeric-cell" scope="col" title="Maximum number of days since a project has had changes requested">
+            Days Stale
+          </th>
+          <th class="numeric-cell" scope="col" title="Number of days since an update was made to a project">
+            Days Inactive
+          </th>
+        </tr>
       </thead>
       <tbody>
         <tr v-for="student in studentsInCourse">
-          
-          <!-- Name and Github link -->
-          <td>
+
+          <!-- STUDENT: Name -->
+          <td scope="row">
+            {{ student.fullName }}
+          </td>
+          <!-- STUDENT: Links -->
+          <!-- TODO: Add email link; use icons -->
+          <td class="links">
             <a
               v-if="student.github"
               :href="courseReposFor(course, student)"
               target="_blank"
+              class="icon-link"
+              alt="Open Github profile in new tab"
+              aria-label="GitHub Profile"
             >
-              {{ student.fullName }}
+              <span class="fa fa-github" aria-hidden="true" title="Open student's GitHub profile"></span>
             </a>
-            <span v-else>
-              {{ student.fullName }}
-            </span>
+
+            <a
+              v-if="student.email"
+              :href="'mailto:' + student.email"
+              target="_blank"
+              class="icon-link"
+              alt="Email student"
+              aria-label="Email address"
+            >
+              <span class="fa fa-envelope" aria-hidden="true" title="Email student"></span>
+            </a>
           </td>
-          
-          <!-- Current grade -->
+
+          <!-- STUDENT: Absences -->
+          <!-- TODO: Add editable field -->
+          <td class="numeric-cell">
+            --
+          </td>
+
+          <!-- GRADE: Current grade -->
           <td
             class="numeric-cell"
             :class="getCurrentGradeStyle(student)"
           >
             {{ getCurrentGrade(student) }}
           </td>
+          <!-- GRADE: Delta -->
           <td
-            class="numeric-cell grade-delta"
+            class="numeric-cell"
             :class="getCurrentGradeStyle(student)"
           >
             ({{ getCurrentGradeDelta(student) }})
           </td>
-          
-          <!-- Projected Grade -->
-          <td class="numeric-cell">
-            ({{ getProjectedGrade(student) }})
+          <!-- GRADE: Projected Grade -->
+          <td
+            class="numeric-cell"
+            :class="getCurrentGradeStyle(student)"
+          >
+            {{ getProjectedGrade(student) }}
           </td>
-          
-          <!-- Days Open -->
+          <!-- GRADE: Desired Grade -->
+          <!-- TODO: Add editable field -->
+          <td class="numeric-cell">
+            --
+          </td>
+
+          <!-- PROJECTS: Days Open -->
           <td class="numeric-cell" :title="isNaN(maxDaysProjectOngoingFor(student)) ? 'This student has no submitted, unapproved projects' : ''">
             {{ maxDaysProjectOngoingFor(student) }}
           </td>
-          
-          <!-- Days Stale -->
+          <!-- PROJECTS: Days Stale -->
           <td class="numeric-cell" :title="isNaN(maxDaysProjectStaleFor(student)) ? 'This student has no submitted, unapproved projects where the instructor was last to comment' : ''">
             {{ maxDaysProjectStaleFor(student) }}
           </td>
-          
-          <!-- Days Inactive -->
+          <!-- PROJECTS: Days Inactive -->
           <td class="numeric-cell">
             {{ daysSinceLastProjectActivity(student) }}
           </td>
@@ -246,8 +295,25 @@ export default {
   color: $design.branding.danger.dark
 .allstar-grade
   color: $design.branding.success.light
+
 .grade-delta
   width: 1px
   white-space: nowrap
   border-left-style: dashed
+
+table
+  border-collapse: collapse
+
+colgroup, thead
+  border: 2px solid #ddd
+
+.links
+  text-align: center
+
+.fa
+  font-size: 1.4em
+
+.icon-link:not(:last-child)
+  margin-right: .2em
+
 </style>
