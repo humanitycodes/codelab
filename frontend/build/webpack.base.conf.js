@@ -5,8 +5,7 @@ var projectRoot = path.resolve(__dirname, '../')
 var fs = require('fs')
 
 function chooseEnvironmentFile () {
-  const operatingSystem = require('os')
-  const username = operatingSystem.userInfo().username
+  const username = require('os').userInfo().username
   if (process.env.NODE_ENV === 'production') {
     return path.resolve(__dirname, '../src/env/prod')
   } else if (process.env.NODE_ENV === 'staging') {
