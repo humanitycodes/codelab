@@ -4,14 +4,15 @@
     <table class="dashboard-info">
       <colgroup span="3"></colgroup>
       <colgroup span="4"></colgroup>
-      <colgroup span="3"></colgroup>
+      <colgroup span="4"></colgroup>
       <thead>
         <tr>
           <th colspan="3" scope="colgroup">Student</th>
           <th colspan="4" scope="colgroup">Grade</th>
-          <th colspan="3" scope="colgroup">Projects</th>
+          <th colspan="4" scope="colgroup">Projects</th>
         </tr>
         <tr>
+          <!-- STUDENT -->
           <th scope="col">
             Name
           </th>
@@ -21,6 +22,7 @@
           <th scope="col">
             Absences
           </th>
+          <!-- GRADE -->
           <th class="numeric-cell" scope="col">
             Current
           </th>
@@ -32,6 +34,13 @@
           </th>
           <th class="numeric-cell" scope="col" title="Student's self-reported desired grade">
             Desired
+          </th>
+          <!-- PROJECTS -->
+          <th class="numeric-cell" scope="col" title="Total projects a student has submitted that have not yet been approved">
+            Total Open
+          </th>
+          <th class="numeric-cell" scope="col" title="Maximum number of days a submitted project has gone unapproved">
+            Days Open
           </th>
           <th class="numeric-cell" scope="col" title="Maximum number of days a submitted project has gone unapproved">
             Days Open
@@ -110,6 +119,10 @@
             --
           </td>
 
+          <!-- PROJECTS: Total Open -->
+          <td class="numeric-cell" :title="isNaN(inProgressLessonCount(student)) ? 'This student has no submitted, unapproved projects' : ''">
+            {{ inProgressLessonCount(student) }}
+          </td>
           <!-- PROJECTS: Days Open -->
           <td class="numeric-cell" :title="isNaN(maxDaysProjectOngoingFor(student)) ? 'This student has no submitted, unapproved projects' : ''">
             {{ maxDaysProjectOngoingFor(student) }}
