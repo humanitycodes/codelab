@@ -58,7 +58,6 @@
             {{ student.fullName }}
           </td>
           <!-- STUDENT: Links -->
-          <!-- TODO: Add email link; use icons -->
           <td class="links">
             <a
               v-if="student.github"
