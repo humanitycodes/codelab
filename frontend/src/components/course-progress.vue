@@ -42,9 +42,6 @@
           <th class="numeric-cell" scope="col" title="Maximum number of days a submitted project has gone unapproved">
             Days Open
           </th>
-          <th class="numeric-cell" scope="col" title="Maximum number of days a submitted project has gone unapproved">
-            Days Open
-          </th>
           <th class="numeric-cell" scope="col" title="Maximum number of days since a project has had changes requested">
             Days Stale
           </th>
