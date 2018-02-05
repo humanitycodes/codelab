@@ -2,8 +2,7 @@ const NodeRSA = require('node-rsa')
 const fs = require('fs')
 const path = require('path')
 const firebase = require('firebase-admin')
-const operatingSystem = require('os')
-const username = operatingSystem.userInfo().username
+const username = require('os').userInfo().username
 
 let firebaseAppConfig, certPath
 
@@ -27,7 +26,7 @@ if (process.env.NODE_ENV === 'production') {
     // Try to use user-specific dev config
     firebaseAppConfig = {
       credential: fullCert(`../env/dev/firebase-service-account-` + username + `.json`),
-      databaseURL: `https://msulansingcodesdev-` + username + `.firebaseio.com`
+      databaseURL: `https://msulansingcodesdev-${username}.firebaseio.com`
     }
 
     // Test if the user service account file exists
