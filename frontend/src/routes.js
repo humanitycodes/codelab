@@ -109,7 +109,8 @@ export default [
     path: '/student-progress',
     component: require('@pages/student-progress'),
     meta: {
-      isAuthorized: canReadAllCourses
+      isAuthorized: canReadAllCourses,
+      layout: 'full'
     }
   },
   // We do not need this live for now.
