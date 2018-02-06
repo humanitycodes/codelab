@@ -45,7 +45,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="student in studentsInCourse">
+        <tr v-for="student in studentsInCourse" :key="student.userId">
 
           <!-- STUDENT: Name -->
           <td scope="row">
