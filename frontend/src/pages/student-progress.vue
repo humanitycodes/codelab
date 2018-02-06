@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <h1>Student Progress</h1>
-    <CourseProgress v-for="course in coursesSortedByKey" :course="course"/>
+    <CourseProgress v-for="course in coursesSortedByKey" :course="course" :key="course['.key']"/>
   </Layout>
 </template>
 
