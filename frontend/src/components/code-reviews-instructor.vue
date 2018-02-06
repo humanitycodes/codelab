@@ -120,6 +120,9 @@
             <a :href="getValidatorUrl(codeReview)" target="_blank" class="icon-link" alt="Open validator errors in a new tab" aria-label="W3 Validator">
               <span class="fa fa-check-circle" aria-hidden="true" title="View the W3 validator"></span>
             </a>
+            <a @click="openAllLinks(codeReview)" target="_blank" class="icon-link" alt="Open all links in a new tab" aria-label="All links">
+              <span class="fa fa-folder-open" aria-hidden="true" title="Open all links"></span>
+            </a>
           </td>
           <td class="review-reassignment-control">
             <select
@@ -211,6 +214,12 @@ export default {
         'https://validator.w3.org/nu/?doc=',
         this.getHostedUrl(codeReview)
       ].join('')
+    },
+    openAllLinks (codeReview) {
+      window.open(this.getFirstIssueUrl(codeReview))
+      window.open(this.getGitHubProjectUrl(codeReview))
+      window.open(this.getHostedUrl(codeReview))
+      window.open(this.getValidatorUrl(codeReview))
     },
     getRepoName (codeReview) {
       return courseProjectCompletionRepoName(
