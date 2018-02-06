@@ -14,10 +14,10 @@
         <tr>
           <!-- STUDENT -->
           <th scope="col">
-            Name
+            Links
           </th>
           <th scope="col">
-            Links
+            Name
           </th>
           <!-- GRADE -->
           <th class="numeric-cell" scope="col">
@@ -30,6 +30,9 @@
             Projected
           </th>
           <!-- PROJECTS -->
+          <th class="numeric-cell" scope="col" title="Number of days since an update was made to a project">
+            Days Inactive
+          </th>
           <th class="numeric-cell" scope="col" title="Total projects a student has submitted that have not yet been approved">
             Total Open
           </th>
@@ -39,18 +42,11 @@
           <th class="numeric-cell" scope="col" title="Maximum number of days since a project has had changes requested">
             Days Stale
           </th>
-          <th class="numeric-cell" scope="col" title="Number of days since an update was made to a project">
-            Days Inactive
-          </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="student in studentsInCourse" :key="student.userId">
 
-          <!-- STUDENT: Name -->
-          <td scope="row">
-            {{ student.fullName }}
-          </td>
           <!-- STUDENT: Links -->
           <td class="links">
             <a
@@ -76,6 +72,11 @@
             </a>
           </td>
 
+          <!-- STUDENT: Name -->
+          <td scope="row" class="align-right">
+            {{ student.fullName }}
+          </td>
+
           <!-- GRADE: Current grade -->
           <td
             class="numeric-cell"
@@ -98,6 +99,11 @@
             {{ getProjectedGrade(student) }}
           </td>
 
+          <!-- PROJECTS: Days Inactive -->
+          <td class="numeric-cell"
+            :class="getDaysInactiveStyle(student)">
+            {{ daysSinceLastProjectActivity(student) }}
+          </td>
           <!-- PROJECTS: Total Open -->
           <td class="numeric-cell" :title="isNaN(inProgressLessonCount(student)) ? 'This student has no submitted, unapproved projects' : ''">
             {{ inProgressLessonCount(student) }}
@@ -109,10 +115,6 @@
           <!-- PROJECTS: Days Stale -->
           <td class="numeric-cell" :title="isNaN(maxDaysProjectStaleFor(student)) ? 'This student has no submitted, unapproved projects where the instructor was last to comment' : ''">
             {{ maxDaysProjectStaleFor(student) }}
-          </td>
-          <!-- PROJECTS: Days Inactive -->
-          <td class="numeric-cell">
-            {{ daysSinceLastProjectActivity(student) }}
           </td>
         </tr>
       </tbody>
@@ -265,6 +267,14 @@ export default {
       }).reduce((a, b) => Math.min(a, b), 999)
       return result !== 999 ? result : '😵'
     },
+    getDaysInactiveStyle (student) {
+      const daysInactive = this.daysSinceLastProjectActivity(student)
+      if (daysInactive >= 5) {
+        return 'warning-inactive'
+      } else {
+        return ''
+      }
+    },
     courseReposFor (course, student) {
       return [
         'https://github.com/',
@@ -283,7 +293,7 @@ export default {
 <style lang="stylus" scoped>
 @import '../meta'
 
-.warning-grade
+.warning-grade, .warning-inactive
   color: $design.branding.danger.dark
 .allstar-grade
   color: $design.branding.success.light
@@ -298,6 +308,9 @@ table
 
 colgroup, thead
   border: 2px solid #ddd
+
+.align-right
+  text-align: right
 
 .links
   text-align: center
