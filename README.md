@@ -1,3 +1,5 @@
+# MSU Codes
+
 ## Organization
 
 The codebase is split into two parts: the `frontend` and the `backend`. Each of these directories manages its own dependencies, so if you want to install a new library, first `cd` into the appropriate directory, _then_ `npm install --save some-awesome-lib`.
