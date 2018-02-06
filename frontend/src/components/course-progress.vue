@@ -308,4 +308,6 @@ colgroup, thead
 .icon-link:not(:last-child)
   margin-right: .2em
 
+details:last-child
+  margin-bottom: 3em
 </style>
