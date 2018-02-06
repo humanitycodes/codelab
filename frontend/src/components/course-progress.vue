@@ -100,8 +100,10 @@
           </td>
 
           <!-- PROJECTS: Days Inactive -->
-          <td class="numeric-cell"
-            :class="getDaysInactiveStyle(student)">
+          <td
+            class="numeric-cell"
+            :class="getDaysInactiveStyle(student)"
+          >
             {{ daysSinceLastProjectActivity(student) }}
           </td>
           <!-- PROJECTS: Total Open -->
