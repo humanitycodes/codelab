@@ -2,13 +2,13 @@
   <details v-if="studentsInCourse.length">
     <summary>{{ course['.key'] }}</summary>
     <table class="dashboard-info">
+      <colgroup span="2"></colgroup>
       <colgroup span="3"></colgroup>
-      <colgroup span="4"></colgroup>
       <colgroup span="4"></colgroup>
       <thead>
         <tr>
-          <th colspan="3" scope="colgroup">Student</th>
-          <th colspan="4" scope="colgroup">Grade</th>
+          <th colspan="2" scope="colgroup">Student</th>
+          <th colspan="3" scope="colgroup">Grade</th>
           <th colspan="4" scope="colgroup">Projects</th>
         </tr>
         <tr>
@@ -19,9 +19,6 @@
           <th scope="col">
             Links
           </th>
-          <th scope="col">
-            Absences
-          </th>
           <!-- GRADE -->
           <th class="numeric-cell" scope="col">
             Current
@@ -31,9 +28,6 @@
           </th>
           <th class="numeric-cell" scope="col" title="Student's final grade (unrounded) if they continue at this pace">
             Projected
-          </th>
-          <th class="numeric-cell" scope="col" title="Student's self-reported desired grade">
-            Desired
           </th>
           <!-- PROJECTS -->
           <th class="numeric-cell" scope="col" title="Total projects a student has submitted that have not yet been approved">
@@ -82,12 +76,6 @@
             </a>
           </td>
 
-          <!-- STUDENT: Absences -->
-          <!-- TODO: Add editable field -->
-          <td class="numeric-cell">
-            --
-          </td>
-
           <!-- GRADE: Current grade -->
           <td
             class="numeric-cell"
@@ -108,11 +96,6 @@
             :class="getCurrentGradeStyle(student)"
           >
             {{ getProjectedGrade(student) }}
-          </td>
-          <!-- GRADE: Desired Grade -->
-          <!-- TODO: Add editable field -->
-          <td class="numeric-cell">
-            --
           </td>
 
           <!-- PROJECTS: Total Open -->
