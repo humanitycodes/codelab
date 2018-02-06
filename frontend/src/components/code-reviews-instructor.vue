@@ -76,7 +76,7 @@
           title="The date on which the project was last updated. Click the heading to sort by this value."
           @click="toggleOrderBy('last-updated')"
         >
-          Last Updated
+          Updated
           <OrderByIndicator
             column="last-updated"
             :orderByColumn="orderByColumn"
