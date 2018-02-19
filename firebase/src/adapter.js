@@ -84,13 +84,17 @@ export default (store, db, uid, roles) => {
           },
           // E.g. "showCurrentLessonPath"
           [`show${currentResourcePathName}`] (state, getters, rootState) {
-            const currentResourceKey = getters[currentResourceName]['.key']
-            return `/${resourceName}/${currentResourceKey}`
+            const currentResource = getters[currentResourceName]
+            if (currentResource) {
+              return `/${resourceName}/${currentResource['.key']}`
+            }
           },
           // E.g. "editCurrentLessonPath"
           [`edit${currentResourcePathName}`] (state, getters, rootState) {
-            const currentResourceKey = getters[currentResourceName]['.key']
-            return `/${resourceName}/${currentResourceKey}/edit`
+            const currentResource = getters[currentResourceName]
+            if (currentResource) {
+              return `/${resourceName}/${currentResource['.key']}/edit`
+            }
           }
         }
       })
@@ -222,6 +226,8 @@ export default (store, db, uid, roles) => {
           )
         })
         accessibleFieldGroupNames.forEach(fieldGroupName => {
+          if (!resourceKey) return
+
           db.ref(`${resourceName}/fieldGroups/large`)
             .child(fieldGroupName)
             .child(resourceKey)
