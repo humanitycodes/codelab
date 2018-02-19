@@ -520,7 +520,7 @@ $lesson-card-approved-bg = lighten($design.branding.muted.light.success, 50%)
     &:hover
       border: 1px solid $design.control.border.color
   &.changes-requested
-    background-color: $design.branding.muted.light.yellow
+    background-color: $design.branding.muted.light.red
     bottom: -5px
   &.awaiting-feedback
     bottom: -5px
