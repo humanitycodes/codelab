@@ -65,7 +65,6 @@ jobs:
         fi
     - run: sudo mkdir -p ~/.cache/yarn frontend/node_modules backend/node_modules firebase/node_modules test/node_modules
     - run: sudo chmod -R 777 ~/.cache/yarn frontend/node_modules backend/node_modules firebase/node_modules test/node_modules
-    - run: sudo sysctl fs.inotify.max_user_watches=524288 && sudo sysctl -p
     # This is based on your 1.0 configuration file or project settings
     - run: yarn install --pure-lockfile
     # Save dependency cache
