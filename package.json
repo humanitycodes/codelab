@@ -1,6 +1,6 @@
 {
   "name": "codelab.cas.msu.edu",
-  "private": "true",
+  "private": true,
   "version": "1.0.0",
   "license": "Copyright",
   "author": "Humanity Codes, LLC",
@@ -52,7 +52,7 @@
     "local-ssl-proxy": "^1.3.0"
   },
   "engines": {
-    "node": ">=8.8.0"
+    "node": ">=8.9.4"
   },
   "cacheDirectories": [
     "~./yarn",

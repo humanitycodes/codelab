@@ -15,7 +15,11 @@ jobs:
     # CircleCI 2.0 does not support environment variables that refer to each other the same way as 1.0 did.
     # If any of these refer to each other, rewrite them so that they don't or see https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables .
     environment:
-      - BASH_ENV: ~/.bashrc
+      BASH_ENV: ~/.bashrc
+      CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
+      CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
+      NODE_ENV: testing
+      YARN_VERSION: 1.3.2
     # In CircleCI 1.0 we used a pre-configured image with a large number of languages and other packages.
     # In CircleCI 2.0 you can now specify your own image, or use one of our pre-configured images.
     # The following configuration line tells CircleCI to use the specified docker image as the runtime environment for you job.
@@ -26,17 +30,14 @@ jobs:
     # To see the list of pre-built images that CircleCI provides for most common languages see
     # https://circleci.com/docs/2.0/circleci-images/
     docker:
-    - image: circleci/build-image:ubuntu-14.04-XXL-upstart-1189-5614f37
-      environment:
-        BASH_ENV: ~/.bashrc
-        CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
-        CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
-        YARN_VERSION: 1.3.2
-        NODE_ENV: testing
+    - image: circleci/node:8.9.4-browsers
       command: /sbin/init
     steps:
     # Machine Setup
     #   If you break your build into multiple jobs with workflows, you will probably want to do the parts of this that are relevant in each
+    - run:
+        working_directory: ~/chrisvfritz/msu.lansing.codes
+        command: echo -e "export PATH=${PATH}:~/chrisvfritz/msu.lansing.codes/.yarn/bin:~/chrisvfritz/msu.lansing.codes/node_modules/.bin" >> $BASH_ENV
     # The following `checkout` command checks out your code to your working directory. In 1.0 we did this implicitly. In 2.0 you can choose where in the course of a job your code should be checked out.
     - checkout
     # Prepare for artifact and test results  collection equivalent to how it was done on 1.0.
@@ -46,15 +47,7 @@ jobs:
     # This is based on your 1.0 configuration file or project settings
     - run:
         working_directory: ~/chrisvfritz/msu.lansing.codes
-        command: nvm install 8.8.0 && nvm alias default 8.8.0
-    - run:
-        working_directory: ~/chrisvfritz/msu.lansing.codes
-        command: 'echo ''America/Detroit'' | sudo tee -a /etc/timezone; sudo dpkg-reconfigure
-          -f noninteractive tzdata; sudo service mysql restart; sudo service postgresql
-          restart; '
-    - run:
-        working_directory: ~/chrisvfritz/msu.lansing.codes
-        command: echo -e "export PATH=${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin" >> $BASH_ENV
+        command: 'echo ''America/Detroit'' | sudo tee -a /etc/timezone; sudo dpkg-reconfigure -f noninteractive tzdata; '
     # Dependencies
     #   This would typically go in either a build or a build-and-test job when using workflows
     # Restore the dependency cache
@@ -76,9 +69,6 @@ jobs:
     - run: sudo sysctl fs.inotify.max_user_watches=524288 && sudo sysctl -p
     # This is based on your 1.0 configuration file or project settings
     - run: yarn install --pure-lockfile
-    # This is based on your 1.0 configuration file or project settings
-    - run: curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    - run: sudo dpkg -i google-chrome.deb
     # Save dependency cache
     - save_cache:
         key: v1-dep-{{ .Branch }}-{{ epoch }}
