@@ -6,8 +6,6 @@ jobs:
     shell: /bin/bash --login
     # CircleCI 2.0 does not support environment variables that refer to each other
     environment:
-      CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
-      CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
       NODE_ENV: testing
       TZ: /usr/share/zoneinfo/America/Detroit
       YARN_VERSION: 1.3.2
@@ -22,10 +20,6 @@ jobs:
         command: echo -e "export PATH=${PATH}:~/chrisvfritz/msu.lansing.codes/.yarn/bin:~/chrisvfritz/msu.lansing.codes/node_modules/.bin" >> $BASH_ENV
     # The following `checkout` command checks out your code to your working directory
     - checkout
-    # Prepare for artifact and test results  collection equivalent to how it was done on 1.0.
-    # In many cases you can simplify this from what is generated here.
-    # 'See docs on artifact collection here https://circleci.com/docs/2.0/artifacts/'
-    - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
     # Restore the dependency cache
     - restore_cache:
         keys:
@@ -64,9 +58,7 @@ jobs:
     #   If you break your build into multiple jobs with workflows, you will probably want to do the parts of this that are relevant in each
     # Save test results
     - store_test_results:
-        path: /tmp/circleci-test-results
+        path: frontend/test/unit/coverage
     # Save artifacts
     - store_artifacts:
-        path: /tmp/circleci-artifacts
-    - store_artifacts:
-        path: /tmp/circleci-test-results
+        path: frontend/test/unit/coverage
