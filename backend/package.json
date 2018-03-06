@@ -1,6 +1,8 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "license": "UNLICENSED",
+  "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.json src test/unit/specs",
     "serve:dev": "nodemon src/main.js --exec babel-node --presets es2015,stage-0",
