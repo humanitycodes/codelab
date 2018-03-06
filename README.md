@@ -74,7 +74,6 @@ Since this bypasses linting, tests, and QA, it is up to you to confirm that your
 
 ## SSL Certificate Renewal
 
-``` sh
-brew install certbot # only once
-npm run ssl:renew
-```
+The SSL certificate for codelab.cas.msu.edu is automatically managed and renewed
+by Heroku. More information can be found in the _Domains and Certificates_
+section of the `msu-lansing-codes` settings page at heroku.com.
