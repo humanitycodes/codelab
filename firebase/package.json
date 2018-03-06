@@ -1,6 +1,8 @@
 {
   "name": "firebase",
   "version": "1.0.0",
+  "license": "UNLICENSED",
+  "private": true,
   "scripts": {
     "test": "jest src/**/*.spec.js",
     "lint": "eslint --ext .js,.json src",

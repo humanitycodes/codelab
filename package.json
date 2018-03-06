@@ -1,8 +1,8 @@
 {
   "name": "codelab.cas.msu.edu",
-  "private": true,
   "version": "1.0.0",
-  "license": "Copyright",
+  "license": "UNLICENSED",
+  "private": true,
   "author": "Humanity Codes, LLC",
   "homepage": "https://github.com/chrisvfritz/msu.lansing.codes#readme",
   "description": "Learning Management System for MSU Coding Courses",
