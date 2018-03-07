@@ -58,7 +58,7 @@ jobs:
     #   If you break your build into multiple jobs with workflows, you will probably want to do the parts of this that are relevant in each
     # Save artifacts
     - store_artifacts:
-        path: frontend/test/unit/coverage
+        path: frontend/test/unit/coverage/lcov-report
         destination: frontend-tests
     - store_artifacts:
         path: test/e2e/reports
