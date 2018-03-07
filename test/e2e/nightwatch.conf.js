@@ -1,4 +1,10 @@
-var config = require('../../frontend/config')
+const HtmlReporter = require('nightwatch-html-reporter');
+const config = require('../../frontend/config')
+
+const reporter = new HtmlReporter({
+	openBrowser: false,
+	reportsDirectory: __dirname + '/reports'
+})
 
 // http://nightwatchjs.org/guide#settings-file
 module.exports = {
@@ -22,6 +28,7 @@ module.exports = {
       selenium_host: 'localhost',
       silent: true,
       globals: {
+        reporter: reporter.fn,
         devServerURL: 'http://localhost:' + (process.env.PORT || config.dev.port)
       }
     },
