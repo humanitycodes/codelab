@@ -1,87 +1,51 @@
 import axios from 'axios'
 import { config } from '../../env/config'
 import githubEventHandlers from './github-event-handlers'
+import retry from 'retry-as-promised'
 
-function deleteFromGitHub (path, token) {
-  return axios({
-    method: 'delete',
-    url: `${config.githubAuthBaseURL}${path}`,
-    headers: {
-      Accept: 'application/vnd.github.v3+json',
-      Authorization: `token ${token}`
-    }
-  })
-  .then(response => response.data)
-  .catch(error => {
-    throw new Error(`DELETE ${path} failed. Reason: ${error}`)
-  })
-}
+const MAX_RETRIES = 9
 
-function getFromGitHub (path, token) {
-  return axios({
-    method: 'get',
-    url: `${config.githubAuthBaseURL}${path}`,
-    headers: {
-      Accept: 'application/vnd.github.v3+json',
-      Authorization: `token ${token}`
-    }
-  })
-  .then(response => response.data)
-  .catch(error => {
-    throw new Error(`GET ${path} failed. Reason: ${error}`)
-  })
-}
-
-function patchToGitHub (path, token) {
-  return axios({
-    method: 'patch',
-    url: `${config.githubAuthBaseURL}${path}`,
-    headers: {
-      Accept: 'application/vnd.github.v3+json',
-      Authorization: `token ${token}`
-    }
-  })
-  .then(response => response.data)
-  .catch(error => {
-    throw new Error(`PATCH ${path} failed. Reason: ${error}`)
-  })
-}
-
-function postToGitHub (path, token, body) {
-  return axios({
-    method: 'post',
-    url: `${config.githubAuthBaseURL}${path}`,
-    headers: {
-      Accept: 'application/vnd.github.v3+json',
-      Authorization: `token ${token}`
-    },
-    data: body
-  })
-  .then(response => response.data)
-  .catch(error => {
-    throw new Error(`POST ${path} failed. Reason: ${error}`)
-  })
-}
-
-function putToGitHub (path, token, body) {
+const requestFromGitHub = (method, path, token, body) => {
   let headers = {
     Accept: 'application/vnd.github.v3+json',
     Authorization: `token ${token}`
   }
-  if (!body) {
-    headers['Content-Length'] = 0
-  }
+  if (!body) headers['Content-Length'] = 0
 
-  return axios({
-    method: 'put',
-    url: `${config.githubAuthBaseURL}${path}`,
+  let params = {
+    method,
     headers,
-    data: body
-  })
-  .then(response => response.data)
-  .catch(error => {
-    throw new Error(`PUT ${path} failed. Reason: ${error}`)
-  })
+    url: `${config.githubAuthBaseURL}${path}`
+  }
+  if (body) params.data = body
+
+  // With MAX_RETRIES = 9, backoffBase = 100, backoffExp = 1.1
+  // the max duration of a request including all retries is 34,253 ms
+  return retry(() => axios(params), MAX_RETRIES)
+    .then(response => response.data)
+    .catch(error => {
+      throw new Error(`${method.toUpperCase()} ${path} failed. Reason:\n${error}`)
+    })
+}
+
+const deleteFromGitHub = (path, token) => {
+  return requestFromGitHub('delete', path, token)
+}
+
+const getFromGitHub = (path, token) => {
+  return requestFromGitHub('get', path, token)
+}
+
+const patchToGitHub = (path, token) => {
+  return requestFromGitHub('patch', path, token)
+}
+
+const postToGitHub = (path, token, body) => {
+  return requestFromGitHub('post', path, token, body)
+}
+
+const putToGitHub = (path, token, body) => {
+  return requestFromGitHub('put', path, token, body)
 }
 
 export function getUserProfile (token) {
@@ -109,33 +73,14 @@ export function getIssueComments (token, { owner, repo, issueNumber }) {
 }
 
 export function createWebhooks (token, { owner, repo }) {
-  let failureCount = 0
-
-  const attemptToCreateWebhooks = (resolve, reject) => {
-    return postToGitHub(`/repos/${owner}/${repo}/hooks`, token, {
-      name: 'web',
-      active: true,
-      events: Object.keys(githubEventHandlers),
-      config: {
-        url: `${config.githubEventsBaseURL}${config.githubEventsPath}`,
-        content_type: 'json'
-      }
-    })
-    .then(resolve)
-    .catch(error => {
-      failureCount++
-      if (failureCount > 20) {
-        reject(error)
-      } else {
-        setTimeout(() => {
-          return attemptToCreateWebhooks(resolve, reject)
-        }, 500)
-      }
-    })
-  }
-
-  return new Promise((resolve, reject) => {
-    return attemptToCreateWebhooks(resolve, reject)
+  return postToGitHub(`/repos/${owner}/${repo}/hooks`, token, {
+    name: 'web',
+    active: true,
+    events: Object.keys(githubEventHandlers),
+    config: {
+      url: `${config.githubEventsBaseURL}${config.githubEventsPath}`,
+      content_type: 'json'
+    }
   })
 }
 
