@@ -193,6 +193,7 @@ export default {
       right: 0
       background-color: #fff
       padding: $design.layout.gutterWidth
+      overflow-y: auto
       > .rendered-content
         flex-grow: 1
     .rich-content-editor-someone-else-is-editing-warning
