@@ -163,3 +163,52 @@ ON course_student_pending (course_id);
 
 CREATE INDEX course_student_pending_email_index
 ON course_student_pending (email);
+
+-- project_completion
+CREATE TABLE project_completion (
+  project_completion_id BIGINT NOT NULL DEFAULT NEXTVAL('id_sequence'),
+  course_id BIGINT NOT NULL,
+  lesson_id BIGINT NOT NULL,
+  lesson_project_id BIGINT NOT NULL,
+  repository_created_at TIMESTAMP NOT NULL,
+  is_approved BOOLEAN NOT NULL,
+  committed BOOLEAN,
+  first_committed_at TIMESTAMP,
+  approved_at TIMESTAMP,
+  assigned_instructor_id BIGINT,
+  first_submitted_at TIMESTAMP,
+  instructor_commented_last BOOLEAN,
+  last_commented_at TIMESTAMP,
+  PRIMARY KEY (project_completion_id),
+  FOREIGN KEY (lesson_id) REFERENCES lesson (lesson_id),
+  FOREIGN KEY (lesson_project_id) REFERENCES lesson_project (lesson_project_id),
+  FOREIGN KEY (course_id, assigned_instructor_id)
+    REFERENCES course_instructor (course_id, user_id)
+);
+
+CREATE INDEX project_completion_lesson_id_index
+ON project_completion (lesson_id);
+
+CREATE INDEX project_completion_lesson_project_id_index
+ON project_completion (lesson_project_id);
+
+CREATE INDEX project_completion_course_id_assigned_instructor_id_index
+ON project_completion (course_id, assigned_instructor_id);
+
+-- project_completion_student
+CREATE TABLE project_completion_student (
+  project_completion_id BIGINT NOT NULL,
+  course_id BIGINT NOT NULL,
+  user_id BIGINT NOT NULL,
+  PRIMARY KEY (project_completion_id, user_id),
+  FOREIGN KEY (project_completion_id)
+    REFERENCES project_completion (project_completion_id),
+  FOREIGN KEY (course_id, user_id)
+    REFERENCES course_student (course_id, user_id)
+);
+
+CREATE INDEX project_completion_student_project_completion_id_index
+ON project_completion_student (project_completion_id);
+
+CREATE INDEX project_completion_student_course_id_user_id_index
+ON project_completion_student (course_id, user_id);
