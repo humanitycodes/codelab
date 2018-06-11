@@ -9,6 +9,7 @@ CREATE TABLE app_user (
   user_id BIGINT NOT NULL DEFAULT NEXTVAL('id_sequence'),
   email TEXT NOT NULL UNIQUE,
   full_name TEXT NOT NULL,
+  role_instructor BOOLEAN NOT NULL DEFAULT FALSE,
   github_login TEXT,
   github_scope TEXT,
   github_token TEXT,
@@ -21,14 +22,6 @@ CREATE TABLE app_user (
 CREATE INDEX app_user_email_index ON app_user (email);
 
 CREATE INDEX app_user_github_login_index ON app_user (github_login);
-
--- app_role
-CREATE TABLE app_role (
-  user_id BIGINT NOT NULL,
-  name TEXT NOT NULL,
-  PRIMARY KEY (user_id, name),
-  FOREIGN KEY (user_id) REFERENCES app_user (user_id)
-);
 
 -- lesson
 CREATE TABLE lesson (
@@ -158,28 +151,28 @@ CREATE TABLE project_completion (
   project_completion_id BIGINT NOT NULL DEFAULT NEXTVAL('id_sequence'),
   course_id BIGINT NOT NULL,
   lesson_id BIGINT NOT NULL,
-  student_id BIGINT NOT NULL,
+  student_user_id BIGINT NOT NULL,
   repository_created_at TIMESTAMP NOT NULL,
   approved BOOLEAN NOT NULL DEFAULT FALSE,
   committed BOOLEAN NOT NULL DEFAULT FALSE,
   instructor_commented_last BOOLEAN NOT NULL DEFAULT FALSE,
   first_committed_at TIMESTAMP,
   approved_at TIMESTAMP,
-  assigned_instructor_id BIGINT,
+  instructor_user_id BIGINT,
   first_submitted_at TIMESTAMP,
   last_commented_at TIMESTAMP,
   PRIMARY KEY (project_completion_id),
   FOREIGN KEY (lesson_id) REFERENCES lesson (lesson_id),
-  FOREIGN KEY (student_id) REFERENCES app_user (user_id),
-  FOREIGN KEY (course_id, assigned_instructor_id)
+  FOREIGN KEY (student_user_id) REFERENCES app_user (user_id),
+  FOREIGN KEY (course_id, instructor_user_id)
     REFERENCES course_instructor (course_id, user_id)
 );
 
 CREATE INDEX project_completion_lesson_id_index
 ON project_completion (lesson_id);
 
-CREATE INDEX project_completion_student_id_index
-ON project_completion (student_id);
+CREATE INDEX project_completion_student_user_id_index
+ON project_completion (student_user_id);
 
-CREATE INDEX project_completion_course_id_assigned_instructor_id_index
-ON project_completion (course_id, assigned_instructor_id);
+CREATE INDEX project_completion_course_id_instructor_user_id_index
+ON project_completion (course_id, instructor_user_id);
