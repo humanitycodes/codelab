@@ -38,6 +38,8 @@ CREATE TABLE lesson (
   estimated_hours INT NOT NULL,
   content TEXT NOT NULL,
   notes TEXT,
+  project_title TEXT,
+  project_hosting TEXT,
   PRIMARY KEY (lesson_id)
 );
 
@@ -56,31 +58,18 @@ CREATE TABLE lesson_learning_objective (
 CREATE INDEX lesson_learning_objective_lesson_id_index
 ON lesson_learning_objective (lesson_id);
 
--- lesson_project
-CREATE TABLE lesson_project (
-  lesson_project_id BIGINT NOT NULL DEFAULT NEXTVAL('id_sequence'),
-  lesson_id BIGINT NOT NULL,
-  title TEXT NOT NULL,
-  hosting TEXT NOT NULL,
-  PRIMARY KEY (lesson_project_id),
-  FOREIGN KEY (lesson_id) REFERENCES lesson (lesson_id)
-);
-
-CREATE INDEX lesson_project_lesson_id_index
-ON lesson_project (lesson_id);
-
 -- lesson_project_criterion
 CREATE TABLE lesson_project_criterion (
   lesson_project_criterion_id BIGINT NOT NULL DEFAULT NEXTVAL('id_sequence'),
-  lesson_project_id BIGINT NOT NULL,
+  lesson_id BIGINT NOT NULL,
   position INT NOT NULL,
   content TEXT NOT NULL,
   PRIMARY KEY (lesson_project_criterion_id),
-  FOREIGN KEY (lesson_project_id) REFERENCES lesson_project (lesson_project_id)
+  FOREIGN KEY (lesson_id) REFERENCES lesson (lesson_id)
 );
 
-CREATE INDEX lesson_project_criterion_lesson_project_id_index
-ON lesson_project_criterion (lesson_project_id);
+CREATE INDEX lesson_project_criterion_lesson_id_index
+ON lesson_project_criterion (lesson_id);
 
 -- lesson_prerequisite
 CREATE TABLE lesson_prerequisite (
@@ -169,19 +158,19 @@ CREATE TABLE project_completion (
   project_completion_id BIGINT NOT NULL DEFAULT NEXTVAL('id_sequence'),
   course_id BIGINT NOT NULL,
   lesson_id BIGINT NOT NULL,
-  lesson_project_id BIGINT NOT NULL,
+  student_id BIGINT NOT NULL,
   repository_created_at TIMESTAMP NOT NULL,
-  is_approved BOOLEAN NOT NULL,
-  committed BOOLEAN,
+  approved BOOLEAN NOT NULL DEFAULT FALSE,
+  committed BOOLEAN NOT NULL DEFAULT FALSE,
+  instructor_commented_last BOOLEAN NOT NULL DEFAULT FALSE,
   first_committed_at TIMESTAMP,
   approved_at TIMESTAMP,
   assigned_instructor_id BIGINT,
   first_submitted_at TIMESTAMP,
-  instructor_commented_last BOOLEAN,
   last_commented_at TIMESTAMP,
   PRIMARY KEY (project_completion_id),
   FOREIGN KEY (lesson_id) REFERENCES lesson (lesson_id),
-  FOREIGN KEY (lesson_project_id) REFERENCES lesson_project (lesson_project_id),
+  FOREIGN KEY (student_id) REFERENCES app_user (user_id),
   FOREIGN KEY (course_id, assigned_instructor_id)
     REFERENCES course_instructor (course_id, user_id)
 );
@@ -189,26 +178,8 @@ CREATE TABLE project_completion (
 CREATE INDEX project_completion_lesson_id_index
 ON project_completion (lesson_id);
 
-CREATE INDEX project_completion_lesson_project_id_index
-ON project_completion (lesson_project_id);
+CREATE INDEX project_completion_student_id_index
+ON project_completion (student_id);
 
 CREATE INDEX project_completion_course_id_assigned_instructor_id_index
 ON project_completion (course_id, assigned_instructor_id);
-
--- project_completion_student
-CREATE TABLE project_completion_student (
-  project_completion_id BIGINT NOT NULL,
-  course_id BIGINT NOT NULL,
-  user_id BIGINT NOT NULL,
-  PRIMARY KEY (project_completion_id, user_id),
-  FOREIGN KEY (project_completion_id)
-    REFERENCES project_completion (project_completion_id),
-  FOREIGN KEY (course_id, user_id)
-    REFERENCES course_student (course_id, user_id)
-);
-
-CREATE INDEX project_completion_student_project_completion_id_index
-ON project_completion_student (project_completion_id);
-
-CREATE INDEX project_completion_student_course_id_user_id_index
-ON project_completion_student (course_id, user_id);
