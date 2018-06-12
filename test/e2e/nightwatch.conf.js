@@ -2,8 +2,8 @@ const HtmlReporter = require('nightwatch-html-reporter');
 const config = require('../../frontend/config')
 
 const reporter = new HtmlReporter({
-	openBrowser: false,
-	reportsDirectory: __dirname + '/reports'
+  openBrowser: false,
+  reportsDirectory: __dirname + '/reports'
 })
 
 // http://nightwatchjs.org/guide#settings-file
