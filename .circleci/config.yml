@@ -84,7 +84,7 @@ jobs:
 
 workflows:
   version: 2
-  build_deploy_staging:
+  build_test_deploy:
     jobs:
     - build
     - deploy_staging:
@@ -93,9 +93,6 @@ workflows:
         filters:
           branches:
             only: master
-  build_deploy_production:
-    jobs:
-    - build
     - deploy_production:
         requires:
         - build
