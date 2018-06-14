@@ -63,6 +63,15 @@ jobs:
     - store_artifacts:
         path: test/e2e/reports
         destination: e2e-tests
+  deploy_circle:
+    docker:
+    - image: docker:stable-git
+    steps:
+    - checkout
+    - run:
+        name: Print some words with a custom script
+        working_directory: ~/chrisvfritz/msu.lansing.codes
+        command: .circleci/deploy-circle.sh
   deploy_staging:
     docker:
     - image: docker:stable-git
@@ -87,6 +96,12 @@ workflows:
   build_test_deploy:
     jobs:
     - build
+    - deploy_circle:
+        requires:
+        - build
+        filters:
+          branches:
+            only: circleci2
     - deploy_staging:
         requires:
         - build
