@@ -70,8 +70,7 @@ jobs:
     - checkout
     - run:
         name: Print some words with a custom script
-        working_directory: ~/chrisvfritz/msu.lansing.codes
-        command: .circleci/deploy-circle.sh
+        command: ~/chrisvfritz/msu.lansing.codes/.circleci/deploy-circle.sh
   deploy_staging:
     docker:
     - image: docker:stable-git
@@ -97,8 +96,6 @@ workflows:
     jobs:
     - build
     - deploy_circle:
-        requires:
-        - build
         filters:
           branches:
             only: circleci2
