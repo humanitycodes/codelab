@@ -3,8 +3,6 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "private": true,
-  "description": "A Vue.js project",
-  "author": "Chris Fritz <chrisvfritz@gmail.com>",
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",

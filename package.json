@@ -6,6 +6,11 @@
   "author": "Humanity Codes, LLC",
   "homepage": "https://github.com/chrisvfritz/msu.lansing.codes#readme",
   "description": "Learning Management System for MSU Coding Courses",
+  "contributors": [
+    "Chris Fritz",
+    "Erik Gillespie",
+    "Katie Fritz"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chrisvfritz/msu.lansing.codes.git"
