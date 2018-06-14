@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/chrisvfritz/msu.lansing.codes
+    working_directory: ~/msu.lansing.codes
     parallelism: 1
     shell: /bin/bash --login
     # CircleCI 2.0 does not support environment variables that refer to each other
@@ -16,8 +16,8 @@ jobs:
     steps:
     # Setup PATH (can't do in environment section because PATH refers to itself)
     - run:
-        working_directory: ~/chrisvfritz/msu.lansing.codes
-        command: echo -e "export PATH=${PATH}:~/chrisvfritz/msu.lansing.codes/.yarn/bin:~/chrisvfritz/msu.lansing.codes/node_modules/.bin" >> $BASH_ENV
+        working_directory: ~/msu.lansing.codes
+        command: echo -e "export PATH=${PATH}:~/msu.lansing.codes/.yarn/bin:~/msu.lansing.codes/node_modules/.bin" >> $BASH_ENV
     # The following `checkout` command checks out your code to your working directory
     - checkout
     # Restore the dependency cache
@@ -64,13 +64,14 @@ jobs:
         path: test/e2e/reports
         destination: e2e-tests
   deploy_circle:
+    working_directory: ~/msu.lansing.codes
     docker:
     - image: docker:stable-git
     steps:
     - checkout
     - run:
         name: Print some words with a custom script
-        command: ~/chrisvfritz/msu.lansing.codes/.circleci/deploy-circle.sh
+        command: .circleci/deploy-circle.sh
   deploy_staging:
     docker:
     - image: docker:stable-git
@@ -78,7 +79,7 @@ jobs:
     - checkout
     - run:
         name: Deploy master branch to msu-codes-staging on Heroku
-        working_directory: ~/chrisvfritz/msu.lansing.codes
+        working_directory: ~/msu.lansing.codes
         command: .circleci/deploy-staging.sh
   deploy_production:
     docker:
@@ -87,7 +88,7 @@ jobs:
     - checkout
     - run:
         name: Deploy production branch to msu-lansing-codes on Heroku
-        working_directory: ~/chrisvfritz/msu.lansing.codes
+        working_directory: ~/msu.lansing.codes
         command: .circleci/deploy-production.sh
 
 workflows:
