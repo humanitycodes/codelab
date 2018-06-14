@@ -63,24 +63,16 @@ jobs:
     - store_artifacts:
         path: test/e2e/reports
         destination: e2e-tests
-  deploy_circle:
+  deploy_staging:
     working_directory: ~/msu.lansing.codes
     docker:
     - image: docker:stable-git
     steps:
     - checkout
     - run:
-        name: Print some words with a custom script
-        command: .circleci/deploy-circle.sh
-  deploy_staging:
-    docker:
-    - image: docker:stable-git
-    steps:
-    - checkout
-    - run:
         name: Deploy master branch to msu-codes-staging on Heroku
-        working_directory: ~/msu.lansing.codes
         command: .circleci/deploy-staging.sh
+    working_directory: ~/msu.lansing.codes
   deploy_production:
     docker:
     - image: docker:stable-git
@@ -88,7 +80,6 @@ jobs:
     - checkout
     - run:
         name: Deploy production branch to msu-lansing-codes on Heroku
-        working_directory: ~/msu.lansing.codes
         command: .circleci/deploy-production.sh
 
 workflows:
@@ -96,10 +87,6 @@ workflows:
   build_test_deploy:
     jobs:
     - build
-    - deploy_circle:
-        filters:
-          branches:
-            only: circleci2
     - deploy_staging:
         requires:
         - build
