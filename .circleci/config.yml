@@ -68,32 +68,16 @@ jobs:
     docker:
     - image: docker:stable-git
     steps:
-    - add_ssh_keys:
-        fingerprints:
-          # SSH fingerprint for heroku.com
-          # https://devcenter.heroku.com/articles/git-repository-ssh-fingerprints
-          - "8tF0wX2WquK45aGKs/Bh1dKmBXH08vxUe0VCJJWOA/o"
     - checkout
-    - run:
-        name: Open access to heroku.com
-        command: .circleci/setup-heroku.sh
     - run:
         name: Deploy master branch to msu-codes-staging on Heroku
         command: .circleci/deploy-staging.sh
-    working_directory: ~/msu.lansing.codes
   deploy_production:
+    working_directory: ~/msu.lansing.codes
     docker:
     - image: docker:stable-git
     steps:
-    - add_ssh_keys:
-        fingerprints:
-          # SSH fingerprint for heroku.com
-          # https://devcenter.heroku.com/articles/git-repository-ssh-fingerprints
-          - "8tF0wX2WquK45aGKs/Bh1dKmBXH08vxUe0VCJJWOA/o"
     - checkout
-    - run:
-        name: Open access to heroku.com
-        command: .circleci/setup-heroku.sh
     - run:
         name: Deploy production branch to msu-lansing-codes on Heroku
         command: .circleci/deploy-production.sh
