@@ -1,5 +1,5 @@
-\connect codelab_cas;
-SET ROLE codelab_cas_admin;
+\connect codelab;
+SET ROLE codelab_admin;
 
 -- id_sequence
 CREATE SEQUENCE id_sequence AS BIGINT INCREMENT BY 1 START WITH 1;
