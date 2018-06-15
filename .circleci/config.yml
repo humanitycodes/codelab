@@ -74,6 +74,7 @@ jobs:
           # https://devcenter.heroku.com/articles/git-repository-ssh-fingerprints
           - "8tF0wX2WquK45aGKs/Bh1dKmBXH08vxUe0VCJJWOA/o"
     - run:
+        name: Open access to heroku.com
         command: .circleci/setup-heroku.sh
     - checkout
     - run:
@@ -90,6 +91,7 @@ jobs:
           # https://devcenter.heroku.com/articles/git-repository-ssh-fingerprints
           - "8tF0wX2WquK45aGKs/Bh1dKmBXH08vxUe0VCJJWOA/o"
     - run:
+        name: Open access to heroku.com
         command: .circleci/setup-heroku.sh
     - checkout
     - run:
@@ -100,16 +102,11 @@ workflows:
   version: 2
   build_test_deploy:
     jobs:
-    - build
     - deploy_staging:
-        requires:
-        - build
         filters:
           branches:
             only: master
     - deploy_production:
-        requires:
-        - build
         filters:
           branches:
             only: production
