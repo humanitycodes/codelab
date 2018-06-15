@@ -5,6 +5,14 @@ CREATE USER codelab_admin;
 CREATE USER codelab_app;
 REVOKE CREATE ON SCHEMA public FROM codelab_app;
 
+\password codelab_app;
+
+DO language plpgsql $$
+BEGIN
+  RAISE NOTICE 'See README.md about tips for securing your Postgres server.';
+END
+$$;
+
 -- Create database
 CREATE DATABASE codelab OWNER codelab_admin;
 
