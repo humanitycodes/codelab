@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS codelab_cas;
+DROP DATABASE IF EXISTS codelab;
 
-DROP ROLE IF EXISTS codelab_cas_app;
-DROP ROLE IF EXISTS codelab_cas_admin;
+DROP ROLE IF EXISTS codelab_app;
+DROP ROLE IF EXISTS codelab_admin;
