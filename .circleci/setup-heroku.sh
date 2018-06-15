@@ -10,7 +10,7 @@ EOF
 
 chmod 600 ~/.netrc
 
-# Allow SSH connection to Heroku servers without interactive input
+# Allow SSH connection to Heroku.com
 mkdir -p ~/.ssh
 chmod 700 ~/.ssh
 
