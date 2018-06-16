@@ -9,6 +9,16 @@ import firebase from 'firebase-admin'
 import * as firebaseSettings from './firebase-settings'
 import { verifyJWTOptions, verifyJWT } from './helpers/verify-firebase-jwt'
 
+import sequelize from './db/sequelize'
+
+sequelize.authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.')
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err)
+  })
+
 // ------
 // CONFIG
 // ------
