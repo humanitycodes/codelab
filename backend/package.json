@@ -26,7 +26,10 @@
     "joi": "^9.1.0",
     "jsonwebtoken": "^7.1.9",
     "node-rsa": "^0.4.2",
+    "pg": "^7.4.3",
+    "pg-hstore": "^2.3.2",
     "retry-as-promised": "^2.3.2",
+    "sequelize": "^4.37.10",
     "uuid": "^2.0.3"
   },
   "devDependencies": {
