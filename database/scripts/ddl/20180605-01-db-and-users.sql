@@ -7,12 +7,6 @@ REVOKE CREATE ON SCHEMA public FROM codelab_app;
 
 \password codelab_app;
 
-DO language plpgsql $$
-BEGIN
-  RAISE NOTICE 'See README.md about tips for securing your Postgres server.';
-END
-$$;
-
 -- Create database
 CREATE DATABASE codelab OWNER codelab_admin;
 
@@ -20,3 +14,10 @@ CREATE DATABASE codelab OWNER codelab_admin;
 REVOKE CONNECT ON DATABASE codelab FROM public;
 GRANT CONNECT ON DATABASE codelab TO codelab_admin;
 GRANT CONNECT ON DATABASE codelab TO codelab_app;
+
+-- A reminder that DDL can't do everything
+DO language plpgsql $$
+BEGIN
+  RAISE NOTICE 'See README.md about tips for securing your Postgres server.';
+END
+$$;
