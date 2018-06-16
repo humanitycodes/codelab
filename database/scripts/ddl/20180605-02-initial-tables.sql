@@ -19,6 +19,8 @@ CREATE TABLE app_user (
   PRIMARY KEY (user_id)
 );
 
+GRANT ALL ON app_user TO codelab_app;
+
 CREATE INDEX app_user_email_index ON app_user (email);
 
 CREATE INDEX app_user_github_login_index ON app_user (github_login);
@@ -36,6 +38,8 @@ CREATE TABLE lesson (
   PRIMARY KEY (lesson_id)
 );
 
+GRANT ALL ON lesson TO codelab_app;
+
 CREATE INDEX lesson_lesson_slug_index ON lesson (lesson_slug);
 
 -- lesson_learning_objective
@@ -47,6 +51,8 @@ CREATE TABLE lesson_learning_objective (
   PRIMARY KEY (lesson_learning_objective_id),
   FOREIGN KEY (lesson_id) REFERENCES lesson (lesson_id)
 );
+
+GRANT ALL ON lesson_learning_objective TO codelab_app;
 
 CREATE INDEX lesson_learning_objective_lesson_id_index
 ON lesson_learning_objective (lesson_id);
@@ -61,6 +67,8 @@ CREATE TABLE lesson_project_criterion (
   FOREIGN KEY (lesson_id) REFERENCES lesson (lesson_id)
 );
 
+GRANT ALL ON lesson_project_criterion TO codelab_app;
+
 CREATE INDEX lesson_project_criterion_lesson_id_index
 ON lesson_project_criterion (lesson_id);
 
@@ -72,6 +80,8 @@ CREATE TABLE lesson_prerequisite (
   FOREIGN KEY (lesson_id) REFERENCES lesson (lesson_id),
   FOREIGN KEY (prerequisite_lesson_id) REFERENCES lesson (lesson_id)
 );
+
+GRANT ALL ON lesson_prerequisite TO codelab_app;
 
 CREATE INDEX lesson_prerequisite_lesson_id_index
 ON lesson_prerequisite (lesson_id);
@@ -91,6 +101,8 @@ CREATE TABLE course (
   PRIMARY KEY (course_id)
 );
 
+GRANT ALL ON course TO codelab_app;
+
 CREATE INDEX course_course_slug_index ON course (course_slug);
 
 -- course_lesson
@@ -101,6 +113,8 @@ CREATE TABLE course_lesson (
   FOREIGN KEY (course_id) REFERENCES course (course_id),
   FOREIGN KEY (lesson_id) REFERENCES lesson (lesson_id)
 );
+
+GRANT ALL ON course_lesson TO codelab_app;
 
 CREATE INDEX course_lesson_course_id_index ON course_lesson (course_id);
 
@@ -115,6 +129,8 @@ CREATE TABLE course_instructor (
   FOREIGN KEY (user_id) REFERENCES app_user (user_id)
 );
 
+GRANT ALL ON course_instructor TO codelab_app;
+
 CREATE INDEX course_instructor_course_id_index ON course_instructor (course_id);
 
 CREATE INDEX course_instructor_user_id_index ON course_instructor (user_id);
@@ -128,6 +144,8 @@ CREATE TABLE course_student (
   FOREIGN KEY (user_id) REFERENCES app_user (user_id)
 );
 
+GRANT ALL ON course_student TO codelab_app;
+
 CREATE INDEX course_student_course_id_index ON course_student (course_id);
 
 CREATE INDEX course_student_user_id_index ON course_student (user_id);
@@ -139,6 +157,8 @@ CREATE TABLE course_student_pending (
   PRIMARY KEY (course_id, email),
   FOREIGN KEY (course_id) REFERENCES course (course_id)
 );
+
+GRANT ALL ON course_student_pending TO codelab_app;
 
 CREATE INDEX course_student_pending_course_id_index
 ON course_student_pending (course_id);
@@ -167,6 +187,8 @@ CREATE TABLE project_completion (
   FOREIGN KEY (course_id, instructor_user_id)
     REFERENCES course_instructor (course_id, user_id)
 );
+
+GRANT ALL ON project_completion TO codelab_app;
 
 CREATE INDEX project_completion_lesson_id_index
 ON project_completion (lesson_id);

@@ -60,7 +60,7 @@ pg_ctl restart -D <DATAFILE>
 Where `<DATAFILE>` can be found by running the following SQL:
 
 ``` sql
-select name, setting
+select setting
 from pg_settings
 where name = 'data_directory';
 ```
