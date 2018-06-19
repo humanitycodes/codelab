@@ -1,11 +1,14 @@
 import joi from 'joi'
 import boom from 'boom'
 import firebase from 'firebase-admin'
-import uuid from 'uuid'
 
 import { verifyJWT } from '../helpers/verify-firebase-jwt'
 import * as env from '../../env/config'
 import * as userRepo from '../db/user-repo'
+
+import sequelize from '../db/sequelize'
+import readUserByMsuUid from '../db/user/read-by-msu-uid'
+import createUser from '../db/user/create'
 
 const msuOAuth = require('../oauth-providers/msu-oauth')
 const githubOAuth = require('../oauth-providers/github-oauth')
@@ -22,29 +25,40 @@ export const config = [
       }
     },
     handler: function* (request, reply) {
+      let transaction
       try {
-        let msuProfile = yield msuOAuth.requestLoginProfile(request.query.code)
+        transaction = yield sequelize.transaction()
 
-        let [userId, user] = yield userRepo.readUserByMsuUid(msuProfile.id)
+        const msuProfile = yield msuOAuth.requestLoginProfile(request.query.code)
+        let userRecord = yield readUserByMsuUid(msuProfile.id, { transaction })
 
-        if (!user) {
-          userId = uuid.v4()
-          user = yield userRepo.createUser(userId, {
+        if (!userRecord) {
+          userRecord = yield createUser({
+            email: msuProfile.email,
+            fullName: msuProfile.name,
+            msuUid: msuProfile.id
+          }, { transaction })
+
+          yield userRepo.createUser(msuProfile.id, {
             msuUid: msuProfile.id,
             fullName: msuProfile.name,
             email: msuProfile.email
           })
         }
 
-        const jwt = yield firebase.auth().createCustomToken(userId, {
+        const user = userRecord.get()
+        const jwt = yield firebase.auth().createCustomToken(msuProfile.id, {
           profile: user
         })
+
+        yield transaction.commit()
 
         // The Base64 JWT can contain + symbols, so encode it
         const encodedJwt = encodeURIComponent(jwt)
         reply().redirect(`${env.config.serverBaseURL}/sign-in?token=${encodedJwt}`)
       } catch (error) {
         console.error(`Unable to sign MSU user in with code ${request.query.code}. Reason:`, error)
+        yield transaction.rollback()
         reply(boom.unauthorized(error.message))
       }
     }

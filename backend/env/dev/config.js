@@ -17,6 +17,6 @@ module.exports = {
     host: 'localhost',
     port: 5432,
     username: 'codelab_app',
-    password: 'Jenny*^&%#)('
+    password: 'Jenny*^&%#)(' // 'Jenny', then hold Shift and type '8675309'
   }
 }

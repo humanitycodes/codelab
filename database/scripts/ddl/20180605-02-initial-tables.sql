@@ -4,6 +4,8 @@ SET ROLE codelab_admin;
 -- id_sequence
 CREATE SEQUENCE id_sequence AS BIGINT INCREMENT BY 1 START WITH 1;
 
+GRANT USAGE, SELECT ON SEQUENCE id_sequence TO codelab_app;
+
 -- app_user
 CREATE TABLE app_user (
   user_id BIGINT NOT NULL DEFAULT NEXTVAL('id_sequence'),
@@ -16,12 +18,15 @@ CREATE TABLE app_user (
   github_token_type TEXT,
   github_user_id BIGINT,
   msu_uid TEXT,
+  version INTEGER,
   PRIMARY KEY (user_id)
 );
 
 GRANT ALL ON app_user TO codelab_app;
 
 CREATE INDEX app_user_email_index ON app_user (email);
+
+CREATE INDEX app_user_msu_uid_index ON app_user (msu_uid);
 
 CREATE INDEX app_user_github_login_index ON app_user (github_login);
 
@@ -35,6 +40,7 @@ CREATE TABLE lesson (
   notes TEXT,
   project_title TEXT,
   project_hosting TEXT,
+  version INTEGER,
   PRIMARY KEY (lesson_id)
 );
 
@@ -48,6 +54,7 @@ CREATE TABLE lesson_learning_objective (
   lesson_id BIGINT NOT NULL,
   position INT NOT NULL,
   content TEXT NOT NULL,
+  version INTEGER,
   PRIMARY KEY (lesson_learning_objective_id),
   FOREIGN KEY (lesson_id) REFERENCES lesson (lesson_id)
 );
@@ -63,6 +70,7 @@ CREATE TABLE lesson_project_criterion (
   lesson_id BIGINT NOT NULL,
   position INT NOT NULL,
   content TEXT NOT NULL,
+  version INTEGER,
   PRIMARY KEY (lesson_project_criterion_id),
   FOREIGN KEY (lesson_id) REFERENCES lesson (lesson_id)
 );
@@ -76,6 +84,7 @@ ON lesson_project_criterion (lesson_id);
 CREATE TABLE lesson_prerequisite (
   lesson_id BIGINT NOT NULL,
   prerequisite_lesson_id BIGINT NOT NULL,
+  version INTEGER,
   PRIMARY KEY (lesson_id, prerequisite_lesson_id),
   FOREIGN KEY (lesson_id) REFERENCES lesson (lesson_id),
   FOREIGN KEY (prerequisite_lesson_id) REFERENCES lesson (lesson_id)
@@ -98,6 +107,7 @@ CREATE TABLE course (
   start_date TIMESTAMP NOT NULL,
   end_date TIMESTAMP NOT NULL,
   syllabus TEXT NULL,
+  version INTEGER,
   PRIMARY KEY (course_id)
 );
 
@@ -109,6 +119,7 @@ CREATE INDEX course_course_slug_index ON course (course_slug);
 CREATE TABLE course_lesson (
   course_id BIGINT NOT NULL,
   lesson_id BIGINT NOT NULL,
+  version INTEGER,
   PRIMARY KEY (course_id, lesson_id),
   FOREIGN KEY (course_id) REFERENCES course (course_id),
   FOREIGN KEY (lesson_id) REFERENCES lesson (lesson_id)
@@ -124,6 +135,7 @@ CREATE INDEX course_lesson_lesson_id_index ON course_lesson (lesson_id);
 CREATE TABLE course_instructor (
   course_id BIGINT NOT NULL,
   user_id BIGINT NOT NULL,
+  version INTEGER,
   PRIMARY KEY (course_id, user_id),
   FOREIGN KEY (course_id) REFERENCES course (course_id),
   FOREIGN KEY (user_id) REFERENCES app_user (user_id)
@@ -139,6 +151,7 @@ CREATE INDEX course_instructor_user_id_index ON course_instructor (user_id);
 CREATE TABLE course_student (
   course_id BIGINT NOT NULL,
   user_id BIGINT NOT NULL,
+  version INTEGER,
   PRIMARY KEY (course_id, user_id),
   FOREIGN KEY (course_id) REFERENCES course (course_id),
   FOREIGN KEY (user_id) REFERENCES app_user (user_id)
@@ -154,6 +167,7 @@ CREATE INDEX course_student_user_id_index ON course_student (user_id);
 CREATE TABLE course_student_pending (
   course_id BIGINT NOT NULL,
   email TEXT NOT NULL,
+  version INTEGER,
   PRIMARY KEY (course_id, email),
   FOREIGN KEY (course_id) REFERENCES course (course_id)
 );
@@ -181,6 +195,7 @@ CREATE TABLE project_completion (
   instructor_user_id BIGINT,
   first_submitted_at TIMESTAMP,
   last_commented_at TIMESTAMP,
+  version INTEGER,
   PRIMARY KEY (project_completion_id),
   FOREIGN KEY (lesson_id) REFERENCES lesson (lesson_id),
   FOREIGN KEY (student_user_id) REFERENCES app_user (user_id),
