@@ -5,8 +5,7 @@ import * as userPermissionMethods from '@state/auth/users'
 
 export const userGetters = {
   ...mapState({
-    currentUser: state => state.users.currentUser,
-    users: state => state.users.all
+    currentUser: state => state.users.currentUser
   }),
   ...mapGetters([
     'isUserSignedIn',
@@ -14,12 +13,6 @@ export const userGetters = {
   ])
 }
 export { userPermissionMethods }
-
-export const roleGetters = {
-  ...mapState({
-    roles: state => state.roles.all
-  })
-}
 
 export const lessonGetters = {
   ...mapGetters([

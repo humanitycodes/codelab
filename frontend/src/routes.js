@@ -20,8 +20,8 @@ export default [
       isPublic: true
     },
     redirect: to => {
-      const courses = store.getters.courses
       if (store.state.users.currentUser) {
+        const courses = store.getters.courses
         return canReadAllCourses()
         ? '/code-reviews'
           : courses.length === 1

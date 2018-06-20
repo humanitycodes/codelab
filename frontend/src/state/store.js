@@ -5,7 +5,6 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    users: require('./modules/users').default,
-    roles: require('./modules/roles').default
+    users: require('./modules/users').default
   }
 })

@@ -1,16 +1,12 @@
 import joi from 'joi'
 import boom from 'boom'
 
-import { readInstructorsByCourseKey } from '../../db/instructor-repo'
+import { readInstructorsByCourseKey } from '../../../../db/instructor-repo'
 
 export default {
   method: 'GET',
   path: '/courses/{courseKey}/instructors',
   config: {
-    auth: {
-      mode: 'required',
-      strategy: 'jwt'
-    },
     validate: {
       params: joi.object({
         courseKey: joi.string().required()

@@ -7,12 +7,10 @@ let routes = []
 glob.sync(cwd).forEach(file => {
   const routeConfig = require(file).default
   if (Array.isArray(routeConfig)) {
-    routeConfig.forEach(route => {
-      routes.push(route)
-    })
+    routeConfig.forEach(route => routes.push(route))
   } else {
     routes.push(routeConfig)
   }
 })
 
-export const config = routes
+export default routes
