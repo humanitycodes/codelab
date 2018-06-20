@@ -1,10 +1,9 @@
 import joi from 'joi'
 import boom from 'boom'
-import firebase from 'firebase-admin'
 
-import { verifyJWT } from '../helpers/verify-firebase-jwt'
 import * as env from '../../env/config'
 import * as userRepo from '../db/user-repo'
+import signJsonWebToken from '../helpers/jwt/sign-json-web-token'
 
 import sequelize from '../db/sequelize'
 import readUserByMsuUid from '../db/user/read-by-msu-uid'
@@ -13,18 +12,19 @@ import createUser from '../db/user/create'
 const msuOAuth = require('../oauth-providers/msu-oauth')
 const githubOAuth = require('../oauth-providers/github-oauth')
 
-export const config = [
+export default [
   {
     method: 'GET',
     path: `/msu/callback`,
     config: {
+      auth: false,
       validate: {
         query: {
           code: joi.string().required()
         }
       }
     },
-    handler: function* (request, reply) {
+    handler: function* (request, h) {
       let transaction
       try {
         transaction = yield sequelize.transaction()
@@ -38,28 +38,21 @@ export const config = [
             fullName: msuProfile.name,
             msuUid: msuProfile.id
           }, { transaction })
-
-          yield userRepo.createUser(msuProfile.id, {
-            msuUid: msuProfile.id,
-            fullName: msuProfile.name,
-            email: msuProfile.email
-          })
         }
 
         const user = userRecord.get()
-        const jwt = yield firebase.auth().createCustomToken(msuProfile.id, {
-          profile: user
-        })
+        const jwt = signJsonWebToken({ user })
 
         yield transaction.commit()
 
-        // The Base64 JWT can contain + symbols, so encode it
+        // The Base64 JWT can contain + symbols, so encode it because the token
+        // is being sent to the client via the URL as a query parameter
         const encodedJwt = encodeURIComponent(jwt)
-        reply().redirect(`${env.config.serverBaseURL}/sign-in?token=${encodedJwt}`)
+        h.redirect(`${env.config.serverBaseURL}/sign-in?token=${encodedJwt}`)
       } catch (error) {
         console.error(`Unable to sign MSU user in with code ${request.query.code}. Reason:`, error)
         yield transaction.rollback()
-        reply(boom.unauthorized(error.message))
+        return boom.unauthorized(error.message)
       }
     }
   },
@@ -67,6 +60,7 @@ export const config = [
     method: 'GET',
     path: `/github/callback/{returnPath*}`,
     config: {
+      auth: false,
       validate: {
         query: {
           code: joi.string().required(),
@@ -74,9 +68,9 @@ export const config = [
         }
       }
     },
-    handler: function* (request, reply) {
+    handler: function* (request, h) {
       try {
-        const token = yield verifyJWT(null, { auth: { token: decodeURIComponent(request.query.state) } })
+        const token = {}
 
         const [userId, user] = yield userRepo.readUserById(token.uid)
         if (!user) {
@@ -86,10 +80,10 @@ export const config = [
         const githubProfile = yield githubOAuth.requestLoginProfile(request.query.code)
         yield userRepo.saveUserGitHubProfile(userId, githubProfile)
 
-        reply().redirect(`${env.config.serverBaseURL}/${request.params.returnPath}`)
+        h.redirect(`${env.config.serverBaseURL}/${request.params.returnPath}`)
       } catch (error) {
         console.error(`Unable to connect GitHub account with state ${request.query.state}. Reason:`, error)
-        reply(boom.unauthorized(error.message))
+        return boom.unauthorized(error.message)
       }
     }
   }

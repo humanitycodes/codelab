@@ -1,15 +1,11 @@
 import isEqual from 'lodash/isEqual'
-import firebase from 'firebase'
-import db from '@plugins/firebase'
 import jwtDecode from 'jwt-decode'
-import { createFirebaseVM } from './_helpers'
 import requiredGitHubScopes from '@constants/github-scopes'
 import Axios from 'axios'
 
-const syncCache = {}
 export default {
   state: {
-    currentUser: null,
+    currentUser: jwtDecode(localStorage.getItem('auth_token')).user,
     userRoles: null,
     all: []
   },
@@ -20,114 +16,37 @@ export default {
     hasNewGitHubScopes (state) {
       if (!state.currentUser) return false
 
-      if (state.currentUser.profile.github) {
-        const userScopes = state.currentUser.profile.github.scope.split(',')
+      if (state.currentUser.githubScope) {
+        const userScopes = state.currentUser.githubScope.split(',')
         return !isEqual(requiredGitHubScopes.sort(), userScopes.sort())
       }
       return true
     }
   },
   actions: {
-    syncCurrentUser ({ commit, state, rootState }) {
-      if (syncCache.currentUser) return Promise.resolve(rootState)
-      syncCache.currentUser = true
-      return new Promise((resolve, reject) => {
-        let userRef, rolesRef
-        let resolvedCallbacksCount = 0
-        const currentUserCallback = userSnapshot => {
-          firebase.auth().getToken()
-          .then(firebaseTokenResult => {
-            let user = userSnapshot.val()
-            commit('SET_CURRENT_USER', {
-              profile: user,
-              uid: userSnapshot.key,
-              firebaseJwt: firebaseTokenResult.accessToken
-            })
-            Axios.defaults.headers.common['Authorization'] = `Bearer ${firebaseTokenResult.accessToken}`
-            if (resolvedCallbacksCount === 1) resolve(rootState)
-            resolvedCallbacksCount++
-          })
-        }
-        const currentRolesCallback = roleSnapshot => {
-          commit('SET_CURRENT_ROLES', roleSnapshot.val())
-          if (resolvedCallbacksCount === 1) resolve(rootState)
-          resolvedCallbacksCount++
-        }
+    signIn ({ commit }, { token }) {
+      localStorage.setItem('auth_token', token)
+      Axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
-        firebase.auth().onAuthStateChanged(user => {
-          if (user) {
-            userRef = db.ref('users').child(user.uid)
-            userRef.on('value', currentUserCallback)
+      const user = jwtDecode(token).user
+      commit('SET_CURRENT_USER', user)
 
-            rolesRef = db.ref(`roles/${user.uid}`)
-            rolesRef.on('value', currentRolesCallback)
-          } else {
-            commit('SET_CURRENT_USER', null)
-            commit('SET_CURRENT_ROLES', null)
-
-            if (userRef) {
-              userRef.off('value', currentUserCallback)
-              userRef = null
-            }
-            if (rolesRef) {
-              rolesRef.off('value', currentRolesCallback)
-              rolesRef = null
-            }
-            resolve(rootState)
-          }
-        })
-      })
+      return Promise.resolve(user)
     },
-    syncUsers ({ commit, rootState }) {
-      if (syncCache.users) return Promise.resolve(rootState)
-      syncCache.users = true
-      return new Promise((resolve, reject) => {
-        createFirebaseVM({
-          users: db.ref('users')
-        })
-        .then(vm => {
-          commit('SET_USERS', vm.users)
-          resolve(rootState)
-          vm.$watch('users', (newUsers, oldUsers) => {
-            commit('SET_USERS', newUsers)
-          })
-        })
-        .catch(resolve)
-      })
-    },
-    signIn (_, { token, email, password }) {
-      if (token) {
-        return firebase.auth().signInWithCustomToken(token)
-          .then(() => {
-            const profile = jwtDecode(token).claims.profile
-            return Promise.all([
-              firebase.auth().currentUser.updateEmail(profile.email),
-              firebase.auth().currentUser.updateProfile({ displayName: profile.fullName })
-            ])
-          })
-          .catch(console.error)
-      } else {
-        return firebase.auth().signInWithEmailAndPassword(email, password)
-      }
-    },
-    signOut () {
-      return firebase.auth().signOut()
+    signOut ({ commit }) {
+      localStorage.removeItem('auth_token')
+      Axios.defaults.headers.common['Authorization'] = null
+      commit('SET_CURRENT_USER', null)
+      return Promise.resolve()
     },
     updateCurrentUser ({ state }) {
-      return firebase.database().ref('users').child(state.currentUser.uid)
-        .set(state.currentUser.profile)
-        .catch(console.error)
+      // DB TODO: Call /api/users/me to update user fields
+      return Promise.resolve()
     }
   },
   mutations: {
     SET_CURRENT_USER (state, newUser) {
       state.currentUser = newUser
-    },
-    SET_CURRENT_ROLES (state, newRoles) {
-      state.userRoles = newRoles
-    },
-    SET_USERS (state, newUsers) {
-      state.all = newUsers
     }
   }
 }

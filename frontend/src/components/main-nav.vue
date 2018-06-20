@@ -35,15 +35,15 @@
       </li>
       <!-- Katie can manually set this to display: block for now -->
       <li v-if="!isUserSignedIn" v-show="false">
-        <router-link to="/email-sign-in">Sign in with Email</AuthLink>
+        <router-link to="/email-sign-in">Sign in with Email</router-link>
       </li>
       <li v-if="isUserSignedIn && hasNewGitHubScopes">
         <AuthLink provider="github">
-          {{ currentUser.profile.github ? 'Reconnect GitHub' : 'Connect GitHub' }}
+          {{ currentUser.githubLogin ? 'Reconnect GitHub' : 'Connect GitHub' }}
         </AuthLink>
       </li>
       <li v-if="isUserSignedIn">
-        {{ currentUser.profile.fullName }}
+        {{ currentUser.fullName }}
       </li>
       <li v-if="isUserSignedIn">
         <router-link to="/sign-out">

@@ -1,10 +1,19 @@
 import store from '@state/store'
 
-// Check if the current user has at least one of the provided roles.
+// Convert role to property name (e.g. 'instructor' => 'isInstructor')
+export const roleToPropertyName = role => {
+  return 'is' + role.replace(/^./, l => l.toUpperCase())
+}
+
+// Check if the current user has one specific role
+export const hasRole = role => {
+  const currentUser = store.state.users.currentUser
+  if (!currentUser) return false
+  const roleProperty = roleToPropertyName(role)
+  return currentUser.hasOwnProperty(roleProperty) && currentUser[roleProperty]
+}
+
+// Check if the current user has at least one of the provided roles
 export const hasMatchingRole = authorizedRoles => {
-  const { userRoles } = store.state.users
-  if (!userRoles) return false
-  const userRolesList = Object.keys(userRoles)
-    .filter(role => userRoles[role])
-  return userRolesList.some(role => authorizedRoles.includes(role))
+  return authorizedRoles.some(role => hasRole(role))
 }

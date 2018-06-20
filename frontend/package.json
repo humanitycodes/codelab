@@ -20,7 +20,7 @@
     "date-fns": "^1.26.0",
     "firebase": "^3.6.6",
     "highlight.js": "^9.9.0",
-    "jwt-decode": "^2.1.0",
+    "jwt-decode": "^2.2.0",
     "lodash": "^4.17.4",
     "rho": "^0.3.0",
     "vue": "^2.1.10",

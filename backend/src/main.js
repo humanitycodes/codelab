@@ -2,85 +2,60 @@
 // supported in node
 import 'babel-polyfill'
 
-import Hapi from 'hapi'
+import { config } from '../env/config'
+import frontendDir from './constants/frontend-dir'
+import hapi from 'hapi'
+import jwtSecret from '../env/jwt-secret'
 import logRequests from './log-requests'
-import firebase from 'firebase-admin'
-
-import * as firebaseSettings from './firebase-settings'
-import { verifyJWTOptions, verifyJWT } from './helpers/verify-firebase-jwt'
-
 import sequelize from './db/sequelize'
+import validateJsonWebToken from './helpers/jwt/validate-json-web-token'
 
-sequelize.authenticate()
-  .then(() => {
+const start = async () => {
+  try {
+    await sequelize.authenticate()
     console.log('Connection has been established successfully.')
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err)
-  })
+  } catch (error) {
+    console.error('Unable to connect to the database:', error)
+    process.exit(1)
+  }
 
-// ------
-// CONFIG
-// ------
-
-const server = new Hapi.Server({
-  connections: {
+  const server = hapi.server({
+    host: '0.0.0.0',
+    port: process.env.PORT || 4000,
     routes: {
       cors: true,
       files: {
-        // All static assets in frontend/dist
-        relativeTo: require('./constants').frontendDir
+        // All files will be served from the built frontend directory
+        relativeTo: frontendDir
       }
     }
-  }
-})
-
-server.connection({
-  host: '0.0.0.0',
-  port: process.env.PORT || 4000
-})
-
-// -------------------
-// DATABASE SETUP
-// -------------------
-
-firebase.initializeApp(firebaseSettings.appConfig)
-
-// -------------------
-// PLUGIN REGISTRATION
-// -------------------
-
-const plugins = [
-  require('inert'), // For serving static assets
-  require('hapi-auth-jwt2'), // For JWT authentication
-  require('hapi-plugin-co') // For generator-style handlers
-]
-
-// Enforce HTTPS when in production
-if (process.env.NODE_ENV === 'production') {
-  plugins.push(require('hapi-require-https'))
-}
-
-server.register(plugins, error => {
-  if (error) throw error
-
-  // --------------
-  // AUTHENTICATION
-  // --------------
-
-  // https://github.com/dwyl/hapi-auth-jwt2
-  // https://firebase.google.com/docs/auth/server/verify-id-tokens
-  // http://catchcoder.com/questions/lpg64/firebase-custom-token-authentication-firebase-version-3
-
-  server.auth.strategy('jwt', 'jwt', {
-    key: firebaseSettings.secretOrPublicKey,
-    verifyOptions: verifyJWTOptions,
-    verifyFunc: verifyJWT
   })
 
-  // ------------------------
-  // 3RD-PARTY SERVICE ROUTES
-  // ------------------------
+  // Enforce HTTPS in production
+  if (process.env.NODE_ENV === 'production') {
+    await server.register(require('hapi-require-https'))
+  }
+
+  // Serve static files using inert
+  await server.register(require('inert'))
+
+  server.route({
+    method: 'GET',
+    path: '/static/{file*}',
+    handler: {
+      directory: {
+        path: 'static'
+      }
+    }
+  })
+
+  server.route({
+    method: 'GET',
+    path: '/{route*}',
+    handler: {
+      file: 'index.html'
+    }
+  })
 
   // Let's Encrypt Verification
   server.route({
@@ -91,13 +66,26 @@ server.register(plugins, error => {
     }
   })
 
-  // ----------
-  // API ROUTES
-  // ----------
+  // Use JWT authentication for all routes by default
+  await server.register(require('hapi-auth-jwt2'))
 
+  server.auth.strategy('jwt', 'jwt', {
+    key: jwtSecret,
+    validate: validateJsonWebToken,
+    verifyOptions: {
+      ignoreExpiration: true
+    }
+  })
+
+  server.auth.default('jwt')
+
+  // Allow using generators (and yield keyword) as handler functions
+  await server.register(require('hapi-plugin-co'))
+
+  // Add all API and third-party authentication routes
   const routeConfigs = {
-    '/api': require('./routes/api-routes').config,
-    '/auth': require('./routes/auth-routes').config
+    '/api': require('./routes/api-routes').default,
+    '/auth': require('./routes/auth-routes').default
   }
 
   Object.entries(routeConfigs).forEach(([baseUrl, configs]) => {
@@ -105,45 +93,20 @@ server.register(plugins, error => {
     server.route(configs)
   })
 
-  // ----------
-  // SPA ROUTES
-  // ----------
-  // Redirect all unmatched routes to the frontend
+  // Log all requests
+  if (config.logRequests) {
+    logRequests()
+  }
 
-  server.route({
-    method: 'GET',
-    path: '/static/{file*}',
-    config: {
-      handler: {
-        directory: {
-          path: './static'
-        }
-      }
-    }
-  })
+  // Start serving
+  try {
+    await server.start()
+  } catch (error) {
+    console.error('Unable to start server:', error)
+    process.exit(1)
+  }
 
-  server.route({
-    method: '*',
-    path: '/{route*}',
-    config: {
-      handler: {
-        file: 'index.html'
-      }
-    }
-  })
+  console.log('Server running at:', server.info.uri)
+}
 
-  // -------
-  // LOGGING
-  // -------
-
-  logRequests()
-
-  // -----
-  // START
-  // -----
-
-  server.start(error => {
-    if (error) throw error
-    console.log('Server running at:', server.info.uri)
-  })
-})
+start()
