@@ -24,6 +24,12 @@ export default {
     }
   },
   actions: {
+    attemptAutoSignIn ({ dispatch }) {
+      const token = localStorage.getItem('auth_token')
+      return token
+        ? dispatch('signIn', { token })
+        : dispatch('signOut')
+    },
     signIn ({ commit }, { token }) {
       localStorage.setItem('auth_token', token)
       Axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
@@ -41,7 +47,7 @@ export default {
     },
     updateCurrentUser ({ state }) {
       // DB TODO: Call /api/users/me to update user fields
-      return Promise.resolve()
+      return Promise.resolve(state)
     }
   },
   mutations: {

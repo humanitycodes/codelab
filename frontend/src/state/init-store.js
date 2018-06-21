@@ -5,6 +5,10 @@ let storeInitialized = false
 export default () => {
   if (storeInitialized) return Promise.resolve(store)
   storeInitialized = true
-  const additionalFetches = []
-  return Promise.all(additionalFetches).then(() => store)
+  return store.dispatch('attemptAutoSignIn').then(currentUser => {
+    if (!currentUser) return Promise.resolve(store)
+    return Promise.all([
+      store.dispatch('fetchAllCourses')
+    ]).then(() => store)
+  })
 }

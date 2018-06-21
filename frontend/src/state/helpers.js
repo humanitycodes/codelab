@@ -40,12 +40,12 @@ export { lessonPermissionMethods }
 
 export const courseGetters = {
   ...mapGetters([
-    'courses',
     'currentCourse',
     'showCurrentCoursePath',
     'editCurrentCoursePath'
   ]),
   ...mapState({
+    courses: state => state.courses.all,
     canUpdateCurrentCourse (state, getters) {
       if (!getters.currentCourse) return false
       return coursePermissionMethods.canUpdateCourse({
