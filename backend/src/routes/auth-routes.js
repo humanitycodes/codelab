@@ -48,7 +48,7 @@ export default [
         // The Base64 JWT can contain + symbols, so encode it because the token
         // is being sent to the client via the URL as a query parameter
         const encodedJwt = encodeURIComponent(jwt)
-        h.redirect(`${env.config.serverBaseURL}/sign-in?token=${encodedJwt}`)
+        return h.redirect(`${env.config.serverBaseURL}/sign-in?token=${encodedJwt}`)
       } catch (error) {
         console.error(`Unable to sign MSU user in with code ${request.query.code}. Reason:`, error)
         yield transaction.rollback()

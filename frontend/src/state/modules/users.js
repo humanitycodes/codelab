@@ -5,7 +5,7 @@ import Axios from 'axios'
 
 export default {
   state: {
-    currentUser: jwtDecode(localStorage.getItem('auth_token')).user,
+    currentUser: null,
     userRoles: null,
     all: []
   },
