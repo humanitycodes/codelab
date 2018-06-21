@@ -21,7 +21,7 @@ export default [
     },
     redirect: to => {
       if (store.state.users.currentUser) {
-        const courses = store.getters.courses
+        const courses = store.state.courses.all
         return canReadAllCourses()
         ? '/code-reviews'
           : courses.length === 1
