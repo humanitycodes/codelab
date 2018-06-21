@@ -3,9 +3,7 @@ import store from '@state/store'
 
 export default {
   beforeRouteEnter (to, from, next) {
-    store.dispatch('signOut').then(() => {
-      window.location = '/'
-    })
+    store.dispatch('signOut').then(() => next('/'))
   }
 }
 </script>
