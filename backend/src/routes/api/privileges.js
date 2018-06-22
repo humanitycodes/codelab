@@ -1,6 +1,6 @@
 import boom from 'boom'
 import { readUserById } from '../../db/user-repo'
-import { getUserProfile } from '../../helpers/github-client'
+import getGitHubUserProfile from '../../services/github/get-user-profile'
 
 export default {
   method: 'GET',
@@ -24,7 +24,7 @@ export default {
       }
 
       if (user.github) {
-        const githubProfile = yield getUserProfile(user.github.token)
+        const githubProfile = yield getGitHubUserProfile(user.github.token)
         privileges.createPrivateRepo = githubProfile.plan.private_repos > 0
       }
 

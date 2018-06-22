@@ -1,7 +1,14 @@
 import joi from 'joi'
 import boom from 'boom'
 
-import * as ghclient from '../../helpers/github-client'
+import acceptGitHubInvitation from '../../services/github/accept-invitation'
+import createGitHubRepository from '../../services/github/create-repository'
+import createGitHubWebhooks from '../../services/github/create-webhooks'
+import deleteGitHubRepository from '../../services/github/delete-repository'
+import getGitHubRepository from '../../services/github/get-repository'
+import getGitHubRepositoryInvitations from '../../services/github/get-repository-invitations'
+import inviteGitHubCollaborator from '../../services/github/invite-collaborator'
+
 import { readUserById } from '../../db/user-repo'
 import repoName from '../../helpers/repo-name'
 import {
@@ -13,15 +20,15 @@ import { readInstructorsByCourseKey } from '../../db/instructor-repo'
 
 function* getOrCreateRepository (githubToken, { owner, repo }) {
   try {
-    return yield ghclient.getRepository(githubToken, { owner, repo })
+    return yield getGitHubRepository(githubToken, { owner, repo })
   } catch (notfound) {
-    return yield ghclient.createRepository(githubToken, { name: repo })
+    return yield createGitHubRepository(githubToken, { name: repo })
   }
 }
 
 function inviteCollaborators (githubToken, { owner, repo, invitees }) {
   const invitationRequests = invitees.map(invitee => {
-    return ghclient.inviteCollaborator(githubToken, { owner, repo, invitee })
+    return inviteGitHubCollaborator(githubToken, { owner, repo, invitee })
   })
   return Promise.all(invitationRequests)
 }
@@ -32,7 +39,7 @@ function acceptInvitations ({ invitations, inviteeTokens }) {
     const inviteeToken = inviteeTokens[invitation.invitee.login]
     const invitationId = invitation.id
     if (!inviteeToken || !invitationId) return
-    acceptanceRequests.push(ghclient.acceptInvitation(inviteeToken, { invitationId }))
+    acceptanceRequests.push(acceptGitHubInvitation(inviteeToken, { invitationId }))
   })
   return Promise.all(acceptanceRequests)
 }
@@ -66,7 +73,7 @@ function* addInstructorsAsCollaborators (githubToken, { courseKey, owner, repo }
 
   yield inviteCollaborators(githubToken, { owner, repo, invitees })
   .then(() => {
-    return ghclient.getRepositoryInvitations(githubToken, { owner, repo })
+    return getGitHubRepositoryInvitations(githubToken, { owner, repo })
   })
   .then(invitations => {
     return acceptInvitations({ invitations, inviteeTokens })
@@ -117,7 +124,7 @@ export default [
         let projectCompletion = { uid, courseKey, lessonKey, projectKey }
         projectCompletion.repositoryCreatedAt = new Date(repository.created_at).getTime()
 
-        yield ghclient.createWebhooks(user.github.token, { owner, repo })
+        yield createGitHubWebhooks(user.github.token, { owner, repo })
         yield createProjectCompletion(projectCompletion)
 
         reply({ repo: { name: repo } })
@@ -163,7 +170,7 @@ export default [
         }
 
         try {
-          yield ghclient.deleteRepository(user.github.token, ownerAndRepo)
+          yield deleteGitHubRepository(user.github.token, ownerAndRepo)
         } catch (notfound) {
           console.warn(
             'Unable to delete GitHub repository:',
