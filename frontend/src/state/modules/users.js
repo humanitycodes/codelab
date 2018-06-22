@@ -6,7 +6,6 @@ import Axios from 'axios'
 export default {
   state: {
     currentUser: null,
-    userRoles: null,
     all: []
   },
   getters: {

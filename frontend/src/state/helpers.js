@@ -50,19 +50,19 @@ export const courseGetters = {
     canUpdateCurrentCourse (state, getters) {
       if (!getters.currentCourse) return false
       return coursePermissionMethods.canUpdateCourse({
-        courseKey: getters.currentCourse['.key']
+        courseId: getters.currentCourse.courseId
       })
     },
     shouldUpdateCurrentCourse (state, getters) {
       if (!getters.currentCourse) return false
       return coursePermissionMethods.shouldUpdateCourse({
-        courseKey: getters.currentCourse['.key']
+        courseId: getters.currentCourse.courseId
       })
     },
     canDestroyCurrentCourse (state, getters) {
       if (!getters.currentCourse) return false
       return coursePermissionMethods.canDestroyCourse({
-        courseKey: getters.currentCourse['.key']
+        courseId: getters.currentCourse.courseId
       })
     }
   })
