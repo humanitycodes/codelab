@@ -13,13 +13,13 @@ export const canCreateCourse = () => {
 // READ
 // ----
 
-export const canReadCourse = ({ courseKey }) => {
-  return doesCourseExist(courseKey) &&
+export const canReadCourse = ({ courseId }) => {
+  return doesCourseExist(courseId) &&
     (
       hasMatchingRole(['instructor']) ||
       (
-        isEnrolledInCourse(courseKey) &&
-        courseHasBegun(courseKey)
+        isEnrolledInCourse(courseId) &&
+        courseHasBegun(courseId)
       )
     )
 }
@@ -32,24 +32,24 @@ export const canReadAllCourses = () => {
 // UPDATE
 // ------
 
-export const canUpdateCourse = ({ courseKey }) => {
-  return doesCourseExist(courseKey) &&
+export const canUpdateCourse = ({ courseId }) => {
+  return doesCourseExist(courseId) &&
     hasMatchingRole(['instructor'])
 }
 
-export const shouldUpdateCourse = ({ courseKey }) => {
-  return doesCourseExist(courseKey) &&
+export const shouldUpdateCourse = ({ courseId }) => {
+  return doesCourseExist(courseId) &&
     (
       hasMatchingRole(['instructor']) &&
       !(
-        courseHasEnrolledStudents(courseKey) &&
-        courseHasEnded(courseKey)
+        courseHasEnrolledStudents(courseId) &&
+        courseHasEnded(courseId)
       )
     )
 }
 
-export const lessonCanBeAddedToCourse = ({ courseKey, lessonKey }) => {
-  const course = findCourse(courseKey)
+export const lessonCanBeAddedToCourse = ({ courseId, lessonKey }) => {
+  const course = findCourse(courseId)
   const lesson = findLesson(lessonKey)
   return course &&
     (
@@ -68,7 +68,7 @@ export const lessonCanBeAddedToCourse = ({ courseKey, lessonKey }) => {
 // DESTROY
 // -------
 
-export const canDestroyCourse = ({ courseKey }) => {
+export const canDestroyCourse = ({ courseId }) => {
   // To prevents instructors from destroying a course when they shouldn't,
   // we're just goint go make this an admin-only change for now.
   return false
@@ -78,10 +78,8 @@ export const canDestroyCourse = ({ courseKey }) => {
 // PRIVATE HELPERS
 // ---------------
 
-function findCourse (courseKey) {
-  return store.getters.courses.find(course => {
-    return course['.key'] === courseKey
-  })
+function findCourse (courseId) {
+  return store.state.courses.all.find(course => course.courseId === courseId)
 }
 
 function findLesson (lessonKey) {
@@ -90,33 +88,28 @@ function findLesson (lessonKey) {
   })
 }
 
-function isEnrolledInCourse (courseKey) {
-  const course = findCourse(courseKey)
-  if (!course || !course.studentKeys) return false
-  const currentUserKey = store.state.users.currentUser.uid
-  return course.studentKeys.includes(currentUserKey)
+function isEnrolledInCourse (courseId) {
+  const course = findCourse(courseId)
+  if (!course || !course.students) return false
+  const currentUserId = store.state.users.currentUser.userId
+  return course.students.some(user => user.userId === currentUserId)
 }
 
-function courseHasEnrolledStudents (courseKey) {
-  const course = findCourse(courseKey)
-  if (!course.studentKeys) return false
-  const studentKeys = Object.keys(course.studentKeys)
-  return (
-    studentKeys.length &&
-    studentKeys.some(key => course.studentKeys.includes(key))
-  )
+function courseHasEnrolledStudents (courseId) {
+  const course = findCourse(courseId)
+  return course.students && course.students.length > 0
 }
 
-function courseHasBegun (courseKey) {
-  const course = findCourse(courseKey)
+function courseHasBegun (courseId) {
+  const course = findCourse(courseId)
   return course.startDate <= Date.now()
 }
 
-function courseHasEnded (courseKey) {
-  const course = findCourse(courseKey)
+function courseHasEnded (courseId) {
+  const course = findCourse(courseId)
   return course.endDate <= Date.now()
 }
 
-function doesCourseExist (courseKey) {
-  return !!findCourse(courseKey)
+function doesCourseExist (courseId) {
+  return !!findCourse(courseId)
 }

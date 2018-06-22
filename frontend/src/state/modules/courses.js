@@ -21,7 +21,7 @@ export default {
   },
   mutations: {
     SET_ALL_COURSES (state, newCourses) {
-      state.courses = newCourses
+      state.all = newCourses
     }
   }
 }

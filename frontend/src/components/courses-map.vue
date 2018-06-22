@@ -1,9 +1,13 @@
 <template>
   <div>
     <ul>
-      <li v-for="course in courses" v-if="canReadCourse({ courseKey: course['.key'] })">
-        <router-link v-if="canUpdateCourse({ courseKey: course['.key']})"
-          :to="'/courses/' + course['.key'] + '/edit'"
+      <li
+        v-for="course in courses"
+        :key="course.courseId"
+        v-if="canReadCourse({ courseId: course.courseId })"
+      >
+        <router-link v-if="canUpdateCourse({ courseId: course.courseId })"
+          :to="'/courses/' + course.courseSlug + '/edit'"
         >
           <button
             class="inline"
@@ -12,9 +16,9 @@
           >Edit</button>
         </router-link>
         <router-link
-          :to="'/courses/' + course['.key']"
+          :to="'/courses/' + course.courseSlug"
         >
-          {{ course['.key'] }}
+          {{ course.courseSlug }}
           <span v-if="course.title">
             ({{ course.title }})
           </span>
@@ -38,8 +42,8 @@ export default {
   methods: {
     ...coursePermissionMethods,
     isInstructorInCourse (course) {
-      const currentUserKey = store.state.users.currentUser.uid
-      return course.instructorKeys.indexOf(currentUserKey) !== -1
+      const currentUserId = store.state.users.currentUser.userId
+      return course.instructors.some(user => user.userId === currentUserId)
     },
     titleForCourseEditButton (course) {
       return this.isInstructorInCourse(course)
