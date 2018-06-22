@@ -21,6 +21,11 @@ export default {
         return !isEqual(requiredGitHubScopes.sort(), userScopes.sort())
       }
       return true
+    },
+    jsonWebToken (state) {
+      return state.currentUser
+        ? localStorage.getItem('auth_token')
+        : null
     }
   },
   actions: {

@@ -23,7 +23,7 @@ export default [
       if (store.state.users.currentUser) {
         const courses = store.state.courses.all
         return canReadAllCourses()
-        ? '/code-reviews'
+          ? '/code-reviews'
           : courses.length === 1
             ? '/courses/' + courses[0]['.key']
             : '/courses'

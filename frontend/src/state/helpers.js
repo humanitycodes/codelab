@@ -9,7 +9,8 @@ export const userGetters = {
   }),
   ...mapGetters([
     'isUserSignedIn',
-    'hasNewGitHubScopes'
+    'hasNewGitHubScopes',
+    'jsonWebToken'
   ])
 }
 export { userPermissionMethods }
