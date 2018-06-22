@@ -14,7 +14,8 @@ import updateUser from '../db/user/update'
 import translateUserFromRecord from '../translators/user/from-record'
 
 import requestMsuUserProfile from '../services/msu/request-user-profile'
-import requestGitHubUserProfile from '../services/github/request-user-profile'
+import getGitHubAccessToken from '../services/github/get-access-token'
+import getGitHubUserProfile from '../services/github/get-user-profile'
 
 export default [
   {
@@ -85,21 +86,23 @@ export default [
         const authUser = decodeJsonWebToken(jwt).user
 
         // Lookup the user from the DB and GitHub
-        let [userRecord, githubProfile] = yield [
+        let [userRecord, tokenBody] = yield [
           readUserById(authUser.userId),
-          requestGitHubUserProfile(request.query.code)
+          getGitHubAccessToken(request.query.code)
         ]
 
         if (!userRecord) {
           throw new Error(`User ${authUser.userId} (${authUser.fullName}) not found.`)
         }
 
+        const githubProfile = yield getGitHubUserProfile(tokenBody.access_token)
+
         // Update the GitHub profile fields
+        userRecord.githubUserId = githubProfile.id
         userRecord.githubLogin = githubProfile.login
-        userRecord.githubScope = githubProfile.scope
-        userRecord.githubToken = githubProfile.token
-        userRecord.githubTokenType = githubProfile.tokenType
-        userRecord.githubUserId = githubProfile.userId
+        userRecord.githubScope = tokenBody.scope
+        userRecord.githubToken = tokenBody.access_token
+        userRecord.githubTokenType = tokenBody.token_type
 
         yield updateUser(userRecord)
 
