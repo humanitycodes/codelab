@@ -13,7 +13,7 @@ export default {
         return Promise.resolve(courses)
       })
       .catch(error => {
-        console.log(error)
+        console.log('Error fetching all courses:', error)
         commit('SET_ALL_COURSES', [])
         return Promise.reject(error)
       })

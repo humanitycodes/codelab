@@ -1,7 +1,7 @@
 import Course from './index'
 import User from '../user'
 
-export default userId => {
+export default () => {
   return Course.findAll({
     include: [
       {
@@ -10,10 +10,7 @@ export default userId => {
       },
       {
         model: User,
-        as: 'students',
-        where: {
-          userId
-        }
+        as: 'students'
       }
     ]
   })
