@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { config } from '../../env/config'
+import { config } from '../../../env/config'
 
-import { getUserProfile } from '../helpers/github-client'
+import { getUserProfile } from '../../helpers/github-client'
 
-export async function requestLoginProfile (code) {
+export default async code => {
   let githubProfile = {}
   return new Promise((resolve, reject) => {
     axios({
