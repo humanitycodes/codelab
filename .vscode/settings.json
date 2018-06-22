@@ -1,4 +1,19 @@
 {
   "cSpell.enabled": true,
-  "eslint.enable": true
+  "eslint.enable": true,
+  "eslint.options": {
+    "extensions": [
+      ".js",
+      ".vue"
+    ]
+  },
+  "eslint.packageManager": "yarn",
+  "eslint.validate": [
+    "javascript",
+    "vue"
+  ],
+  "eslint.workingDirectories": [
+    "backend",
+    "frontend"
+  ]
 }
