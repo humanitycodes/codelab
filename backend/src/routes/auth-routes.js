@@ -13,8 +13,8 @@ import updateUser from '../db/user/update'
 
 import translateUserFromRecord from '../translators/user/from-record'
 
-const msuOAuth = require('../oauth-providers/msu-oauth')
-const githubOAuth = require('../oauth-providers/github-oauth')
+import requestMsuUserProfile from '../services/msu/request-user-profile'
+import requestGitHubUserProfile from '../services/github/request-user-profile'
 
 export default [
   {
@@ -34,7 +34,7 @@ export default [
         transaction = yield sequelize.transaction()
 
         // Lookup the user from MSU and then from the DB
-        const msuProfile = yield msuOAuth.requestLoginProfile(request.query.code)
+        const msuProfile = yield requestMsuUserProfile(request.query.code)
         let userRecord = yield readUserByMsuUid(msuProfile.id, { transaction })
 
         if (!userRecord) {
@@ -87,7 +87,7 @@ export default [
         // Lookup the user from the DB and GitHub
         let [userRecord, githubProfile] = yield [
           readUserById(authUser.userId),
-          githubOAuth.requestLoginProfile(request.query.code)
+          requestGitHubUserProfile(request.query.code)
         ]
 
         if (!userRecord) {

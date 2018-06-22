@@ -1,8 +1,8 @@
 import axios from 'axios'
 import querystring from 'querystring'
-import { config } from '../../env/config'
+import { config } from '../../../env/config'
 
-export async function requestLoginProfile (code, callback) {
+export default async code => {
   let msuProfile = {
     provider: 'msu'
   }
