@@ -4,8 +4,8 @@
 
 <script>
 import env from '@env'
-import store from '@state/store'
 import requiredGitHubScopes from '@constants/github-scopes'
+import { userGetters } from '@state/helpers'
 
 const githubScopesPath = encodeURIComponent(requiredGitHubScopes.join(' '))
 
@@ -20,16 +20,15 @@ export default {
     }
   },
   computed: {
+    ...userGetters,
     url: function () {
       switch (this.provider) {
         case 'github':
-          const currentUser = store.state.users.currentUser
-          const firebaseJwt = currentUser ? encodeURIComponent(currentUser.firebaseJwt) : ''
           return [
             'https://github.com/login/oauth/authorize',
             '?scope=', githubScopesPath,
             '&client_id=', env.githubAuthClientId,
-            '&state=', firebaseJwt,
+            '&state=', encodeURIComponent(this.jsonWebToken || ''),
             '&redirect_uri=', env.githubAuthRedirectURL + this.$route.fullPath
           ].join('')
         case 'msu':
