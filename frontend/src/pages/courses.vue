@@ -16,8 +16,9 @@ export default {
     Layout, CoursesMap
   },
   computed: courseGetters,
-  methods: {
-    ...coursePermissionMethods
+  methods: coursePermissionMethods,
+  created () {
+    this.$store.dispatch('getAllCourses')
   }
 }
 </script>
