@@ -8,7 +8,7 @@ export default () => {
   return store.dispatch('attemptAutoSignIn').then(currentUser => {
     if (!currentUser) return Promise.resolve(store)
     return Promise.all([
-      store.dispatch('fetchAllCourses')
+      store.dispatch('getAllCourses')
     ]).then(() => store)
   })
 }

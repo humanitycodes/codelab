@@ -36,17 +36,18 @@ module.exports = {
     extensions: ['', '.js', '.json', '.vue'],
     fallback: [path.join(__dirname, '../node_modules')],
     alias: {
-      '@src': path.resolve(__dirname, '../src'),
-      '@config': path.resolve(__dirname, '../config'),
+      '@api': path.resolve(__dirname, '../src/api'),
       '@assets': path.resolve(__dirname, '../src/assets'),
       '@components': path.resolve(__dirname, '../src/components'),
-      '@pages': path.resolve(__dirname, '../src/pages'),
-      '@layouts': path.resolve(__dirname, '../src/layouts'),
-      '@plugins': path.resolve(__dirname, '../src/plugins'),
-      '@state': path.resolve(__dirname, '../src/state'),
-      '@helpers': path.resolve(__dirname, '../src/helpers'),
+      '@config': path.resolve(__dirname, '../config'),
       '@constants': path.resolve(__dirname, '../src/constants'),
-      '@env': chooseEnvironmentFile()
+      '@env': chooseEnvironmentFile(),
+      '@helpers': path.resolve(__dirname, '../src/helpers'),
+      '@layouts': path.resolve(__dirname, '../src/layouts'),
+      '@pages': path.resolve(__dirname, '../src/pages'),
+      '@plugins': path.resolve(__dirname, '../src/plugins'),
+      '@src': path.resolve(__dirname, '../src'),
+      '@state': path.resolve(__dirname, '../src/state')
     }
   },
   resolveLoader: {
