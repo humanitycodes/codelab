@@ -1,7 +1,10 @@
 <template>
   <Layout>
     <h1>Unique Course Key</h1>
-    <p class="warning">This is the unique key for the course that will appear in URLs and project repos. <strong>It cannot be changed once the course is created.</strong></p>
+    <p class="warning">
+      This is the unique key for the course that will appear in URLs and project
+      repos. <strong>It cannot be changed once the course is created.</strong>
+    </p>
     <div class="key-field">
       <select
         v-model="prefix"
@@ -9,7 +12,11 @@
         name="course-prefix"
         aria-label="Department abbreviation"
       >
-        <option v-for="prefixOption in prefixOptions" :value="prefixOption">
+        <option
+          v-for="prefixOption in prefixOptions"
+          :key="prefixOption"
+          :value="prefixOption"
+        >
           {{ prefixOption }}
         </option>
       </select>
@@ -28,7 +35,11 @@
         name="course-semester"
         aria-label="Semester / Season"
       >
-        <option v-for="(code, season) in semesterOptions" :value="code">
+        <option
+          v-for="(code, season) in semesterOptions"
+          :key="code"
+          :value="code"
+        >
           {{ season }}
         </option>
       </select>
