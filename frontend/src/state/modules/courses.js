@@ -1,27 +1,22 @@
-import Axios from 'axios'
+import getCourses from '@api/courses/get-courses'
 
 export default {
   state: {
     all: []
   },
   actions: {
-    fetchAllCourses ({ commit }) {
-      Axios.get('/api/courses')
-      .then(response => {
-        const courses = response.data
-        commit('SET_ALL_COURSES', courses)
-        return Promise.resolve(courses)
-      })
+    getAllCourses ({ commit }) {
+      getCourses()
+      .then(courses => commit('SET_ALL_COURSES', courses))
       .catch(error => {
-        console.log('Error fetching all courses:', error)
         commit('SET_ALL_COURSES', [])
         return Promise.reject(error)
       })
     }
   },
   mutations: {
-    SET_ALL_COURSES (state, newCourses) {
-      state.all = newCourses
+    SET_ALL_COURSES (state, courses) {
+      state.all = courses
     }
   }
 }
