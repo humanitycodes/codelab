@@ -9,6 +9,7 @@ import jwtSecret from '../env/jwt-secret'
 import logRequests from './log-requests'
 import sequelize from './db/sequelize'
 import validateJsonWebToken from './helpers/jwt/validate-json-web-token'
+import gatherRoutesForDir from './routes/gather-routes-for-dir'
 
 const start = async () => {
   try {
@@ -84,8 +85,8 @@ const start = async () => {
 
   // Add all API and third-party authentication routes
   const routeConfigs = {
-    '/api': require('./routes/api-routes').default,
-    '/auth': require('./routes/auth-routes').default
+    '/api': gatherRoutesForDir('api'),
+    '/auth': gatherRoutesForDir('auth')
   }
 
   Object.entries(routeConfigs).forEach(([baseUrl, configs]) => {
