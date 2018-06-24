@@ -34,9 +34,9 @@ CREATE INDEX app_user_github_login_index ON app_user (github_login);
 CREATE TABLE lesson (
   lesson_id BIGINT NOT NULL DEFAULT NEXTVAL('id_sequence'),
   lesson_slug TEXT NOT NULL UNIQUE,
-  title TEXT NOT NULL,
-  estimated_hours INT NOT NULL,
-  content TEXT NOT NULL,
+  title TEXT,
+  estimated_hours INT,
+  content TEXT,
   notes TEXT,
   project_title TEXT,
   project_hosting TEXT,
@@ -102,10 +102,10 @@ ON lesson_prerequisite (prerequisite_lesson_id);
 CREATE TABLE course (
   course_id BIGINT NOT NULL DEFAULT NEXTVAL('id_sequence'),
   course_slug TEXT NOT NULL UNIQUE,
-  title TEXT NOT NULL,
-  credits INT NOT NULL,
-  start_date TIMESTAMP NOT NULL,
-  end_date TIMESTAMP NOT NULL,
+  title TEXT,
+  credits INT,
+  start_date TIMESTAMP,
+  end_date TIMESTAMP,
   syllabus TEXT NULL,
   version INTEGER,
   PRIMARY KEY (course_id)
