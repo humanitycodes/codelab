@@ -18,6 +18,6 @@ GRANT CONNECT ON DATABASE codelab TO codelab_app;
 -- A reminder that DDL can't do everything
 DO language plpgsql $$
 BEGIN
-  RAISE NOTICE 'See README.md about tips for securing your Postgres server.';
+  RAISE NOTICE 'See README.md for tips about securing your Postgres server.';
 END
 $$;

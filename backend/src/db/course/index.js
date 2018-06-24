@@ -20,22 +20,22 @@ const Course = sequelize.define('course', {
   title: {
     field: 'title',
     type: DataTypes.TEXT,
-    allowNull: false
+    allowNull: true
   },
   credits: {
     field: 'credits',
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: true
   },
   startDate: {
     field: 'start_date',
     type: DataTypes.DATE,
-    allowNull: false
+    allowNull: true
   },
   endDate: {
     field: 'end_date',
     type: DataTypes.DATE,
-    allowNull: false
+    allowNull: true
   },
   syllabus: {
     field: 'syllabus',
