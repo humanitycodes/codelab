@@ -7,7 +7,7 @@
         v-if="canReadCourse({ courseId: course.courseId })"
       >
         <router-link v-if="canUpdateCourse({ courseId: course.courseId })"
-          :to="'/courses/' + course.courseSlug + '/edit'"
+          :to="'/courses/' + course.courseKey + '/edit'"
         >
           <button
             class="inline"
@@ -16,9 +16,9 @@
           >Edit</button>
         </router-link>
         <router-link
-          :to="'/courses/' + course.courseSlug"
+          :to="'/courses/' + course.courseKey"
         >
-          {{ course.courseSlug }}
+          {{ course.courseKey }}
           <span v-if="course.title">
             ({{ course.title }})
           </span>

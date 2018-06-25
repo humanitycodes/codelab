@@ -33,7 +33,7 @@ CREATE INDEX app_user_github_login_index ON app_user (github_login);
 -- lesson
 CREATE TABLE lesson (
   lesson_id BIGINT NOT NULL DEFAULT NEXTVAL('id_sequence'),
-  lesson_slug TEXT NOT NULL UNIQUE,
+  lesson_key TEXT NOT NULL UNIQUE,
   title TEXT,
   estimated_hours INT,
   content TEXT,
@@ -46,7 +46,7 @@ CREATE TABLE lesson (
 
 GRANT ALL ON lesson TO codelab_app;
 
-CREATE INDEX lesson_lesson_slug_index ON lesson (lesson_slug);
+CREATE INDEX lesson_lesson_key_index ON lesson (lesson_key);
 
 -- lesson_learning_objective
 CREATE TABLE lesson_learning_objective (
@@ -101,7 +101,7 @@ ON lesson_prerequisite (prerequisite_lesson_id);
 -- course
 CREATE TABLE course (
   course_id BIGINT NOT NULL DEFAULT NEXTVAL('id_sequence'),
-  course_slug TEXT NOT NULL UNIQUE,
+  course_key TEXT NOT NULL UNIQUE,
   title TEXT,
   credits INT,
   start_date TIMESTAMP,
@@ -113,7 +113,7 @@ CREATE TABLE course (
 
 GRANT ALL ON course TO codelab_app;
 
-CREATE INDEX course_course_slug_index ON course (course_slug);
+CREATE INDEX course_course_key_index ON course (course_key);
 
 -- course_lesson
 CREATE TABLE course_lesson (

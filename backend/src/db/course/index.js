@@ -11,8 +11,8 @@ const Course = sequelize.define('course', {
     primaryKey: true,
     autoIncrement: true
   },
-  courseSlug: {
-    field: 'course_slug',
+  courseKey: {
+    field: 'course_key',
     type: DataTypes.TEXT,
     allowNull: false,
     unique: true
