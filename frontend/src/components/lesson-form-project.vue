@@ -45,6 +45,7 @@
           >
             <option
               v-for="hostingOption in hostingOptions"
+              :key="hostingOption"
               :value="hostingOption"
             >{{ hostingOption }}</option>
           </select>
@@ -61,6 +62,7 @@
 </template>
 
 <script>
+import store from '@state/store'
 import OrderedEditableList from './ordered-editable-list'
 
 export default {
@@ -93,7 +95,7 @@ export default {
       return this.lesson.projects[0]
     },
     largeFieldsLoaded () {
-      return !!this.$store.state.firebase['raw-lessons'][this.lesson['.key']].large
+      return !!store.state.firebase['raw-lessons'][this.lesson['.key']].large
     }
   },
   watch: {
