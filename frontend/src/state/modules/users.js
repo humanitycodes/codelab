@@ -1,7 +1,10 @@
+import axios from 'axios'
 import isEqual from 'lodash/isEqual'
 import jwtDecode from 'jwt-decode'
 import requiredGitHubScopes from '@constants/github-scopes'
-import Axios from 'axios'
+import { setAuthToken, refreshTokenFromResponse } from './_helpers'
+
+const syncCache = {}
 
 export default {
   state: {
@@ -34,19 +37,29 @@ export default {
         ? dispatch('signIn', { token })
         : dispatch('signOut')
     },
-    signIn ({ commit }, { token }) {
-      localStorage.setItem('auth_token', token)
-      Axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    signIn ({ commit, state }, { token }) {
+      setAuthToken(token)
 
       const user = jwtDecode(token).user
       commit('SET_CURRENT_USER', user)
 
-      return Promise.resolve(user)
+      if (!syncCache.refreshTokenInterceptor) {
+        syncCache.refreshTokenInterceptor = axios.interceptors.response.use(
+          refreshTokenFromResponse
+        )
+      }
+
+      return user
     },
-    signOut ({ commit }) {
-      localStorage.removeItem('auth_token')
-      Axios.defaults.headers.common['Authorization'] = null
+    signOut ({ commit, state }) {
+      setAuthToken(null)
       commit('SET_CURRENT_USER', null)
+
+      if (syncCache.refreshTokenInterceptor) {
+        axios.interceptors.request.eject(syncCache.refreshTokenInterceptor)
+        delete syncCache.refreshTokenInterceptor
+      }
+
       return Promise.resolve()
     },
     updateCurrentUser ({ state }) {
@@ -55,8 +68,8 @@ export default {
     }
   },
   mutations: {
-    SET_CURRENT_USER (state, newUser) {
-      state.currentUser = newUser
+    SET_CURRENT_USER (state, user) {
+      state.currentUser = user
     }
   }
 }

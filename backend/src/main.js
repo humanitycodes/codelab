@@ -10,6 +10,7 @@ import logRequests from './log-requests'
 import sequelize from './db/sequelize'
 import validateJsonWebToken from './helpers/jwt/validate-json-web-token'
 import gatherRoutesForDir from './routes/gather-routes-for-dir'
+import refreshTokenBeforeResponse from './routes/refresh-token-before-response'
 
 const start = async () => {
   try {
@@ -24,7 +25,6 @@ const start = async () => {
     host: '0.0.0.0',
     port: process.env.PORT || 4000,
     routes: {
-      cors: true,
       files: {
         // All files will be served from the built frontend directory
         relativeTo: frontendDir
@@ -79,6 +79,9 @@ const start = async () => {
   })
 
   server.auth.default('jwt')
+
+  // Refresh the JWT on each response
+  server.ext(refreshTokenBeforeResponse)
 
   // Allow using generators (and yield keyword) as handler functions
   await server.register(require('hapi-plugin-co'))
