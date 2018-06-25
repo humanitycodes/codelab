@@ -4,7 +4,7 @@ export default ({ authUser, courseRecord }) => {
   // Whitelist of fields that are available to clients
   let course = {
     courseId: courseRecord.courseId,
-    courseSlug: courseRecord.courseSlug,
+    courseKey: courseRecord.courseKey,
     credits: courseRecord.credits,
     startDate: courseRecord.startDate.getTime(),
     endDate: courseRecord.endDate.getTime(),
