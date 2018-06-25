@@ -59,8 +59,6 @@ export default {
         axios.interceptors.request.eject(syncCache.refreshTokenInterceptor)
         delete syncCache.refreshTokenInterceptor
       }
-
-      return Promise.resolve()
     },
     updateCurrentUser ({ state }) {
       // DB TODO: Call /api/users/me to update user fields

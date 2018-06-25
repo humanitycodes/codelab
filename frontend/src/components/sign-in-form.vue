@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import store from '@state/store'
+
 export default {
   data () {
     return {
@@ -34,7 +36,7 @@ export default {
   },
   methods: {
     signIn () {
-      this.$store.dispatch('signIn', this.credentials)
+      store.dispatch('signIn', this.credentials)
       .then(authUser => { window.location = '/' })
       .catch(error => {
         this.credentials.error = error

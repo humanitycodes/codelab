@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import store from '@state/store'
 import Layout from '@layouts/main'
 import CoursesMap from '@components/courses-map'
 import { courseGetters, coursePermissionMethods } from '@state/helpers'
@@ -18,7 +19,7 @@ export default {
   computed: courseGetters,
   methods: coursePermissionMethods,
   created () {
-    this.$store.dispatch('getAllCourses')
+    store.dispatch('getAllCourses')
   }
 }
 </script>

@@ -15,12 +15,15 @@ export default {
   components: {
     Layout, CoursesCodeReviews
   },
+  created () {
+    store.dispatch('getAllCourses')
+  },
   computed: {
     ...courseGetters,
     availableCourses () {
-      const currentUserKey = store.state.users.currentUser.uid
+      const currentUserId = store.state.users.currentUser.userId
       return this.courses.filter(
-        course => course.instructorKeys.indexOf(currentUserKey) !== -1
+        course => course.instructors.some(user => user.userId === currentUserId)
       )
     }
   }
