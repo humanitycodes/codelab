@@ -18,11 +18,11 @@ import {
 } from '../../db/project-completion-repo'
 import { readInstructorsByCourseKey } from '../../db/instructor-repo'
 
-function* getOrCreateRepository (githubToken, { owner, repo }) {
+async function getOrCreateRepository (githubToken, { owner, repo }) {
   try {
-    return yield getGitHubRepository(githubToken, { owner, repo })
+    return getGitHubRepository(githubToken, { owner, repo })
   } catch (notfound) {
-    return yield createGitHubRepository(githubToken, { name: repo })
+    return createGitHubRepository(githubToken, { name: repo })
   }
 }
 
@@ -66,12 +66,12 @@ function mapInstructorKeysToGitHubAccessTokens (instructors) {
   }, {})
 }
 
-function* addInstructorsAsCollaborators (githubToken, { courseKey, owner, repo }) {
-  const instructors = yield readInstructorsByCourseKey(courseKey)
+async function addInstructorsAsCollaborators (githubToken, { courseKey, owner, repo }) {
+  const instructors = await readInstructorsByCourseKey(courseKey)
   const invitees = getInstructorGitHubLogins(instructors)
   const inviteeTokens = mapInstructorKeysToGitHubAccessTokens(instructors)
 
-  yield inviteCollaborators(githubToken, { owner, repo, invitees })
+  await inviteCollaborators(githubToken, { owner, repo, invitees })
   .then(() => {
     return getGitHubRepositoryInvitations(githubToken, { owner, repo })
   })
@@ -104,10 +104,10 @@ export default [
         }).required()
       }
     },
-    handler: function* (request, reply) {
+    async handler (request, reply) {
       try {
         const uid = request.auth.credentials.user_id
-        const user = (yield readUserById(uid))[1]
+        const user = (await readUserById(uid))[1]
         if (!user) {
           throw boom.forbidden(`User ${uid} not found.`)
         } else if (!user.github) {
@@ -118,14 +118,14 @@ export default [
         const repo = repoName(courseKey, lessonKey, projectKey)
         const owner = user.github.login
 
-        const repository = yield getOrCreateRepository(user.github.token, { owner, repo })
-        yield addInstructorsAsCollaborators(user.github.token, { courseKey, owner, repo })
+        const repository = await getOrCreateRepository(user.github.token, { owner, repo })
+        await addInstructorsAsCollaborators(user.github.token, { courseKey, owner, repo })
 
         let projectCompletion = { uid, courseKey, lessonKey, projectKey }
         projectCompletion.repositoryCreatedAt = new Date(repository.created_at).getTime()
 
-        yield createGitHubWebhooks(user.github.token, { owner, repo })
-        yield createProjectCompletion(projectCompletion)
+        await createGitHubWebhooks(user.github.token, { owner, repo })
+        await createProjectCompletion(projectCompletion)
 
         reply({ repo: { name: repo } })
       } catch (error) {
@@ -150,10 +150,10 @@ export default [
         }).required()
       }
     },
-    handler: function* (request, reply) {
+    async handler (request, reply) {
       try {
         const uid = request.auth.credentials.user_id
-        const user = (yield readUserById(uid))[1]
+        const user = (await readUserById(uid))[1]
         if (!user) {
           throw boom.forbidden(`User ${uid} not found.`)
         } else if (!user.github) {
@@ -161,7 +161,7 @@ export default [
         }
 
         const { courseKey, projectCompletionKey } = request.params
-        const projectCompletion = yield readProjectCompletion({ courseKey, projectCompletionKey })
+        const projectCompletion = await readProjectCompletion({ courseKey, projectCompletionKey })
 
         const repo = repoName(courseKey, projectCompletion.lessonKey, projectCompletion.projectKey)
         const ownerAndRepo = {
@@ -170,7 +170,7 @@ export default [
         }
 
         try {
-          yield deleteGitHubRepository(user.github.token, ownerAndRepo)
+          await deleteGitHubRepository(user.github.token, ownerAndRepo)
         } catch (notfound) {
           console.warn(
             'Unable to delete GitHub repository:',
@@ -180,7 +180,7 @@ export default [
           )
         }
 
-        yield deleteProjectCompletion({ courseKey, projectCompletionKey })
+        await deleteProjectCompletion({ courseKey, projectCompletionKey })
 
         reply()
       } catch (error) {

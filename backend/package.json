@@ -21,7 +21,6 @@
     "global-request-logger": "^0.1.1",
     "hapi": "^17.5.1",
     "hapi-auth-jwt2": "^8.1.0",
-    "hapi-plugin-co": "^1.0.7",
     "hapi-require-https": "^3.0.0",
     "inert": "^5.1.0",
     "joi": "^13.4.0",

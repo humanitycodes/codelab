@@ -19,17 +19,17 @@ export default {
       }
     }
   },
-  handler: function* (request, h) {
+  async handler (request, h) {
     let transaction
     try {
-      transaction = yield sequelize.transaction()
+      transaction = await sequelize.transaction()
 
       // Lookup the user from MSU and then from the DB
-      const msuProfile = yield requestMsuUserProfile(request.query.code)
-      let userRecord = yield readUserByMsuUid(msuProfile.id, { transaction })
+      const msuProfile = await requestMsuUserProfile(request.query.code)
+      let userRecord = await readUserByMsuUid(msuProfile.id, { transaction })
 
       if (!userRecord) {
-        userRecord = yield createUser({
+        userRecord = await createUser({
           email: msuProfile.email,
           fullName: msuProfile.name,
           msuUid: msuProfile.id
@@ -39,7 +39,7 @@ export default {
       const user = translateUserFromRecord({ authUser: userRecord, userRecord })
       const jwt = signJsonWebToken({ user })
 
-      yield transaction.commit()
+      await transaction.commit()
 
       // The Base64 JWT can contain + symbols, so encode it because the token
       // is being sent to the client via the URL as a query parameter
@@ -50,7 +50,7 @@ export default {
         `Unable to sign MSU user in with code ${request.query.code}.`,
         'Reason:', error
       )
-      yield transaction.rollback()
+      await transaction.rollback()
       return boom.unauthorized(error.message)
     }
   }

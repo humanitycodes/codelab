@@ -13,11 +13,11 @@ export default {
       }).required()
     }
   },
-  handler: function* (request, reply) {
+  async handler (request, reply) {
     const courseKey = request.params.courseKey
 
     try {
-      let instructors = yield readInstructorsByCourseKey(courseKey)
+      let instructors = await readInstructorsByCourseKey(courseKey)
       // Don't let browser users see GitHub tokens
       Object.keys(instructors).forEach(instructorKey => {
         if (instructors[instructorKey].github) {

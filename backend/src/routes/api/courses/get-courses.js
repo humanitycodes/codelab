@@ -7,14 +7,14 @@ import translateCourseFromRecord from '../../../translators/course/from-record'
 export default {
   method: 'GET',
   path: '/courses',
-  handler: function* (request, h) {
+  async handler (request, h) {
     const authUser = request.auth.credentials.user
     try {
       let courseRecords
       if (canReadAllCourses(authUser)) {
-        courseRecords = yield readAllCourses()
+        courseRecords = await readAllCourses()
       } else {
-        courseRecords = yield readAllCoursesForStudentId(authUser.userId)
+        courseRecords = await readAllCoursesForStudentId(authUser.userId)
       }
 
       let courses = []

@@ -102,9 +102,6 @@ const start = async () => {
   server.ext(refreshTokenOnRequest)
   server.ext(refreshTokenOnResponse)
 
-  // Allow using generators (and yield keyword) as handler functions
-  await server.register(require('hapi-plugin-co'))
-
   // Add all API and third-party authentication routes
   const routeConfigs = {
     '/api': gatherRoutesForDir('api'),
