@@ -26,18 +26,18 @@ function parseKeysFromRepoName (name) {
 }
 
 // repoName => egillespie/MI-654-SS17-654-css-sbvvixzswv-Biv4GT
-function* findProjectCompletionFromRepoName (repoName) {
+async function findProjectCompletionFromRepoName (repoName) {
   // Figure out the owner, course, lesson, and project from the repo
   const derivedKeys = parseKeysFromRepoName(repoName)
   if (!derivedKeys) throw boom.badData(`Unable to parse repository name: ${repoName}`)
   const { username, courseKey, lessonKey, projectKeyPart } = derivedKeys
 
   // Get the internal user ID
-  const [userId] = yield readUserByGitHubLogin(username)
+  const [userId] = await readUserByGitHubLogin(username)
   if (!userId) throw boom.badData(`Unable to find user with GitHub login: ${username}`)
 
   // Find matching project completions
-  const projectCompletions = yield readProjectCompletionByPartialKey({
+  const projectCompletions = await readProjectCompletionByPartialKey({
     uid: userId,
     courseKey: courseKey,
     lessonKey: lessonKey,
@@ -61,31 +61,31 @@ function* findProjectCompletionFromRepoName (repoName) {
 }
 
 export default {
-  push: function* (pushEvent) {
+  async push (pushEvent) {
     // Make sure there was at least one commit
     if (!pushEvent.commits.length) return
 
-    const projectMeta = yield findProjectCompletionFromRepoName(pushEvent.repository.full_name)
+    const projectMeta = await findProjectCompletionFromRepoName(pushEvent.repository.full_name)
 
     // Set committed to true
     if (!projectMeta.projectCompletion.committed) {
       projectMeta.projectCompletion.committed = true
       projectMeta.projectCompletion.firstCommittedAt = new Date(pushEvent.commits[0].timestamp).getTime()
-      yield updateProjectCompletion({
+      await updateProjectCompletion({
         courseKey: projectMeta.courseKey,
         projectCompletionKey: projectMeta.projectCompletionKey
       }, projectMeta.projectCompletion)
     }
   },
 
-  issues: function* (issuesEvent) {
+  async issues (issuesEvent) {
     if (issuesEvent.action !== 'opened') return
 
-    const projectMeta = yield findProjectCompletionFromRepoName(issuesEvent.repository.full_name)
+    const projectMeta = await findProjectCompletionFromRepoName(issuesEvent.repository.full_name)
 
     // Find the assigned instructor
     let assignedInstructor = null
-    const instructors = yield readInstructorsByCourseKey(projectMeta.courseKey)
+    const instructors = await readInstructorsByCourseKey(projectMeta.courseKey)
     Object.keys(instructors).forEach(instructorUid => {
       const instructor = instructors[instructorUid]
       if (!instructor.github) return
@@ -112,16 +112,16 @@ export default {
       projectCompletion.submission.firstSubmittedAt = new Date(issuesEvent.issue.created_at).getTime()
     }
 
-    yield updateProjectCompletion({
+    await updateProjectCompletion({
       courseKey: projectMeta.courseKey,
       projectCompletionKey: projectMeta.projectCompletionKey
     }, projectCompletion)
   },
 
-  issue_comment: function* (issueCommentEvent) {
+  async issue_comment (issueCommentEvent) {
     if (['created', 'edited'].indexOf(issueCommentEvent.action) === -1) return
 
-    const projectMeta = yield findProjectCompletionFromRepoName(issueCommentEvent.repository.full_name)
+    const projectMeta = await findProjectCompletionFromRepoName(issueCommentEvent.repository.full_name)
 
     let projectCompletion = projectMeta.projectCompletion
     projectCompletion.submission = projectCompletion.submission || {}
@@ -130,7 +130,7 @@ export default {
     if (projectCompletion.submission.isApproved) return
 
     // Is this an instructor comment?
-    const instructors = yield readInstructorsByCourseKey(projectMeta.courseKey)
+    const instructors = await readInstructorsByCourseKey(projectMeta.courseKey)
     const commenterLogin = issueCommentEvent.comment.user.login
     let isInstructorComment = false
     Object.values(instructors).forEach(instructor => {
@@ -171,7 +171,7 @@ export default {
       projectCompletion.submission.lastCommentedAt = issueCommentedAt
     }
 
-    yield updateProjectCompletion({
+    await updateProjectCompletion({
       courseKey: projectMeta.courseKey,
       projectCompletionKey: projectMeta.projectCompletionKey
     }, projectCompletion)

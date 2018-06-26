@@ -15,7 +15,7 @@ export default {
       }).unknown(true)
     }
   },
-  handler: function* (request, reply) {
+  async handler (request, reply) {
     const eventId = request.headers['x-github-delivery']
     const eventName = request.headers['x-github-event']
 
@@ -24,7 +24,7 @@ export default {
         return reply()
       } else if (githubEventHandlers[eventName]) {
         console.info(`Received GitHub ${eventName} event ${eventId}`)
-        yield githubEventHandlers[eventName](request.payload)
+        await githubEventHandlers[eventName](request.payload)
         reply()
       } else {
         throw boom.badData(`GitHub event type ${eventName} is unsupported`)

@@ -22,16 +22,16 @@ export default {
       }
     }
   },
-  handler: function* (request, h) {
+  async handler (request, h) {
     let transaction
     try {
-      transaction = yield sequelize.transaction()
+      transaction = await sequelize.transaction()
 
       let jwt = decodeURIComponent(request.query.state)
       const authUser = decodeJsonWebToken(jwt).user
 
       // Lookup the user from the DB and GitHub
-      let [userRecord, tokenBody] = yield [
+      let [userRecord, tokenBody] = await [
         readUserById(authUser.userId),
         getGitHubAccessToken(request.query.code)
       ]
@@ -40,7 +40,7 @@ export default {
         throw new Error(`User ${authUser.userId} (${authUser.fullName}) not found.`)
       }
 
-      const githubProfile = yield getGitHubUserProfile(tokenBody.access_token)
+      const githubProfile = await getGitHubUserProfile(tokenBody.access_token)
 
       // Update the GitHub profile fields
       userRecord.githubUserId = githubProfile.id
@@ -49,13 +49,13 @@ export default {
       userRecord.githubToken = tokenBody.access_token
       userRecord.githubTokenType = tokenBody.token_type
 
-      yield updateUser(userRecord)
+      await updateUser(userRecord)
 
       // Regenerate the JWT to keep the client in sync
       const user = translateUserFromRecord({ authUser, userRecord })
       jwt = signJsonWebToken({ user })
 
-      yield transaction.commit()
+      await transaction.commit()
 
       // The Base64 JWT can contain + symbols, so encode it because the token
       // is being sent to the client via the URL as a query parameter
@@ -70,7 +70,7 @@ export default {
         `Unable to connect GitHub account with state ${request.query.state}.`,
         'Reason:', error
       )
-      yield transaction.rollback()
+      await transaction.rollback()
       return boom.unauthorized(error.message)
     }
   }
