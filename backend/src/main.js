@@ -9,8 +9,9 @@ import jwtSecret from '../env/jwt-secret'
 import logRequests from './log-requests'
 import sequelize from './db/sequelize'
 import validateJsonWebToken from './helpers/jwt/validate-json-web-token'
-import gatherRoutesForDir from './routes/gather-routes-for-dir'
-import refreshTokenBeforeResponse from './routes/refresh-token-before-response'
+import gatherRoutesForDir from './routes/helpers/gather-routes-for-dir'
+import refreshTokenOnRequest from './routes/helpers/refresh-token-on-request'
+import refreshTokenOnResponse from './routes/helpers/refresh-token-on-response'
 
 const start = async () => {
   try {
@@ -80,8 +81,10 @@ const start = async () => {
 
   server.auth.default('jwt')
 
-  // Refresh the JWT on each response
-  server.ext(refreshTokenBeforeResponse)
+  // Refresh the JWT after auth and copy it to the response so the client
+  // always sees the token used to authorize their most recent request
+  server.ext(refreshTokenOnRequest)
+  server.ext(refreshTokenOnResponse)
 
   // Allow using generators (and yield keyword) as handler functions
   await server.register(require('hapi-plugin-co'))
