@@ -1,7 +1,6 @@
-import Course from './index'
 import User from '../user'
 
-export default (userId, options) => Course.findAll({
+export default (courseRecord, options) => courseRecord.reload({
   ...options,
   include: [
     {
@@ -10,10 +9,7 @@ export default (userId, options) => Course.findAll({
     },
     {
       model: User,
-      as: 'students',
-      where: {
-        userId
-      }
+      as: 'students'
     }
   ]
 })

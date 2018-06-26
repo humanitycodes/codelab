@@ -14,13 +14,13 @@ export async function createProjectCompletion ({ uid, courseKey, lessonKey, proj
         if (snapshot.val()) return resolve()
         db.ref('roles').child(uid).child('instructor')
           .once('value', snapshot => {
-            snapshot.val()
-              ? resolve()
-              : reject('This user is not enrolled in the course or an instructor')
+            if (snapshot.val()) {
+              resolve()
+            } else {
+              reject(new Error('This user is not enrolled in the course or an instructor'))
+            }
           })
-      }, error => {
-        reject('There was a problem communicating with Firebase:', error)
-      })
+      }, error => reject(error))
   })
   .then(() => {
     // Make sure the student has not already submitted this project
@@ -31,11 +31,9 @@ export async function createProjectCompletion ({ uid, courseKey, lessonKey, proj
         .child(projectCompletionKey)
         .once('value', snapshot => {
           snapshot.val()
-            ? reject('A project for this repo has already been created')
+            ? reject(new Error('A project for this repo has already been created'))
             : resolve()
-        }, error => {
-          reject('There was a problem communicating with Firebase:', error)
-        })
+        }, error => reject(error))
     })
   })
   .then(() => {
@@ -63,18 +61,16 @@ export async function readProjectCompletion ({ courseKey, projectCompletionKey }
         if (snapshot.exists()) {
           resolve(snapshot.val())
         } else {
-          reject(
+          reject(new Error(
             'Project completion for course ' +
             courseKey +
             ' and project completion ' +
             projectCompletionKey +
             ' does not exist.'
-          )
+          ))
         }
       })
-      .catch(error => {
-        reject('There was a problem communicating with Firebase:', error)
-      })
+      .catch(error => reject(error))
   })
 }
 
@@ -98,9 +94,7 @@ export async function readProjectCompletionByPartialKey ({ uid, courseKey, lesso
         })
         resolve(projectCompletions)
       })
-      .catch(error => {
-        reject('There was a problem communicating with Firebase:', error)
-      })
+      .catch(error => reject(error))
   })
 }
 

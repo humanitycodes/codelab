@@ -1,1 +1,1 @@
-export default userRecord => userRecord.save()
+export default (userRecord, options) => userRecord.save(options)

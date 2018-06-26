@@ -1,3 +1,5 @@
+/* eslint-disable import/first */
+
 // Parse BIGINT fields (IDs) as numbers instead of strings, limiting the max
 // ID value to 2^53 instead of 2^63-1, but keeping ID a number in JavaScript.
 // https://github.com/sequelize/sequelize/issues/2383#issuecomment-58006083

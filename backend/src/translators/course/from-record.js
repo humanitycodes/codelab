@@ -6,8 +6,8 @@ export default ({ authUser, courseRecord }) => {
     courseId: courseRecord.courseId,
     courseKey: courseRecord.courseKey,
     credits: courseRecord.credits,
-    startDate: courseRecord.startDate.getTime(),
-    endDate: courseRecord.endDate.getTime(),
+    startDate: courseRecord.startDate ? courseRecord.startDate.getTime() : null,
+    endDate: courseRecord.endDate ? courseRecord.endDate.getTime() : null,
     syllabus: courseRecord.syllabus,
     title: courseRecord.title,
     version: courseRecord.version
