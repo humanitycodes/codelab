@@ -1,7 +1,10 @@
 <template>
   <div class="flex-row">
     <div class="flex-col">
-      <div v-for="instructorCodeReviews in instructorCodeReviewsAwaitingFeedback">
+      <div
+        v-for="(instructorCodeReviews, index) in instructorCodeReviewsAwaitingFeedback"
+        :key="index"
+      >
         <InstructorCodeReviews
           :instructor="instructorCodeReviews.instructor"
           :codeReviews="instructorCodeReviews.codeReviews"
@@ -17,9 +20,10 @@
 <script>
 import InstructorCodeReviews from '@components/code-reviews-instructor'
 import { userGetters, lessonGetters } from '@state/helpers'
+/*
 import courseUserGradeCurrentRounded from '@helpers/computed/course-user-grade-current-rounded'
-import store from '@state/store'
 import orderBy from 'lodash/orderBy'
+*/
 
 export default {
   components: {
@@ -44,18 +48,7 @@ export default {
     this.courses.forEach(course => {
       if (!course) return
 
-      store.dispatch('syncLargeFieldsOfResource', {
-        resourceName: 'courses',
-        resourceKey: course['.key']
-      })
-
-      // Retrieve the large fields so projects are available
-      course.lessonKeys.forEach(lessonKey => {
-        store.dispatch('syncLargeFieldsOfResource', {
-          resourceName: 'lessons',
-          resourceKey: lessonKey
-        })
-      })
+      // todo fetch courses and project completions from API
     })
   },
   computed: {
@@ -63,6 +56,7 @@ export default {
     ...lessonGetters,
     instructorCodeReviewsAwaitingFeedback () {
       // Collection information about pending code reviews, grouped by instructor
+      /* todo
       let instructorCodeReviews = {}
       this.courses.forEach(course => {
         course.projectCompletions.forEach(projectCompletion => {
@@ -102,6 +96,8 @@ export default {
 
       // Order code review groups by instructor name
       return orderBy(codeReviewGroups, [group => group.instructor.fullName])
+      */
+      return []
     }
   }
 }
