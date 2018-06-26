@@ -2,9 +2,10 @@
 // supported in node
 import 'babel-polyfill'
 
+import hapi from 'hapi'
+import boom from 'boom'
 import { config } from '../env/config'
 import frontendDir from './constants/frontend-dir'
-import hapi from 'hapi'
 import jwtSecret from '../env/jwt-secret'
 import logRequests from './log-requests'
 import sequelize from './db/sequelize'
@@ -29,6 +30,21 @@ const start = async () => {
       files: {
         // All files will be served from the built frontend directory
         relativeTo: frontendDir
+      },
+      validate: {
+        options: {
+          abortEarly: process.env.NODE_ENV === 'production'
+        },
+        async failAction (request, h, err) {
+          console.error('Bad request from client. Reason:', err)
+          if (process.env.NODE_ENV === 'production') {
+            // Respond with a bad request error that does not leak schema info
+            throw boom.badRequest('Invalid request payload input')
+          } else {
+            // Respond with a complete error, including fields and explanations
+            throw err
+          }
+        }
       }
     }
   })

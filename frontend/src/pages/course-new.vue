@@ -2,8 +2,8 @@
   <Layout>
     <h1>Unique Course Key</h1>
     <p class="warning">
-      This is the unique key for the course that will appear in URLs and project
-      repos. <strong>It cannot be changed once the course is created.</strong>
+      This is the unique key for the course that will appear in URLs and projects.
+      <strong>It cannot be changed once the course is created.</strong>
     </p>
     <div class="key-field">
       <select
@@ -72,8 +72,7 @@
 <script>
 import Layout from '@layouts/main'
 import { userGetters, courseGetters } from '@state/helpers'
-import store from '@state/store'
-import courseByKey from '@helpers/finders/course-by-key'
+import createCourse from '@api/courses/create-course'
 
 export default {
   components: {
@@ -93,8 +92,7 @@ export default {
       number: '',
       semester: semesterOptions.Spring,
       year: '',
-      section: '',
-      currentYear: new Date().getFullYear().toString().slice(2)
+      section: ''
     }
   },
   computed: {
@@ -139,12 +137,12 @@ export default {
   methods: {
     tryToCreateCourse () {
       if (this.keyIsValid) {
-        this.courses.add(this.key).then(() => {
-          store.dispatch('syncResources', { ignoreCache: true }).then(() => {
-            const course = courseByKey(this.key)
-            course.addInstructor(this.currentUser.uid)
-            window.location.replace(`/courses/${this.key}/edit`)
-          })
+        createCourse({
+          courseKey: this.key,
+          instructors: [{ userId: this.currentUser.userId }]
+        })
+        .then(() => {
+          this.$router.replace(`/courses/${this.key}/edit`)
         })
       }
     }

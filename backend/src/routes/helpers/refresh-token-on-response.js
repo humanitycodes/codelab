@@ -5,8 +5,10 @@ export default {
   type: 'onPreResponse',
   method (request, h) {
     if (
+      request.headers &&
+      request.headers.hasOwnProperty('x-token-refresh') &&
       request.response &&
-      request.headers.hasOwnProperty('x-token-refresh')
+      request.response.headers
     ) {
       request.response.headers['x-token-refresh'] = request.headers['x-token-refresh']
     }

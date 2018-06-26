@@ -4,6 +4,7 @@ module.exports = {
   extends: 'standard',
   parser: 'babel-eslint',
   parserOptions: {
+    ecmaVersion: 2017,
     sourceType: 'module'
   },
   env: {
@@ -15,6 +16,8 @@ module.exports = {
     'arrow-parens': 0,
     // allow async-await
     'generator-star-spacing': 0,
+    // allow promise chains to line up on left side
+    'indent': ['error', 2, { MemberExpression: 'off' }],
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
   }
