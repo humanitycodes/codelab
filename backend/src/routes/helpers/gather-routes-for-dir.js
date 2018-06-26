@@ -2,7 +2,7 @@ import glob from 'glob'
 import path from 'path'
 
 export default routeDir => {
-  const cwd = path.join(__dirname, `./${routeDir}/**/*.js`)
+  const cwd = path.join(__dirname, `../${routeDir}/**/*.js`)
   let routes = []
 
   glob.sync(cwd).forEach(file => {
