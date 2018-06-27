@@ -3,6 +3,7 @@ import isEqual from 'lodash/isEqual'
 import jwtDecode from 'jwt-decode'
 import requiredGitHubScopes from '@constants/github-scopes'
 import { setAuthToken, refreshTokenFromResponse } from './_helpers'
+import { userRolesHaveChanged } from '@state/auth/users'
 
 const syncCache = {}
 
@@ -37,21 +38,29 @@ export default {
         ? dispatch('signIn', { token })
         : dispatch('signOut')
     },
-    signIn ({ commit, state }, { token }) {
+    signIn ({ commit, dispatch, state }, { token }) {
       setAuthToken(token)
 
       const user = jwtDecode(token).user
+      const hasAuthStatusChanged = userRolesHaveChanged(state.currentUser, user)
       commit('SET_CURRENT_USER', user)
 
+      // Look in response headers for updated user/auth information
       if (!syncCache.refreshTokenInterceptor) {
         syncCache.refreshTokenInterceptor = axios.interceptors.response.use(
           refreshTokenFromResponse
         )
       }
 
+      // Sync data if roles or signin status just changed
+      if (hasAuthStatusChanged) {
+        return Promise.all([
+          dispatch('syncAllCourses')
+        ]).then(() => user)
+      }
       return user
     },
-    signOut ({ commit, state }) {
+    signOut ({ commit }) {
       setAuthToken(null)
       commit('SET_CURRENT_USER', null)
 
