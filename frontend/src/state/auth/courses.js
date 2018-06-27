@@ -79,7 +79,7 @@ export const canDestroyCourse = ({ courseId }) => {
 // ---------------
 
 function findCourse (courseId) {
-  return store.state.courses.all.find(course => course.courseId === courseId)
+  return store.getters.courses.find(course => course.courseId === courseId)
 }
 
 function findLesson (lessonKey) {

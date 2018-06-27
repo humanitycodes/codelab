@@ -4,13 +4,18 @@ export default {
   state: {
     all: []
   },
+  getters: {
+    courses (state) {
+      return state.all
+    }
+  },
   actions: {
-    getAllCourses ({ commit }) {
+    syncAllCourses ({ commit }) {
       getCourses()
       .then(courses => commit('SET_ALL_COURSES', courses))
       .catch(error => {
         commit('SET_ALL_COURSES', [])
-        return Promise.reject(error)
+        throw error
       })
     }
   },

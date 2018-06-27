@@ -15,9 +15,6 @@ export default {
   components: {
     Layout, CoursesCodeReviews
   },
-  created () {
-    store.dispatch('getAllCourses')
-  },
   computed: {
     ...courseGetters,
     availableCourses () {

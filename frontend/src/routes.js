@@ -21,11 +21,11 @@ export default [
     },
     redirect: to => {
       if (store.state.users.currentUser) {
-        const courses = store.state.courses.all
+        const courses = store.getters.courses
         return canReadAllCourses()
           ? '/code-reviews'
           : courses.length === 1
-            ? '/courses/' + courses[0]['.key']
+            ? '/courses/' + courses[0].courseKey
             : '/courses'
       }
       return '/msu-sign-in'
@@ -68,9 +68,10 @@ export default [
     path: '/courses/:courseKey/edit',
     beforeEnter: (to, from, next) => {
       const course = courseByKey(to.params.courseKey)
-      const currentUserKey = store.state.users.currentUser.uid
-      return course.instructorKeys.indexOf(currentUserKey) !== -1
-        ? next() : next({ name: 'course-view', params: to.params })
+      const currentUserId = store.state.users.currentUser.userId
+      return course.instructors.some(user => user.userId === currentUserId)
+        ? next()
+        : next({ name: 'course-view', params: to.params })
     },
     component: cb => require.ensure([], () => cb(require('@pages/course-edit')), 'staff'),
     meta: {
