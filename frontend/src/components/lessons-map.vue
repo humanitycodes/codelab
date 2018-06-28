@@ -5,21 +5,23 @@
   >
     <svg :width="graph.width" :height="graph.height">
       <path
-        v-for="edge in lessonEdges"
+        v-for="(edge, index) in lessonEdges"
+        :key="index"
         :d="edgePath(edge)"
         :style="{ stroke: langColorDark(edge.toLang) }"
         :class="Object.assign({}, edge.endNode.lessonStatus, {
           'postreq-selected': edgeHasSelectedPostreq(edge),
           'other-is-selected': (
             hoveredLesson &&
-            hoveredLesson['.key'] !== edge.endNode.lesson['.key']
+            hoveredLesson.lessonKey !== edge.endNode.lesson.lessonKey
           )
         })"
         class="lesson-graph-edge"
       />
     </svg>
     <router-link
-      v-for="node in lessonNodes"
+      v-for="(node, index) in lessonNodes"
+      :key="index"
       :style="{
         transform: nodeTransform(node),
         width: nodeWidth + 'px',
@@ -32,11 +34,11 @@
       :class="Object.assign({}, node.lessonStatus, {
         selected: (
           hoveredLesson &&
-          hoveredLesson['.key'] === node.lesson['.key']
+          hoveredLesson.lessonKey === node.lesson.lessonKey
         ),
         'other-is-selected': (
           hoveredLesson &&
-          hoveredLesson['.key'] !== node.lesson['.key']
+          hoveredLesson.lessonKey !== node.lesson.lessonKey
         ),
         ['lang-' + lessonLang(node.lesson)]: true,
         'postreq-selected': nodeHasSelectedPostreq(node)
@@ -44,7 +46,7 @@
       class="lesson-graph-card container-link"
     >
       <router-link
-        v-if="course && canUpdateLesson({ lessonKey: node.lesson['.key'] })"
+        v-if="course && canUpdateLesson({ lessonKey: node.lesson.lessonKey })"
         class="button inline primary lessons-map-corner-action-lesson-button"
         :to="editLessonPath(node.lesson)"
       >Edit</router-link>
@@ -64,7 +66,10 @@
             {{ lessonGradePoints(node.lesson) }}
           </div>
           <div class="flex-col" v-if="node.lesson.categories && node.lesson.categories.length">
-            <ul v-for="category in node.lesson.categories">
+            <ul
+              v-for="category in node.lesson.categories"
+              :key="category"
+            >
               <li>{{ category.title }}</li>
             </ul>
           </div>
@@ -75,11 +80,11 @@
               :class="node.lessonStatus"
               :href="
                 'https://github.com/' +
-                currentUser.profile.github.login +
+                currentUser.githubLogin +
                 '/' +
                 [
-                  course['.key'],
-                  node.lesson['.key'],
+                  course.courseKey,
+                  node.lessonKey,
                   getProjectCompletion(node.lesson).projectKey.slice(-6)
                 ].join('-')
               "
@@ -176,7 +181,7 @@ export default {
       // For each lesson, register the nodes and edges
       // of the directive acyclic graph
       this.preSortedLessons.forEach(lesson => {
-        const lessonKey = lesson['.key']
+        const lessonKey = lesson.lessonKey
         layout.setNode(lessonKey, {
           lesson,
           lessonStatus: this.lessonStatus(lesson),
@@ -184,18 +189,18 @@ export default {
           width: this.nodeWidth,
           height: this.nodeHeight
         })
-        const postreqsIncludedInCourse = lesson.postreqKeys.map(postreqKey => {
-          return this.lessons.find(lesson => {
-            return lesson['.key'] === postreqKey
-          })
-        }).filter(postreq => postreq)
+        const postreqsIncludedInCourse = lesson.postrequisiteLessonIds.map(
+          postreqLessonId => this.lessons.find(
+            lesson => lesson.lessonId === postreqLessonId
+          )
+        ).filter(postreq => postreq)
         // Sort postreqs by their number of immediate prereqs, descending,
         // so that more difficult to place nodes are given priority
         sortBy(
           postreqsIncludedInCourse,
           postreq => -1 * this.getImmediatePrereqsCount(postreq)
         ).forEach(postreq => {
-          layout.setEdge(lessonKey, postreq['.key'])
+          layout.setEdge(lessonKey, postreq.lessonKey)
         })
       })
       // Calculate the layout, adding "x" and "y" to
@@ -207,9 +212,7 @@ export default {
       return this.layout.graph()
     },
     lessonNodes () {
-      return this.layout.nodes().map(nodeKey => {
-        return this.layout.node(nodeKey)
-      })
+      return this.layout.nodes().map(nodeKey => this.layout.node(nodeKey))
     },
     lessonEdges () {
       return this.layout.edges().map(nodeKeys => {
@@ -247,7 +250,7 @@ export default {
         const startNodeY = startNode.y
         const endNodeY = (
           startNode.y === endNode.y ||
-          endNode.lesson.prereqKeys.length === 1
+          endNode.lesson.prerequisiteLessonIds.length === 1
         ) ? endNode.y
           : startNode.y > endNode.y
             ? endNode.y + yPull
@@ -271,13 +274,15 @@ export default {
         }
         points.push({ x: endMidWayX, y: endNodeY })
         points.push({ x: endNodeX, y: endNodeY })
-        return {
+        const edge = {
           startNode,
           endNode,
           points,
           cardsAwayCount,
           toLang: this.lessonLang(endNode.lesson)
         }
+        console.log('edge', edge)
+        return edge
       })
     }
   },
@@ -319,17 +324,17 @@ export default {
         : this.editLessonPath(lesson)
     },
     showCourseLessonPath (lesson) {
-      return '/courses/' + this.course['.key'] + '/lessons/' + lesson['.key']
+      return '/courses/' + this.course.courseKey + '/lessons/' + lesson.lessonKey
     },
     editLessonPath (lesson) {
-      return '/lessons/' + lesson['.key'] + '/edit'
+      return '/lessons/' + lesson.lessonKey + '/edit'
     },
     lessonStatus (lesson) {
       if (!this.course) return {}
       return courseLessonUserStatus(this.course, lesson, this.currentUser)
     },
     lessonLang (lesson) {
-      return lesson['.key'].match(/^(\w+?)-/)[1]
+      return lesson.lessonKey.match(/^(\w+?)-/)[1]
     },
     langColor (lang) {
       return design.code.langColors.light[lang]
@@ -353,21 +358,25 @@ export default {
       return courseLessonUserProjectCompletion(this.course, lesson, this.currentUser)
     },
     getExtendedPostreqs (lesson) {
-      const immediatePostreqs = lesson.postreqKeys.map(postreqKey => {
-        return this.lessons.find(lesson => lesson['.key'] === postreqKey)
-      }).filter(postreq => postreq)
+      const immediatePostreqs = lesson.postrequisiteLessonIds.map(
+        postreqLessonId => this.lessons.find(
+          lesson => lesson.lessonId === postreqLessonId
+        )
+      ).filter(postreq => postreq)
       return (
         immediatePostreqs.concat(
-          immediatePostreqs
-            .map(postreq => this.getExtendedPostreqs(postreq))
-            .reduce((a, b) => a.concat(b), [])
+          immediatePostreqs.map(
+            postreq => this.getExtendedPostreqs(postreq)
+          ).reduce((a, b) => a.concat(b), [])
         )
       )
     },
     getImmediatePrereqsCount (lesson) {
-      return lesson.prereqKeys.filter(prereqKey => {
-        return this.lessons.some(lesson => lesson['.key'] === prereqKey)
-      }).length
+      return lesson.prerequisiteLessonIds.filter(
+        prereqLessonId => this.lessons.some(
+          lesson => lesson.lessonId === prereqLessonId
+        )
+      ).length
     },
     scrollToRecommendedLessons () {
       const recommendedLessonsOffsets = this.lessonNodes
@@ -380,9 +389,9 @@ export default {
       return (
         this.hoveredLesson &&
         !node.lessonStatus.approved &&
-        node.extendedPostreqs.some(postreq => {
-          return postreq['.key'] === this.hoveredLesson['.key']
-        })
+        node.extendedPostreqs.some(
+          postreq => postreq.lessonId === this.hoveredLesson.lessonId
+        )
       )
     },
     edgeHasSelectedPostreq (edge) {
@@ -390,10 +399,10 @@ export default {
         this.hoveredLesson &&
         !edge.endNode.lessonStatus.approved &&
         (
-          edge.endNode.lesson['.key'] === this.hoveredLesson['.key'] ||
-          edge.endNode.extendedPostreqs.some(postreq => {
-            return postreq['.key'] === this.hoveredLesson['.key']
-          })
+          edge.endNode.lesson.lessonId === this.hoveredLesson.lessonId ||
+          edge.endNode.extendedPostreqs.some(
+            postreq => postreq.lessonId === this.hoveredLesson.lessonId
+          )
         )
       )
     },

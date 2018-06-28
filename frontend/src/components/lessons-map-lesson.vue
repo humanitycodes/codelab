@@ -1,17 +1,17 @@
 <template>
   <span v-if="course">
     <router-link
-      v-if="canUpdateCourse({ courseKey: course['.key'] })"
-      :to="'/lessons/' + lesson['.key'] + '/edit'"
+      v-if="canUpdateCourse({ courseKey: course.courseKey })"
+      :to="'/lessons/' + lesson.lessonKey + '/edit'"
     ><button class="inline">Edit</button></router-link>
     <router-link
-      :to="'/courses/' + course['.key'] + '/lessons/' + lesson['.key']"
-    >{{ lesson.title || lesson['.key'] }}</router-link>
+      :to="'/courses/' + course.courseKey + '/lessons/' + lesson.lessonKey"
+    >{{ lesson.title || lesson.lessonKey }}</router-link>
   </span>
   <span v-else>
     <router-link
-      :to="'/lessons/' + lesson['.key'] + '/edit'"
-    >{{ lesson.title || lesson['.key'] }}</router-link>
+      :to="'/lessons/' + lesson.lessonKey + '/edit'"
+    >{{ lesson.title || lesson.lessonKey }}</router-link>
   </span>
 </template>
 

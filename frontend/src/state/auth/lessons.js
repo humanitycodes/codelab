@@ -48,20 +48,12 @@ export const canDestroyLesson = ({ lessonKey }) => {
 // ---------------
 
 function lessonIsInACourse (lessonKey) {
-  return store.getters.courses.some(course => {
-    if (!course.lessonKeys) return false
-    const lessonKeys = Object.keys(course.lessonKeys)
-    return (
-      lessonKeys.length &&
-      lessonKeys.some(key => course.lessonKeys.includes(key))
-    )
-  })
+  const lesson = findLesson(lessonKey)
+  return lesson && lesson.courseIds && lesson.courseIds.length > 0
 }
 
 function findLesson (lessonKey) {
-  return store.getters.lessons.find(lesson => {
-    return lesson['.key'] === lessonKey
-  })
+  return store.getters.lessons.find(lesson => lesson.lessonKey === lessonKey)
 }
 
 function doesLessonExist (lessonKey) {
