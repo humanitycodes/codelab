@@ -13,7 +13,7 @@
           'postreq-selected': edgeHasSelectedPostreq(edge),
           'other-is-selected': (
             hoveredLesson &&
-            hoveredLesson.lessonKey !== edge.endNode.lesson.lessonKey
+            hoveredLesson.lessonId !== edge.endNode.lesson.lessonId
           )
         })"
         class="lesson-graph-edge"
@@ -34,11 +34,11 @@
       :class="Object.assign({}, node.lessonStatus, {
         selected: (
           hoveredLesson &&
-          hoveredLesson.lessonKey === node.lesson.lessonKey
+          hoveredLesson.lessonId === node.lesson.lessonId
         ),
         'other-is-selected': (
           hoveredLesson &&
-          hoveredLesson.lessonKey !== node.lesson.lessonKey
+          hoveredLesson.lessonId !== node.lesson.lessonId
         ),
         ['lang-' + lessonLang(node.lesson)]: true,
         'postreq-selected': nodeHasSelectedPostreq(node)
@@ -274,15 +274,13 @@ export default {
         }
         points.push({ x: endMidWayX, y: endNodeY })
         points.push({ x: endNodeX, y: endNodeY })
-        const edge = {
+        return {
           startNode,
           endNode,
           points,
           cardsAwayCount,
           toLang: this.lessonLang(endNode.lesson)
         }
-        console.log('edge', edge)
-        return edge
       })
     }
   },
