@@ -64,4 +64,11 @@ Lesson.hasMany(LessonProjectCriterion, {
   sourceKey: 'lesson_id'
 })
 
+Lesson.belongsToMany(Lesson, {
+  as: 'prerequisiteLessons',
+  through: 'lesson_prerequisite',
+  foreignKey: 'lesson_id',
+  otherKey: 'prerequisite_lesson_id'
+})
+
 export default Lesson
