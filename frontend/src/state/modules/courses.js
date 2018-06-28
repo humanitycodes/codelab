@@ -7,6 +7,10 @@ export default {
   getters: {
     courses (state) {
       return state.all
+    },
+    currentCourse (state, getters, rootState) {
+      const courseKey = rootState.route.params['courseKey']
+      return getters.courses.find(course => course.courseKey === courseKey)
     }
   },
   actions: {

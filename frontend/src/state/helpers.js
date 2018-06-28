@@ -41,25 +41,26 @@ export { lessonPermissionMethods }
 
 export const courseGetters = {
   ...mapGetters([
-    'courses'
+    'courses',
+    'currentCourse'
   ]),
   ...mapState({
     canUpdateCurrentCourse (state, getters) {
       if (!getters.currentCourse) return false
       return coursePermissionMethods.canUpdateCourse({
-        courseId: getters.currentCourse.courseId
+        courseKey: getters.currentCourse.courseKey
       })
     },
     shouldUpdateCurrentCourse (state, getters) {
       if (!getters.currentCourse) return false
       return coursePermissionMethods.shouldUpdateCourse({
-        courseId: getters.currentCourse.courseId
+        courseKey: getters.currentCourse.courseKey
       })
     },
     canDestroyCurrentCourse (state, getters) {
       if (!getters.currentCourse) return false
       return coursePermissionMethods.canDestroyCourse({
-        courseId: getters.currentCourse.courseId
+        courseKey: getters.currentCourse.courseKey
       })
     }
   })
