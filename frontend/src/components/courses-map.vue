@@ -3,10 +3,10 @@
     <ul>
       <li
         v-for="course in courses"
-        :key="course.courseId"
-        v-if="canReadCourse({ courseId: course.courseId })"
+        :key="course.courseKey"
+        v-if="canReadCourse({ courseKey: course.courseKey })"
       >
-        <router-link v-if="canUpdateCourse({ courseId: course.courseId })"
+        <router-link v-if="canUpdateCourse({ courseKey: course.courseKey })"
           :to="'/courses/' + course.courseKey + '/edit'"
         >
           <button
