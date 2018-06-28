@@ -12,6 +12,10 @@ export default options => Lesson.findAll({
     {
       model: LessonProjectCriterion,
       as: 'projectCriteria'
+    },
+    {
+      model: Lesson,
+      as: 'prerequisiteLessons'
     }
   ]
 })
