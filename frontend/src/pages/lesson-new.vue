@@ -1,7 +1,10 @@
 <template>
   <Layout>
     <h1>Unique Lesson Key</h1>
-    <p class="warning">This is the unique key for the lesson that will appear in URLs and project repos. <strong>It cannot be changed once the lesson is created.</strong></p>
+    <p class="warning">
+      This is the unique key for the lesson that will appear in URLs and projects.
+      <strong>It cannot be changed once the lesson is created.</strong>
+    </p>
     <div class="key-field">
       <select
         v-model="categoryPrefix"
@@ -9,7 +12,10 @@
         name="lesson-category"
         aria-label="Lesson category"
       >
-        <option v-for="category in lessonCategories">
+        <option
+          v-for="category in lessonCategories"
+          :key="category"
+        >
           {{ category }}
         </option>
       </select>
