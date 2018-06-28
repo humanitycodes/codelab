@@ -3,7 +3,6 @@ import isEqual from 'lodash/isEqual'
 import jwtDecode from 'jwt-decode'
 import requiredGitHubScopes from '@constants/github-scopes'
 import { setAuthToken, refreshTokenFromResponse } from './_helpers'
-import { userRolesHaveChanged } from '@state/auth/users'
 
 const syncCache = {}
 
@@ -42,7 +41,6 @@ export default {
       setAuthToken(token)
 
       const user = jwtDecode(token).user
-      const hasAuthStatusChanged = userRolesHaveChanged(state.currentUser, user)
       commit('SET_CURRENT_USER', user)
 
       // Look in response headers for updated user/auth information
@@ -53,12 +51,9 @@ export default {
       }
 
       // Sync data if roles or signin status just changed
-      if (hasAuthStatusChanged) {
-        return Promise.all([
-          dispatch('syncAllCourses')
-        ]).then(() => user)
-      }
-      return user
+      return Promise.all([
+        dispatch('syncAllCourses')
+      ]).then(() => user)
     },
     signOut ({ commit }) {
       setAuthToken(null)
