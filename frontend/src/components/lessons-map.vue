@@ -181,8 +181,8 @@ export default {
       // For each lesson, register the nodes and edges
       // of the directive acyclic graph
       this.preSortedLessons.forEach(lesson => {
-        const lessonKey = lesson.lessonKey
-        layout.setNode(lessonKey, {
+        const lessonId = lesson.lessonId
+        layout.setNode(lessonId, {
           lesson,
           lessonStatus: this.lessonStatus(lesson),
           extendedPostreqs: this.getExtendedPostreqs(lesson),
@@ -200,7 +200,7 @@ export default {
           postreqsIncludedInCourse,
           postreq => -1 * this.getImmediatePrereqsCount(postreq)
         ).forEach(postreq => {
-          layout.setEdge(lessonKey, postreq.lessonKey)
+          layout.setEdge(lessonId, postreq.lessonId)
         })
       })
       // Calculate the layout, adding "x" and "y" to
