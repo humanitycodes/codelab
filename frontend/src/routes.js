@@ -68,7 +68,6 @@ export default [
     path: '/courses/:courseKey/edit',
     beforeEnter: (to, from, next) => {
       const course = courseByKey(to.params.courseKey)
-      console.log('course', course)
       const currentUserId = store.state.users.currentUser.userId
       return course.instructors.some(user => user.userId === currentUserId)
         ? next()
