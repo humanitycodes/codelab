@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize'
 import sequelize from '../sequelize'
 import User from '../user'
+import Lesson from '../lesson'
 
 // For table definition, see 20180605-02-initial-tables.sql
 const Course = sequelize.define('course', {
@@ -73,6 +74,21 @@ User.belongsToMany(Course, {
   as: 'instructedCourses',
   through: 'course_instructor',
   foreignKey: 'user_id',
+  otherKey: 'course_id'
+})
+
+// course_lesson relationships
+Course.belongsToMany(Lesson, {
+  as: 'lessons',
+  through: 'course_lesson',
+  foreignKey: 'course_id',
+  otherKey: 'lesson_id'
+})
+
+Lesson.belongsToMany(Course, {
+  as: 'courses',
+  through: 'course_lesson',
+  foreignKey: 'lesson_id',
   otherKey: 'course_id'
 })
 

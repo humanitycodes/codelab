@@ -10,15 +10,16 @@ export default ({ authUser, courseRecord }) => {
     endDate: courseRecord.endDate ? courseRecord.endDate.getTime() : null,
     syllabus: courseRecord.syllabus,
     title: courseRecord.title,
-    version: courseRecord.version
+    version: courseRecord.version,
+    instructors: [],
+    lessonIds: []
   }
 
   // Translate instructors
   if (courseRecord.instructors) {
-    course.instructors = []
-    courseRecord.instructors.forEach(userRecord => {
-      course.instructors.push(translateUserFromRecord({ userRecord }))
-    })
+    course.instructors = courseRecord.instructors.map(
+      userRecord => translateUserFromRecord({ userRecord })
+    )
   }
 
   // Translate students if the requesting user is an instructor of the course
@@ -29,10 +30,16 @@ export default ({ authUser, courseRecord }) => {
       authUser.userId === instructor.userId
     )
   ) {
-    course.students = []
-    courseRecord.students.forEach(userRecord => {
-      course.students.push(translateUserFromRecord({ userRecord }))
-    })
+    course.students = courseRecord.students.map(
+      userRecord => translateUserFromRecord({ userRecord })
+    )
+  }
+
+  // Translate lessons (IDs only)
+  if (courseRecord.lessons) {
+    course.lessonIds = courseRecord.lessons.map(
+      lessonRecord => lessonRecord.lessonId
+    )
   }
 
   return course
