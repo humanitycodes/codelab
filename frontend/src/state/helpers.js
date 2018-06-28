@@ -18,21 +18,19 @@ export { userPermissionMethods }
 export const lessonGetters = {
   ...mapGetters([
     'lessons',
-    'currentLesson',
-    'showCurrentLessonPath',
-    'editCurrentLessonPath'
+    'currentLesson'
   ]),
   ...mapState({
     canUpdateCurrentLesson (state, getters) {
       if (!getters.currentLesson) return false
       return lessonPermissionMethods.canUpdateLesson({
-        lessonKey: getters.currentLesson['.key']
+        lessonKey: getters.currentLesson.lessonKey
       })
     },
     canDestroyCurrentLesson (state, getters) {
       if (!getters.currentLesson) return false
       return lessonPermissionMethods.canDestroyLesson({
-        lessonKey: getters.currentLesson['.key']
+        lessonKey: getters.currentLesson.lessonKey
       })
     }
   })

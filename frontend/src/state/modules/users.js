@@ -50,9 +50,10 @@ export default {
         )
       }
 
-      // Sync data if roles or signin status just changed
+      // Sync any data the user may have access to
       return Promise.all([
-        dispatch('syncAllCourses')
+        dispatch('syncAllCourses'),
+        dispatch('syncAllLessons')
       ]).then(() => user)
     },
     signOut ({ commit }) {
@@ -63,10 +64,6 @@ export default {
         axios.interceptors.request.eject(syncCache.refreshTokenInterceptor)
         delete syncCache.refreshTokenInterceptor
       }
-    },
-    updateCurrentUser ({ state }) {
-      // DB TODO: Call /api/users/me to update user fields
-      return Promise.resolve(state)
     }
   },
   mutations: {
