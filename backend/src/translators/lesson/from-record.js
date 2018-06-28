@@ -35,7 +35,7 @@ export default ({ lessonRecord }) => {
     )
   }
 
-  // Translate prerequisite lessons
+  // Translate prerequisite lessons (IDs only)
   if (lessonRecord.prerequisiteLessons) {
     lesson.prerequisiteLessonIds = lessonRecord.prerequisiteLessons.map(
       prerequisiteLessonRecord => prerequisiteLessonRecord.lessonId

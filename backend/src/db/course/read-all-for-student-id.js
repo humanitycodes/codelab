@@ -1,5 +1,6 @@
 import Course from './index'
 import User from '../user'
+import Lesson from '../lesson'
 
 export default (userId, options) => Course.findAll({
   ...options,
@@ -14,6 +15,12 @@ export default (userId, options) => Course.findAll({
       where: {
         userId
       }
+    },
+    {
+      model: Lesson,
+      as: 'lessons',
+      // Don't eagerly fetch large fields of lessons
+      attributes: ['lessonId']
     }
   ]
 })

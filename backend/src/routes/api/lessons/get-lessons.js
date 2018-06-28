@@ -1,6 +1,7 @@
 import boom from 'boom'
 import canReadAllLessons from '../../../helpers/permission/can-read-all-lessons'
 import readAllLessons from '../../../db/lesson/read-all'
+import readAllLessonsForStudentId from '../../../db/lesson/read-all-for-student-id'
 import translateLessonFromRecord from '../../../translators/lesson/from-record'
 
 export default {
@@ -12,6 +13,8 @@ export default {
       let lessonRecords = []
       if (canReadAllLessons(authUser)) {
         lessonRecords = await readAllLessons()
+      } else {
+        lessonRecords = await readAllLessonsForStudentId(authUser.userId)
       }
 
       const lessons = lessonRecords.map(
