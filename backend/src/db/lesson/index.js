@@ -71,4 +71,11 @@ Lesson.belongsToMany(Lesson, {
   otherKey: 'prerequisite_lesson_id'
 })
 
+Lesson.belongsToMany(Lesson, {
+  as: 'postrequisiteLessons',
+  through: 'lesson_prerequisite',
+  foreignKey: 'prerequisite_lesson_id',
+  otherKey: 'lesson_id'
+})
+
 export default Lesson
