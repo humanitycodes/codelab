@@ -1,4 +1,5 @@
 import translateLearningObjectiveFromRecord from './learning-objective/from-record'
+import translateProjectCriterionFromRecord from './project-criterion/from-record'
 
 export default ({ lessonRecord }) => {
   // Whitelist of fields that are available to clients
@@ -11,7 +12,8 @@ export default ({ lessonRecord }) => {
     notes: lessonRecord.notes,
     projectTitle: lessonRecord.projectTitle,
     projectHosting: lessonRecord.projectHosting,
-    learningObjectives: []
+    learningObjectives: [],
+    projectCriteria: []
   }
 
   // Translate learning objectives
@@ -19,6 +21,15 @@ export default ({ lessonRecord }) => {
     lesson.learningObjectives = lessonRecord.learningObjectives.map(
       lessonLearningObjectiveRecord => translateLearningObjectiveFromRecord({
         lessonLearningObjectiveRecord
+      })
+    )
+  }
+
+  // Translate project criteria
+  if (lessonRecord.projectCriteria) {
+    lesson.projectCriteria = lessonRecord.projectCriteria.map(
+      lessonProjectCriterionRecord => translateProjectCriterionFromRecord({
+        lessonProjectCriterionRecord
       })
     )
   }

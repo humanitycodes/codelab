@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize'
 import sequelize from '../sequelize'
 import LessonLearningObjective from './learning-objective'
+import LessonProjectCriterion from './project-criterion'
 
 // For table definition, see 20180605-02-initial-tables.sql
 const Lesson = sequelize.define('lesson', {
@@ -53,6 +54,12 @@ const Lesson = sequelize.define('lesson', {
 
 Lesson.hasMany(LessonLearningObjective, {
   as: 'learningObjectives',
+  foreignKey: 'lesson_id',
+  sourceKey: 'lesson_id'
+})
+
+Lesson.hasMany(LessonProjectCriterion, {
+  as: 'projectCriteria',
   foreignKey: 'lesson_id',
   sourceKey: 'lesson_id'
 })
