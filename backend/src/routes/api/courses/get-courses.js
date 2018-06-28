@@ -17,14 +17,16 @@ export default {
         courseRecords = await readAllCoursesForStudentId(authUser.userId)
       }
 
-      let courses = []
-      courseRecords.forEach(courseRecord => {
-        courses.push(translateCourseFromRecord({ authUser, courseRecord }))
-      })
+      const courses = courseRecords.map(courseRecord =>
+        translateCourseFromRecord({ authUser, courseRecord })
+      )
 
       return courses
     } catch (error) {
-      console.error(`Unable to get courses for user ${authUser.userId} (${authUser.fullName}). Reason:`, error)
+      console.error(
+        `Unable to get courses for user ${authUser.userId} (${authUser.fullName}).`,
+        'Reason:', error
+      )
       return boom.wrap(error)
     }
   }
