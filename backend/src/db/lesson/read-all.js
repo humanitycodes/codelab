@@ -17,7 +17,13 @@ export default options => Lesson.findAll({
     {
       model: Lesson,
       as: 'prerequisiteLessons',
-      // Don't eagerly fetch large fields of prereq
+      // Don't eagerly fetch large fields of prereqs
+      attributes: ['lessonId']
+    },
+    {
+      model: Lesson,
+      as: 'postrequisiteLessons',
+      // Don't eagerly fetch large fields of postreqs
       attributes: ['lessonId']
     },
     {
