@@ -42,5 +42,12 @@ export default ({ lessonRecord }) => {
     )
   }
 
+  // Translate courses (IDs only)
+  if (lessonRecord.courses) {
+    lesson.courseIds = lessonRecord.courses.map(
+      courseRecord => courseRecord.courseId
+    )
+  }
+
   return lesson
 }
