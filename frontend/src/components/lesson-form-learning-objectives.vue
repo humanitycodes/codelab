@@ -13,9 +13,9 @@
         <template scope="list">
           <input
             v-model="list.item.content"
-            :id="`learning-objective-${list.item['.position']}`"
-            :name="`learning-objective-${list.item['.position']}`"
-            :aria-label="`Learning objective ${list.item['.position']}`"
+            :id="`learning-objective-${list.item.position}`"
+            :name="`learning-objective-${list.item.position}`"
+            :aria-label="`Learning objective ${list.item.position}`"
           >
         </template>
       </OrderedEditableList>
@@ -43,8 +43,9 @@ export default {
   },
   methods: {
     addObjective (content) {
-      this.lesson.learningObjectives.add({
-        content: this.newLearningObjective
+      this.lesson.learningObjectives.push({
+        content: this.newLearningObjective,
+        position: this.lesson.learningObjectives.length
       })
       this.newLearningObjective = ''
     }
