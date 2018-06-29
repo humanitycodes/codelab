@@ -13,6 +13,7 @@ export default ({ lessonRecord }) => {
     projectKey: lessonRecord.projectKey,
     projectTitle: lessonRecord.projectTitle,
     projectHosting: lessonRecord.projectHosting,
+    version: lessonRecord.version,
     learningObjectives: [],
     projectCriteria: [],
     prerequisiteLessonIds: []
