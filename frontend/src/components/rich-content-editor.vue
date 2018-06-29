@@ -7,7 +7,7 @@
       ref="textarea"
       :id="id"
       :name="name"
-      :value.dom-prop="value"
+      :value.prop="value"
     />
     <RenderedContent
       v-if="isExpanded"
@@ -20,7 +20,9 @@
       class="rich-content-editor-someone-else-is-editing-warning"
     >
       <p class="warning">
-        <strong>Warning!</strong> Someone else is currently editing this lesson. Simultaneous editing is <strong>not</strong> currently supported. This message will disappear when they are done.
+        <strong>Warning!</strong> Someone else is currently editing this lesson.
+        Simultaneous editing is <strong>not</strong> currently supported. This
+        message will disappear when they are done.
       </p>
     </div>
   </div>
