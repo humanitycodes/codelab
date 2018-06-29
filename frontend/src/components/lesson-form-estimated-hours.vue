@@ -31,8 +31,8 @@ export default {
   },
   methods: {
     updateHours (newHours) {
-      if (/^[\d.]*$/.test(newHours)) {
-        const newHoursNumber = Number(newHours)
+      if (/^[\d]*$/.test(newHours)) {
+        const newHoursNumber = parseInt(newHours)
         if (!isNaN(newHoursNumber) && newHoursNumber > 0) {
           this.lesson.estimatedHours = newHoursNumber
         }
