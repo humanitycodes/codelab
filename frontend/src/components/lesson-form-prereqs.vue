@@ -5,9 +5,7 @@
       <Dropdown
         :results="queryResults"
         :resultHandler="addPrereq"
-        :resultContent="function (lesson) {
-          return lesson.title || lesson['.key']
-        }"
+        :resultContent="lesson => lesson.title || lesson.lessonKey"
       >
         <input
           ref="queryInput"
@@ -18,8 +16,8 @@
         >
       </Dropdown>
       <ul v-if="prereqs.length">
-        <li v-for="prereq in prereqs">
-          {{ prereq.title || prereq['.key'] }}
+        <li v-for="prereq in prereqs" :key="prereq.lessonId">
+          {{ prereq.title || prereq.lessonKey }}
           <button
             @click="removePrereq(prereq)"
             class="inline danger"
@@ -28,7 +26,8 @@
         </li>
       </ul>
       <p v-else class="warning">
-        Most lessons will have prerequisites. Are you sure there are no other lessons that should be completed before this one?
+        Most lessons will have prerequisites. Are you sure there are no other
+        lessons that should be completed before this one?
       </p>
     </div>
   </div>
@@ -58,52 +57,51 @@ export default {
     queryResults () {
       if (!this.prereqQuery || !this.lessons.length) return []
       const queryRegex = new RegExp(this.prereqQuery, 'i')
-      return this.lessons.filter(lesson => {
-        return (
-          // Lesson is not self
-          this.lesson['.key'] !== lesson['.key'] &&
-          // Lesson is not already a prereq
-          this.lesson.prereqKeys.indexOf(lesson['.key']) === -1 &&
-          // Lesson would not cause cyclical dependency (catch 22)
-          this.prereqWouldBeAcyclic(lesson) &&
-          // Lesson matches the query string
-          (
-            queryRegex.test(lesson['.key']) ||
-            queryRegex.test(lesson.title)
-          )
+      return this.lessons.filter(lesson => (
+        // Lesson is not self
+        this.lesson.lessonId !== lesson.lessonId &&
+        // Lesson is not already a prereq
+        !this.lesson.prerequisiteLessonIds.includes(lesson.lessonId) &&
+        // Lesson would not cause cyclical dependency (catch 22)
+        this.prereqWouldBeAcyclic(lesson) &&
+        // Lesson matches the query string
+        (
+          queryRegex.test(lesson.lessonKey) ||
+          queryRegex.test(lesson.title)
         )
-      })
+      ))
     },
     prereqs () {
-      if (!this.lessons.length || !this.lesson.prereqKeys) {
+      if (!this.lessons.length || !this.lesson.prerequisiteLessonIds) {
         return []
       }
-      return this.lessons.filter(lesson => {
-        return this.lesson.prereqKeys.indexOf(lesson['.key']) !== -1
-      })
+      return this.lessons.filter(
+        lesson => this.lesson.prerequisiteLessonIds.includes(lesson.lessonId)
+      )
     }
   },
   methods: {
     addPrereq (prereq) {
-      this.lesson.addPrereq(prereq['.key'])
+      this.lesson.prerequisiteLessonIds.push(prereq.lessonId)
       this.prereqQuery = ''
       this.$refs.queryInput.focus()
     },
     removePrereq (prereq) {
-      this.lesson.removePrereq(prereq['.key'])
+      const index = this.lesson.prerequisiteLessonIds.indexOf(prereq.lessonId)
+      this.lesson.prerequisiteLessonIds.splice(index, 1)
     },
     prereqWouldBeAcyclic (prereq) {
-      const currentLessonKey = this.lesson['.key']
+      const currentLessonId = this.lesson.lessonId
       const doesNotDependOnSelf = potentialPrereq => {
-        if (potentialPrereq.prereqKeys) {
-          const keys = Object.keys(potentialPrereq.prereqKeys)
-          const dependsOnSelf = keys.indexOf(currentLessonKey) !== -1
+        if (potentialPrereq.prerequisiteLessonIds) {
+          const prereqLessonIds = potentialPrereq.prerequisiteLessonIds
+          const dependsOnSelf = prereqLessonIds.includes(currentLessonId)
           if (dependsOnSelf) {
             return false
           } else {
-            return this.lessons.filter(lesson => {
-              return keys.indexOf(lesson['.key']) !== -1
-            }).every(doesNotDependOnSelf)
+            return this.lessons.filter(
+              lesson => prereqLessonIds.includes(lesson.lessonId)
+            ).every(doesNotDependOnSelf)
           }
         } else {
           return true
