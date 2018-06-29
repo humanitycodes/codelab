@@ -75,6 +75,7 @@
             />
             <div
               v-for="(milestone, milestoneIndex) in gradeMilestones"
+              :key="milestoneIndex"
               :data-grade="milestone"
               :style="{ left: milestone / maxGrade * 100 + '%' }"
               :class="{
