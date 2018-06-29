@@ -22,12 +22,6 @@ export default (userId, options) => Lesson.findAll({
       attributes: ['lessonId']
     },
     {
-      model: Lesson,
-      as: 'postrequisiteLessons',
-      // Don't eagerly fetch large fields of postreqs
-      attributes: ['lessonId']
-    },
-    {
       model: Course,
       as: 'courses',
       // Don't eagerly fetch large fields of course

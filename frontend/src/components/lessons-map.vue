@@ -179,7 +179,7 @@ export default {
           width: this.nodeWidth,
           height: this.nodeHeight
         })
-        const postreqsIncludedInCourse = lesson.postrequisiteLessonIds.map(
+        const postreqsIncludedInCourse = this.getPostrequisiteLessonIds(lesson).map(
           postreqLessonId => this.lessons.find(
             lesson => lesson.lessonId === postreqLessonId
           )
@@ -347,7 +347,7 @@ export default {
       return courseLessonUserProjectCompletion(this.course, lesson, this.currentUser)
     },
     getExtendedPostreqs (lesson) {
-      const immediatePostreqs = lesson.postrequisiteLessonIds.map(
+      const immediatePostreqs = this.getPostrequisiteLessonIds(lesson).map(
         postreqLessonId => this.lessons.find(
           lesson => lesson.lessonId === postreqLessonId
         )
@@ -359,6 +359,11 @@ export default {
           ).reduce((a, b) => a.concat(b), [])
         )
       )
+    },
+    getPostrequisiteLessonIds (lesson) {
+      return this.lessons.filter(
+        postreq => postreq.prerequisiteLessonIds.includes(lesson.lessonId)
+      ).map(postreq => postreq.lessonId)
     },
     getImmediatePrereqsCount (lesson) {
       return lesson.prerequisiteLessonIds.filter(

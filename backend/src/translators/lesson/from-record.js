@@ -15,8 +15,7 @@ export default ({ lessonRecord }) => {
     projectHosting: lessonRecord.projectHosting,
     learningObjectives: [],
     projectCriteria: [],
-    prerequisiteLessonIds: [],
-    postrequisiteLessonIds: []
+    prerequisiteLessonIds: []
   }
 
   // Translate learning objectives
@@ -41,13 +40,6 @@ export default ({ lessonRecord }) => {
   if (lessonRecord.prerequisiteLessons) {
     lesson.prerequisiteLessonIds = lessonRecord.prerequisiteLessons.map(
       prerequisiteLessonRecord => prerequisiteLessonRecord.lessonId
-    )
-  }
-
-  // Translate postrequisite lessons (IDs only)
-  if (lessonRecord.postrequisiteLessons) {
-    lesson.postrequisiteLessonIds = lessonRecord.postrequisiteLessons.map(
-      postrequisiteLessonRecord => postrequisiteLessonRecord.lessonId
     )
   }
 
