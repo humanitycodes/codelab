@@ -38,6 +38,11 @@ const Lesson = sequelize.define('lesson', {
     type: DataTypes.TEXT,
     allowNull: true
   },
+  projectKey: {
+    field: 'project_key',
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
   projectTitle: {
     field: 'project_title',
     type: DataTypes.TEXT,

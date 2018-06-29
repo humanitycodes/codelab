@@ -78,16 +78,7 @@
               v-if="node.lessonStatus.started"
               class="button inline lessons-map-project-status"
               :class="node.lessonStatus"
-              :href="
-                'https://github.com/' +
-                currentUser.githubLogin +
-                '/' +
-                [
-                  course.courseKey,
-                  node.lessonKey,
-                  getProjectCompletion(node.lesson).projectKey.slice(-6)
-                ].join('-')
-              "
+              :href="userCourseLessonProjectRepoUrl(currentUser, course, node.lesson)"
               target="_blank"
               @click.stop
             >
@@ -123,7 +114,7 @@ import design from '@config/design'
 import courseLessonGradePointsRounded from '@helpers/computed/course-lesson-grade-points-rounded'
 import courseLessonUserStatus from '@helpers/computed/course-lesson-user-status'
 import courseLessonUserProjectCompletion from '@helpers/finders/course-lesson-user-project-completion'
-
+import userCourseLessonProjectRepoUrl from '@helpers/computed/user-course-lesson-project-repo-url'
 const gutterWidth = parseInt(design.layout.gutterWidth)
 
 export default {
@@ -167,8 +158,7 @@ export default {
       // Layout options
       // https://github.com/cpettitt/dagre/wiki#configuring-the-layout
       layout.setGraph({
-        // The direction of the tree (e.g. LR means
-        // left-to-right)
+        // The direction of the tree (e.g. LR means left-to-right)
         rankDir: 'LR',
         // Number of pixels that separate nodes horizontally
         // in the layout
@@ -295,6 +285,7 @@ export default {
   },
   methods: {
     canUpdateLesson,
+    userCourseLessonProjectRepoUrl,
     nodeOffsetX (node) {
       return node.x - node.width / 2
     },

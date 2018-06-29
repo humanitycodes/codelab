@@ -10,6 +10,7 @@ export default ({ lessonRecord }) => {
     estimatedHours: lessonRecord.estimatedHours,
     content: lessonRecord.content,
     notes: lessonRecord.notes,
+    projectKey: lessonRecord.projectKey,
     projectTitle: lessonRecord.projectTitle,
     projectHosting: lessonRecord.projectHosting,
     learningObjectives: [],
