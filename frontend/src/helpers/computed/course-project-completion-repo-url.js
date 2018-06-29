@@ -1,14 +1,9 @@
-import userByKey from '../finders/user-by-key'
-import courseProjectCompletionRepoName from './course-project-completion-repo-name'
+import userById from '../finders/user-by-id'
+import lessonById from '../finders/lesson-by-id'
+import userCourseLessonProjectRepoUrl from './user-course-lesson-project-repo-url'
 
 export default (course, projectCompletion) => {
-  const user = userByKey(projectCompletion.students[0]['.key'])
-  const githubUsername = user.github.login
-  const repoName = courseProjectCompletionRepoName(course, projectCompletion)
-  return [
-    'https://github.com/',
-    githubUsername,
-    '/',
-    repoName
-  ].join('')
+  const user = userById(projectCompletion.studentUserId)
+  const lesson = lessonById(projectCompletion.lessonId)
+  return userCourseLessonProjectRepoUrl(user, course, lesson)
 }

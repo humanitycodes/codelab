@@ -38,6 +38,7 @@ CREATE TABLE lesson (
   estimated_hours INT,
   content TEXT,
   notes TEXT,
+  project_key TEXT,
   project_title TEXT,
   project_hosting TEXT,
   version INTEGER,
