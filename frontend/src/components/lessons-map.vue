@@ -179,15 +179,10 @@ export default {
           width: this.nodeWidth,
           height: this.nodeHeight
         })
-        const postreqsIncludedInCourse = this.getPostrequisiteLessonIds(lesson).map(
-          postreqLessonId => this.lessons.find(
-            lesson => lesson.lessonId === postreqLessonId
-          )
-        ).filter(postreq => postreq)
         // Sort postreqs by their number of immediate prereqs, descending,
         // so that more difficult to place nodes are given priority
         sortBy(
-          postreqsIncludedInCourse,
+          this.getPostrequisiteLessons(lesson),
           postreq => -1 * this.getImmediatePrereqsCount(postreq)
         ).forEach(postreq => {
           layout.setEdge(lessonId, postreq.lessonId)
@@ -347,11 +342,7 @@ export default {
       return courseLessonUserProjectCompletion(this.course, lesson, this.currentUser)
     },
     getExtendedPostreqs (lesson) {
-      const immediatePostreqs = this.getPostrequisiteLessonIds(lesson).map(
-        postreqLessonId => this.lessons.find(
-          lesson => lesson.lessonId === postreqLessonId
-        )
-      ).filter(postreq => postreq)
+      const immediatePostreqs = this.getPostrequisiteLessons(lesson)
       return (
         immediatePostreqs.concat(
           immediatePostreqs.map(
@@ -360,10 +351,10 @@ export default {
         )
       )
     },
-    getPostrequisiteLessonIds (lesson) {
+    getPostrequisiteLessons (lesson) {
       return this.lessons.filter(
         postreq => postreq.prerequisiteLessonIds.includes(lesson.lessonId)
-      ).map(postreq => postreq.lessonId)
+      ).filter(postreq => postreq)
     },
     getImmediatePrereqsCount (lesson) {
       return lesson.prerequisiteLessonIds.filter(
