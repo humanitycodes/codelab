@@ -44,16 +44,16 @@ export default {
       return this.courses.some(course => {
         if (!course.startDate || !course.endDate) return false
         return (
-          course.lessonKeys.includes(this.lesson['.key']) &&
+          course.lessonIds.includes(this.lesson.lessonId) &&
           course.startDate < now &&
           course.endDate > now
         )
       })
     },
     isLessonInCourse () {
-      return this.courses.some(course => {
-        return course.lessonKeys.includes(this.lesson['.key'])
-      })
+      return this.courses.some(
+        course => course.lessonIds.includes(this.lesson.lessonId)
+      )
     }
   }
 }
