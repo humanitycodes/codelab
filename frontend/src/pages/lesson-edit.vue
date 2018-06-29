@@ -19,7 +19,10 @@
       confirmLabel="Delete"
       @close="onCloseRemoveLessonModal"
     >
-      <p>Are you sure you want to permanently delete <strong>{{ currentLesson.title || currentLesson['.key'] }}</strong>?</p>
+      <p>
+        Are you sure you want to permanently delete
+        <strong>{{ currentLesson.title || currentLesson.lessonKey }}</strong>?
+      </p>
       <aside>This action cannot be undone.</aside>
     </ModalConfirm>
   </Layout>
@@ -32,6 +35,8 @@ import LessonNotFound from '@components/lesson-not-found'
 import DoneButton from '@components/done-button'
 import ModalConfirm from '@components/modal-confirm'
 import { lessonGetters } from '@state/helpers'
+import deleteLesson from '@api/lessons/delete-lesson'
+import store from '@state/store'
 
 export default {
   components: {
@@ -50,9 +55,9 @@ export default {
     onCloseRemoveLessonModal (confirmed) {
       this.showModalConfirmRemoveLesson = false
       if (confirmed) {
-        this.lessons.remove(this.currentLesson['.key']).then(() => {
-          window.location.replace('/lessons')
-        })
+        deleteLesson(this.currentLesson.lessonId)
+        .then(() => store.dispatch('syncAllLessons'))
+        .then(() => this.$router.replace('/lessons'))
       }
     }
   }
