@@ -1,12 +1,12 @@
 <template>
   <ol v-if="items.length">
-    <Draggable :list="items" @end="items.updateOrder">
-      <li v-for="item in items" :key="item['.key']">
+    <Draggable :list="items" @end="updatePositions">
+      <li v-for="(item, index) in items" :key="index">
         <div :class="inputWrapperClass">
           <div class="ordered-editable-list-input-group">
             <slot :item="item"/>
           </div>
-          <button @click="removeItem(item)" class="danger">×</button>
+          <button @click="removeItem(index)" class="danger">×</button>
         </div>
       </li>
     </Draggable>
@@ -37,8 +37,14 @@ export default {
     }
   },
   methods: {
-    removeItem (item) {
-      this.items.remove(item['.key'])
+    removeItem (index) {
+      this.items.splice(index, 1)
+      this.updatePositions()
+    },
+    updatePositions () {
+      this.items.forEach((item, index) => {
+        item.position = index
+      })
     }
   }
 }
