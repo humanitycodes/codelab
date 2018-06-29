@@ -41,6 +41,8 @@
 <script>
 import Layout from '@layouts/main'
 import { userGetters, lessonGetters } from '@state/helpers'
+import store from '@state/store'
+import createLesson from '@api/lessons/create-lesson'
 
 export default {
   components: {
@@ -75,17 +77,15 @@ export default {
     validateKey () {
       const validRegex = /^[a-z]+(?:-[a-z]+)*$/
       const keyFormatIsValid = validRegex.test(this.key)
-      const keyIsUnique = this.lessons.every(lesson => {
-        return lesson.key !== this.key
-      })
+      const keyIsUnique = this.lessons.every(lesson => lesson.key !== this.key)
       this.keyIsValid = keyFormatIsValid && keyIsUnique
     },
     tryToCreateLesson () {
       if (this.keyIsValid) {
-        const key = [this.categoryPrefix, this.key].join('-')
-        this.lessons.add(key).then(() => {
-          window.location.replace(`/lessons/${key}/edit`)
-        })
+        const lessonKey = `${this.categoryPrefix}-${this.key}`
+        createLesson({ lessonKey })
+        .then(() => store.dispatch('syncAllLessons'))
+        .then(() => this.$router.replace(`/lessons/${lessonKey}/edit`))
       }
     }
   }

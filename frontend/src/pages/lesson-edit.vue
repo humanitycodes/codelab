@@ -1,8 +1,8 @@
 <template>
   <Layout>
-    <div v-if="currentLesson">
+    <div v-if="lesson">
       <DoneButton fallback-route="/lessons"/>
-      <LessonForm :lesson="currentLesson"/>
+      <LessonForm :lesson="lesson"/>
       <DoneButton fallback-route="/lessons"/>
       <button
         v-if="canDestroyCurrentLesson"
@@ -21,7 +21,7 @@
     >
       <p>
         Are you sure you want to permanently delete
-        <strong>{{ currentLesson.title || currentLesson.lessonKey }}</strong>?
+        <strong>{{ lesson.title || lesson.lessonKey }}</strong>?
       </p>
       <aside>This action cannot be undone.</aside>
     </ModalConfirm>
@@ -44,6 +44,8 @@ export default {
   },
   data () {
     return {
+      // Copy the current lesson so changes can be canceled
+      lesson: JSON.parse(JSON.stringify(store.getters.currentLesson)),
       showModalConfirmRemoveLesson: false
     }
   },
@@ -55,7 +57,7 @@ export default {
     onCloseRemoveLessonModal (confirmed) {
       this.showModalConfirmRemoveLesson = false
       if (confirmed) {
-        deleteLesson(this.currentLesson.lessonId)
+        deleteLesson(this.lesson.lessonId)
         .then(() => store.dispatch('syncAllLessons'))
         .then(() => this.$router.replace('/lessons'))
       }

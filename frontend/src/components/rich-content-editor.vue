@@ -95,7 +95,7 @@ export default {
           }
         }
       })
-      this.editor.setValue(this.value)
+      this.editor.setValue(this.value || '')
       this.editor.on('change', throttle(editor => {
         this.$emit('input', editor.getValue())
       }, 450))
@@ -107,7 +107,7 @@ export default {
       const { editor } = this
       if (editor.getValue() !== newValue) {
         const { left, top } = editor.getScrollInfo()
-        editor.setValue(newValue)
+        editor.setValue(newValue || '')
         if (oldValue) {
           editor.scrollTo(left, top)
           editor.getInputField().blur()
