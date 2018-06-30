@@ -1,7 +1,7 @@
 <template>
   <ol v-if="items.length">
     <Draggable :list="items" @end="updatePositions">
-      <li v-for="(item, index) in items" :key="index">
+      <li v-for="(item, index) in orderedItems" :key="index">
         <div :class="inputWrapperClass">
           <div class="ordered-editable-list-input-group">
             <slot :item="item"/>
@@ -15,6 +15,7 @@
 
 <script>
 import Draggable from 'vuedraggable'
+import orderBy from 'lodash/orderBy'
 
 export default {
   components: {
@@ -34,6 +35,9 @@ export default {
       return this.inputCount === 1
         ? 'ordered-editable-list-single-input'
         : 'ordered-editable-list-multi-input'
+    },
+    orderedItems () {
+      return orderBy(this.items, 'position')
     }
   },
   methods: {
