@@ -5,7 +5,11 @@ export default routeDir => {
   const cwd = path.join(__dirname, `../${routeDir}/**/*.js`)
   let routes = []
 
-  glob.sync(cwd).forEach(file => {
+  glob.sync(cwd, {
+    // Ignore files in directories that begin with _ (e.g. _helpers)
+    ignore: '**/_*/*',
+    nodir: true
+  }).forEach(file => {
     const routeConfig = require(file).default
     if (Array.isArray(routeConfig)) {
       routeConfig.forEach(route => routes.push(route))
