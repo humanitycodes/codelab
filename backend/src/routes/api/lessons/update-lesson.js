@@ -7,6 +7,9 @@ import refreshLessonRecord from '../../../db/lesson/refresh'
 import updateLessonRecord from '../../../db/lesson/update'
 import translateLessonFromRecord from '../../../translators/lesson/from-record'
 import translateLessonFromPayload from '../../../translators/lesson/from-payload'
+import createLearningObjectiveRecord from '../../../db/lesson/learning-objective/create'
+import deleteLearningObjectiveRecord from '../../../db/lesson/learning-objective/delete'
+import updateLearningObjectiveRecord from '../../../db/lesson/learning-objective/update'
 
 export default {
   method: 'PUT',
@@ -26,7 +29,16 @@ export default {
         projectKey: joi.string().allow(null),
         projectTitle: joi.string().allow(null),
         projectHosting: joi.string().allow(null),
-        version: joi.number().integer().allow(null)
+        version: joi.number().integer().allow(null),
+        learningObjectives: joi.array().items(
+          joi.object({
+            lessonLearningObjectiveId: joi.number().integer().allow(null),
+            lessonId: joi.number().integer().allow(null),
+            position: joi.number().integer().min(0).required(),
+            content: joi.string().min(1).required(),
+            version: joi.number().integer().allow(null)
+          }).required()
+        ).allow(null)
       }).required()
     }
   },
@@ -68,6 +80,80 @@ export default {
       lessonRecord.notes = updatedLesson.notes
       lessonRecord.projectTitle = updatedLesson.projectTitle
       lessonRecord.projectHosting = updatedLesson.projectHosting
+
+      // Sync up the learning objectives
+      if (lessonRecord.learningObjectives) {
+        // Find records to delete
+        const toDelete = lessonRecord.learningObjectives.filter(
+          learningObjectiveRecord => {
+            // Delete if ID is not in the updated lesson's learning objectives
+            return !updatedLesson.learningObjectives.some(
+              updatedLessonLearningObjective => {
+                return updatedLessonLearningObjective.lessonLearningObjectiveId ===
+                  learningObjectiveRecord.lessonLearningObjectiveId
+              }
+            )
+          }
+        )
+
+        // Find records to update
+        const toUpdate = lessonRecord.learningObjectives.filter(
+          learningObjectiveRecord => {
+            // Find the updated learning objective with a matching ID
+            const updatedLearningObjective = updatedLesson.learningObjectives.find(
+              updatedLessonLearningObjective => {
+                return updatedLessonLearningObjective.lessonLearningObjectiveId ===
+                  learningObjectiveRecord.lessonLearningObjectiveId
+              }
+            )
+            // If the learning objective has a different position or content
+            // then update the existing record and include it in the filter
+            if (updatedLearningObjective && (
+              learningObjectiveRecord.position !== updatedLearningObjective.position ||
+              learningObjectiveRecord.content !== updatedLearningObjective.content
+            )) {
+              // Make sure the versions match
+              if (learningObjectiveRecord.version !== updatedLearningObjective.version) {
+                throw boom.conflict()
+              }
+              learningObjectiveRecord.position = updatedLearningObjective.position
+              learningObjectiveRecord.content = updatedLearningObjective.content
+              return true
+            }
+            // If no match found or no difference, exclude record from filter
+            return false
+          }
+        )
+
+        // Find records to insert (anything that doesn't have an ID)
+        const toInsert = updatedLesson.learningObjectives.filter(
+          updatedLessonLearningObjective => {
+            return isNaN(parseInt(
+              updatedLessonLearningObjective.lessonLearningObjectiveId
+            ))
+          }
+        )
+
+        // Perform all deletes, updates, and inserts in tandem
+        await [
+          toDelete.forEach(async learningObjectiveRecord => {
+            await deleteLearningObjectiveRecord(
+              learningObjectiveRecord, { transaction }
+            )
+          }),
+          toUpdate.forEach(async learningObjectiveRecord => {
+            await updateLearningObjectiveRecord(
+              learningObjectiveRecord, { transaction }
+            )
+          }),
+          toInsert.forEach(async learningObjective => {
+            learningObjective.lessonId = lessonRecord.lessonId
+            await createLearningObjectiveRecord(
+              learningObjective, { transaction }
+            )
+          })
+        ]
+      }
 
       // Update, refresh, and send the lesson to the client
       await updateLessonRecord(lessonRecord, { transaction })
