@@ -9,6 +9,7 @@ import translateLessonFromRecord from '../../../translators/lesson/from-record'
 import translateLessonFromPayload from '../../../translators/lesson/from-payload'
 import syncLearningObjectives from './_helpers/sync-learning-objectives'
 import syncProjectCriteria from './_helpers/sync-project-criteria'
+import syncPrerequisiteLessons from './_helpers/sync-prerequisite-lessons'
 
 export default {
   method: 'PUT',
@@ -46,6 +47,9 @@ export default {
             content: joi.string().min(1).required(),
             version: joi.number().integer().allow(null)
           })
+        ).allow(null),
+        prerequisiteLessonIds: joi.array().items(
+          joi.number().integer()
         ).allow(null)
       }).required()
     }
@@ -89,15 +93,12 @@ export default {
       lessonRecord.projectTitle = updatedLesson.projectTitle
       lessonRecord.projectHosting = updatedLesson.projectHosting
 
-      // Sync up the learning objectives
-      if (lessonRecord.learningObjectives) {
-        syncLearningObjectives({ lessonRecord, updatedLesson, transaction })
-      }
-
-      // Sync up the project criteria
-      if (lessonRecord.projectCriteria) {
-        syncProjectCriteria({ lessonRecord, updatedLesson, transaction })
-      }
+      // Sync the learning objectives and project criteria
+      await Promise.all([
+        await syncLearningObjectives({ lessonRecord, updatedLesson, transaction }),
+        await syncProjectCriteria({ lessonRecord, updatedLesson, transaction }),
+        await syncPrerequisiteLessons({ lessonRecord, updatedLesson })
+      ])
 
       // Update, refresh, and send the lesson to the client
       await updateLessonRecord(lessonRecord, { transaction })

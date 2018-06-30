@@ -15,7 +15,8 @@ export default ({ payload }) => {
     projectHosting: payload.projectHosting,
     version: payload.version,
     learningObjectives: [],
-    projectCriteria: []
+    projectCriteria: [],
+    prerequisiteLessonIds: []
   }
 
   // Translate learning objectives
@@ -33,6 +34,13 @@ export default ({ payload }) => {
       projectCriterionPayload => translateProjectCriterionFromPayload({
         payload: projectCriterionPayload
       })
+    )
+  }
+
+  // Translate prerequisite lessons
+  if (payload.prerequisiteLessonIds) {
+    lesson.prerequisiteLessonIds = payload.prerequisiteLessonIds.map(
+      prerequisiteLessonId => prerequisiteLessonId
     )
   }
 
