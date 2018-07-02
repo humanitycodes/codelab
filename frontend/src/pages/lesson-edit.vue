@@ -1,9 +1,9 @@
 <template>
   <Layout>
     <div v-if="lesson">
-      <DoneButton fallback-route="/lessons"/>
+      <DoneButton @click="saveLesson"/>
       <LessonForm :lesson="lesson"/>
-      <DoneButton fallback-route="/lessons"/>
+      <DoneButton @click="saveLesson"/>
       <button
         v-if="canDestroyCurrentLesson"
         @click="showRemoveLessonModal"
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import store from '@state/store'
 import Layout from '@layouts/main'
 import LessonForm from '@components/lesson-form'
 import LessonNotFound from '@components/lesson-not-found'
@@ -36,7 +37,8 @@ import DoneButton from '@components/done-button'
 import ModalConfirm from '@components/modal-confirm'
 import { lessonGetters } from '@state/helpers'
 import deleteLesson from '@api/lessons/delete-lesson'
-import store from '@state/store'
+import updateLesson from '@api/lessons/update-lesson'
+import goBackOrFallback from '@helpers/utils/go-back-or-fallback'
 
 export default {
   components: {
@@ -61,6 +63,11 @@ export default {
         .then(() => store.dispatch('syncAllLessons'))
         .then(() => this.$router.replace('/lessons'))
       }
+    },
+    saveLesson () {
+      updateLesson(this.lesson)
+      .then(() => store.dispatch('syncAllLessons'))
+      .then(() => goBackOrFallback())
     }
   }
 }
