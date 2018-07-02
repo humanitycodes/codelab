@@ -50,6 +50,9 @@ export default {
         ).allow(null),
         prerequisiteLessonIds: joi.array().items(
           joi.number().integer()
+        ).allow(null),
+        courseIds: joi.array().items(
+          joi.number().integer()
         ).allow(null)
       }).required()
     }
