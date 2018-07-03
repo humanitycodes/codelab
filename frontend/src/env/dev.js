@@ -7,6 +7,7 @@ export default {
     apiKey: 'AIzaSyA89rF1Lr7zJXNrzf38o-lv8QzerSjkG4o',
     authDomain: 'msulansingcodesdev.firebaseapp.com',
     databaseURL: 'https://msulansingcodesdev.firebaseio.com',
+    projectId: 'msulansingcodesdev',
     storageBucket: 'msulansingcodesdev.appspot.com',
     messagingSenderId: '403150037940'
   }

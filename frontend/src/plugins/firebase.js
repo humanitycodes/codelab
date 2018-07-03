@@ -1,8 +1,4 @@
-import Vue from 'vue'
-import Firebase from 'firebase'
-import VueFire from 'vuefire'
+import firebase from 'firebase/app'
 import env from '@env'
 
-Vue.use(VueFire)
-
-export default Firebase.initializeApp(env.firebaseConfig).database()
+export default firebase.initializeApp(env.firebaseConfig)
