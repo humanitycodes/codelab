@@ -57,7 +57,7 @@
               alt="Open Github profile in new tab"
               aria-label="GitHub Profile"
             >
-              <span class="fa fa-github" aria-hidden="true" title="Open student's GitHub profile"></span>
+              <span class="fab fa-github" aria-hidden="true" title="Open student's GitHub profile"></span>
             </a>
 
             <a
@@ -68,7 +68,7 @@
               alt="Email student"
               aria-label="Email address"
             >
-              <span class="fa fa-envelope" aria-hidden="true" title="Email student"></span>
+              <span class="far fa-envelope" aria-hidden="true" title="Email student"></span>
             </a>
           </td>
 
