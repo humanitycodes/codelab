@@ -1,5 +1,6 @@
 import firebase from 'firebase-admin'
-import encodeKey from '../../../firebase/dist/utils/encode-key'
+
+const encodeKey = key => encodeURIComponent(key).replace(/\./g, '%2E')
 
 function createCourseEnrollment (courseKey, userId) {
   return firebase.database()

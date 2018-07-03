@@ -21,39 +21,35 @@
   "scripts": {
     "install:backend": "cd backend && cross-env NODE_ENV=development yarn --pure-lockfile",
     "install:frontend": "cd frontend && cross-env NODE_ENV=development yarn --pure-lockfile",
-    "install:firebase": "cd firebase && cross-env NODE_ENV=development yarn --pure-lockfile",
     "install:test": "cd test && cross-env NODE_ENV=development yarn --pure-lockfile",
-    "postinstall": "npm-run-all install:* build-all deploy:firebase",
+    "postinstall": "run-s install:* build-all",
     "lint:backend": "cd backend && yarn run lint",
     "lint:frontend": "cd frontend && yarn run lint",
     "test:backend": "cd backend && yarn run test",
     "test:frontend": "cd frontend && yarn run test",
-    "test:firebase": "cd firebase && yarn run test",
     "test:test": "cd test && yarn run test",
     "dev:backend": "cd backend && yarn run dev",
-    "predev:frontend": "cd firebase && yarn run build:adapter && yarn run dev:deploy",
     "dev:frontend": "cd frontend && yarn run dev",
     "dev:ssl": "local-ssl-proxy --source 8080 --target 8181",
     "serve:backend": "cd backend && yarn run serve:prod",
     "build:backend": "cd backend && yarn run build",
     "build:frontend": "cd frontend && yarn run build",
-    "lint-all": "npm-run-all --parallel lint:*",
-    "test-all": "npm-run-all test:*",
-    "dev-all": "npm-run-all --parallel dev:*",
-    "build-all": "npm-run-all --parallel build:*",
-    "serve-all": "npm-run-all --parallel serve:*",
-    "start": "npm-run-all serve-all",
-    "deploy:firebase": "cd firebase && yarn run deploy",
+    "lint-all": "run-p lint:*",
+    "test-all": "run-s test:*",
+    "dev-all": "run-p dev:*",
+    "build-all": "run-p build:*",
+    "serve-all": "run-p serve:*",
+    "start": "run-s serve-all",
     "deploy:staging-to-production": "git fetch origin && git push --force origin origin/master:production",
     "deploy-force:local-to-staging": "git push --force ssh://git@heroku.com/msu-codes-staging.git `git rev-parse --abbrev-ref HEAD`:master",
     "deploy-force:local-to-production": "git push --force ssh://git@heroku.com/msu-lansing-codes.git `git rev-parse --abbrev-ref HEAD`:master",
     "ssl:renew": "sudo certbot certonly --manual -d codelab.cas.msu.edu && sudo heroku certs:update /etc/letsencrypt/live/msu.lansing.codes/fullchain.pem /etc/letsencrypt/live/msu.lansing.codes/privkey.pem --confirm msu-lansing-codes"
   },
   "dependencies": {
-    "npm-run-all": "^3.1.0"
+    "npm-run-all": "^4.1.3"
   },
   "devDependencies": {
-    "cross-env": "^5.1.3",
+    "cross-env": "^5.2.0",
     "local-ssl-proxy": "^1.3.0"
   },
   "engines": {

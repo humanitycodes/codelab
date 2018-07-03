@@ -1,5 +1,0 @@
-{
-  "database": {
-    "rules": "dist/firebase.rules.json"
-  }
-}
