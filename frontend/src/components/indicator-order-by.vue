@@ -1,7 +1,7 @@
 <template>
   <span
     aria-hidden="true"
-    class="fa order-by-indicator"
+    class="fas order-by-indicator"
     :class="{
       'fa-chevron-circle-down': column === orderByColumn,
       'fa-flip-vertical': orderByDirection === 'desc'

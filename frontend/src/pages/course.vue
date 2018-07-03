@@ -17,7 +17,7 @@
         <div v-else class="flex-col">
           <a href="#syllabus">
             Syllabus
-            <i class="fa fa-level-down" aria-hidden="true"></i>
+            <i class="fas fa-level-down-alt" aria-hidden="true"></i>
           </a>
         </div>
       </div>

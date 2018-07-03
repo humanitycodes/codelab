@@ -86,7 +86,10 @@
         <th id="links-heading">Links</th>
       </thead>
       <tbody>
-        <tr v-for="codeReview in sortCodeReviews(codeReviews)">
+        <tr
+          v-for="(codeReview, index) in sortCodeReviews(codeReviews)"
+          :key="index"
+        >
           <td class="numeric-cell">
             <span :class="{ 'review-info-sensitive-data': !showAllSensitiveData }">
               {{ codeReview.studentGradePoints }}
@@ -109,19 +112,19 @@
           </td>
           <td class="code-review-links">
             <a :href="getFirstIssueUrl(codeReview)" target="_blank" class="icon-link" alt="Open the GitHub issue in a new tab" aria-label="GitHub Issue">
-              <span class="fa fa-exclamation-circle" aria-hidden="true" title="Open this issue on GitHub"></span>
+              <span class="fas fa-exclamation-circle" aria-hidden="true" title="Open this issue on GitHub"></span>
             </a>
             <a :href="getGitHubProjectUrl(codeReview)" target="_blank" class="icon-link" alt="Open the GitHub code in a new tab" aria-label="GitHub Code">
-              <span class="fa fa-code" aria-hidden="true" title="View the code on GitHub"></span>
+              <span class="fas fa-code" aria-hidden="true" title="View the code on GitHub"></span>
             </a>
             <a :href="getHostedUrl(codeReview)" target="_blank" class="icon-link" alt="Open the hosted site in a new tab" aria-label="Hosted Site">
-              <span class="fa fa-globe" aria-hidden="true" title="View the hosted site"></span>
+              <span class="fas fa-globe-americas" aria-hidden="true" title="View the hosted site"></span>
             </a>
             <a :href="getValidatorUrl(codeReview)" target="_blank" class="icon-link" alt="Open validator errors in a new tab" aria-label="W3 Validator">
-              <span class="fa fa-check-circle" aria-hidden="true" title="View the W3 validator"></span>
+              <span class="fas fa-check-circle" aria-hidden="true" title="View the W3 validator"></span>
             </a>
             <a @click="openAllLinks(codeReview)" target="_blank" class="icon-link" alt="Open all links in a new tab" aria-label="All links">
-              <span class="fa fa-folder-open" aria-hidden="true" title="Open all links"></span>
+              <span class="fas fa-folder-open" aria-hidden="true" title="Open all links"></span>
             </a>
           </td>
           <td class="review-reassignment-control">
@@ -131,6 +134,7 @@
             >
               <option
                 v-for="instructorKey in codeReview.course.instructorKeys"
+                :key="instructorKey"
                 :value="instructorKey"
               >
                 {{ getInstructorInitialsFromKey(instructorKey) }}

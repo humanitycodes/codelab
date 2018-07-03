@@ -58,11 +58,11 @@
             class="flex-col"
           />
           <div class="flex-col">
-            <span class="fa fa-clock-o"/>
+            <span class="far fa-clock-o"/>
             {{ node.lesson.estimatedHours }}
           </div>
           <div v-if="course" class="flex-col">
-            <span class="fa fa-graduation-cap"/>
+            <span class="fas fa-graduation-cap"/>
             {{ lessonGradePoints(node.lesson) }}
           </div>
           <div class="flex-col" v-if="node.lesson.categories && node.lesson.categories.length">
@@ -83,11 +83,11 @@
               @click.stop
             >
               <span v-if="node.lessonStatus.approved">
-                <span class="fa fa-check"/>
+                <span class="fas fa-check"/>
                 Approved
               </span>
               <span v-else-if="node.lessonStatus.changesRequested">
-                <span class="fa fa-exclamation-circle"/>
+                <span class="fas fa-exclamation-circle"/>
                 Changes<br>Requested
               </span>
               <span v-else-if="node.lessonStatus.awaitingFeedback">
