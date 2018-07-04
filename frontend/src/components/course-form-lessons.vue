@@ -5,9 +5,7 @@
       <Dropdown
         :results="queryResults"
         :resultHandler="addCourseLesson"
-        :resultContent="function (lesson) {
-          return lesson.title || lesson['.key']
-        }"
+        :resultContent="lessonTitleOrKey"
       >
         <input
           ref="queryInput"
@@ -18,7 +16,10 @@
         >
       </Dropdown>
       <ul v-if="courseLessons.length">
-        <li v-for="lesson in courseLessons">
+        <li
+          v-for="lesson in courseLessons"
+          :key="lesson.lessonId"
+        >
           <LessonsMapLesson :lesson="lesson" :course="course"/>
           <button
             :disabled="lessonHasProjectCompletions(lesson)"
@@ -34,7 +35,8 @@
         </li>
       </ul>
       <p v-else class="warning">
-        If the course doesn't have any lessons, there won't be much for students to do!
+        If the course doesn't have any lessons, there won't be much for students
+        to do!
       </p>
     </div>
     <ModalConfirm
@@ -43,7 +45,11 @@
       confirmLabel="Delete"
       @close="onCloseRemoveLessonModal"
     >
-      <p>Are you sure you want to remove <strong>{{ lessonPendingRemoval.title || lessonPendingRemoval['.key'] }}</strong> from the course?</p>
+      <p>
+        Are you sure you want to remove
+        <strong>{{ lessonTitleOrKey(lessonPendingRemoval) }}</strong>
+        from the course?
+      </p>
     </ModalConfirm>
   </div>
 </template>
@@ -77,39 +83,38 @@ export default {
     queryResults () {
       if (!this.lessonQuery || !this.lessons.length) return []
       const queryRegex = new RegExp(this.lessonQuery, 'i')
-      return this.lessons.filter(lesson => {
-        return (
-          lessonCanBeAddedToCourse({
-            courseKey: this.course['.key'],
-            lessonKey: lesson['.key']
-          }) &&
-          // Lesson matches the query string
-          (
-            queryRegex.test(lesson['.key']) ||
-            queryRegex.test(lesson.title)
-          )
+      return this.lessons.filter(lesson => (
+        lessonCanBeAddedToCourse({
+          courseKey: this.course.courseKey,
+          lessonKey: lesson.lessonKey
+        }) &&
+        // Lesson matches the query string
+        (
+          queryRegex.test(lesson.lessonKey) ||
+          queryRegex.test(lesson.title)
         )
-      })
+      ))
     },
     courseLessons () {
-      if (!this.lessons.length || !this.course.lessonKeys) {
-        return []
-      }
-      return this.lessons.filter(lesson => {
-        return this.course.lessonKeys.indexOf(lesson['.key']) !== -1
-      })
+      return this.lessons.filter(
+        lesson => this.course.lessonIds.includes(lesson.lessonId)
+      )
     }
   },
   methods: {
+    lessonTitleOrKey (lesson) {
+      return lesson.title || lesson.lessonKey
+    },
     addCourseLesson (lesson) {
-      this.course.addLesson(lesson['.key'])
+      this.course.lessonIds.push(lesson.lessonId)
       this.lessonQuery = ''
       this.$refs.queryInput.focus()
     },
     lessonHasProjectCompletions (lesson) {
-      return this.course.projectCompletions.some(completion => {
-        return completion.lessonKey === lesson['.key']
-      })
+      return false
+      // return this.course.projectCompletions.some(completion => {
+      //   return completion.lessonKey === lesson['.key']
+      // })
     },
     showRemoveLessonModal (lesson) {
       this.lessonPendingRemoval = lesson
@@ -118,7 +123,9 @@ export default {
     onCloseRemoveLessonModal (confirmed) {
       this.showModalConfirmRemoveLesson = false
       if (confirmed) {
-        this.course.removeLesson(this.lessonPendingRemoval['.key'])
+        const lessonId = this.lessonPendingRemoval.lessonId
+        const index = this.course.lessonIds.indexOf(lessonId)
+        this.course.lessonIds.splice(index, 1)
       }
     }
   }
