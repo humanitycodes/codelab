@@ -1,5 +1,3 @@
-import translateUserFromRecord from '../user/from-record'
-
 export default ({ authUser, courseRecord }) => {
   // Whitelist of fields that are available to clients
   let course = {
@@ -11,27 +9,28 @@ export default ({ authUser, courseRecord }) => {
     syllabus: courseRecord.syllabus,
     title: courseRecord.title,
     version: courseRecord.version,
-    instructors: [],
+    instructorIds: [],
+    studentIds: [],
     lessonIds: []
   }
 
-  // Translate instructors
+  // Translate instructors (IDs only)
   if (courseRecord.instructors) {
-    course.instructors = courseRecord.instructors.map(
-      userRecord => translateUserFromRecord({ userRecord })
+    course.instructorIds = courseRecord.instructors.map(
+      userRecord => userRecord.userId
     )
   }
 
-  // Translate students if the requesting user is an instructor of the course
+  // Translate students (IDs only) if the requester instructs the course
   if (
     courseRecord.students &&
     courseRecord.instructors &&
-    courseRecord.instructors.some(instructor =>
-      authUser.userId === instructor.userId
+    courseRecord.instructors.some(
+      instructor => authUser.userId === instructor.userId
     )
   ) {
-    course.students = courseRecord.students.map(
-      userRecord => translateUserFromRecord({ userRecord })
+    course.studentIds = courseRecord.students.map(
+      userRecord => userRecord.userId
     )
   }
 

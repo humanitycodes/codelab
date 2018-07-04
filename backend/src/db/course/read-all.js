@@ -7,11 +7,15 @@ export default options => Course.findAll({
   include: [
     {
       model: User,
-      as: 'instructors'
+      as: 'instructors',
+      // Don't eagerly fetch extra fields of instructors
+      attributes: ['userId']
     },
     {
       model: User,
-      as: 'students'
+      as: 'students',
+      // Don't eagerly fetch extra fields of students
+      attributes: ['userId']
     },
     {
       model: Lesson,

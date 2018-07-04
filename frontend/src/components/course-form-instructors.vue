@@ -19,7 +19,10 @@
         >
       </Dropdown>
       <ul v-if="instructors.length">
-        <li v-for="instructor in instructors">
+        <li
+          v-for="instructor in instructors"
+          :key="instructor.userId"
+        >
           {{ instructor.fullName }}
           (<a
             :href="'mailto:' + instructor.email"
@@ -33,7 +36,8 @@
         </li>
       </ul>
       <p v-else class="warning">
-        You can't have a course without instructors! You must also add yourself if you'll be teaching this course.
+        You can't have a course without instructors! You must also add yourself
+        if you'll be teaching this course.
       </p>
     </div>
   </div>
@@ -41,7 +45,7 @@
 
 <script>
 import Dropdown from './dropdown'
-import { userGetters, roleGetters } from '@state/helpers'
+import { userGetters } from '@state/helpers'
 
 export default {
   components: {
@@ -63,46 +67,39 @@ export default {
     }
   },
   computed: {
-    ...roleGetters,
     ...userGetters,
     queryResults () {
       if (!this.instructorQuery || !this.users.length) return []
       const queryRegex = new RegExp(this.instructorQuery, 'i')
-      return this.users.filter(user => {
-        return (
-          // User is not already a instructor
-          this.course.instructorKeys.indexOf(user['.key']) === -1 &&
-          // User has instructor role
-          this.hasInstructorRole(user) &&
-          // Course matches the query string
-          (
-            queryRegex.test(user.email) ||
-            queryRegex.test(user.fullName)
-          )
+      return this.users.filter(user => (
+        // User has instructor role
+        user.isInstructor &&
+        // User is not already a instructor
+        !this.instructors.some(
+          instructor => instructor.userId === user.userId
+        ) &&
+        // Course matches the query string
+        (
+          queryRegex.test(user.email) ||
+          queryRegex.test(user.fullName)
         )
-      })
+      ))
     },
     instructors () {
-      if (!this.course.instructorKeys) return []
-      return this.users.filter(user => {
-        return this.course.instructorKeys.indexOf(user['.key']) !== -1
-      })
+      return this.course.instructorIds.map(
+        instructorId => this.users.find(user => user.userId === instructorId)
+      )
     }
   },
   methods: {
     addInstructor (instructor) {
-      this.course.addInstructor(instructor['.key'])
+      this.course.instructorIds.push(instructor.userId)
       this.instructorQuery = ''
       this.$refs.queryInput.focus()
     },
     removeInstructor (instructor) {
-      this.course.removeInstructor(instructor['.key'])
-    },
-    hasInstructorRole (user) {
-      const roles = this.roles.find(role => {
-        return user['.key'] === role['.key']
-      })
-      return roles && !!roles['instructor']
+      const index = this.course.instructorIds.indexOf(instructor.userId)
+      this.course.instructorIds.splice(index, 1)
     }
   }
 }

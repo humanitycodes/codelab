@@ -20,7 +20,7 @@ export default {
     availableCourses () {
       const currentUserId = store.state.users.currentUser.userId
       return this.courses.filter(
-        course => course.instructors.some(user => user.userId === currentUserId)
+        course => course.instructorIds.some(userId => userId === currentUserId)
       )
     }
   }

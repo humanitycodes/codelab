@@ -4,10 +4,9 @@ import * as coursePermissionMethods from '@state/auth/courses'
 import * as userPermissionMethods from '@state/auth/users'
 
 export const userGetters = {
-  ...mapState({
-    currentUser: state => state.users.currentUser
-  }),
   ...mapGetters([
+    'users',
+    'currentUser',
     'isUserSignedIn',
     'hasNewGitHubScopes',
     'jsonWebToken'

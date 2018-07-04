@@ -3,6 +3,7 @@ import isEqual from 'lodash/isEqual'
 import jwtDecode from 'jwt-decode'
 import requiredGitHubScopes from '@constants/github-scopes'
 import { setAuthToken, refreshTokenFromResponse } from './_helpers'
+import getUsers from '@api/users/get-users'
 
 const syncCache = {}
 
@@ -12,6 +13,12 @@ export default {
     all: []
   },
   getters: {
+    users (state) {
+      return state.all
+    },
+    currentUser (state) {
+      return state.currentUser
+    },
     isUserSignedIn (state) {
       return !!state.currentUser
     },
@@ -53,7 +60,8 @@ export default {
       // Sync any data the user may have access to
       return Promise.all([
         dispatch('syncAllCourses'),
-        dispatch('syncAllLessons')
+        dispatch('syncAllLessons'),
+        dispatch('syncAllUsers')
       ]).then(() => user)
     },
     signOut ({ commit }) {
@@ -64,9 +72,20 @@ export default {
         axios.interceptors.request.eject(syncCache.refreshTokenInterceptor)
         delete syncCache.refreshTokenInterceptor
       }
+    },
+    syncAllUsers ({ commit }) {
+      return getUsers()
+        .then(users => commit('SET_ALL_USERS', users))
+        .catch(error => {
+          commit('SET_ALL_USERS', [])
+          throw error
+        })
     }
   },
   mutations: {
+    SET_ALL_USERS (state, users) {
+      state.all = users
+    },
     SET_CURRENT_USER (state, user) {
       state.currentUser = user
     }

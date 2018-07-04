@@ -5,9 +5,9 @@
         It's not recommended to continue editing this course. If you want to use
         the same curriculum for a new semester, you should clone it.
       </p>
-      <DoneButton fallback-route="/courses"/>
+      <DoneButton @click="saveCourse"/>
       <CourseForm :course="course"/>
-      <DoneButton fallback-route="/courses"/>
+      <DoneButton @click="saveCourse"/>
       <button
         v-if="canDestroyCurrentCourse"
         @click="showRemoveCourseModal"
@@ -34,11 +34,14 @@
 <script>
 import store from '@state/store'
 import { courseGetters } from '@state/helpers'
+import deepCopy from '@helpers/utils/deep-copy'
 import Layout from '@layouts/main'
 import CourseForm from '@components/course-form'
 import DoneButton from '@components/done-button'
 import ModalConfirm from '@components/modal-confirm'
 import deleteCourse from '@api/courses/delete-course'
+import updateCourse from '@api/courses/update-course'
+import goBackOrFallback from '@helpers/utils/go-back-or-fallback'
 
 export default {
   components: {
@@ -47,7 +50,7 @@ export default {
   data () {
     return {
       // Copy the current course so changes can be canceled
-      course: JSON.parse(JSON.stringify(store.getters.currentCourse)),
+      course: deepCopy(store.getters.currentCourse),
       showModalConfirmRemoveCourse: false
     }
   },
@@ -63,6 +66,11 @@ export default {
         .then(() => store.dispatch('syncAllCourses'))
         .then(() => this.$router.replace('/courses'))
       }
+    },
+    saveCourse () {
+      updateCourse(this.course)
+      .then(() => store.dispatch('syncAllCourses'))
+      .then(() => goBackOrFallback())
     }
   }
 }
