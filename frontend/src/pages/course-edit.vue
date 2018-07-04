@@ -1,11 +1,12 @@
 <template>
   <Layout>
-    <div v-if="currentCourse">
+    <div v-if="course">
       <p v-if="!shouldUpdateCurrentCourse" class="error">
-        It's not recommended to continue editing this course. If you want to use the same curriculum for a new semester, you should clone it.
+        It's not recommended to continue editing this course. If you want to use
+        the same curriculum for a new semester, you should clone it.
       </p>
       <DoneButton fallback-route="/courses"/>
-      <CourseForm :course="currentCourse"/>
+      <CourseForm :course="course"/>
       <DoneButton fallback-route="/courses"/>
       <button
         v-if="canDestroyCurrentCourse"
@@ -21,19 +22,23 @@
       confirmLabel="Delete"
       @close="onCloseRemoveCourseModal"
     >
-      <p>Are you sure you want to permanently delete <strong>{{ currentCourse.title || currentCourse['.key'] }}</strong>?</p>
+      <p>
+        Are you sure you want to permanently delete
+        <strong>{{ course.title || course.courseKey }}</strong>?
+      </p>
       <aside>This action cannot be undone.</aside>
     </ModalConfirm>
   </Layout>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import store from '@state/store'
+import { courseGetters } from '@state/helpers'
 import Layout from '@layouts/main'
 import CourseForm from '@components/course-form'
 import DoneButton from '@components/done-button'
 import ModalConfirm from '@components/modal-confirm'
-import { courseGetters } from '@state/helpers'
+import deleteCourse from '@api/courses/delete-course'
 
 export default {
   components: {
@@ -41,21 +46,22 @@ export default {
   },
   data () {
     return {
+      // Copy the current course so changes can be canceled
+      course: JSON.parse(JSON.stringify(store.getters.currentCourse)),
       showModalConfirmRemoveCourse: false
     }
   },
   computed: courseGetters,
   methods: {
-    ...mapActions(['destroyCourse']),
     showRemoveCourseModal () {
       this.showModalConfirmRemoveCourse = true
     },
     onCloseRemoveCourseModal (confirmed) {
       this.showModalConfirmRemoveCourse = false
       if (confirmed) {
-        this.courses.remove(this.currentCourse['.key']).then(() => {
-          window.location.replace('/courses')
-        })
+        deleteCourse(this.course.courseId)
+        .then(() => store.dispatch('syncAllCourses'))
+        .then(() => this.$router.replace('/courses'))
       }
     }
   }

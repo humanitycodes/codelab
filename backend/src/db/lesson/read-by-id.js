@@ -3,7 +3,7 @@ import LessonLearningObjective from './learning-objective'
 import LessonProjectCriterion from './project-criterion'
 import Course from '../course'
 
-export default (userId, options) => Lesson.findById(userId, {
+export default (lessonId, options) => Lesson.findById(lessonId, {
   ...options,
   include: [
     {
