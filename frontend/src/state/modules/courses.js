@@ -15,12 +15,12 @@ export default {
   },
   actions: {
     syncAllCourses ({ commit }) {
-      getCourses()
-      .then(courses => commit('SET_ALL_COURSES', courses))
-      .catch(error => {
-        commit('SET_ALL_COURSES', [])
-        throw error
-      })
+      return getCourses()
+        .then(courses => commit('SET_ALL_COURSES', courses))
+        .catch(error => {
+          commit('SET_ALL_COURSES', [])
+          throw error
+        })
     }
   },
   mutations: {
