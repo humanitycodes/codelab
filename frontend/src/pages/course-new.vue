@@ -71,6 +71,7 @@
 
 <script>
 import Layout from '@layouts/main'
+import store from '@state/store'
 import { userGetters, courseGetters } from '@state/helpers'
 import createCourse from '@api/courses/create-course'
 
@@ -137,13 +138,13 @@ export default {
   methods: {
     tryToCreateCourse () {
       if (this.keyIsValid) {
+        const courseKey = this.key
         createCourse({
-          courseKey: this.key,
+          courseKey,
           instructors: [{ userId: this.currentUser.userId }]
         })
-        .then(() => {
-          this.$router.replace(`/courses/${this.key}/edit`)
-        })
+        .then(() => store.dispatch('syncAllCourses'))
+        .then(() => this.$router.replace(`/courses/${courseKey}/edit`))
       }
     }
   }
