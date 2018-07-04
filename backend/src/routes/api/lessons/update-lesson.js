@@ -98,9 +98,9 @@ export default {
 
       // Sync the learning objectives and project criteria
       await Promise.all([
-        await syncLearningObjectives({ lessonRecord, updatedLesson, transaction }),
-        await syncProjectCriteria({ lessonRecord, updatedLesson, transaction }),
-        await syncPrerequisiteLessons({ lessonRecord, updatedLesson })
+        syncLearningObjectives({ lessonRecord, updatedLesson, transaction }),
+        syncProjectCriteria({ lessonRecord, updatedLesson, transaction }),
+        syncPrerequisiteLessons({ lessonRecord, updatedLesson })
       ])
 
       // Update, refresh, and send the lesson to the client

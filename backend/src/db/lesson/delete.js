@@ -3,7 +3,7 @@ import LessonProjectCriterion from './project-criterion'
 
 export default async (lessonRecord, options) => {
   // Delete foreign keys first
-  await [
+  const removeRelationships = [
     LessonLearningObjective.destroy({
       ...options,
       where: {
@@ -17,6 +17,13 @@ export default async (lessonRecord, options) => {
       }
     })
   ]
-
-  await lessonRecord.destroy(options)
+  if (lessonRecord.prerequisiteLessons) {
+    removeRelationships.push(
+      lessonRecord.removePrerequisiteLessons(
+        lessonRecord.prerequisiteLessons
+      )
+    )
+  }
+  return Promise.all(removeRelationships)
+    .then(() => lessonRecord.destroy(options))
 }
