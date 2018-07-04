@@ -11,7 +11,8 @@ export default ({ authUser, courseRecord }) => {
     version: courseRecord.version,
     instructorIds: [],
     studentIds: [],
-    lessonIds: []
+    lessonIds: [],
+    pendingStudentEmails: []
   }
 
   // Translate instructors (IDs only)
@@ -38,6 +39,13 @@ export default ({ authUser, courseRecord }) => {
   if (courseRecord.lessons) {
     course.lessonIds = courseRecord.lessons.map(
       lessonRecord => lessonRecord.lessonId
+    )
+  }
+
+  // Translate pending students (emails only)
+  if (courseRecord.pendingStudents) {
+    course.pendingStudentEmails = courseRecord.pendingStudents.map(
+      courseStudentPendingRecord => courseStudentPendingRecord.email
     )
   }
 

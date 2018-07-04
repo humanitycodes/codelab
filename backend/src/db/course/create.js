@@ -1,6 +1,7 @@
 import Course from './index'
 import User from '../user'
 import Lesson from '../lesson'
+import CourseStudentPending from './student-pending'
 
 export default (course, options) => Course.create(course, {
   ...options,
@@ -22,6 +23,10 @@ export default (course, options) => Course.create(course, {
       as: 'lessons',
       // Don't eagerly fetch large fields of lessons
       attributes: ['lessonId']
+    },
+    {
+      model: CourseStudentPending,
+      as: 'pendingStudents'
     }
   ]
 })

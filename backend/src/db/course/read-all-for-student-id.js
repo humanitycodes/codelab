@@ -1,6 +1,7 @@
 import Course from './index'
 import User from '../user'
 import Lesson from '../lesson'
+import CourseStudentPending from './student-pending'
 
 export default (userId, options) => Course.findAll({
   ...options,
@@ -25,6 +26,10 @@ export default (userId, options) => Course.findAll({
       as: 'lessons',
       // Don't eagerly fetch large fields of lessons
       attributes: ['lessonId']
+    },
+    {
+      model: CourseStudentPending,
+      as: 'pendingStudents'
     }
   ]
 })
