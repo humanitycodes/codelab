@@ -16,6 +16,11 @@ export default async (courseRecord, options) => {
       courseRecord.removeLessons(courseRecord.lessons)
     )
   }
+  if (courseRecord.pendingStudents) {
+    removeRelationships.push(
+      courseRecord.removePendingStudents(courseRecord.pendingStudents)
+    )
+  }
 
   return Promise.all(removeRelationships)
     .then(() => courseRecord.destroy(options))

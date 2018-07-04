@@ -2,6 +2,7 @@ import { DataTypes } from 'sequelize'
 import sequelize from '../sequelize'
 import User from '../user'
 import Lesson from '../lesson'
+import CourseStudentPending from './student-pending'
 
 // For table definition, see 20180605-02-initial-tables.sql
 const Course = sequelize.define('course', {
@@ -90,6 +91,13 @@ Lesson.belongsToMany(Course, {
   through: 'course_lesson',
   foreignKey: 'lesson_id',
   otherKey: 'course_id'
+})
+
+// course_student_pending relationship
+Course.hasMany(CourseStudentPending, {
+  as: 'pendingStudents',
+  foreignKey: 'course_id',
+  sourceKey: 'course_id'
 })
 
 export default Course

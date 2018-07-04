@@ -31,14 +31,17 @@ export default {
   },
   computed: {
     isReadyForStudents () {
-      return !!this.course.studentKeys || (
+      return (
+        this.course.studentIds.length ||
+        this.course.pendingStudentEmails.length
+      ) || (
         this.course.title &&
         this.course.credits && this.course.credits > 0 &&
         this.course.syllabus &&
         this.course.startDate &&
         this.course.endDate &&
-        Date.parse(this.course.startDate) < Date.parse(this.course.endDate) &&
-        this.course.lessonKeys
+        this.course.startDate < this.course.endDate &&
+        this.course.lessonIds.length
       )
     }
   }

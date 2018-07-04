@@ -11,7 +11,8 @@ export default ({ payload }) => {
     version: payload.version,
     instructorIds: [],
     studentIds: [],
-    lessonIds: []
+    lessonIds: [],
+    pendingStudentEmails: []
   }
 
   // Translate instructors
@@ -27,6 +28,11 @@ export default ({ payload }) => {
   // Translate lessons
   if (payload.lessonIds) {
     course.lessonIds = payload.lessonIds.map(lessonId => lessonId)
+  }
+
+  // Translate pending students
+  if (payload.pendingStudentEmails) {
+    course.pendingStudentEmails = payload.pendingStudentEmails.map(email => email)
   }
 
   return course
