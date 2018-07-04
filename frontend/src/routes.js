@@ -69,7 +69,7 @@ export default [
     beforeEnter: (to, from, next) => {
       const course = courseByKey(to.params.courseKey)
       const currentUserId = store.state.users.currentUser.userId
-      return course.instructors.some(user => user.userId === currentUserId)
+      return course.instructorIds.some(userId => userId === currentUserId)
         ? next()
         : next({ name: 'course-view', params: to.params })
     },

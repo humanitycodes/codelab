@@ -30,12 +30,13 @@
 
 <script>
 import store from '@state/store'
+import { lessonGetters } from '@state/helpers'
+import deepCopy from '@helpers/utils/deep-copy'
 import Layout from '@layouts/main'
 import LessonForm from '@components/lesson-form'
 import LessonNotFound from '@components/lesson-not-found'
 import DoneButton from '@components/done-button'
 import ModalConfirm from '@components/modal-confirm'
-import { lessonGetters } from '@state/helpers'
 import deleteLesson from '@api/lessons/delete-lesson'
 import updateLesson from '@api/lessons/update-lesson'
 import goBackOrFallback from '@helpers/utils/go-back-or-fallback'
@@ -47,7 +48,7 @@ export default {
   data () {
     return {
       // Copy the current lesson so changes can be canceled
-      lesson: JSON.parse(JSON.stringify(store.getters.currentLesson)),
+      lesson: deepCopy(store.getters.currentLesson),
       showModalConfirmRemoveLesson: false
     }
   },

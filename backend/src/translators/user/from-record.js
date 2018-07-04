@@ -1,6 +1,8 @@
 export default ({ authUser, userRecord }) => {
   // A user has full access to their own record
-  if (authUser && authUser.userId === userRecord.userId) return userRecord.get()
+  if (authUser && authUser.userId === userRecord.userId) {
+    return userRecord.get()
+  }
 
   // Whitelist of fields that are available to clients
   return {

@@ -43,7 +43,7 @@ export default {
     ...coursePermissionMethods,
     isInstructorInCourse (course) {
       const currentUserId = store.state.users.currentUser.userId
-      return course.instructors.some(user => user.userId === currentUserId)
+      return course.instructorIds.some(userId => userId === currentUserId)
     },
     titleForCourseEditButton (course) {
       return this.isInstructorInCourse(course)
