@@ -3,8 +3,8 @@
     <EditCurrentLessonButton/>
     <div class="flex-row heading-basic-data">
       <div class="flex-col">
-        <router-link :to="'/courses/'+currentCourse['.key']">
-          {{ currentCourse['.key'] }}
+        <router-link :to="'/courses/' + currentCourse.courseKey">
+          {{ currentCourse.courseKey }}
         </router-link>
       </div>
       <div class="flex-col">
@@ -36,22 +36,23 @@
       />
     </div>
     <div
-      v-if="currentLesson.projects.length"
+      v-if="currentLesson.projectCriteria.length"
       v-show="currentView === 'project'"
       class="course-lesson-tab-content"
     >
       <h2>
-        <span v-html="convertRichContentToInlineHtml(currentLesson.projects[0].title)"/>
+        <span v-html="convertRichContentToInlineHtml(currentLesson.projectTitle)"/>
       </h2>
-      <ol v-if="currentLesson.projects[0].criteria.length">
+      <ol v-if="currentLesson.projectCriteria.length">
         <li
-          v-for="criterion in currentLesson.projects[0].criteria"
+          v-for="criterion in currentLesson.projectCriteria"
+          :key="criterion.lessonProjectCriterionId"
           v-html="convertRichContentToInlineHtml(criterion.content)"
         />
       </ol>
       <p v-else>No criteria for this project yet.</p>
       <ProjectSubmissionFlow
-        v-if="currentLesson.projects.length && isGitHubConnected"
+        v-if="currentLesson.projectCriteria.length && isGitHubConnected"
         :course="currentCourse"
         :lesson="currentLesson"
         :project="currentLesson.projects[0]"
@@ -112,7 +113,7 @@ export default {
     ...lessonGetters,
     ...courseLessonGetters,
     isGitHubConnected () {
-      return this.currentUser.profile.github && !this.hasNewGitHubScopes
+      return this.currentUser.githubLogin && !this.hasNewGitHubScopes
     },
     gradePoints () {
       return courseLessonGradePointsRounded(
@@ -126,9 +127,9 @@ export default {
     currentView (newView) {
       const newUrl = (
         '/courses/' +
-        this.currentCourse['.key'] +
+        this.currentCourse.courseKey +
         '/lessons/' +
-        this.currentLesson['.key'] +
+        this.currentLesson.lessonKey +
         '/' +
         this.currentPage +
         (newView === 'content' ? '' : '/' + newView)
@@ -141,9 +142,9 @@ export default {
     updateCurrentPage (newPage) {
       const newUrl = (
         '/courses/' +
-        this.currentCourse['.key'] +
+        this.currentCourse.courseKey +
         '/lessons/' +
-        this.currentLesson['.key'] +
+        this.currentLesson.lessonKey +
         '/' +
         newPage
       )
