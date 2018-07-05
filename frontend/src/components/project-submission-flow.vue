@@ -31,10 +31,6 @@ export default {
     lesson: {
       type: Object,
       required: true
-    },
-    project: {
-      type: Object,
-      required: true
     }
   },
   computed: {
