@@ -11,6 +11,12 @@ export default {
     currentCourse (state, getters, rootState) {
       const courseKey = rootState.route.params['courseKey']
       return getters.courses.find(course => course.courseKey === courseKey)
+    },
+    editCurrentCoursePath (state, getters) {
+      return `/courses/${getters.currentCourse.courseKey}/edit`
+    },
+    showCurrentCoursePath (state, getters) {
+      return `/courses/${getters.currentCourse.courseKey}`
     }
   },
   actions: {
