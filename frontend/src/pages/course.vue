@@ -4,7 +4,7 @@
       <EditCurrentCourseButton/>
       <div class="flex-row heading-basic-data">
         <div class="flex-col">
-          {{ currentCourse['.key'] }}
+          {{ currentCourse.courseKey }}
           •
           {{ currentCourse.credits || '?' }} Credits
         </div>
@@ -36,13 +36,25 @@
       </h1>
       <div v-if="shouldShowStudentView && currentGrade">
         <p v-if="projectedGrade < 1" class="danger">
-          At your current rate of progress, you will <strong>not</strong> pass the course. If you're not already working with an instructor to get back on track, reach out as soon as possible.
+          At your current rate of progress, you will <strong>not</strong> pass
+          the course. If you're not already working with an instructor to get
+          back on track, reach out as soon as possible.
         </p>
         <p v-else-if="projectedGrade < 3" class="warning">
-          At your current rate of progress, you will receive a <strong>{{ projectedGrade }}</strong> in the course. If you'd like help getting caught up, reach out to an instructor as soon as possible.
+          At your current rate of progress, you will receive a
+          <strong>{{ projectedGrade }}</strong> in the course. If you'd like
+          help getting caught up, reach out to an instructor as soon as
+          possible.
         </p>
       </div>
-      <div v-if="shouldShowStudentView" class="flex-row" :title="'Your grade as of ' + formattedCurrentDate + ' is ' + currentGrade + ', which will be reported as a ' + currentGradeReported">
+      <div
+        v-if="shouldShowStudentView"
+        class="flex-row"
+        :title="
+          'Your grade as of ' + formattedCurrentDate + ' is ' + currentGrade +
+          ', which will be reported as a ' + currentGradeReported
+        "
+      >
         <div class="flex-col">
           <div class="course-meter">
             <div class="course-meter-text">{{ formattedStartDate }}</div>
@@ -154,7 +166,6 @@ import maxGrade from '@constants/grade-max'
 import gradeMilestones from '@constants/grade-milestones'
 import courseLessonUserStatus from '@helpers/computed/course-lesson-user-status'
 import getGradeReported from '@helpers/utils/get-grade-reported'
-import store from '@state/store'
 
 const dateFormat = 'MMMM Do, YYYY'
 
@@ -181,9 +192,10 @@ export default {
       },
       computed: {
         ...courseGetters,
+        ...userGetters,
         isInstructorInCourse () {
-          const currentUserKey = store.state.users.currentUser.uid
-          return this.currentCourse.instructorKeys.indexOf(currentUserKey) !== -1
+          const currentUserId = this.currentUser.userId
+          return this.currentCourse.instructorIds.includes(currentUserId)
         },
         titleForCourseEditButton () {
           return this.isInstructorInCourse
@@ -205,9 +217,9 @@ export default {
     ...courseGetters,
     ...lessonGetters,
     courseLessons () {
-      return this.lessons.filter(lesson => {
-        return this.currentCourse.lessonKeys.indexOf(lesson['.key']) !== -1
-      })
+      return this.lessons.filter(
+        lesson => this.currentCourse.lessonIds.includes(lesson.lessonId)
+      )
     },
     formattedCurrentDate () {
       return this.humanizeDate(new Date())
@@ -219,7 +231,7 @@ export default {
       return this.humanizeDate(this.currentCourse.endDate)
     },
     currentUserIsStudent () {
-      return this.currentCourse.studentKeys.some(key => key === this.currentUser.uid)
+      return this.currentCourse.studentIds.includes(this.currentUser.userId)
     },
     shouldShowStudentView () {
       return this.currentUserIsStudent || this.studentViewForced
@@ -249,19 +261,21 @@ export default {
       if (
         !this.hoveredLesson ||
         this.hoveredLessonStatus.approved
-      ) return 0
+      ) {
+        return 0
+      }
       let addedGradePoints = courseLessonGradePointsReal(this.currentCourse, this.hoveredLesson)
       const alreadyAddedLessons = {}
       const addGradePointsOfPrereqs = lesson => {
-        if (lesson.prereqKeys) {
-          lesson.prereqKeys.forEach(prereqKey => {
-            const prereq = this.courseLessons.find(lesson => {
-              return lesson['.key'] === prereqKey
-            })
+        if (lesson.prerequisiteLessonIds) {
+          lesson.prerequisiteLessonIds.forEach(prereqLessonId => {
+            const prereq = this.courseLessons.find(
+              lesson => lesson.lessonId === prereqLessonId
+            )
             const prereqStatus = courseLessonUserStatus(this.currentCourse, prereq, this.currentUser)
-            if (!prereqStatus.approved && !alreadyAddedLessons[prereq['.key']]) {
+            if (!prereqStatus.approved && !alreadyAddedLessons[prereq.lessonId]) {
               addedGradePoints += courseLessonGradePointsReal(this.currentCourse, prereq)
-              alreadyAddedLessons[prereq['.key']] = true
+              alreadyAddedLessons[prereq.lessonId] = true
               addGradePointsOfPrereqs(prereq)
             }
           })
@@ -283,8 +297,8 @@ export default {
   methods: {
     courseLessonPath (lesson) {
       return (
-        '/courses/' + this.currentCourse['.key'] +
-        '/lessons/' + lesson['.key']
+        '/courses/' + this.currentCourse.courseKey +
+        '/lessons/' + lesson.lessonKey
       )
     },
     humanizeDate (date) {

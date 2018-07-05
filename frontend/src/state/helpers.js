@@ -39,7 +39,9 @@ export { lessonPermissionMethods }
 export const courseGetters = {
   ...mapGetters([
     'courses',
-    'currentCourse'
+    'currentCourse',
+    'editCurrentCoursePath',
+    'showCurrentCoursePath'
   ]),
   ...mapState({
     canUpdateCurrentCourse (state, getters) {
