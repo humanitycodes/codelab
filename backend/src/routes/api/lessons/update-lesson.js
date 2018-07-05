@@ -59,7 +59,9 @@ export default {
   },
   async handler (request, h) {
     const authUser = request.auth.credentials.user
+    const lessonId = request.params.lessonId
     let transaction
+
     try {
       // Do not allow unauthorized users to know the lesson exists
       if (!canUpdateLesson(authUser)) {
@@ -67,8 +69,6 @@ export default {
       }
 
       transaction = await sequelize.transaction()
-
-      const lessonId = request.params.lessonId
       const lessonRecord = await readLessonRecordById(lessonId, { transaction })
 
       if (!lessonRecord) {
@@ -112,7 +112,8 @@ export default {
       return lesson
     } catch (error) {
       console.error(
-        `Unable to update lesson for user ${authUser.userId} (${authUser.fullName}).`,
+        `Unable to update lesson ${lessonId}`,
+        `for user ${authUser.userId} (${authUser.fullName}).`,
         'Reason:', error
       )
       await transaction.rollback()

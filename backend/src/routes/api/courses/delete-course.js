@@ -5,6 +5,7 @@ import HttpStatus from 'http-status'
 import canDeleteCourse from '../../../helpers/permission/can-delete-course'
 import readCourseRecordById from '../../../db/course/read-by-id'
 import deleteCourseRecord from '../../../db/course/delete'
+import isCourseInstructor from './_helpers/is-course-instructor'
 
 export default {
   method: 'DELETE',
@@ -32,6 +33,11 @@ export default {
 
       if (!courseRecord) {
         throw boom.notFound()
+      }
+
+      // Only instructors in a course can delete it
+      if (!isCourseInstructor(courseRecord, authUser.userId)) {
+        throw boom.unauthorized('course.update.instructor.unauthorized')
       }
 
       await deleteCourseRecord(courseRecord, { transaction })
