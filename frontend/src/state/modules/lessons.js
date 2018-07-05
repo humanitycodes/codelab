@@ -11,6 +11,12 @@ export default {
     currentLesson (state, getters, rootState) {
       const lessonKey = rootState.route.params['lessonKey']
       return getters.lessons.find(lesson => lesson.lessonKey === lessonKey)
+    },
+    editCurrentLessonPath (state, getters) {
+      return `/lessons/${getters.currentLesson.lessonKey}/edit`
+    },
+    showCurrentLessonPath (state, getters) {
+      return `/lessons/${getters.currentLesson.lessonKey}`
     }
   },
   actions: {

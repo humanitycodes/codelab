@@ -17,7 +17,9 @@ export { userPermissionMethods }
 export const lessonGetters = {
   ...mapGetters([
     'lessons',
-    'currentLesson'
+    'currentLesson',
+    'editCurrentLessonPath',
+    'showCurrentLessonPath'
   ]),
   ...mapState({
     canUpdateCurrentLesson (state, getters) {
