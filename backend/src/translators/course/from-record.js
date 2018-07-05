@@ -1,11 +1,13 @@
+import dateToTimestamp from '../_helpers/date-to-timestamp'
+
 export default ({ authUser, courseRecord }) => {
   // Whitelist of fields that are available to clients
   let course = {
     courseId: courseRecord.courseId,
     courseKey: courseRecord.courseKey,
     credits: courseRecord.credits,
-    startDate: courseRecord.startDate ? courseRecord.startDate.getTime() : null,
-    endDate: courseRecord.endDate ? courseRecord.endDate.getTime() : null,
+    startDate: dateToTimestamp(courseRecord.startDate),
+    endDate: dateToTimestamp(courseRecord.endDate),
     syllabus: courseRecord.syllabus,
     title: courseRecord.title,
     version: courseRecord.version,

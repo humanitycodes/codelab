@@ -55,7 +55,6 @@
         v-if="currentLesson.projectCriteria.length && isGitHubConnected"
         :course="currentCourse"
         :lesson="currentLesson"
-        :project="currentLesson.projects[0]"
       />
       <p v-if="!isGitHubConnected" class="warning">
         You must
