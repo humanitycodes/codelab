@@ -97,10 +97,10 @@ export default {
       // Update, refresh, and send the course to the client
       await updateCourseRecord(courseRecord, { transaction })
       await refreshCourseRecord(courseRecord, { transaction })
-      const lesson = translateCourseFromRecord({ authUser, courseRecord })
+      const course = translateCourseFromRecord({ authUser, courseRecord })
       await transaction.commit()
 
-      return lesson
+      return course
     } catch (error) {
       console.error(
         `Unable to update course ${courseId}`,
