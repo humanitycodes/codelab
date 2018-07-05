@@ -2,7 +2,7 @@
   <div>
     <ul>
       <li
-        v-for="course in courses"
+        v-for="course in orderedCourses"
         :key="course.courseKey"
         v-if="canReadCourse({ courseKey: course.courseKey })"
       >
@@ -31,12 +31,18 @@
 <script>
 import store from '@state/store'
 import { coursePermissionMethods } from '@state/helpers'
+import orderBy from 'lodash/orderBy'
 
 export default {
   props: {
     courses: {
       type: Array,
       required: true
+    }
+  },
+  computed: {
+    orderedCourses () {
+      return orderBy(this.courses, 'courseKey')
     }
   },
   methods: {
