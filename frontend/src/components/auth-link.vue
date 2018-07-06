@@ -24,15 +24,22 @@ export default {
     url: function () {
       switch (this.provider) {
         case 'github':
-          return [
+          let url = [
             'https://github.com/login/oauth/authorize',
-            '?scope=', githubScopesPath,
-            '&client_id=', env.githubAuthClientId,
-            '&state=', encodeURIComponent(this.jsonWebToken || ''),
-            '&redirect_uri=', env.githubAuthRedirectURL + this.$route.fullPath
+            `?scope=${githubScopesPath}`,
+            `&client_id=${env.githubAuthClientId}`,
+            `&redirect_uri=${env.githubAuthRedirectURL}${this.$route.fullPath}`
           ].join('')
+          if (this.jsonWebToken) {
+            url += `&state=${encodeURIComponent(this.jsonWebToken)}`
+          }
+          return url
         case 'msu':
-          return `https://oauth.itservices.msu.edu/oauth/authorize?response_type=code&client_id=${env.msuAuthClientId}`
+          return [
+            'https://oauth.itservices.msu.edu/oauth/authorize',
+            '?response_type=code',
+            `&client_id=${env.msuAuthClientId}`
+          ].join('')
         default:
           return null
       }
