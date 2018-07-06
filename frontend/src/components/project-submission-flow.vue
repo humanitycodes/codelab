@@ -1,21 +1,21 @@
 <template>
-  <div v-if="course.instructorKeys.length">
+  <div v-if="course.instructorIds.length">
     <ProjectStatusBreadcrumbs :project-status="projectStatus"/>
     <ProjectInstructions
-      :project-completion="projectCompletion"
+      :project-completion="currentProjectCompletion"
       :project-status="projectStatus"
       :course="course"
       :lesson="lesson"
-      :project="project"
     />
   </div>
   <p v-else class="error">
-    You can't begin this project until at least one instructor is available for the course.
+    You can't begin this project until at least one instructor is available for
+    the course.
   </p>
 </template>
 
 <script>
-import { userGetters } from '@state/helpers'
+import { userGetters, projectCompletionGetters } from '@state/helpers'
 import ProjectStatusBreadcrumbs from './project-status-breadcrumbs'
 import ProjectInstructions from './project-instructions'
 
@@ -35,24 +35,17 @@ export default {
   },
   computed: {
     ...userGetters,
-    projectCompletion () {
-      return this.course.projectCompletions.find(completion => {
-        return completion['.key'] === [
-          this.project['.key'],
-          this.currentUser.uid
-        ].join('-')
-      })
-    },
+    ...projectCompletionGetters,
     projectStatus () {
-      if (!this.projectCompletion) return 'unstarted'
-      if (!this.projectCompletion.submission) {
-        return this.projectCompletion.committed
+      if (!this.currentProjectCompletion) return 'unstarted'
+      if (!this.currentProjectCompletion.firstSubmittedAt) {
+        return this.currentProjectCompletion.committed
           ? 'startedWithCommit'
           : 'started'
       }
-      return this.projectCompletion.submission.isApproved
+      return this.currentProjectCompletion.approved
         ? 'approved'
-        : this.projectCompletion.submission.instructorCommentedLast
+        : this.currentProjectCompletion.instructorCommentedLast
           ? 'changesRequested'
           : 'pendingReview'
     }
