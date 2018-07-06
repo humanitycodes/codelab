@@ -8,15 +8,16 @@ export default {
     projectCompletions (state) {
       return state.all
     },
-    currentProjectCompletion (state, getters, rootState) {
+    currentProjectCompletion (state, getters) {
       const currentCourse = getters.currentCourse
       const currentLesson = getters.currentLesson
-      if (!currentCourse || !currentLesson) return null
-      return getters.projectCompletions.find(projectCompletion => (
-        projectCompletion.courseId === currentCourse.courseId &&
-        projectCompletion.lessonId === currentLesson.lessonId &&
-        projectCompletion.studentUserId === getters.currentUser.userId
-      ))
+      if (currentCourse && currentLesson && getters.currentUser) {
+        return getters.projectCompletions.find(projectCompletion => (
+          projectCompletion.courseId === currentCourse.courseId &&
+          projectCompletion.lessonId === currentLesson.lessonId &&
+          projectCompletion.studentUserId === getters.currentUser.userId
+        ))
+      }
     }
   },
   actions: {

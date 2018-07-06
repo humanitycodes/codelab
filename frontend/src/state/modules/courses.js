@@ -9,8 +9,10 @@ export default {
       return state.all
     },
     currentCourse (state, getters, rootState) {
-      const courseKey = rootState.route.params['courseKey']
-      return getters.courses.find(course => course.courseKey === courseKey)
+      if (rootState.route.params && rootState.route.params.courseKey) {
+        const courseKey = rootState.route.params.courseKey
+        return getters.courses.find(course => course.courseKey === courseKey)
+      }
     },
     editCurrentCoursePath (state, getters) {
       if (!getters.currentCourse) return ''
