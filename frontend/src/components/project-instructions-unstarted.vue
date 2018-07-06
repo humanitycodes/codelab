@@ -38,9 +38,10 @@
 </template>
 
 <script>
-import prereqsAreAllComplete from '@helpers/computed/course-lesson-user-prereqs-are-all-complete'
-import userGetters from '@state/helpers'
+import areAllPrereqsComplete from '@helpers/computed/course-lesson-user-prereqs-are-all-complete'
+import { userGetters } from '@state/helpers'
 import Axios from 'axios'
+import createProjectCompletion from '@api/project-completions/create-project-completion'
 
 export default {
   props: {
@@ -49,10 +50,6 @@ export default {
       required: true
     },
     lesson: {
-      type: Object,
-      required: true
-    },
-    project: {
       type: Object,
       required: true
     },
@@ -71,14 +68,13 @@ export default {
   computed: userGetters,
   methods: {
     allPrereqsComplete () {
-      return prereqsAreAllComplete(this.course, this.lesson, this.currentUser)
+      return areAllPrereqsComplete(this.course, this.lesson, this.currentUser)
     },
     createProjectRepo () {
       this.starting = true
-      Axios.post('/api/project-completions', {
-        courseKey: this.course['.key'],
-        lessonKey: this.lesson['.key'],
-        projectKey: this.project['.key']
+      createProjectCompletion({
+        courseId: this.course.courseId,
+        lessonId: this.lesson.lessonId
       })
       .then(() => { this.error = '' })
       .catch(() => {

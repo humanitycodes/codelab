@@ -61,7 +61,8 @@ export default {
       return Promise.all([
         dispatch('syncAllCourses'),
         dispatch('syncAllLessons'),
-        dispatch('syncAllUsers')
+        dispatch('syncAllUsers'),
+        dispatch('syncAllProjectCompletions')
       ]).then(() => user)
     },
     signOut ({ commit }) {

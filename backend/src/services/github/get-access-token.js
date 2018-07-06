@@ -18,7 +18,6 @@ export default async code =>
     }
   })
   .then(response => {
-    console.log('token response', response.data)
     // 🙄 GitHub responds with 200 and an error object if there's a problem
     if (response.data.error_description) {
       throw new Error(response.data.error_description)

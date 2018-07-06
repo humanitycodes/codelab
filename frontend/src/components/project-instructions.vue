@@ -5,7 +5,6 @@
       :project-completion="projectCompletion"
       :course="course"
       :lesson="lesson"
-      :project="project"
       :project-name="projectName"
       :project-repo-url="projectRepoUrl"
       :project-hosted-url="projectHostedUrl"
@@ -47,10 +46,6 @@ export default {
       required: true
     },
     lesson: {
-      type: Object,
-      required: true
-    },
-    project: {
       type: Object,
       required: true
     },

@@ -67,3 +67,10 @@ export const courseGetters = {
   })
 }
 export { coursePermissionMethods }
+
+export const projectCompletionGetters = {
+  ...mapGetters([
+    'projectCompletions',
+    'currentProjectCompletion'
+  ])
+}
