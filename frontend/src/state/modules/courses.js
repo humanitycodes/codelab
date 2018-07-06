@@ -13,9 +13,11 @@ export default {
       return getters.courses.find(course => course.courseKey === courseKey)
     },
     editCurrentCoursePath (state, getters) {
+      if (!getters.currentCourse) return ''
       return `/courses/${getters.currentCourse.courseKey}/edit`
     },
     showCurrentCoursePath (state, getters) {
+      if (!getters.currentCourse) return ''
       return `/courses/${getters.currentCourse.courseKey}`
     }
   },
