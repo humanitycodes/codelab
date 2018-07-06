@@ -9,8 +9,10 @@ export default {
       return state.all
     },
     currentLesson (state, getters, rootState) {
-      const lessonKey = rootState.route.params['lessonKey']
-      return getters.lessons.find(lesson => lesson.lessonKey === lessonKey)
+      if (rootState.route.params && rootState.route.params.lessonKey) {
+        const lessonKey = rootState.route.params.lessonKey
+        return getters.lessons.find(lesson => lesson.lessonKey === lessonKey)
+      }
     },
     editCurrentLessonPath (state, getters) {
       if (!getters.currentLesson) return ''

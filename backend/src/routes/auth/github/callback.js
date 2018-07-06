@@ -31,10 +31,10 @@ export default {
       const authUser = decodeJsonWebToken(jwt).user
 
       // Lookup the user from the DB and GitHub
-      let [userRecord, tokenBody] = await [
+      let [userRecord, tokenBody] = await Promise.all([
         readUserById(authUser.userId),
         getGitHubAccessToken(request.query.code)
-      ]
+      ])
 
       if (!userRecord) {
         throw new Error(`User ${authUser.userId} (${authUser.fullName}) not found.`)
