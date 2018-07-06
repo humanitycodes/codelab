@@ -128,8 +128,8 @@ export default [
     }
   },
   {
-    path: '/email-sign-in',
-    component: require('@pages/sign-in-email'),
+    path: '/github-sign-in',
+    component: require('@pages/sign-in-github'),
     meta: {
       isPublic: true
     }
