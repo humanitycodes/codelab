@@ -88,9 +88,9 @@ function findLesson (lessonKey) {
 
 function isEnrolledInCourse (courseKey) {
   const course = findCourse(courseKey)
-  if (!course || !course.students) return false
-  const currentUserId = store.state.users.currentUser.userId
-  return course.students.some(user => user.userId === currentUserId)
+  if (!course || !course.studentIds) return false
+  const currentUserId = store.getters.currentUser.userId
+  return course.studentIds.includes(currentUserId)
 }
 
 function courseHasEnrolledStudents (courseKey) {

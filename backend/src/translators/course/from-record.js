@@ -24,16 +24,19 @@ export default ({ authUser, courseRecord }) => {
     )
   }
 
-  // Translate students (IDs only) if the requester instructs the course
-  if (
-    courseRecord.students &&
-    courseRecord.instructors &&
-    courseRecord.instructors.some(
-      instructor => authUser.userId === instructor.userId
+  // Translate a student (ID only) if the requester instructs the course
+  // or the requester is the student being translated
+  if (courseRecord.students) {
+    const isInstructorInCourse = (
+      courseRecord.instructors &&
+      courseRecord.instructors.some(
+        instructor => authUser.userId === instructor.userId
+      )
     )
-  ) {
     course.studentIds = courseRecord.students.map(
       userRecord => userRecord.userId
+    ).filter(
+      studentId => isInstructorInCourse || studentId === authUser.userId
     )
   }
 
