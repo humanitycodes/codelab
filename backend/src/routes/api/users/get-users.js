@@ -1,6 +1,9 @@
 import boom from 'boom'
+import unionBy from 'lodash/unionBy'
 import canReadAllUsers from '../../../helpers/permission/can-read-all-users'
-import readAllUsers from '../../../db/user/read-all'
+import readUserRecordById from '../../../db/user/read-by-id'
+import readAllUserRecords from '../../../db/user/read-all'
+import readCourseRecordsForStudentId from '../../../db/course/read-all-for-student-id'
 import translateUserFromRecord from '../../../translators/user/from-record'
 
 export default {
@@ -9,11 +12,23 @@ export default {
   async handler (request, h) {
     const authUser = request.auth.credentials.user
     try {
-      if (!canReadAllUsers(authUser)) {
-        return boom.forbidden()
+      let userRecords
+      if (canReadAllUsers(authUser)) {
+        userRecords = await readAllUserRecords()
+      } else {
+        // Fetch course instructors and the requester's user record
+        userRecords = [await readUserRecordById(authUser.userId)]
+        const courseRecords = await readCourseRecordsForStudentId(authUser.userId)
+        courseRecords.forEach(courseRecord => {
+          // Combine the users, leaving out duplicates
+          userRecords = unionBy(
+            userRecords,
+            courseRecord.getInstructors(),
+            userRecord => userRecord.userId
+          )
+        })
       }
 
-      const userRecords = readAllUsers()
       const users = userRecords.map(userRecord =>
         translateUserFromRecord({ authUser, userRecord })
       )

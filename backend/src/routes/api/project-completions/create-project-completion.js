@@ -57,15 +57,16 @@ export default {
       }
 
       // Ensure the GitHub repository exists and is setup properly
-      const courseKey = courseRecord.courseKey
-      const repo = `${courseKey}-${lessonRecord.lessonKey}`
+      const repo = `${courseRecord.courseKey}-${lessonRecord.lessonKey}`
       const owner = authUser.githubLogin
       const repository = await getOrCreateGitHubRepository(
         authUser.githubToken, { owner, repo }
       )
-      await assignGitHubCollaborators(
-        authUser.githubToken, { courseKey, owner, repo }
-      )
+      await assignGitHubCollaborators(authUser.githubToken, {
+        users: courseRecord.getInstructors(),
+        owner,
+        repo
+      })
       await createGitHubWebhooks(authUser.githubToken, { owner, repo })
 
       // Create the new project completion
