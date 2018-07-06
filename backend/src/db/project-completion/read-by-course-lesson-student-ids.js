@@ -1,7 +1,7 @@
 import ProjectCompletion from './index'
 
 export default ({ courseId, lessonId, studentUserId }, options) =>
-  ProjectCompletion.findAll({
+  ProjectCompletion.findOne({
     ...options,
     where: {
       courseId,
