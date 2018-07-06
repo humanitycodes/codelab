@@ -13,9 +13,11 @@ export default {
       return getters.lessons.find(lesson => lesson.lessonKey === lessonKey)
     },
     editCurrentLessonPath (state, getters) {
+      if (!getters.currentLesson) return ''
       return `/lessons/${getters.currentLesson.lessonKey}/edit`
     },
     showCurrentLessonPath (state, getters) {
+      if (!getters.currentLesson) return ''
       return `/lessons/${getters.currentLesson.lessonKey}`
     }
   },
