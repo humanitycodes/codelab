@@ -3,7 +3,7 @@ import createRepository from './create-repository'
 
 export default async (githubToken, { owner, repo }) => {
   try {
-    return getRepository(githubToken, { owner, repo })
+    return await getRepository(githubToken, { owner, repo })
   } catch (notfound) {
     return createRepository(githubToken, { name: repo })
   }

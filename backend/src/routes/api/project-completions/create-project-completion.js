@@ -40,13 +40,13 @@ export default {
         courseRecord,
         lessonRecord,
         existingProjectCompletionRecord
-      ] = await [
+      ] = await Promise.all([
         readCourseRecordById(courseId, { transaction }),
         readLessonRecordById(lessonId, { transaction }),
         readProjectCompletionRecordByCourseLessonStudentIds(
           { courseId, lessonId, studentUserId }, { transaction }
         )
-      ]
+      ])
 
       if (!courseRecord) {
         throw boom.badData('projectCompletion.create.course.missing')

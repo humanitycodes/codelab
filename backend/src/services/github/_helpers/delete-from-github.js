@@ -1,3 +1,8 @@
 import requestFromGitHub from './request-from-github'
 
-export default async (path, token) => requestFromGitHub('delete', path, token)
+export default async (path, token, options) => requestFromGitHub({
+  method: 'delete',
+  path,
+  token,
+  ...options
+})

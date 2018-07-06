@@ -16,6 +16,11 @@ const ProjectCompletion = sequelize.define('projectCompletion', {
     type: DataTypes.BIGINT,
     allowNull: false
   },
+  lessonId: {
+    field: 'lesson_id',
+    type: DataTypes.BIGINT,
+    allowNull: false
+  },
   studentUserId: {
     field: 'student_user_id',
     type: DataTypes.BIGINT,
