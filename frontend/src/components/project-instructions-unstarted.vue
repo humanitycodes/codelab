@@ -40,8 +40,8 @@
 <script>
 import areAllPrereqsComplete from '@helpers/computed/course-lesson-user-prereqs-are-all-complete'
 import { userGetters } from '@state/helpers'
-import Axios from 'axios'
 import createProjectCompletion from '@api/project-completions/create-project-completion'
+import getUserPrivileges from '@api/users/get-user-privileges'
 
 export default {
   props: {
@@ -89,10 +89,10 @@ export default {
     },
     fetchPrivileges () {
       this.userPrivileges = null
-      Axios.get('/api/privileges')
-      .then(response => {
+      getUserPrivileges({ userId: this.currentUser.userId })
+      .then(privileges => {
         this.error = ''
-        this.userPrivileges = response.data
+        this.userPrivileges = privileges
       })
       .catch(() => {
         this.error = `
