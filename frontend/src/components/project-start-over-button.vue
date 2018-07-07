@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import store from '@state/store'
 import { userGetters } from '@state/helpers'
 import ModalConfirm from '@components/modal-confirm'
 import deleteProjectCompletion from '@api/project-completions/delete-project-completion'
@@ -86,6 +87,9 @@ export default {
       deleteProjectCompletion(this.projectCompletion.projectCompletionId)
       .then(() => {
         this.resetting = false
+        store.dispatch('removeProjectCompletion', {
+          projectCompletion: this.projectCompletion
+        })
       })
       .catch(error => {
         this.resetting = false
