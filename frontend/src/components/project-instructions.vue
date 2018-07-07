@@ -13,7 +13,6 @@
     />
     <ProjectStartOverButton
       v-if="projectCanBeDeleted"
-      :course="course"
       :project-completion="projectCompletion"
     />
   </div>
@@ -83,10 +82,7 @@ export default {
     },
     projectHostedSubdomain () {
       if (!this.projectCompletion) return
-      return courseProjectCompletionHostedSubdomain(
-        this.course,
-        this.projectCompletion
-      )
+      return courseProjectCompletionHostedSubdomain(this.projectCompletion)
     },
     projectHostedUrl () {
       if (!this.projectCompletion) return

@@ -1,30 +1,26 @@
-import userByKey from '../finders/user-by-key'
-import lessonByKey from '../finders/lesson-by-key'
+import userById from '../finders/user-by-id'
+import lessonById from '../finders/lesson-by-id'
 import courseProjectCompletionHostedSubdomain from './course-project-completion-hosted-subdomain'
 import courseProjectCompletionRepoName from './course-project-completion-repo-name'
 
 export default (course, projectCompletion) => {
   if (!projectCompletion) return ''
 
-  if (projectCompletion.hostedUrl) {
-    return projectCompletion.hostedUrl
-  }
+  const lesson = lessonById(projectCompletion.lessonId)
+  if (!lesson || !lesson.projectHosting) return ''
 
-  const project = lessonByKey(projectCompletion.lessonKey).projects[0]
-  if (!project) return ''
-
-  if (project.hosting === 'GitHub Pages') {
-    const user = userByKey(projectCompletion.students[0]['.key'])
-    const githubUsername = user.github.login
+  if (lesson.projectHosting === 'GitHub Pages') {
+    const user = userById(projectCompletion.studentUserId)
+    const githubUsername = user.githubLogin
     const repoName = courseProjectCompletionRepoName(course, projectCompletion)
     return `https://${githubUsername}.github.io/${repoName}/`
   }
 
-  const subdomain = courseProjectCompletionHostedSubdomain(course, projectCompletion)
-  if (project.hosting === 'Surge') {
+  const subdomain = courseProjectCompletionHostedSubdomain(projectCompletion)
+  if (lesson.projectHosting === 'Surge') {
     return `https://${subdomain}.surge.sh/`
   }
-  if (project.hosting === 'Heroku') {
+  if (lesson.projectHosting === 'Heroku') {
     return `https://${subdomain}.herokuapp.com/`
   }
 }
