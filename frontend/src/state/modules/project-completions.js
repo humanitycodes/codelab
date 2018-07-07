@@ -30,9 +30,15 @@ export default {
           commit('SET_ALL_PROJECT_COMPLETIONS', [])
           throw error
         })
+    },
+    addProjectCompletion ({ commit }, { projectCompletion }) {
+      commit('ADD_PROJECT_COMPLETION', projectCompletion)
     }
   },
   mutations: {
+    ADD_PROJECT_COMPLETION (state, projectCompletion) {
+      state.all.push(projectCompletion)
+    },
     SET_ALL_PROJECT_COMPLETIONS (state, projectCompletions) {
       state.all = projectCompletions
     }

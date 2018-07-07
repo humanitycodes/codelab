@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import store from '@state/store'
 import areAllPrereqsComplete from '@helpers/computed/course-lesson-user-prereqs-are-all-complete'
 import { userGetters } from '@state/helpers'
 import createProjectCompletion from '@api/project-completions/create-project-completion'
@@ -76,7 +77,10 @@ export default {
         courseId: this.course.courseId,
         lessonId: this.lesson.lessonId
       })
-      .then(() => { this.error = '' })
+      .then(projectCompletion => {
+        this.error = ''
+        store.dispatch('addProjectCompletion', { projectCompletion })
+      })
       .catch(() => {
         this.starting = false
         this.error = `
