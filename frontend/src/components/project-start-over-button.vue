@@ -33,7 +33,12 @@
       <label for="confirm-reset-text">
         Please type "{{ requiredResetText }}" to confirm.
       </label>
-      <input type="text" id="confirm-reset-text" name="confirm-reset-text" v-model="confirmResetText">
+      <input
+        type="text"
+        id="confirm-reset-text"
+        name="confirm-reset-text"
+        v-model="confirmResetText"
+      >
     </ModalConfirm>
   </div>
 </template>
@@ -41,17 +46,13 @@
 <script>
 import { userGetters } from '@state/helpers'
 import ModalConfirm from '@components/modal-confirm'
-import Axios from 'axios'
+import deleteProjectCompletion from '@api/project-completions/delete-project-completion'
 
 export default {
   components: {
     ModalConfirm
   },
   props: {
-    course: {
-      type: Object,
-      required: true
-    },
     projectCompletion: {
       type: Object,
       required: true
@@ -66,9 +67,7 @@ export default {
       error: ''
     }
   },
-  computed: {
-    ...userGetters
-  },
+  computed: userGetters,
   methods: {
     showStartOverModal () {
       this.showModalConfirmStartOver = true
@@ -84,16 +83,16 @@ export default {
       this.resetting = true
       this.error = ''
 
-      const courseKey = this.course['.key']
-      const projectCompletionKey = this.projectCompletion['.key']
-
-      Axios.delete(`/api/project-completions/${courseKey}/${projectCompletionKey}`)
+      deleteProjectCompletion(this.projectCompletion.projectCompletionId)
       .then(() => {
         this.resetting = false
       })
       .catch(error => {
         this.resetting = false
-        this.error = `There was a problem resetting the project. Please tell your instructor so the issue can be resolved as soon as possible.`
+        this.error = `
+          There was a problem resetting the project. Please tell your instructor
+          so the issue can be resolved as soon as possible.
+        `
         console.error('Failed to reset project. Reason:', error)
       })
     }
