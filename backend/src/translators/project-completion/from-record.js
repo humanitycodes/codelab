@@ -5,6 +5,7 @@ export default ({ projectCompletionRecord }) => {
   let projectCompletion = {
     projectCompletionId: projectCompletionRecord.projectCompletionId,
     courseId: projectCompletionRecord.courseId,
+    lessonId: projectCompletionRecord.lessonId,
     studentUserId: projectCompletionRecord.studentUserId,
     instructorUserId: projectCompletionRecord.instructorUserId,
     repositoryCreatedAt: dateToTimestamp(projectCompletionRecord.repositoryCreatedAt),
