@@ -1,3 +1,4 @@
+import findIndex from 'lodash/findIndex'
 import getProjectCompletions from '@api/project-completions/get-project-completions'
 
 export default {
@@ -33,11 +34,25 @@ export default {
     },
     addProjectCompletion ({ commit }, { projectCompletion }) {
       commit('ADD_PROJECT_COMPLETION', projectCompletion)
+    },
+    removeProjectCompletion ({ commit }, { projectCompletion }) {
+      commit('REMOVE_PROJECT_COMPLETION', projectCompletion)
     }
   },
   mutations: {
     ADD_PROJECT_COMPLETION (state, projectCompletion) {
       state.all.push(projectCompletion)
+    },
+    REMOVE_PROJECT_COMPLETION (state, projectCompletion) {
+      if (!projectCompletion) return
+      const projectCompletionId = projectCompletion.projectCompletionId
+      const index = findIndex(
+        state.all,
+        item => item.projectCompletionId === projectCompletionId
+      )
+      if (index >= 0) {
+        state.all.splice(index, 1)
+      }
     },
     SET_ALL_PROJECT_COMPLETIONS (state, projectCompletions) {
       state.all = projectCompletions
