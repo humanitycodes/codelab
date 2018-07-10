@@ -1,3 +1,4 @@
+import boom from 'boom'
 import readUserById from 'db/user/read-by-id'
 import translateUserFromRecord from 'translators/user/from-record'
 import signJsonWebToken from 'helpers/jwt/sign-json-web-token'
@@ -33,8 +34,11 @@ export default {
               })
               request.headers['x-token-refresh'] = signJsonWebToken(jwt)
             } else {
-              // If the user doesn't exist, clear the client token.
-              request.headers['x-token-refresh'] = ''
+              // If the user doesn't exist, clear the client token and short
+              // circuit the request to avoid unauthorized data snooping.
+              const response = boom.unauthorized('login.required')
+              response.output.headers['x-token-refresh'] = ''
+              return response
             }
           }
           return h.continue
