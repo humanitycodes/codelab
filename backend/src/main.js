@@ -10,9 +10,9 @@ import jwtSecret from '../env/jwt-secret'
 import logRequests from './log-requests'
 import sequelize from './db/sequelize'
 import validateJsonWebToken from './helpers/jwt/validate-json-web-token'
-import gatherRoutesForDir from './routes/helpers/gather-routes-for-dir'
-import refreshTokenOnRequest from './routes/helpers/refresh-token-on-request'
-import refreshTokenOnResponse from './routes/helpers/refresh-token-on-response'
+import gatherRoutesForDir from './routes/_helpers/gather-routes-for-dir'
+import refreshTokenOnRequest from './routes/_helpers/refresh-token-on-request'
+import refreshTokenOnResponse from './routes/_helpers/refresh-token-on-response'
 
 const start = async () => {
   try {
