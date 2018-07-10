@@ -1,5 +1,5 @@
 import boom from 'boom'
-import canReadAllCourses from '../../../helpers/permission/can-read-all-courses'
+import canReadAllCourses from 'helpers/permission/can-read-all-courses'
 import readAllCoursesForStudentId from 'db/course/read-all-for-student-id'
 import readAllCourses from 'db/course/read-all'
 import translateCourseFromRecord from 'translators/course/from-record'
