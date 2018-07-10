@@ -1,7 +1,7 @@
 // Polyfill features that are not yet natively supported in node
 import 'babel-polyfill'
 
-// Add ./ (src) to Node search path for imports to avoid lots of ../../../../..
+// Add ./ (src) to Node search path for imports to avoid lots of ../../..
 import 'app-module-path/register'
 
 import hapi from 'hapi'
@@ -110,8 +110,11 @@ const start = async () => {
     '/auth': gatherRoutesForDir('auth')
   }
 
-  Object.entries(routeConfigs).forEach(([baseUrl, configs]) => {
-    configs.forEach(config => { config.path = baseUrl + config.path })
+  Object.entries(routeConfigs).forEach(([basePath, configs]) => {
+    configs.forEach(config => {
+      config.path = basePath + config.path
+      console.error(`Route: ${config.method} ${config.path}`)
+    })
     server.route(configs)
   })
 

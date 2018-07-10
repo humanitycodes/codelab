@@ -1,13 +1,9 @@
 export default {
   method: 'GET',
-  path: `/authenticated`,
-  config: {
-    auth: {
-      mode: 'try',
-      strategy: 'jwt'
+  path: '/authenticated',
+  async handler (request, h) {
+    return {
+      authenticated: request.auth.isAuthenticated
     }
-  },
-  handler: (request, reply) => {
-    reply({ authenticated: request.auth.isAuthenticated })
   }
 }
