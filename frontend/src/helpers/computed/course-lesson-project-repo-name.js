@@ -1,3 +1,4 @@
 export default (course, lesson) => {
-  return `${course.courseKey}-${lesson.lessonKey}`
+  const courseParts = course.courseKey.split('-')
+  return `${courseParts[0]}-${courseParts[1]}-${lesson.lessonKey}`
 }
