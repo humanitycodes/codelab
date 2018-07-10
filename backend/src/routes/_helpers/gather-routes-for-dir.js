@@ -7,7 +7,7 @@ export default routeDir => {
 
   glob.sync(cwd, {
     // Ignore files in directories that begin with _ (e.g. _helpers)
-    ignore: '**/_*/*',
+    ignore: '**/_*/**/*',
     nodir: true
   }).forEach(file => {
     const routeConfig = require(file).default

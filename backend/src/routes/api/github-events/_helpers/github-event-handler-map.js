@@ -1,83 +1,8 @@
-import boom from 'boom'
-
-import { readUserByGitHubLogin } from 'db/user-repo'
-import { readInstructorsByCourseKey } from 'db/instructor-repo'
-import {
-  readProjectCompletionByPartialKey,
-  updateProjectCompletion
-} from 'db/project-completion-repo'
-
-// Capture Group 1. GitHub Username: ([^/]+)
-// Capture Group 2. Course Key: ([A-Z]+-\d{3}-[A-Z]{2}\d{2}-\d{3})
-// Capture Group 3. Lesson Key: ([a-z]+(?:-[a-z]+)*)
-// Capture Group 4. Project Key Last 6: (\S{6})
-const REPO_REGEX = /^([^/]+)\/([A-Z]+-\d{3}-[A-Z]{2}\d{2}-\d{3})-([a-z]+(?:-[a-z]+)*)-(\S{6})$/
-
-function parseKeysFromRepoName (name) {
-  if (!REPO_REGEX.test(name)) return
-
-  const groups = REPO_REGEX.exec(name)
-  return {
-    username: groups[1],
-    courseKey: groups[2],
-    lessonKey: groups[3],
-    projectKeyPart: groups[4]
-  }
-}
-
-// repoName => egillespie/MI-654-SS17-654-css-sbvvixzswv-Biv4GT
-async function findProjectCompletionFromRepoName (repoName) {
-  // Figure out the owner, course, lesson, and project from the repo
-  const derivedKeys = parseKeysFromRepoName(repoName)
-  if (!derivedKeys) throw boom.badData(`Unable to parse repository name: ${repoName}`)
-  const { username, courseKey, lessonKey, projectKeyPart } = derivedKeys
-
-  // Get the internal user ID
-  const [userId] = await readUserByGitHubLogin(username)
-  if (!userId) throw boom.badData(`Unable to find user with GitHub login: ${username}`)
-
-  // Find matching project completions
-  const projectCompletions = await readProjectCompletionByPartialKey({
-    uid: userId,
-    courseKey: courseKey,
-    lessonKey: lessonKey,
-    projectKeyPart: projectKeyPart
-  })
-
-  // Make sure there's exactly 1
-  const projectCompletionKeys = Object.keys(projectCompletions)
-  if (projectCompletionKeys.length !== 1) {
-    throw boom.notFound(`Found ${projectCompletionKeys.length} project completions when expecting 1`)
-  }
-
-  return {
-    uid: userId,
-    username: username,
-    courseKey: courseKey,
-    lessonKey: lessonKey,
-    projectCompletionKey: projectCompletionKeys[0],
-    projectCompletion: projectCompletions[projectCompletionKeys[0]]
-  }
-}
-
 export default {
-  async push (pushEvent) {
-    // Make sure there was at least one commit
-    if (!pushEvent.commits.length) return
-
-    const projectMeta = await findProjectCompletionFromRepoName(pushEvent.repository.full_name)
-
-    // Set committed to true
-    if (!projectMeta.projectCompletion.committed) {
-      projectMeta.projectCompletion.committed = true
-      projectMeta.projectCompletion.firstCommittedAt = new Date(pushEvent.commits[0].timestamp).getTime()
-      await updateProjectCompletion({
-        courseKey: projectMeta.courseKey,
-        projectCompletionKey: projectMeta.projectCompletionKey
-      }, projectMeta.projectCompletion)
-    }
-  },
-
+  push: require('./events/push').default
+}
+/*
+export default {
   async issues (issuesEvent) {
     if (issuesEvent.action !== 'opened') return
 
@@ -177,3 +102,4 @@ export default {
     }, projectCompletion)
   }
 }
+*/
