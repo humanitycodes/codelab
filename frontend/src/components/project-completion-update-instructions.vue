@@ -28,21 +28,21 @@
       hosted version of your site:
     </p>
 
-    <CodeBlock v-if="project.hosting === 'Surge'" lang="sh">
+    <CodeBlock v-if="lesson.projectHosting === 'Surge'" lang="sh">
       # 1) Navigate to your project directory (unless you're already there)
       cd PATH/TO/{{ projectName }}
 
       # 2) Push the files in your project directory to Surge
       surge --project . --domain {{ projectHostedUrl }}
     </CodeBlock>
-    <CodeBlock v-else-if="updating && project.hosting === 'Heroku'" lang="sh">
+    <CodeBlock v-else-if="updating && lesson.projectHosting === 'Heroku'" lang="sh">
       # 1) Navigate to your project directory (unless you're already there)
       cd PATH/TO/{{ projectName }}
 
       # 3) Push your committed code to Heroku
       git push heroku master
     </CodeBlock>
-    <CodeBlock v-else-if="project.hosting === 'Heroku'" lang="sh">
+    <CodeBlock v-else-if="lesson.projectHosting === 'Heroku'" lang="sh">
       # 1) Navigate to your project directory (unless you're already there)
       cd PATH/TO/{{ projectName }}
 
@@ -79,7 +79,7 @@
 <script>
 export default {
   props: {
-    project: {
+    lesson: {
       type: Object,
       required: true
     },
