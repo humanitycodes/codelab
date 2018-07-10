@@ -1,5 +1,5 @@
-import readUserById from '../../db/user/read-by-id'
-import translateUserFromRecord from '../../translators/user/from-record'
+import readUserById from 'db/user/read-by-id'
+import translateUserFromRecord from 'translators/user/from-record'
 import signJsonWebToken from '../../helpers/jwt/sign-json-web-token'
 
 const isUserVersionDifferent = (oldUser, newUser) => {

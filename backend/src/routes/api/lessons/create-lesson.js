@@ -1,12 +1,12 @@
 import boom from 'boom'
 import joi from 'joi'
-import sequelize from '../../../db/sequelize'
+import sequelize from 'db/sequelize'
 import canCreateLesson from '../../../helpers/permission/can-create-lesson'
-import createLessonRecord from '../../../db/lesson/create'
-import readLessonRecordByKey from '../../../db/lesson/read-by-key'
-import refreshLessonRecord from '../../../db/lesson/refresh'
-import translateLessonFromRecord from '../../../translators/lesson/from-record'
-import translateLessonFromPayload from '../../../translators/lesson/from-payload'
+import createLessonRecord from 'db/lesson/create'
+import readLessonRecordByKey from 'db/lesson/read-by-key'
+import refreshLessonRecord from 'db/lesson/refresh'
+import translateLessonFromRecord from 'translators/lesson/from-record'
+import translateLessonFromPayload from 'translators/lesson/from-payload'
 
 export default {
   method: 'POST',

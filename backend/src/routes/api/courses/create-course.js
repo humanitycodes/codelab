@@ -1,13 +1,13 @@
 import boom from 'boom'
 import joi from 'joi'
-import sequelize from '../../../db/sequelize'
+import sequelize from 'db/sequelize'
 import canCreateCourse from '../../../helpers/permission/can-create-course'
-import createCourseRecord from '../../../db/course/create'
-import readCourseRecordByKey from '../../../db/course/read-by-key'
-import refreshCourseRecord from '../../../db/course/refresh'
-import readUserRecordById from '../../../db/user/read-by-id'
-import translateCourseFromRecord from '../../../translators/course/from-record'
-import translateCourseFromPayload from '../../../translators/course/from-payload'
+import createCourseRecord from 'db/course/create'
+import readCourseRecordByKey from 'db/course/read-by-key'
+import refreshCourseRecord from 'db/course/refresh'
+import readUserRecordById from 'db/user/read-by-id'
+import translateCourseFromRecord from 'translators/course/from-record'
+import translateCourseFromPayload from 'translators/course/from-payload'
 
 export default {
   method: 'POST',

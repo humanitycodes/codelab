@@ -1,9 +1,9 @@
 import findRecordsToCreate from './find-records-to-create'
 import findRecordsToDelete from './find-records-to-delete'
 import findRecordsToUpdate from './find-records-to-update'
-import createLearningObjectiveRecord from '../../../../db/lesson/learning-objective/create'
-import deleteLearningObjectiveRecord from '../../../../db/lesson/learning-objective/delete'
-import updateLearningObjectiveRecord from '../../../../db/lesson/learning-objective/update'
+import createLearningObjectiveRecord from 'db/lesson/learning-objective/create'
+import deleteLearningObjectiveRecord from 'db/lesson/learning-objective/delete'
+import updateLearningObjectiveRecord from 'db/lesson/learning-objective/update'
 
 export default async ({ lessonRecord, updatedLesson, transaction }) => {
   const findParams = {

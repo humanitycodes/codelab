@@ -1,9 +1,9 @@
 import boom from 'boom'
 import unionBy from 'lodash/unionBy'
 import canReviewProjects from '../../../helpers/permission/can-review-projects'
-import readAllProjectCompletionRecordsForStudentId from '../../../db/project-completion/read-all-for-student-id'
-import readAllProjectCompletionRecordsForInstructorId from '../../../db/project-completion/read-all-for-instructor-id'
-import translateProjectCompletionFromRecord from '../../../translators/project-completion/from-record'
+import readAllProjectCompletionRecordsForStudentId from 'db/project-completion/read-all-for-student-id'
+import readAllProjectCompletionRecordsForInstructorId from 'db/project-completion/read-all-for-instructor-id'
+import translateProjectCompletionFromRecord from 'translators/project-completion/from-record'
 
 export default {
   method: 'GET',

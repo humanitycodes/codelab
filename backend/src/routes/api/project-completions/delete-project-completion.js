@@ -1,13 +1,13 @@
 import boom from 'boom'
 import joi from 'joi'
-import sequelize from '../../../db/sequelize'
+import sequelize from 'db/sequelize'
 import HttpStatus from 'http-status'
-import readProjectCompletionRecordById from '../../../db/project-completion/read-by-id'
-import deleteProjectCompletionRecord from '../../../db/project-completion/delete'
-import readCourseRecordById from '../../../db/course/read-by-id'
-import readLessonRecordById from '../../../db/lesson/read-by-id'
+import readProjectCompletionRecordById from 'db/project-completion/read-by-id'
+import deleteProjectCompletionRecord from 'db/project-completion/delete'
+import readCourseRecordById from 'db/course/read-by-id'
+import readLessonRecordById from 'db/lesson/read-by-id'
 import githubRepoName from '../../../helpers/github/repo-name'
-import deleteGitHubRepository from '../../../services/github/delete-repository'
+import deleteGitHubRepository from 'services/github/delete-repository'
 
 export default {
   method: 'DELETE',
