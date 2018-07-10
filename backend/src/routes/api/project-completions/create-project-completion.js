@@ -9,6 +9,7 @@ import translateProjectCompletionFromRecord from '../../../translators/project-c
 import getOrCreateGitHubRepository from '../../../services/github/get-or-create-repository'
 import assignGitHubCollaborators from '../../../services/github/assign-collaborators'
 import createGitHubWebhooks from '../../../services/github/create-webhooks'
+import repoName from '../../../helpers/github/repo-name'
 
 export default {
   method: 'POST',
@@ -57,7 +58,10 @@ export default {
       }
 
       // Ensure the GitHub repository exists and is setup properly
-      const repo = `${courseRecord.courseKey}-${lessonRecord.lessonKey}`
+      const repo = repoName({
+        courseKey: courseRecord.courseKey,
+        lessonKey: lessonRecord.lessonKey
+      })
       const owner = authUser.githubLogin
       const collaborators = await courseRecord.getInstructors()
       const repository = await getOrCreateGitHubRepository(
