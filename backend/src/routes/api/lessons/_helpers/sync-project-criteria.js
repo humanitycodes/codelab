@@ -1,9 +1,9 @@
 import findRecordsToCreate from './find-records-to-create'
 import findRecordsToDelete from './find-records-to-delete'
 import findRecordsToUpdate from './find-records-to-update'
-import createProjectCriterionRecord from '../../../../db/lesson/project-criterion/create'
-import deleteProjectCriterionRecord from '../../../../db/lesson/project-criterion/delete'
-import updateProjectCriterionRecord from '../../../../db/lesson/project-criterion/update'
+import createProjectCriterionRecord from 'db/lesson/project-criterion/create'
+import deleteProjectCriterionRecord from 'db/lesson/project-criterion/delete'
+import updateProjectCriterionRecord from 'db/lesson/project-criterion/update'
 
 export default async ({ lessonRecord, updatedLesson, transaction }) => {
   const findParams = {

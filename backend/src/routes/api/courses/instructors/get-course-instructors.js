@@ -1,7 +1,7 @@
 import joi from 'joi'
 import boom from 'boom'
 
-import { readInstructorsByCourseKey } from '../../../../db/instructor-repo'
+import { readInstructorsByCourseKey } from 'db/instructor-repo'
 
 export default {
   method: 'GET',

@@ -1,10 +1,10 @@
 import boom from 'boom'
 import unionBy from 'lodash/unionBy'
 import canReadAllUsers from '../../../helpers/permission/can-read-all-users'
-import readUserRecordById from '../../../db/user/read-by-id'
-import readAllUserRecords from '../../../db/user/read-all'
-import readCourseRecordsForStudentId from '../../../db/course/read-all-for-student-id'
-import translateUserFromRecord from '../../../translators/user/from-record'
+import readUserRecordById from 'db/user/read-by-id'
+import readAllUserRecords from 'db/user/read-all'
+import readCourseRecordsForStudentId from 'db/course/read-all-for-student-id'
+import translateUserFromRecord from 'translators/user/from-record'
 
 export default {
   method: 'GET',

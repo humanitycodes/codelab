@@ -2,11 +2,11 @@ import joi from 'joi'
 import boom from 'boom'
 import { config } from '../../../../env/config'
 import signJsonWebToken from '../../../helpers/jwt/sign-json-web-token'
-import sequelize from '../../../db/sequelize'
+import sequelize from 'db/sequelize'
 import registerNewUser from '../_helpers/register-new-user'
-import readUserRecordByMsuUid from '../../../db/user/read-by-msu-uid'
-import translateUserFromRecord from '../../../translators/user/from-record'
-import requestMsuUserProfile from '../../../services/msu/request-user-profile'
+import readUserRecordByMsuUid from 'db/user/read-by-msu-uid'
+import translateUserFromRecord from 'translators/user/from-record'
+import requestMsuUserProfile from 'services/msu/request-user-profile'
 
 export default {
   method: 'GET',

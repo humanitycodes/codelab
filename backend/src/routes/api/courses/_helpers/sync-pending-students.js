@@ -1,5 +1,5 @@
-import createPendingStudentRecord from '../../../../db/course/student-pending/create'
-import deletePendingStudentRecord from '../../../../db/course/student-pending/delete'
+import createPendingStudentRecord from 'db/course/student-pending/create'
+import deletePendingStudentRecord from 'db/course/student-pending/delete'
 
 export default async ({ courseRecord, updatedCourse, transaction }) => {
   // Create pending students that don't already have a relationship

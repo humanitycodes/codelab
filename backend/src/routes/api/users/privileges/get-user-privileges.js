@@ -1,6 +1,6 @@
 import boom from 'boom'
 import joi from 'joi'
-import getGitHubUserProfile from '../../../../services/github/get-user-profile'
+import getGitHubUserProfile from 'services/github/get-user-profile'
 
 export default {
   method: 'GET',

@@ -1,10 +1,10 @@
 import boom from 'boom'
 import joi from 'joi'
-import sequelize from '../../../db/sequelize'
+import sequelize from 'db/sequelize'
 import HttpStatus from 'http-status'
 import canDeleteCourse from '../../../helpers/permission/can-delete-course'
-import readCourseRecordById from '../../../db/course/read-by-id'
-import deleteCourseRecord from '../../../db/course/delete'
+import readCourseRecordById from 'db/course/read-by-id'
+import deleteCourseRecord from 'db/course/delete'
 import isCourseInstructor from './_helpers/is-course-instructor'
 
 export default {

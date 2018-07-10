@@ -1,11 +1,11 @@
 import boom from 'boom'
 
-import { readUserByGitHubLogin } from '../db/user-repo'
-import { readInstructorsByCourseKey } from '../db/instructor-repo'
+import { readUserByGitHubLogin } from 'db/user-repo'
+import { readInstructorsByCourseKey } from 'db/instructor-repo'
 import {
   readProjectCompletionByPartialKey,
   updateProjectCompletion
-} from '../db/project-completion-repo'
+} from 'db/project-completion-repo'
 
 // Capture Group 1. GitHub Username: ([^/]+)
 // Capture Group 2. Course Key: ([A-Z]+-\d{3}-[A-Z]{2}\d{2}-\d{3})

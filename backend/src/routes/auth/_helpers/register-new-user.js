@@ -1,7 +1,7 @@
-import createUserRecord from '../../../db/user/create'
-import readCourseRecordById from '../../../db/course/read-by-id'
-import readPendingStudentRecordsForEmail from '../../../db/course/student-pending/read-all-for-email'
-import deletePendingStudentRecord from '../../../db/course/student-pending/delete'
+import createUserRecord from 'db/user/create'
+import readCourseRecordById from 'db/course/read-by-id'
+import readPendingStudentRecordsForEmail from 'db/course/student-pending/read-all-for-email'
+import deletePendingStudentRecord from 'db/course/student-pending/delete'
 
 export default async ({ email, fullName, msuUid }, { transaction }) => {
   // Create the user record
