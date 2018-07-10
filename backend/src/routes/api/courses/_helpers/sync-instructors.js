@@ -1,4 +1,4 @@
-export default async ({ courseRecord, updatedCourse }) => {
+export default async ({ courseRecord, updatedCourse, transaction }) => {
   // Create instructors that don't already have a relationship
   const toCreate = updatedCourse.instructorIds.filter(
     instructorId => !courseRecord.instructors.some(
@@ -16,10 +16,10 @@ export default async ({ courseRecord, updatedCourse }) => {
   // Perform any needed deletes and inserts in tandem
   const changes = []
   if (toDelete.length > 0) {
-    changes.push(courseRecord.removeInstructors(toDelete))
+    changes.push(courseRecord.removeInstructors(toDelete, { transaction }))
   }
   if (toCreate.length > 0) {
-    changes.push(courseRecord.addInstructors(toCreate))
+    changes.push(courseRecord.addInstructors(toCreate, { transaction }))
   }
   return Promise.all(changes)
 }

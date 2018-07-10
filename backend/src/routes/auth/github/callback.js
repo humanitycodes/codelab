@@ -4,7 +4,7 @@ import { config } from '../../../../env/config'
 import signJsonWebToken from '../../../helpers/jwt/sign-json-web-token'
 import decodeJsonWebToken from '../../../helpers/jwt/decode-json-web-token'
 import sequelize from '../../../db/sequelize'
-import createUserRecord from '../../../db/user/create'
+import registerNewUser from '../_helpers/register-new-user'
 import readUserRecordById from '../../../db/user/read-by-id'
 import readUserRecordByGitHubLogin from '../../../db/user/read-by-github-login'
 import updateUserRecord from '../../../db/user/update'
@@ -52,7 +52,7 @@ export default {
           githubProfile.login, { transaction }
         )
         if (!userRecord) {
-          userRecord = await createUserRecord({
+          userRecord = await registerNewUser({
             email: githubProfile.email,
             fullName: githubProfile.name
           }, { transaction })

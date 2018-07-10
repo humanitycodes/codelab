@@ -3,8 +3,8 @@ import boom from 'boom'
 import { config } from '../../../../env/config'
 import signJsonWebToken from '../../../helpers/jwt/sign-json-web-token'
 import sequelize from '../../../db/sequelize'
-import createUser from '../../../db/user/create'
-import readUserByMsuUid from '../../../db/user/read-by-msu-uid'
+import registerNewUser from '../_helpers/register-new-user'
+import readUserRecordByMsuUid from '../../../db/user/read-by-msu-uid'
 import translateUserFromRecord from '../../../translators/user/from-record'
 import requestMsuUserProfile from '../../../services/msu/request-user-profile'
 
@@ -26,10 +26,10 @@ export default {
 
       // Lookup the user from MSU and then from the DB
       const msuProfile = await requestMsuUserProfile(request.query.code)
-      let userRecord = await readUserByMsuUid(msuProfile.id, { transaction })
+      let userRecord = await readUserRecordByMsuUid(msuProfile.id, { transaction })
 
       if (!userRecord) {
-        userRecord = await createUser({
+        userRecord = await registerNewUser({
           email: msuProfile.email,
           fullName: msuProfile.name,
           msuUid: msuProfile.id
