@@ -19,11 +19,15 @@ export default {
         // Fetch course instructors and the requester's user record
         userRecords = [await readUserRecordById(authUser.userId)]
         const courseRecords = await readCourseRecordsForStudentId(authUser.userId)
-        courseRecords.forEach(courseRecord => {
+        // Fetch the instructors for all enrolled courses
+        const courseInstructors = await Promise.all(
+          courseRecords.map(async courseRecord => courseRecord.getInstructors())
+        )
+        courseInstructors.forEach(instructors => {
           // Combine the users, leaving out duplicates
           userRecords = unionBy(
             userRecords,
-            courseRecord.getInstructors(),
+            instructors,
             userRecord => userRecord.userId
           )
         })

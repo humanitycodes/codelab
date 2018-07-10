@@ -5,7 +5,7 @@
     <p v-if="error" class="error">{{ error }}</p>
 
     <ProjectCompletionUpdateInstructions
-      :project="project"
+      :lesson="lesson"
       :projectName="projectName"
       :projectRepoUrl="projectRepoUrl"
       :projectHostedUrl="projectHostedUrl"
@@ -20,15 +20,26 @@
       >
         <option
           v-for="instructor in instructors"
-          :value="instructor.github.login"
+          :key="instructor.userId"
+          :value="instructor.githubLogin"
         >{{ instructor.fullName }}</option>
       </select>
     </template>
 
     <h4>Submit for review</h4>
-    <p>Final step! But first, make sure you've met the following criteria (check each box to confirm):</p>
-    <label v-for="criterion in project.criteria" class="with-inline-input">
-      <input type="checkbox" v-model="metCriteria[criterion['.key']]">
+    <p>
+      Final step! But first, make sure you've met the following criteria
+      (check each box to confirm):
+    </p>
+    <label
+      v-for="criterion in lesson.projectCriteria"
+      :key="criterion.lessonProjectCriterionId"
+      class="with-inline-input"
+    >
+      <input
+        type="checkbox"
+        v-model="metCriteria[criterion.lessonProjectCriterionId]"
+      >
       <span v-html="convertRichContentToInlineHtml(criterion.content)"/>
     </label>
 
@@ -43,12 +54,13 @@
 </template>
 
 <script>
-import Axios from 'axios'
 import QueryString from 'querystring'
 import { userGetters } from '@state/helpers'
 import ProjectCompletionUpdateInstructions from './project-completion-update-instructions'
 import ProjectCompletionLinks from './project-completion-links'
 import convertRichContentToInlineHtml from '@helpers/utils/convert-rich-content-to-inline-html'
+import userById from '@helpers/finders/user-by-id'
+import randomElement from '@helpers/utils/random-element'
 
 export default {
   components: {
@@ -59,11 +71,11 @@ export default {
       type: Object,
       required: true
     },
-    projectCompletion: {
+    lesson: {
       type: Object,
       required: true
     },
-    project: {
+    projectCompletion: {
       type: Object,
       required: true
     },
@@ -86,77 +98,59 @@ export default {
   },
   data () {
     return {
-      metCriteria: this.project.criteria
-        .map(criterion => ({ [criterion['.key']]: false }))
+      metCriteria: this.lesson.projectCriteria
+        .map(criterion => ({ [criterion.lessonProjectCriterionId]: false }))
         .reduce((a, b) => Object.assign({}, a, b)),
       error: '',
-      instructors: [],
+      instructors: this.course.instructorIds
+        .map(instructorId => userById(instructorId))
+        .filter(instructor => !!instructor.githubLogin),
       chosenInstructor: null
     }
   },
   created () {
-    this.fetchInstructors()
+    if (this.instructors.length) {
+      this.chosenInstructor = randomElement(this.instructors).githubLogin
+    } else {
+      this.error = `
+        Your instructor has not connected their GitHub account. Please tell your
+        instructor about this so you can submit your project.
+      `
+    }
   },
   computed: {
     ...userGetters,
     allCriteriaMet () {
       return this.chosenInstructor &&
-        Object.keys(this.metCriteria).every(key => {
-          return this.metCriteria[key]
-        })
+        Object.keys(this.metCriteria).every(id => this.metCriteria[id])
     }
   },
   methods: {
     convertRichContentToInlineHtml,
     submitForReview () {
-      const criteria = this.project.criteria.map(criterion => criterion.content)
+      const criteria = this.lesson.projectCriteria.map(
+        criterion => criterion.content
+      )
 
       const newIssueUrl = [
         'https://github.com/',
-        this.currentUser.profile.github.login,
+        this.currentUser.githubLogin,
         '/',
         this.projectName,
         '/issues/new?',
         QueryString.stringify({
           title: 'Project Feedback',
-          body: `## ${this.project.title}\n\n@${this.chosenInstructor} Can you take a look at this? It's [hosted here](${this.projectHostedUrl}) and meets the following criteria:\n\n- [x] ${criteria.join('\n- [x] ')}\n\n<!-- ADD YOUR OWN NOTES, IF ANY, BELOW THIS LINE -->`
+          body:
+            `## ${this.lesson.projectTitle}\n\n@${this.chosenInstructor} ` +
+            `Can you take a look at this? ` +
+            `It's [hosted here](${this.projectHostedUrl}) ` +
+            `and meets the following criteria:\n\n` +
+            `- [x] ${criteria.join('\n- [x] ')}\n\n` +
+            `<!-- ADD YOUR OWN NOTES, IF ANY, BELOW THIS LINE -->`
         })
       ].join('')
 
-      this.projectCompletion.hostedUrl = this.projectHostedUrl
       window.open(newIssueUrl, '_blank').focus()
-    },
-    fetchInstructors () {
-      Axios.get(`/api/courses/${this.course['.key']}/instructors`)
-      .then(response => {
-        this.error = ''
-        this.instructors = []
-        Object.keys(response.data).forEach(uid => {
-          const instructor = {
-            ...response.data[uid],
-            uid
-          }
-          if (instructor.github) {
-            this.instructors.push(instructor)
-          }
-        })
-        if (this.instructors.length) {
-          if (this.instructors.length > 1) {
-            this.instructors = this.instructors.filter(instructor => {
-              return instructor.uid !== this.currentUser.uid
-            })
-          }
-          const random = Math.floor(Math.random() * this.instructors.length)
-          this.chosenInstructor = this.instructors[random].github.login
-        } else {
-          this.chosenInstructor = null
-          this.error = `Your instructor has not connected their GitHub account. Please tell your instructor about this so you can submit your project.`
-        }
-      })
-      .catch(error => {
-        console.error(error)
-        this.error = `There was a problem getting the instructors for the course. If refreshing the page doesn't work, please tell your instructor about this and we'll work to resolve it as soon as possible.`
-      })
     }
   }
 }
