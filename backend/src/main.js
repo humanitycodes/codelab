@@ -1,18 +1,20 @@
-// Polyfill features that are not yet natively
-// supported in node
+// Polyfill features that are not yet natively supported in node
 import 'babel-polyfill'
+
+// Add ./ (src) to Node search path for imports to avoid lots of ../../../../..
+import 'app-module-path/register'
 
 import hapi from 'hapi'
 import boom from 'boom'
 import { config } from '../env/config'
-import frontendDir from './constants/frontend-dir'
 import jwtSecret from '../env/jwt-secret'
-import logRequests from './log-requests'
-import sequelize from './db/sequelize'
-import validateJsonWebToken from './helpers/jwt/validate-json-web-token'
-import gatherRoutesForDir from './routes/_helpers/gather-routes-for-dir'
-import refreshTokenOnRequest from './routes/_helpers/refresh-token-on-request'
-import refreshTokenOnResponse from './routes/_helpers/refresh-token-on-response'
+import frontendDir from 'constants/frontend-dir'
+import logRequests from 'log-requests'
+import sequelize from 'db/sequelize'
+import validateJsonWebToken from 'helpers/jwt/validate-json-web-token'
+import gatherRoutesForDir from 'routes/_helpers/gather-routes-for-dir'
+import refreshTokenOnRequest from 'routes/_helpers/refresh-token-on-request'
+import refreshTokenOnResponse from 'routes/_helpers/refresh-token-on-response'
 
 const start = async () => {
   try {

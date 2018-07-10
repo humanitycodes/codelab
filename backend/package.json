@@ -13,7 +13,9 @@
     "unit": "yarn run build && mocha --opts test/unit/mocha.opts test/unit/specs/",
     "test": "yarn run unit"
   },
+  "main": "src/main.js",
   "dependencies": {
+    "app-module-path": "^2.2.0",
     "axios": "^0.15.0",
     "boom": "^4.1.0",
     "firebase-admin": "^4.1.2",
