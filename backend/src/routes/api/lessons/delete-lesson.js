@@ -2,7 +2,7 @@ import boom from 'boom'
 import joi from 'joi'
 import sequelize from 'db/sequelize'
 import HttpStatus from 'http-status'
-import canDeleteLesson from '../../../helpers/permission/can-delete-lesson'
+import canDeleteLesson from 'helpers/permission/can-delete-lesson'
 import readLessonRecordById from 'db/lesson/read-by-id'
 import deleteLessonRecord from 'db/lesson/delete'
 

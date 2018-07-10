@@ -1,6 +1,6 @@
 import postToGitHub from './_helpers/post-to-github'
 import { config } from '../../../env/config'
-import githubEventHandlers from '../../helpers/github-event-handlers'
+import githubEventHandlers from 'helpers/github-event-handlers'
 
 export default async (token, { owner, repo }) =>
   postToGitHub(`/repos/${owner}/${repo}/hooks`, token, {

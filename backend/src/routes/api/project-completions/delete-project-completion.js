@@ -6,7 +6,7 @@ import readProjectCompletionRecordById from 'db/project-completion/read-by-id'
 import deleteProjectCompletionRecord from 'db/project-completion/delete'
 import readCourseRecordById from 'db/course/read-by-id'
 import readLessonRecordById from 'db/lesson/read-by-id'
-import githubRepoName from '../../../helpers/github/repo-name'
+import githubRepoName from 'helpers/github/repo-name'
 import deleteGitHubRepository from 'services/github/delete-repository'
 
 export default {

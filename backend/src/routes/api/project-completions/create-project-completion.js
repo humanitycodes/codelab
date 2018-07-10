@@ -9,7 +9,7 @@ import translateProjectCompletionFromRecord from 'translators/project-completion
 import getOrCreateGitHubRepository from 'services/github/get-or-create-repository'
 import assignGitHubCollaborators from 'services/github/assign-collaborators'
 import createGitHubWebhooks from 'services/github/create-webhooks'
-import repoName from '../../../helpers/github/repo-name'
+import repoName from 'helpers/github/repo-name'
 
 export default {
   method: 'POST',

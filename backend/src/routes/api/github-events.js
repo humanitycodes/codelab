@@ -2,7 +2,7 @@ import joi from 'joi'
 import boom from 'boom'
 
 import { config as env } from '../../../env/config'
-import githubEventHandlers from '../../helpers/github-event-handlers'
+import githubEventHandlers from 'helpers/github-event-handlers'
 
 export default {
   method: 'POST',
