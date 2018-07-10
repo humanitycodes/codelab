@@ -90,9 +90,9 @@ export default {
 
       // Sync the learning objectives and project criteria
       await Promise.all([
-        syncInstructors({ courseRecord, updatedCourse }),
-        syncLessons({ courseRecord, updatedCourse }),
-        syncStudents({ courseRecord, updatedCourse }),
+        syncInstructors({ courseRecord, updatedCourse, transaction }),
+        syncLessons({ courseRecord, updatedCourse, transaction }),
+        syncStudents({ courseRecord, updatedCourse, transaction }),
         syncPendingStudents({ courseRecord, updatedCourse, transaction })
       ])
 
