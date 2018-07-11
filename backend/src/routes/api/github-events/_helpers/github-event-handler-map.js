@@ -1,48 +1,9 @@
 export default {
+  issues: require('./events/issues').default,
   push: require('./events/push').default
 }
 /*
 export default {
-  async issues (issuesEvent) {
-    if (issuesEvent.action !== 'opened') return
-
-    const projectMeta = await findProjectCompletionFromRepoName(issuesEvent.repository.full_name)
-
-    // Find the assigned instructor
-    let assignedInstructor = null
-    const instructors = await readInstructorsByCourseKey(projectMeta.courseKey)
-    Object.keys(instructors).forEach(instructorUid => {
-      const instructor = instructors[instructorUid]
-      if (!instructor.github) return
-      const instructorMentionRegex = new RegExp(`@${instructor.github.login}\\b`)
-      if (issuesEvent.issue.body.search(instructorMentionRegex) !== -1) {
-        assignedInstructor = instructorUid
-      }
-    })
-
-    // An instructor may not be found if the student did not @mention one
-    if (!assignedInstructor) {
-      const availableInstructors = Object.keys(instructors)
-      const random = Math.floor(Math.random() * availableInstructors.length)
-      assignedInstructor = availableInstructors[random]
-    }
-
-    // Set submission to awaiting approval
-    let projectCompletion = projectMeta.projectCompletion
-    projectCompletion.submission = projectCompletion.submission || {}
-    projectCompletion.submission.isApproved = false
-    projectCompletion.submission.instructorCommentedLast = false
-    projectCompletion.submission.assignedInstructor = assignedInstructor
-    if (!projectCompletion.submission.firstSubmittedAt) {
-      projectCompletion.submission.firstSubmittedAt = new Date(issuesEvent.issue.created_at).getTime()
-    }
-
-    await updateProjectCompletion({
-      courseKey: projectMeta.courseKey,
-      projectCompletionKey: projectMeta.projectCompletionKey
-    }, projectCompletion)
-  },
-
   async issue_comment (issueCommentEvent) {
     if (['created', 'edited'].indexOf(issueCommentEvent.action) === -1) return
 
