@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { lessonGetters } from '@state/helpers'
+import { lessonGetters, projectCompletionGetters } from '@state/helpers'
 import { lessonCanBeAddedToCourse } from '@state/auth/courses'
 import Dropdown from './dropdown'
 import ModalConfirm from './modal-confirm'
@@ -80,6 +80,7 @@ export default {
   },
   computed: {
     ...lessonGetters,
+    ...projectCompletionGetters,
     queryResults () {
       if (!this.lessonQuery || !this.lessons.length) return []
       const queryRegex = new RegExp(this.lessonQuery, 'i')
@@ -111,10 +112,9 @@ export default {
       this.$refs.queryInput.focus()
     },
     lessonHasProjectCompletions (lesson) {
-      return false
-      // return this.course.projectCompletions.some(completion => {
-      //   return completion.lessonKey === lesson['.key']
-      // })
+      return this.projectCompletions.some(
+        completion => completion.lessonId === lesson.lessonId
+      )
     },
     showRemoveLessonModal (lesson) {
       this.lessonPendingRemoval = lesson
