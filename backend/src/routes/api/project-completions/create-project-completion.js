@@ -63,7 +63,7 @@ export default {
         lessonKey: lessonRecord.lessonKey
       })
       const owner = authUser.githubLogin
-      const collaborators = await courseRecord.getInstructors()
+      const collaborators = await courseRecord.getInstructors({ transaction })
       const repository = await getOrCreateGitHubRepository(
         authUser.githubToken, { owner, repo }
       )
