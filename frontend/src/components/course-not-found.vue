@@ -18,7 +18,7 @@ export default {
     suggestedKey () {
       return getSuggestedKey(
         this.badKey,
-        this.courses.map(course => course['.key'])
+        this.courses.map(course => course.courseKey)
       )
     },
     suggestedLink () {
