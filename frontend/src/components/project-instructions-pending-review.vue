@@ -29,14 +29,14 @@
     </CodeBlock>
 
     <p>Update the live result with your changes:</p>
-    <CodeBlock v-if="project.hosting === 'Surge'" lang="sh">
+    <CodeBlock v-if="lesson.projectHosting === 'Surge'" lang="sh">
       # 1) Navigate to your project directory (unless you're already there)
       cd PATH/TO/{{ projectName }}
 
       # 2) Push the files in your project directory to Surge
       surge --project . --domain {{ projectHostedUrl }}
     </CodeBlock>
-    <CodeBlock v-else-if="project.hosting === 'Heroku'" lang="sh">
+    <CodeBlock v-else-if="lesson.projectHosting === 'Heroku'" lang="sh">
       # 1) Navigate to your project directory (unless you're already there)
       cd PATH/TO/{{ projectName }}
 
@@ -58,8 +58,12 @@ export default {
     ProjectCompletionLinks
   },
   props: {
-    project: {
+    lesson: {
       type: Object,
+      required: true
+    },
+    projectName: {
+      type: String,
       required: true
     },
     projectRepoUrl: {
