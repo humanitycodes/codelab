@@ -18,7 +18,7 @@ import updateProjectCompletionRecord from 'db/project-completion/update'
 //     }]
 //   }
 // }
-export default async (pushEvent) => {
+export default async pushEvent => {
   // Make sure there was at least one commit
   if (!pushEvent.commits.length) return
 
