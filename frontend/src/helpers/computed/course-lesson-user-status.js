@@ -7,11 +7,11 @@ export default (course, lesson, user) => {
   if (completion) {
     status.started = true
     status.committed = completion.committed
-    if (completion.submission) {
+    if (completion.firstSubmittedAt) {
       status.submitted = true
-      if (completion.submission.isApproved) {
+      if (completion.approved) {
         status.approved = true
-      } else if (completion.submission.instructorCommentedLast) {
+      } else if (completion.instructorCommentedLast) {
         status.changesRequested = true
       } else {
         status.awaitingFeedback = true
