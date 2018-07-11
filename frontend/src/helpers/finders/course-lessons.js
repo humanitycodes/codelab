@@ -1,9 +1,3 @@
-import store from '@state/store'
+import lessonById from '../finders/lesson-by-id'
 
-export default course => {
-  return course.lessonKeys.map(lessonKey => {
-    return store.getters.lessons.find(lesson => {
-      return lesson['.key'] === lessonKey
-    })
-  })
-}
+export default course => course.lessonIds.map(lessonId => lessonById(lessonId))
