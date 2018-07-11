@@ -5,10 +5,14 @@
       :hosted-url="projectHostedUrl"
     />
 
-    <p>Feedback has been provided by an instructor. Please see any issues open on your GitHub repository above, respond to the comments (if necessary), then update your project accordingly:</p>
+    <p>
+      Feedback has been provided by an instructor. Please see any issues open on
+      your GitHub repository above, respond to the comments (if necessary), then
+      update your project accordingly:
+    </p>
 
     <ProjectCompletionUpdateInstructions
-      :project="project"
+      :lesson="lesson"
       :projectName="projectName"
       :projectRepoUrl="projectRepoUrl"
       :projectHostedUrl="projectHostedUrl"
@@ -17,7 +21,10 @@
     />
 
     <h4>Leave a comment</h4>
-    <p>Finally, make sure to leave a comment on the issue to let your reviewer know that you've updated the project and it's ready for another look.</p>
+    <p>
+      Finally, make sure to leave a comment on the issue to let your reviewer
+      know that you've updated the project and it's ready for another look.
+    </p>
   </div>
 </template>
 
@@ -30,7 +37,7 @@ export default {
     ProjectCompletionLinks, ProjectCompletionUpdateInstructions
   },
   props: {
-    project: {
+    lesson: {
       type: Object,
       required: true
     },
