@@ -129,8 +129,10 @@
           </td>
           <td class="review-reassignment-control">
             <select
-              v-model="codeReview.projectCompletion.assignedInstructor"
               aria-label="Reassign this review"
+              @change="reassignInstructor(codeReview.projectCompletion, $event)"
+              :value="codeReview.projectCompletion.instructorUserId"
+              :ref="reassignmentRef(codeReview.projectCompletion)"
             >
               <option
                 v-for="instructorId in codeReview.course.instructorIds"
@@ -149,7 +151,6 @@
 
 <script>
 import OrderByIndicator from '@components/indicator-order-by'
-import { userGetters, lessonGetters } from '@state/helpers'
 import courseProjectCompletionRepoName from '@helpers/computed/course-project-completion-repo-name'
 import courseProjectCompletionHostedUrl from '@helpers/computed/course-project-completion-hosted-url'
 import userById from '@helpers/finders/user-by-id'
@@ -157,6 +158,7 @@ import orderBy from 'lodash/orderBy'
 import differenceInDays from 'date-fns/difference_in_days'
 import formatDate from 'date-fns/format'
 import mostRecentDate from 'date-fns/max'
+import updateProjectCompletionInstructor from '@api/project-completions/update-project-completion-instructor'
 
 export default {
   components: { OrderByIndicator },
@@ -268,11 +270,24 @@ export default {
         this.orderByColumn = column
         this.orderByDirection = 'asc'
       }
+    },
+    reassignmentRef (projectCompletion) {
+      return `reviewReassignment${projectCompletion.projectCompletionId}`
+    },
+    reassignInstructor (projectCompletion, event) {
+      const projectCompletionId = projectCompletion.projectCompletionId
+      const instructorUserId = event.target.value
+      updateProjectCompletionInstructor({
+        projectCompletionId, instructorUserId
+      })
+      .then(() => {
+        projectCompletion.instructorUserId = instructorUserId
+      })
+      .catch(() => {
+        const ref = this.$refs[this.reassignmentRef(projectCompletion)][0]
+        ref.value = projectCompletion.instructorUserId
+      })
     }
-  },
-  computed: {
-    ...userGetters,
-    ...lessonGetters
   }
 }
 </script>
