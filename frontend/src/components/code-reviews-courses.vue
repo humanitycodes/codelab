@@ -19,11 +19,12 @@
 
 <script>
 import InstructorCodeReviews from '@components/code-reviews-instructor'
-import { userGetters, lessonGetters } from '@state/helpers'
-/*
+import { projectCompletionGetters } from '@state/helpers'
 import courseUserGradeCurrentRounded from '@helpers/computed/course-user-grade-current-rounded'
+import courseById from '@helpers/finders/course-by-id'
+import lessonById from '@helpers/finders/lesson-by-id'
+import userById from '@helpers/finders/user-by-id'
 import orderBy from 'lodash/orderBy'
-*/
 
 export default {
   components: {
@@ -35,69 +36,47 @@ export default {
       required: true
     }
   },
-  methods: {
-    getUser (userKey) {
-      return this.users.find(user => user['.key'] === userKey)
-    },
-    getLesson (lessonKey) {
-      return this.lessons.find(lesson => lesson['.key'] === lessonKey)
-    }
-  },
-  created () {
-    // Retrieve the large fields so projectCompletions are available
-    this.courses.forEach(course => {
-      if (!course) return
-
-      // todo fetch courses and project completions from API
-    })
-  },
   computed: {
-    ...userGetters,
-    ...lessonGetters,
+    ...projectCompletionGetters,
     instructorCodeReviewsAwaitingFeedback () {
-      // Collection information about pending code reviews, grouped by instructor
-      /* todo
-      let instructorCodeReviews = {}
-      this.courses.forEach(course => {
-        course.projectCompletions.forEach(projectCompletion => {
-          if (!projectCompletion.submission || projectCompletion.submission.instructorCommentedLast) return
+      // Collect information about pending code reviews, grouped by instructor
+      const instructorCodeReviews = {}
+      this.projectCompletions.forEach(projectCompletion => {
+        // Exclude projects that haven't been submitted or don't need
+        // the instructor's attention
+        if (
+          !projectCompletion.firstSubmittedAt ||
+          projectCompletion.instructorCommentedLast ||
+          !projectCompletion.instructorUserId
+        ) return
 
-          // Handle edge case where a project completion has been submitted
-          // without an assigned instructor. Should only ever happen when
-          // manually manipulating the database.
-          if (!projectCompletion.submission.assignedInstructor) {
-            projectCompletion.submission.assignedInstructor = course.instructorKeys[0]
-          }
+        if (!instructorCodeReviews[projectCompletion.instructorUserId]) {
+          instructorCodeReviews[projectCompletion.instructorUserId] = []
+        }
 
-          if (!instructorCodeReviews[projectCompletion.submission.assignedInstructor]) {
-            instructorCodeReviews[projectCompletion.submission.assignedInstructor] = []
-          }
-
-          const student = this.getUser(projectCompletion.students[0]['.key'])
-          const grade = courseUserGradeCurrentRounded(course, student)
-          instructorCodeReviews[projectCompletion.submission.assignedInstructor].push({
-            course,
-            projectCompletion,
-            student,
-            lesson: this.getLesson(projectCompletion.lessonKey),
-            studentGradePoints: grade > 0 ? parseFloat(grade).toFixed(2) : 0
-          })
+        const course = courseById(projectCompletion.courseId)
+        const lesson = lessonById(projectCompletion.lessonId)
+        const student = userById(projectCompletion.studentUserId)
+        const grade = courseUserGradeCurrentRounded(course, student)
+        const studentGradePoints = grade > 0 ? parseFloat(grade).toFixed(2) : 0
+        instructorCodeReviews[projectCompletion.instructorUserId].push({
+          course, projectCompletion, student, lesson, studentGradePoints
         })
       })
 
       // Reorganize code reviews for each instructor
-      let codeReviewGroups = []
-      Object.keys(instructorCodeReviews).forEach(instructorKey => {
+      const codeReviewGroups = []
+      Object.keys(instructorCodeReviews).forEach(instructorUserId => {
+        // Object keys are strings, so convert these IDs back to numbers
+        const userId = parseInt(instructorUserId)
         codeReviewGroups.push({
-          instructor: this.getUser(instructorKey),
-          codeReviews: instructorCodeReviews[instructorKey]
+          instructor: userById(userId),
+          codeReviews: instructorCodeReviews[userId]
         })
       })
 
       // Order code review groups by instructor name
       return orderBy(codeReviewGroups, [group => group.instructor.fullName])
-      */
-      return []
     }
   }
 }
