@@ -99,10 +99,10 @@
             {{ codeReview.student.fullName }}
             </td>
           <td class="review-info-key">
-            {{ humanizeCourseKey(codeReview.course['.key']) }}
+            {{ humanizeCourseKey(codeReview.course.courseKey) }}
           </td>
           <td class="review-info-key">
-            <a target="_blank" :href="getCourseLessonUrl(codeReview)">{{ codeReview.lesson['.key'] }}</a>
+            <a target="_blank" :href="getCourseLessonUrl(codeReview)">{{ codeReview.lesson.lessonKey }}</a>
           </td>
           <td class="numeric-cell">
             {{ getProjectCompletionAgeInDays(codeReview) }}
@@ -129,15 +129,15 @@
           </td>
           <td class="review-reassignment-control">
             <select
-              v-model="codeReview.projectCompletion.submission.assignedInstructor"
+              v-model="codeReview.projectCompletion.assignedInstructor"
               aria-label="Reassign this review"
             >
               <option
-                v-for="instructorKey in codeReview.course.instructorKeys"
-                :key="instructorKey"
-                :value="instructorKey"
+                v-for="instructorId in codeReview.course.instructorIds"
+                :key="instructorId"
+                :value="instructorId"
               >
-                {{ getInstructorInitialsFromKey(instructorKey) }}
+                {{ getInstructorInitialsFromId(instructorId) }}
               </option>
             </select>
           </td>
@@ -152,6 +152,7 @@ import OrderByIndicator from '@components/indicator-order-by'
 import { userGetters, lessonGetters } from '@state/helpers'
 import courseProjectCompletionRepoName from '@helpers/computed/course-project-completion-repo-name'
 import courseProjectCompletionHostedUrl from '@helpers/computed/course-project-completion-hosted-url'
+import userById from '@helpers/finders/user-by-id'
 import orderBy from 'lodash/orderBy'
 import differenceInDays from 'date-fns/difference_in_days'
 import formatDate from 'date-fns/format'
@@ -177,24 +178,21 @@ export default {
       orderByIdentifier: {
         'grade-point': codeReview => codeReview.studentGradePoints,
         'student': codeReview => codeReview.student.fullName,
-        'course': codeReview => codeReview.course['.key'],
-        'lesson': codeReview => codeReview.lesson['.key'],
+        'course': codeReview => codeReview.course.courseKey,
+        'lesson': codeReview => codeReview.lesson.lessonKey,
         'project-age': this.getProjectCompletionAgeInDays,
         'last-updated': this.getProjectCompletionLastUpdatedDate
       }
     }
   },
   methods: {
-    getUser (userKey) {
-      return this.users.find(user => user['.key'] === userKey)
-    },
     getFirstIssueUrl (codeReview) {
       return this.getGitHubProjectUrl(codeReview) + '/issues/1'
     },
     getGitHubProjectUrl (codeReview) {
       return [
         'https://github.com/',
-        codeReview.student.github.login,
+        codeReview.student.githubLogin,
         '/',
         this.getRepoName(codeReview)
       ].join('')
@@ -202,9 +200,9 @@ export default {
     getCourseLessonUrl (codeReview) {
       return [
         '/courses/',
-        codeReview.course['.key'],
+        codeReview.course.courseKey,
         '/lessons/',
-        codeReview.lesson['.key']
+        codeReview.lesson.lessonKey
       ].join('')
     },
     getHostedUrl (codeReview) {
@@ -235,19 +233,21 @@ export default {
       const keyParts = key.split('-')
       return keyParts[0] + keyParts[1] + ' (' + keyParts[3] + ')'
     },
-    getInstructorInitialsFromKey (intructorKey) {
-      const instructor = this.getUser(intructorKey)
+    getInstructorInitialsFromId (instructorId) {
+      const instructor = userById(instructorId)
       return instructor.fullName.replace(/[^A-Z]/g, '')
     },
     getProjectCompletionAgeInDays (codeReview) {
-      return differenceInDays(Date.now(), codeReview.projectCompletion.submission.firstSubmittedAt) + 1
+      return 1 + differenceInDays(
+        Date.now(),
+        codeReview.projectCompletion.firstSubmittedAt
+      )
     },
     getProjectCompletionLastUpdatedDate (codeReview) {
-      const projectSubmission = codeReview.projectCompletion.submission
       return mostRecentDate(
-        projectSubmission.approvedAt || 0,
-        projectSubmission.firstSubmittedAt || 0,
-        projectSubmission.lastCommentedAt || 0,
+        codeReview.projectCompletion.approvedAt || 0,
+        codeReview.projectCompletion.firstSubmittedAt || 0,
+        codeReview.projectCompletion.lastCommentedAt || 0,
         codeReview.projectCompletion.repositoryCreatedAt || 0,
         codeReview.projectCompletion.firstCommittedAt || 0
       )
@@ -258,7 +258,7 @@ export default {
     sortCodeReviews (codeReviews) {
       return orderBy(codeReviews, [
         this.orderByIdentifier[this.orderByColumn],
-        codeReview => codeReview.student['.key']
+        codeReview => codeReview.student.userId
       ], [this.orderByDirection, this.orderByDirection])
     },
     toggleOrderBy (column) {
