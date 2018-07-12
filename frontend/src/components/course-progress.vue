@@ -1,6 +1,6 @@
 <template>
   <details v-if="studentsInCourse.length">
-    <summary>{{ course['.key'] }}</summary>
+    <summary>{{ course.courseKey }}</summary>
     <table class="dashboard-info">
       <colgroup span="2"></colgroup>
       <colgroup span="3"></colgroup>
@@ -50,7 +50,7 @@
           <!-- STUDENT: Links -->
           <td class="links">
             <a
-              v-if="student.github"
+              v-if="student.githubLogin"
               :href="courseReposFor(course, student)"
               target="_blank"
               class="icon-link"
@@ -125,9 +125,8 @@
 </template>
 
 <script>
-import store from '@state/store'
 import differenceInDays from 'date-fns/difference_in_days'
-import { userGetters } from '@state/helpers'
+import { userGetters, projectCompletionGetters } from '@state/helpers'
 import courseUserGradeCurrentRounded from '@helpers/computed/course-user-grade-current-rounded'
 import courseGradeMinExpectedRounded from '@helpers/computed/course-grade-min-expected-rounded'
 import courseUserGradeProjectedReal from '@helpers/computed/course-user-grade-projected-real'
@@ -142,21 +141,21 @@ export default {
       required: true
     }
   },
-  created () {
-    store.dispatch('syncLargeFieldsOfResource', {
-      resourceName: 'courses',
-      resourceKey: this.course['.key']
-    })
-  },
   computed: {
     ...userGetters,
+    ...projectCompletionGetters,
     expectedGrade () {
       return courseGradeMinExpectedRounded(this.course)
     },
+    courseProjectCompletions () {
+      return this.projectCompletions.filter(
+        completion => completion.courseId === this.course.courseId
+      )
+    },
     studentsInCourse () {
-      return this.course.studentKeys.map(studentKey => {
-        return this.users.find(user => user['.key'] === studentKey)
-      }).sort((student1, student2) => {
+      return this.course.studentIds.map(
+        studentId => this.users.find(user => user.userId === studentId)
+      ).sort((student1, student2) => {
         const student1Progress = this.getCurrentGrade(student1)
         const student2Progress = this.getCurrentGrade(student2)
 
@@ -201,12 +200,11 @@ export default {
     },
     getMostRecentStudentActivityDate (completion) {
       if (!completion) return 0
-      const submission = completion.submission || {}
       return Math.max(
         completion.repositoryCreatedAt || 0,
         completion.firstCommittedAt || 0,
-        submission.firstSubmittedAt || 0,
-        submission.lastCommentedAt || 0
+        completion.firstSubmittedAt || 0,
+        completion.lastCommentedAt || 0
       )
     },
     behindByLessonCount (student) {
@@ -217,52 +215,37 @@ export default {
       )
     },
     inProgressLessonCount (student) {
-      return this.course.projectCompletions.filter(completion => {
-        return (
-          completion.students[0]['.key'] === student['.key'] &&
-          (
-            !completion.submission ||
-            !completion.submission.isApproved
-          )
-        )
-      }).length
+      return this.courseProjectCompletions.filter(completion =>
+        completion.studentUserId === student.userId &&
+        !completion.approved
+      ).length
     },
     maxDaysProjectStaleFor (student) {
-      const result = this.course.projectCompletions.filter(completion => {
-        return (
-          completion.students[0]['.key'] === student['.key'] &&
-          completion.submission &&
-          (
-            !completion.submission.isApproved &&
-            completion.submission.instructorCommentedLast
-          )
-        )
-      }).map(completion => {
-        if (!completion.submission.lastCommentedAt) return -1
-        return differenceInDays(Date.now(), completion.submission.lastCommentedAt)
+      const result = this.courseProjectCompletions.filter(completion =>
+        completion.studentUserId === student.userId &&
+        !completion.approved &&
+        completion.instructorCommentedLast
+      ).map(completion => {
+        if (!completion.lastCommentedAt) return -1
+        return differenceInDays(Date.now(), completion.lastCommentedAt)
       }).reduce((a, b) => Math.max(a, b), -1)
       return result !== -1 ? result : '--'
     },
     maxDaysProjectOngoingFor (student) {
-      const result = this.course.projectCompletions.filter(completion => {
-        return (
-          completion.students[0]['.key'] === student['.key'] &&
-          completion.submission &&
-          !completion.submission.isApproved
-        )
-      }).map(completion => {
-        if (!completion.submission.firstSubmittedAt) return -1
-        return differenceInDays(Date.now(), completion.submission.firstSubmittedAt)
+      const result = this.courseProjectCompletions.filter(completion =>
+        completion.studentUserId === student.userId &&
+        !completion.approved
+      ).map(completion => {
+        if (!completion.firstSubmittedAt) return -1
+        return differenceInDays(Date.now(), completion.firstSubmittedAt)
       }).reduce((a, b) => Math.max(a, b), -1)
       return result !== -1 ? result : '--'
     },
     daysSinceLastProjectActivity (student) {
-      const result = this.course.projectCompletions.filter(completion => {
-        return (
-          completion.students[0]['.key'] === student['.key'] &&
-          completion.submission
-        )
-      }).map(completion => {
+      const result = this.courseProjectCompletions.filter(completion =>
+        completion.studentUserId === student.userId &&
+        completion.firstSubmittedAt
+      ).map(completion => {
         const activityDate = this.getMostRecentStudentActivityDate(completion)
         if (!activityDate) return 999
         return differenceInDays(Date.now(), activityDate)
@@ -271,16 +254,12 @@ export default {
     },
     getDaysInactiveStyle (student) {
       const daysInactive = this.daysSinceLastProjectActivity(student)
-      if (daysInactive >= 5) {
-        return 'warning-inactive'
-      } else {
-        return ''
-      }
+      return daysInactive >= 5 ? 'warning-inactive' : ''
     },
     courseReposFor (course, student) {
       return [
         'https://github.com/',
-        student.github.login,
+        student.githubLogin,
         '?utf8=✓&tab=repositories&type=source'
         // NOTE: Not including course key for now, because
         // providing a query makes the results sort by
