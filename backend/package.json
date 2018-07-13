@@ -4,14 +4,12 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "lint": "eslint --ext .js,.json src test/unit/specs",
+    "lint": "eslint --ext .js,.json src",
     "serve:dev": "nodemon src/main.js --exec babel-node",
     "dev": "run-s lint serve:dev",
     "build": "babel src -d dist",
     "serve:prod": "node dist/main.js",
-    "start": "run-s lint build serve:prod",
-    "unit": "yarn run build && mocha --opts test/unit/mocha.opts test/unit/specs/",
-    "test": "yarn run unit"
+    "start": "run-s lint build serve:prod"
   },
   "main": "src/main.js",
   "dependencies": {
@@ -43,17 +41,13 @@
     "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-2": "^6.24.1",
-    "chai": "^3.5.0",
     "eslint": "^5.0.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-standard": "^3.1.0",
-    "mocha": "^3.1.2",
     "nodemon": "^1.17.5",
-    "npm-run-all": "^4.1.3",
-    "sinon": "^1.17.6",
-    "sinon-chai": "^2.8.0"
+    "npm-run-all": "^4.1.3"
   }
 }
