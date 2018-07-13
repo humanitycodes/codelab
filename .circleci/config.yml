@@ -8,10 +8,10 @@ jobs:
     environment:
       NODE_ENV: testing
       TZ: /usr/share/zoneinfo/America/Detroit
-      YARN_VERSION: 1.3.2
-    # Pre-built images list: https://circleci.com/docs/2.0/circleci-images/
+      YARN_VERSION: 1.7.0
+    # Pre-built images list: https://circleci.com/docs/2.0/circleci-images/#nodejs
     docker:
-    - image: circleci/node:8.9.4-browsers
+    - image: circleci/node:8.11.3-browsers
       command: /sbin/init
     steps:
     # Setup PATH (can't do in environment section because PATH refers to itself)
