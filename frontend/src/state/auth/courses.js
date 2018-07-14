@@ -56,7 +56,7 @@ export const lessonCanBeAddedToCourse = ({ courseKey, lessonKey }) => {
       // Lesson is not already added
       (
         !course.lessonKeys ||
-        course.lessonKeys.indexOf(lessonKey) === -1
+        !course.lessonKeys.includes(lessonKey)
       ) &&
       // Lesson has the required fields
       lesson.title &&
@@ -90,7 +90,7 @@ function isEnrolledInCourse (courseKey) {
   const course = findCourse(courseKey)
   if (!course || !course.studentIds) return false
   const currentUserId = store.getters.currentUser.userId
-  return course.studentIds.indexOf(currentUserId) !== -1
+  return course.studentIds.includes(currentUserId)
 }
 
 function courseHasEnrolledStudents (courseKey) {

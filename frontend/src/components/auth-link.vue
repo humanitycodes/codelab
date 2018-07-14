@@ -15,7 +15,7 @@ export default {
       type: String,
       required: true,
       validator: function (value) {
-        return ['github', 'msu'].indexOf(value) >= 0
+        return ['github', 'msu'].includes(value)
       }
     }
   },

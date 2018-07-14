@@ -71,6 +71,7 @@ module.exports = function (config) {
     files: [
       'https://cdn.polyfill.io/v2/polyfill.min.js',
       require.resolve('phantomjs-polyfill-find'),
+      require.resolve('phantomjs-polyfill-includes'),
       './index.js'
     ],
     preprocessors: {
