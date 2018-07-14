@@ -1,6 +1,5 @@
 import courseProjectCompletionHostedUrl from '@helpers/computed/course-project-completion-hosted-url'
 import store from '@state/store'
-import arrayFindSubstitute from '../../_helpers/array-find-substitute'
 
 describe('@helpers/computed/course-project-completion-hosted-url.js', () => {
   const user = {
@@ -44,10 +43,6 @@ describe('@helpers/computed/course-project-completion-hosted-url.js', () => {
     store.commit('SET_ALL_LESSONS', lessons)
     store.commit('SET_ALL_USERS', [user])
     store.commit('SET_CURRENT_USER', user)
-
-    // Array.prototype.find is undefined, provide substitute
-    store.state.lessons.all.find = arrayFindSubstitute(store.state.lessons.all)
-    store.state.users.all.find = arrayFindSubstitute(store.state.users.all)
   })
 
   after(() => {

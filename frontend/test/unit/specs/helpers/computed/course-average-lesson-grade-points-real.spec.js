@@ -1,5 +1,4 @@
 import store from '@state/store'
-import arrayFindSubstitute from '../../_helpers/array-find-substitute'
 import courseAverageLessonGradePointsReal from '@helpers/computed/course-average-lesson-grade-points-real'
 
 describe('@helpers/computed/course-average-lesson-grade-points-real.js', () => {
@@ -18,9 +17,6 @@ describe('@helpers/computed/course-average-lesson-grade-points-real.js', () => {
 
   before(() => {
     store.commit('SET_ALL_LESSONS', lessons)
-
-    // Array.prototype.find is undefined, provide substitute
-    store.state.lessons.all.find = arrayFindSubstitute(store.state.lessons.all)
   })
 
   beforeEach(() => {

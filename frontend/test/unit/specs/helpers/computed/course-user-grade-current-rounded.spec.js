@@ -1,4 +1,3 @@
-import arrayFindSubstitute from '../../_helpers/array-find-substitute'
 import store from '@state/store'
 import courseUserGradeCurrentRounded from '@helpers/computed/course-user-grade-current-rounded'
 
@@ -18,9 +17,6 @@ describe('@helpers/computed/course-user-grade-current-rounded.js', () => {
     { lessonId: 3, estimatedHours: 8.0 },
     { lessonId: 4, estimatedHours: 6.0 }
   ]
-
-  // Array.prototype.find is undefined, provide substitute
-  lessons.find = arrayFindSubstitute(lessons)
 
   const addProject = (lessonId, studentUserId, submitted, approved) => {
     const projectCompletions = store.getters.projectCompletions
