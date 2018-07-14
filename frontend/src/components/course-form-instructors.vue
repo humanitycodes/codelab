@@ -75,7 +75,7 @@ export default {
         // User has instructor role
         user.isInstructor &&
         // User is not already a instructor
-        !this.course.instructorIds.includes(user.userId) &&
+        this.course.instructorIds.indexOf(user.userId) === -1 &&
         // Course matches the query string
         (
           queryRegex.test(user.email) ||

@@ -353,7 +353,7 @@ export default {
     },
     getPostrequisiteLessons (lesson) {
       return this.lessons.filter(
-        postreq => postreq.prerequisiteLessonIds.includes(lesson.lessonId)
+        postreq => postreq.prerequisiteLessonIds.indexOf(lesson.lessonId) !== -1
       ).filter(postreq => postreq)
     },
     getImmediatePrereqsCount (lesson) {

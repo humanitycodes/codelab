@@ -16,7 +16,6 @@
     "app-module-path": "^2.2.0",
     "axios": "^0.15.0",
     "boom": "^4.1.0",
-    "firebase-admin": "^4.1.2",
     "glob": "^7.1.1",
     "global-request-logger": "^0.1.1",
     "hapi": "^17.5.1",

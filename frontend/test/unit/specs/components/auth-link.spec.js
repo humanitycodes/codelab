@@ -2,24 +2,24 @@ import Vue from 'vue'
 import AuthLink from '@components/auth-link'
 
 describe('auth-link.vue', () => {
-  function newAuthLink (provider) {
-    return {
+  const newAuthLink = provider => {
+    const vm = new Vue({
       ...AuthLink,
-      propsData: {
-        provider: provider
-      }
-    }
+      propsData: { provider }
+    })
+    Object.defineProperty(vm, 'jsonWebToken', { value: 'faketoken' })
+    return vm
   }
 
   it('throws a prop validation when passed a bad provider', () => {
     sinon.stub(console, 'error')
-    new Vue(newAuthLink('kittenz!')) // eslint-disable-line no-new
+    newAuthLink('kittenz!')
     expect(console.error).to.have.been.calledWithMatch('Invalid prop: custom validator check failed for prop "provider"')
     console.error.restore()
   })
 
   it('supports MSU OAuth login', () => {
-    const vm = new Vue(newAuthLink('msu')).$mount()
+    const vm = newAuthLink('msu').$mount()
 
     expect(vm.url).to.contain('https://oauth.itservices.msu.edu/oauth/authorize')
     expect(vm.url).to.contain('response_type=')
@@ -27,7 +27,7 @@ describe('auth-link.vue', () => {
   })
 
   it('supports GitHub OAuth login', () => {
-    const vm = new Vue(newAuthLink('github'))
+    const vm = newAuthLink('github')
     Object.defineProperty(vm, '$route', {
       value: { fullPath: '/my/full/path' }
     })
@@ -36,6 +36,7 @@ describe('auth-link.vue', () => {
     expect(vm.url).to.contain('https://github.com/login/oauth/authorize')
     expect(vm.url).to.contain('scope=')
     expect(vm.url).to.contain('client_id=')
+    expect(vm.url).to.contain('state=faketoken')
   })
 
   it('renders an anchor with the slot contents', () => {

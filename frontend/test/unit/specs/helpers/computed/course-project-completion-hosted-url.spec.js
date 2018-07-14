@@ -1,71 +1,81 @@
 import courseProjectCompletionHostedUrl from '@helpers/computed/course-project-completion-hosted-url'
-
-const assertHostedUrlWith = ({ course, projectCompletion, user, lesson, subdomain, repoName }, expectation) => {
-  courseProjectCompletionHostedUrl.__Rewire__('userByKey', () => user)
-  courseProjectCompletionHostedUrl.__Rewire__('lessonByKey', () => lesson)
-  courseProjectCompletionHostedUrl.__Rewire__('courseProjectCompletionHostedSubdomain', () => subdomain)
-  courseProjectCompletionHostedUrl.__Rewire__('courseProjectCompletionRepoName', () => repoName)
-  expect(
-    courseProjectCompletionHostedUrl(course, projectCompletion)
-  ).to.equal(expectation)
-  courseProjectCompletionHostedUrl.__ResetDependency__('userByKey')
-  courseProjectCompletionHostedUrl.__ResetDependency__('lessonByKey')
-  courseProjectCompletionHostedUrl.__ResetDependency__('courseProjectCompletionHostedSubdomain')
-  courseProjectCompletionHostedUrl.__ResetDependency__('courseProjectCompletionRepoName')
-}
+import store from '@state/store'
+import arrayFindSubstitute from '../../_helpers/array-find-substitute'
 
 describe('@helpers/computed/course-project-completion-hosted-url.js', () => {
   const user = {
+    userId: 11,
     email: 'homer.j.simpson@nuke-plant.com',
-    github: {
-      login: 'hjsimpson'
+    githubLogin: 'hjsimpson'
+  }
+
+  const course = {
+    courseId: 31,
+    courseKey: 'MI-449-SS18-123'
+  }
+
+  const surgeLesson = {
+    lessonId: 21,
+    lessonKey: 'html-intro',
+    projectHosting: 'Surge'
+  }
+  const herokuLesson = {
+    lessonId: 22,
+    lessonKey: 'js-node-intro',
+    projectHosting: 'Heroku'
+  }
+  const ghpagesLesson = {
+    lessonId: 23,
+    lessonKey: 'css-intro',
+    projectHosting: 'GitHub Pages'
+  }
+
+  const lessons = [surgeLesson, herokuLesson, ghpagesLesson]
+
+  const completionForLesson = lesson => {
+    return {
+      courseId: course.courseId,
+      studentUserId: user.userId,
+      lessonId: lesson.lessonId
     }
   }
 
-  it('returns empty string when no project or completion', () => {
-    assertHostedUrlWith({}, '')
+  before(() => {
+    store.commit('SET_ALL_LESSONS', lessons)
+    store.commit('SET_ALL_USERS', [user])
+    store.commit('SET_CURRENT_USER', user)
+
+    // Array.prototype.find is undefined, provide substitute
+    store.state.lessons.all.find = arrayFindSubstitute(store.state.lessons.all)
+    store.state.users.all.find = arrayFindSubstitute(store.state.users.all)
   })
 
-  it('returns correct hosted URL', () => {
-    assertHostedUrlWith({
-      user,
-      projectCompletion: {
-        hostedUrl: 'https://mydomain.com'
-      }
-    }, 'https://mydomain.com')
+  after(() => {
+    store.commit('SET_ALL_LESSONS', [])
+    store.commit('SET_ALL_USERS', [])
+    store.commit('SET_CURRENT_USER', null)
+  })
+
+  it('returns empty string when no project or completion', () => {
+    const url = courseProjectCompletionHostedUrl(course)
+    expect(url).to.equal('')
   })
 
   it('returns correct Surge URL', () => {
-    assertHostedUrlWith({
-      user,
-      lesson: {
-        projects: [{ hosting: 'Surge' }]
-      },
-      projectCompletion: {},
-      subdomain: 'homerjsimpsonsome-project-key'
-    }, 'https://homerjsimpsonsome-project-key.surge.sh/')
+    const completion = completionForLesson(surgeLesson)
+    const url = courseProjectCompletionHostedUrl(course, completion)
+    expect(url).to.equal('https://hjsimpson-html-intro.surge.sh/')
   })
 
   it('returns correct Heroku URL', () => {
-    assertHostedUrlWith({
-      user,
-      lesson: {
-        projects: [{ hosting: 'Heroku' }]
-      },
-      projectCompletion: {},
-      subdomain: 'homerjsimpsonsome-project-key'
-    }, 'https://homerjsimpsonsome-project-key.herokuapp.com/')
+    const completion = completionForLesson(herokuLesson)
+    const url = courseProjectCompletionHostedUrl(course, completion)
+    expect(url).to.equal('https://hjsimpson-js-node-intro.herokuapp.com/')
   })
 
   it('returns correct GitHub Pages URL', () => {
-    assertHostedUrlWith({
-      user,
-      lesson: {
-        projects: [{ hosting: 'GitHub Pages' }]
-      },
-      projectCompletion: { students: [{ '.key': '' }] },
-      subdomain: 'homerjsimpsonsome-project-key',
-      repoName: 'Project-Name'
-    }, 'https://hjsimpson.github.io/Project-Name/')
+    const completion = completionForLesson(ghpagesLesson)
+    const url = courseProjectCompletionHostedUrl(course, completion)
+    expect(url).to.equal('https://hjsimpson.github.io/MI-449-css-intro/')
   })
 })

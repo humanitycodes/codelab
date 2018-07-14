@@ -4,96 +4,105 @@ import LessonFormPrereqs from '@components/lesson-form-prereqs'
 describe('lesson-form-prereqs.vue', () => {
   it('does not allow self as a prereq option', done => {
     LessonFormPrereqs.computed.lessons = () => [
-      { title: 'foo', '.key': 'js-foo' },
-      { title: 'bar', '.key': 'js-bar' }
+      { lessonId: 1, title: 'foo', lessonKey: 'js-foo' },
+      { lessonId: 2, title: 'bar', lessonKey: 'js-bar' }
     ]
     const vm = new Vue({
       ...LessonFormPrereqs,
       propsData: {
         lesson: {
+          lessonId: 1,
           title: 'foo',
-          '.key': 'js-foo',
-          prereqKeys: []
+          lessonKey: 'js-foo',
+          prerequisiteLessonIds: []
         }
       }
     }).$mount()
     vm.prereqQuery = 'js'
     Vue.nextTick(() => {
       expect(vm.queryResults.length).to.equal(1)
-      expect(vm.queryResults[0]['.key']).to.equal('js-bar')
+      expect(vm.queryResults[0].lessonKey).to.equal('js-bar')
       done()
     })
   })
 
   it('does not allow lessons that are already a prereq', done => {
     LessonFormPrereqs.computed.lessons = () => [
-      { title: 'bar', '.key': 'js-bar' },
-      { title: 'baz', '.key': 'js-baz' }
+      { lessonId: 2, title: 'bar', lessonKey: 'js-bar' },
+      { lessonId: 3, title: 'baz', lessonKey: 'js-baz' }
     ]
     const vm = new Vue({
       ...LessonFormPrereqs,
       propsData: {
         lesson: {
-          '.key': 'js-foo',
+          lessonId: 1,
+          lessonKey: 'js-foo',
           title: 'foo',
-          prereqKeys: ['js-bar']
+          prerequisiteLessonIds: [2]
         }
       }
     }).$mount()
     vm.prereqQuery = 'js'
     Vue.nextTick(() => {
       expect(vm.queryResults.length).to.equal(1)
-      expect(vm.queryResults[0]['.key']).to.equal('js-baz')
+      expect(vm.queryResults[0].lessonKey).to.equal('js-baz')
       done()
     })
   })
 
   it('does not allow lessons that are already a prereq', done => {
     LessonFormPrereqs.computed.lessons = () => [
-      { title: 'bar', '.key': 'js-bar' },
-      { title: 'baz', '.key': 'js-baz', prereqKeys: { 'js-foo': true } }
+      { lessonId: 2, title: 'bar', lessonKey: 'js-bar' },
+      {
+        lessonId: 3,
+        title: 'baz',
+        lessonKey: 'js-baz',
+        prerequisiteLessonIds: [1]
+      }
     ]
     const vm = new Vue({
       ...LessonFormPrereqs,
       propsData: {
         lesson: {
-          '.key': 'js-foo',
+          lessonId: 1,
+          lessonKey: 'js-foo',
           title: 'foo',
-          prereqKeys: []
+          prerequisiteLessonIds: []
         }
       }
     }).$mount()
     vm.prereqQuery = 'js'
     Vue.nextTick(() => {
       expect(vm.queryResults.length).to.equal(1)
-      expect(vm.queryResults[0]['.key']).to.equal('js-bar')
+      expect(vm.queryResults[0].lessonKey).to.equal('js-bar')
       done()
     })
   })
 
   it('does not show prereqs that do not match the query', done => {
     LessonFormPrereqs.computed.lessons = () => [
-      { title: 'bar boo', '.key': 'js-bar' },
-      { title: 'baz baa', '.key': 'js-baz' }
+      { lessonId: 2, title: 'bar boo', lessonKey: 'js-bar' },
+      { lessonId: 3, title: 'baz baa', lessonKey: 'js-baz' }
     ]
     const vm = new Vue({
       ...LessonFormPrereqs,
       propsData: {
         lesson: {
-          '.key': 'js-foo',
+          lessonId: 1,
+          lessonKey: 'js-foo',
           title: 'foo',
-          prereqKeys: []
+          prerequisiteLessonIds: []
         }
       }
     }).$mount()
     vm.prereqQuery = 'az'
     Vue.nextTick(() => {
       expect(vm.queryResults.length).to.equal(1)
-      expect(vm.queryResults[0]['.key']).to.equal('js-baz')
+      expect(vm.queryResults[0].lessonKey).to.equal('js-baz')
       vm.prereqQuery = 'boo'
       Vue.nextTick(() => {
         expect(vm.queryResults.length).to.equal(1)
-        expect(vm.queryResults[0]['.key']).to.equal('js-bar')
+        expect(vm.queryResults[0].lessonKey).to.equal('js-bar')
         done()
       })
     })
