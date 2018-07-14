@@ -191,7 +191,7 @@ export default {
               codeEl.setAttribute('data-filename', `${fileName}.${lang}`)
               preEl.removeAttribute('id')
             }
-            if (codeExtensions.indexOf(lang) !== -1) {
+            if (codeExtensions.includes(lang)) {
               codeEl.innerHTML = highlight(lang, codeEl.textContent).value
             }
             const preClassesCount = preEl.classList.length

@@ -62,7 +62,7 @@ export default {
           // Lesson is not self
           this.lesson.lessonId !== lesson.lessonId &&
           // Lesson is not already a prereq
-          this.lesson.prerequisiteLessonIds.indexOf(lesson.lessonId) === -1 &&
+          !this.lesson.prerequisiteLessonIds.includes(lesson.lessonId) &&
           // Lesson would not cause cyclical dependency (catch 22)
           this.prereqWouldBeAcyclic(lesson) &&
           // Lesson matches the query string
@@ -81,7 +81,7 @@ export default {
         return []
       }
       return this.lessons.filter(lesson =>
-        this.lesson.prerequisiteLessonIds.indexOf(lesson.lessonId) !== -1
+        this.lesson.prerequisiteLessonIds.includes(lesson.lessonId)
       )
     }
   },
@@ -100,12 +100,12 @@ export default {
       const doesNotDependOnSelf = potentialPrereq => {
         if (potentialPrereq.prerequisiteLessonIds) {
           const prereqLessonIds = potentialPrereq.prerequisiteLessonIds
-          const dependsOnSelf = prereqLessonIds.indexOf(currentLessonId) !== -1
+          const dependsOnSelf = prereqLessonIds.includes(currentLessonId)
           if (dependsOnSelf) {
             return false
           } else {
             return this.lessons.filter(
-              lesson => prereqLessonIds.indexOf(lesson.lessonId) !== -1
+              lesson => prereqLessonIds.includes(lesson.lessonId)
             ).every(doesNotDependOnSelf)
           }
         } else {

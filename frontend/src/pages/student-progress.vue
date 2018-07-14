@@ -25,7 +25,7 @@ export default {
     availableCourses () {
       const currentUserId = this.currentUser.userId
       return this.courses.filter(
-        course => course.instructorIds.indexOf(currentUserId) !== -1
+        course => course.instructorIds.includes(currentUserId)
       )
     },
     coursesSortedByKey () {

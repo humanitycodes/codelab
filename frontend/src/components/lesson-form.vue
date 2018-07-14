@@ -44,7 +44,7 @@ export default {
       return this.courses.some(course => {
         if (!course.startDate || !course.endDate) return false
         return (
-          course.lessonIds.indexOf(this.lesson.lessonId) !== -1 &&
+          course.lessonIds.includes(this.lesson.lessonId) &&
           course.startDate < now &&
           course.endDate > now
         )
@@ -52,7 +52,7 @@ export default {
     },
     isLessonInCourse () {
       return this.courses.some(
-        course => course.lessonIds.indexOf(this.lesson.lessonId) !== -1
+        course => course.lessonIds.includes(this.lesson.lessonId)
       )
     }
   }

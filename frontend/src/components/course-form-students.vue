@@ -119,7 +119,7 @@ export default {
     ...userGetters,
     students () {
       return this.users.filter(
-        user => this.course.studentIds.indexOf(user.userId) !== -1
+        user => this.course.studentIds.includes(user.userId)
       )
     },
     preenrollments () {
@@ -149,7 +149,7 @@ export default {
         // User is not current user
         this.currentUser.userId !== user.userId &&
         // User is not already a student
-        this.course.studentIds.indexOf(user.userId) === -1 &&
+        !this.course.studentIds.includes(user.userId) &&
         // Email address matches user's email
         user.email === email
       ))

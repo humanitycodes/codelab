@@ -195,7 +195,7 @@ export default {
         ...userGetters,
         isInstructorInCourse () {
           const currentUserId = this.currentUser.userId
-          return this.currentCourse.instructorIds.indexOf(currentUserId) !== -1
+          return this.currentCourse.instructorIds.includes(currentUserId)
         },
         titleForCourseEditButton () {
           return this.isInstructorInCourse
@@ -218,7 +218,7 @@ export default {
     ...lessonGetters,
     courseLessons () {
       return this.lessons.filter(
-        lesson => this.currentCourse.lessonIds.indexOf(lesson.lessonId) !== -1
+        lesson => this.currentCourse.lessonIds.includes(lesson.lessonId)
       )
     },
     formattedCurrentDate () {
@@ -231,7 +231,7 @@ export default {
       return this.humanizeDate(this.currentCourse.endDate)
     },
     currentUserIsStudent () {
-      return this.currentCourse.studentIds.indexOf(this.currentUser.userId) !== -1
+      return this.currentCourse.studentIds.includes(this.currentUser.userId)
     },
     shouldShowStudentView () {
       return this.currentUserIsStudent || this.studentViewForced
