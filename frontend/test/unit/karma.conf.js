@@ -70,6 +70,7 @@ module.exports = function (config) {
     reporters: ['spec', 'coverage'],
     files: [
       'https://cdn.polyfill.io/v2/polyfill.min.js',
+      require.resolve('phantomjs-polyfill-find'),
       './index.js'
     ],
     preprocessors: {
