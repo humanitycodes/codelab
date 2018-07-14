@@ -57,26 +57,31 @@ export default {
     queryResults () {
       if (!this.prereqQuery || !this.lessons.length) return []
       const queryRegex = new RegExp(this.prereqQuery, 'i')
-      return this.lessons.filter(lesson => (
-        // Lesson is not self
-        this.lesson.lessonId !== lesson.lessonId &&
-        // Lesson is not already a prereq
-        !this.lesson.prerequisiteLessonIds.includes(lesson.lessonId) &&
-        // Lesson would not cause cyclical dependency (catch 22)
-        this.prereqWouldBeAcyclic(lesson) &&
-        // Lesson matches the query string
-        (
-          queryRegex.test(lesson.lessonKey) ||
-          queryRegex.test(lesson.title)
-        )
-      ))
+      try {
+        const results = this.lessons.filter(lesson => (
+          // Lesson is not self
+          this.lesson.lessonId !== lesson.lessonId &&
+          // Lesson is not already a prereq
+          this.lesson.prerequisiteLessonIds.indexOf(lesson.lessonId) === -1 &&
+          // Lesson would not cause cyclical dependency (catch 22)
+          this.prereqWouldBeAcyclic(lesson) &&
+          // Lesson matches the query string
+          (
+            queryRegex.test(lesson.lessonKey) ||
+            queryRegex.test(lesson.title)
+          )
+        ))
+        return results
+      } catch (error) {
+        return []
+      }
     },
     prereqs () {
       if (!this.lessons.length || !this.lesson.prerequisiteLessonIds) {
         return []
       }
-      return this.lessons.filter(
-        lesson => this.lesson.prerequisiteLessonIds.includes(lesson.lessonId)
+      return this.lessons.filter(lesson =>
+        this.lesson.prerequisiteLessonIds.indexOf(lesson.lessonId) !== -1
       )
     }
   },
@@ -95,12 +100,12 @@ export default {
       const doesNotDependOnSelf = potentialPrereq => {
         if (potentialPrereq.prerequisiteLessonIds) {
           const prereqLessonIds = potentialPrereq.prerequisiteLessonIds
-          const dependsOnSelf = prereqLessonIds.includes(currentLessonId)
+          const dependsOnSelf = prereqLessonIds.indexOf(currentLessonId) !== -1
           if (dependsOnSelf) {
             return false
           } else {
             return this.lessons.filter(
-              lesson => prereqLessonIds.includes(lesson.lessonId)
+              lesson => prereqLessonIds.indexOf(lesson.lessonId) !== -1
             ).every(doesNotDependOnSelf)
           }
         } else {

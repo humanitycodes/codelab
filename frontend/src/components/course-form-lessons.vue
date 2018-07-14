@@ -98,7 +98,7 @@ export default {
     },
     courseLessons () {
       return this.lessons.filter(
-        lesson => this.course.lessonIds.includes(lesson.lessonId)
+        lesson => this.course.lessonIds.indexOf(lesson.lessonId) !== -1
       )
     }
   },

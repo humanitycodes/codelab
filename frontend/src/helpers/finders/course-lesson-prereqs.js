@@ -8,7 +8,7 @@ export default (course, lesson) => {
 
   return lesson.prerequisiteLessonIds
     .filter(prerequisiteLessonId =>
-      course.lessonIds.includes(prerequisiteLessonId)
+      course.lessonIds.indexOf(prerequisiteLessonId) !== -1
     )
     .map(prerequisiteLessonId =>
       store.getters.lessons.find(

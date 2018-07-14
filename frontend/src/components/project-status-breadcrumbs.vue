@@ -9,13 +9,13 @@
     />
     <Breadcrumb
       :is-active="projectStatus === 'startedWithCommit'"
-      :is-complete="['pendingReview', 'changesRequested', 'approved'].includes(projectStatus)"
+      :is-complete="['pendingReview', 'changesRequested', 'approved'].indexOf(projectStatus) !== -1"
       pending-text="Submit"
       active-text="Submit for Review"
       complete-text="Submitted"
     />
     <Breadcrumb
-      :is-active="['pendingReview', 'changesRequested'].includes(projectStatus)"
+      :is-active="['pendingReview', 'changesRequested'].indexOf(projectStatus) !== -1"
       :is-complete="projectStatus === 'approved'"
       pending-text="Get Feedback"
       :active-text="projectStatus === 'changesRequested' ? 'Respond to Feedback' : 'Awaiting Feedback'"

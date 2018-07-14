@@ -9,7 +9,7 @@ Vue.use(Vuex)
 describe('lessons-map.vue', () => {
   it('for users that cannot update lessons, renders a list item for each course lesson, but not an edit button', () => {
     LessonsMap.__Rewire__('courseLessonUserStatus', () => ({}))
-    store.getters.lessons = { find: () => true }
+    store.commit('SET_ALL_LESSONS', { find: () => true })
 
     const vm = new Vue({
       router,
@@ -19,28 +19,42 @@ describe('lessons-map.vue', () => {
           users: {
             state: {
               currentUser: {}
+            },
+            getters: {
+              currentUser () {}
             }
           }
         }
       }),
       propsData: {
         course: {
-          '.key': 'MI-449-SS17-001',
+          courseKey: 'MI-449-SS17-001',
           startDate: Date.now()
         },
         lessons: [
-          { title: 'foo', '.key': 'js-foo', prereqKeys: [], postreqKeys: [] },
-          { title: 'bar', '.key': 'js-bar', prereqKeys: [], postreqKeys: [] }
+          {
+            lessonId: 1,
+            title: 'foo',
+            lessonKey: 'js-foo',
+            prerequisiteLessonIds: []
+          },
+          {
+            lessonId: 2,
+            title: 'bar',
+            lessonKey: 'js-bar',
+            prerequisiteLessonIds: []
+          }
         ]
       }
     }).$mount()
 
-    const items = vm.$el.querySelectorAll(`a[href^="/courses/${vm.course['.key']}/lessons/"]`)
+    const items = vm.$el.querySelectorAll(`a[href^="/courses/${vm.course.courseKey}/lessons/"]`)
     expect(items.length).to.equal(vm.lessons.length)
     ;[].slice.apply(items).forEach((item, index) => {
       const lessonTitle = item.querySelector('h3')
       expect(lessonTitle.textContent).to.contain(vm.lessons[index].title)
     })
+    store.commit('SET_ALL_LESSONS', [])
     LessonsMap.__ResetDependency__('courseLessonUserStatus')
   })
 })

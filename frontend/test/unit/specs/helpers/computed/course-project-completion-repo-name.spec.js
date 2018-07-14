@@ -1,16 +1,16 @@
 import courseProjectCompletionRepoName from '@helpers/computed/course-project-completion-repo-name'
 
 describe('@helpers/computed/course-project-completion-repo-name.js', () => {
-  it('uses up to last 6 characters of project key', () => {
-    const course = { '.key': 'COURSEKEY' }
-    const projectCompletion = {
-      lessonKey: 'LESSONKEY',
-      projectKey: 'PROJECTKEY'
-    }
+  it('uses partial course key and lesson key from project completion', () => {
+    const course = { courseKey: 'MI-449-SS18-001' }
+    const lesson = { lessonKey: 'html-intro' }
+    const projectCompletion = {}
 
-    expect(courseProjectCompletionRepoName(course, projectCompletion)).to.equal('COURSEKEY-LESSONKEY-ECTKEY')
+    courseProjectCompletionRepoName.__Rewire__('lessonById', () => lesson)
 
-    projectCompletion.projectKey = 'PROJ'
-    expect(courseProjectCompletionRepoName(course, projectCompletion)).to.equal('COURSEKEY-LESSONKEY-PROJ')
+    expect(courseProjectCompletionRepoName(course, projectCompletion))
+      .to.equal('MI-449-html-intro')
+
+    courseProjectCompletionRepoName.__ResetDependency__('lessonById')
   })
 })

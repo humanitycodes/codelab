@@ -1,105 +1,76 @@
 import courseProjectCompletionHostedSubdomain from '@helpers/computed/course-project-completion-hosted-subdomain'
-
-const assertSubdomainWith = ({ course, projectCompletion, user }, expectation) => {
-  courseProjectCompletionHostedSubdomain.__Rewire__('userByKey', () => user)
-  expect(
-    courseProjectCompletionHostedSubdomain(course, {
-      students: [{'.key': 'doesn\'t matter'}],
-      ...projectCompletion
-    })
-  ).to.equal(expectation)
-  courseProjectCompletionHostedSubdomain.__ResetDependency__('userByKey')
-}
+import store from '@state/store'
+import arrayFindSubstitute from '../../_helpers/array-find-substitute'
 
 describe('@helpers/computed/course-project-completion-hosted-subdomain.js', () => {
+  const user = {
+    userId: 11,
+    email: 'homer.j.simpson@nuke-plant.com',
+    githubLogin: 'hjsimpson'
+  }
+
+  const course = {
+    courseId: 31,
+    courseKey: 'MI-449-SS18-123'
+  }
+
+  const lesson = {
+    lessonId: 21,
+    lessonKey: 'html-intro',
+    projectHosting: 'Surge'
+  }
+
+  const completion = {
+    courseId: course.courseId,
+    studentUserId: user.userId,
+    lessonId: lesson.lessonId
+  }
+
+  before(() => {
+    store.commit('SET_ALL_LESSONS', [lesson])
+    store.commit('SET_ALL_USERS', [user])
+    store.commit('SET_CURRENT_USER', user)
+
+    // Array.prototype.find is undefined, provide substitute
+    store.state.lessons.all.find = arrayFindSubstitute(store.state.lessons.all)
+    store.state.users.all.find = arrayFindSubstitute(store.state.users.all)
+  })
+
+  after(() => {
+    store.commit('SET_ALL_LESSONS', [])
+    store.commit('SET_ALL_USERS', [])
+    store.commit('SET_CURRENT_USER', null)
+  })
+
   it('removes special characters from email', () => {
-    assertSubdomainWith({
-      projectCompletion: {
-        lessonKey: 'project-key'
-      },
-      user: {
-        github: {
-          login: 'homer.j.simpson'
-        }
-      }
-    }, 'homerjsimpson-project-key')
+    user.githubLogin = 'homer.j.simpson'
+    const domain = courseProjectCompletionHostedSubdomain(completion)
+    expect(domain).to.equal('homerjsimpson-html-intro')
   })
 
   it('restricts subdomain to 30 characters', () => {
-    assertSubdomainWith({
-      projectCompletion: {
-        lessonKey: 'project-key-project-key-project-key-project-key'
-      },
-      user: {
-        github: {
-          login: 'abcdefghijklmnopqrstuvwxyz0123456789'
-        }
-      }
-    }, 'abcdefghijklmno-project-key-pr')
+    user.githubLogin = 'abcdefghijklmnopqrstuvwxyz0123456789'
+    lesson.lessonKey = 'project-key-project-key-project-key-project-key'
+    const domain = courseProjectCompletionHostedSubdomain(completion)
+    expect(domain).to.equal('abcdefghijklmno-project-key-pr')
   })
 
   it('removes non-alphanumeric characters', () => {
-    assertSubdomainWith({
-      projectCompletion: {
-        lessonKey: '-_/\\ABCabc123-_/\\'
-      },
-      user: {
-        github: {
-          login: 'homer_simpson.1-1'
-        }
-      }
-    }, 'homersimpson11-abcabc123')
-  })
-
-  it('uses lesson key as subdomain suffix', () => {
-    assertSubdomainWith({
-      projectCompletion: {
-        projectKey: '-_/\\XYZxyz456-_/\\',
-        lessonKey: '-_/\\ABCabc123-_/\\'
-      },
-      user: {
-        github: {
-          login: 'homer_simpson.1-1'
-        }
-      }
-    }, 'homersimpson11-abcabc123')
-  })
-
-  it('uses GitHub login instead of email', () => {
-    assertSubdomainWith({
-      projectCompletion: {
-        lessonKey: 'js-intro'
-      },
-      user: {
-        email: 'homer_simpson.1-1@nucular-plant.com',
-        github: {
-          login: 'Hsimpson'
-        }
-      }
-    }, 'hsimpson-js-intro')
+    user.githubLogin = 'homer_simpson.1-1'
+    lesson.lessonKey = '-_/\\ABCabc123-_/\\'
+    const domain = courseProjectCompletionHostedSubdomain(completion)
+    expect(domain).to.equal('homersimpson11-abcabc123')
   })
 
   it('produces non-cryptic subdomains for real users and projects', () => {
-    assertSubdomainWith({
-      projectCompletion: {
-        lessonKey: 'html-terminal-and-git'
-      },
-      user: {
-        github: {
-          login: 'erik.gillespie'
-        }
-      }
-    }, 'erikgillespie-html-terminal-an')
+    user.githubLogin = 'erik.gillespie'
+    lesson.lessonKey = 'html-terminal-and-git'
+    const domain1 = courseProjectCompletionHostedSubdomain(completion)
+    expect(domain1).to.equal('erikgillespie-html-terminal-an')
 
-    assertSubdomainWith({
-      projectCompletion: {
-        lessonKey: 'css-frameworks'
-      },
-      user: {
-        github: {
-          login: 'katie'
-        }
-      }
-    }, 'katie-css-frameworks')
+    user.githubLogin = 'katie'
+    lesson.lessonKey = 'css-frameworks'
+    const domain2 = courseProjectCompletionHostedSubdomain(completion)
+    expect(domain2).to.equal('katie-css-frameworks')
   })
 })

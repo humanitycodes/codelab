@@ -3,11 +3,11 @@ import courseLessonGradePointsReal from './course-lesson-grade-points-real'
 import getGradeRounded from '../utils/get-grade-rounded'
 
 export default course => {
-  if (!course.lessonKeys.length) return 0
+  if (!course.lessonIds.length) return 0
 
-  const totalLessonGradePoints = courseLessons(course).map(lesson => {
-    return courseLessonGradePointsReal(course, lesson)
-  }).reduce((a, b) => a + b, 0)
+  const totalLessonGradePoints = courseLessons(course)
+    .map(lesson => courseLessonGradePointsReal(course, lesson))
+    .reduce((a, b) => a + b, 0)
 
-  return getGradeRounded(totalLessonGradePoints / course.lessonKeys.length)
+  return getGradeRounded(totalLessonGradePoints / course.lessonIds.length)
 }
