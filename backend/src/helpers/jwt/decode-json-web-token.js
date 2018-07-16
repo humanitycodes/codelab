@@ -1,4 +1,4 @@
 import jwt from 'jsonwebtoken'
-import jwtSecret from '../../../env/jwt-secret'
+import CODELAB_JWT_SECRET from '../../../env/jwt-secret'
 
-export default token => jwt.verify(token, jwtSecret)
+export default token => jwt.verify(token, CODELAB_JWT_SECRET)

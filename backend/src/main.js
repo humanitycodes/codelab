@@ -6,8 +6,8 @@ import 'app-module-path/register'
 
 import hapi from 'hapi'
 import boom from 'boom'
-import { config } from '../env/config'
-import jwtSecret from '../env/jwt-secret'
+import CODELAB_JWT_SECRET from '../env/jwt-secret'
+import CODELAB_LOG_REQUESTS from '../env/log-requests'
 import frontendDir from 'constants/frontend-dir'
 import logRequests from 'log-requests'
 import sequelize from 'db/sequelize'
@@ -90,7 +90,7 @@ const start = async () => {
   await server.register(require('hapi-auth-jwt2'))
 
   server.auth.strategy('jwt', 'jwt', {
-    key: jwtSecret,
+    key: CODELAB_JWT_SECRET,
     validate: validateJsonWebToken,
     verifyOptions: {
       ignoreExpiration: true
@@ -119,7 +119,7 @@ const start = async () => {
   })
 
   // Log all requests
-  if (config.logRequests) {
+  if (CODELAB_LOG_REQUESTS) {
     logRequests()
   }
 
