@@ -22,6 +22,11 @@ e.g. `5432`
 The usernamed used to authenticate against the application's database server.
 e.g. `codelab_app`
 
+### `CODELAB_MSU_AUTH_CLIENT_SECRET`
+
+A secret key provided by GitHub self-service that is required to successfully
+authenticate an account using GitHub's OAuth service.
+
 ### `CODELAB_JWT_SECRET`
 
 A secret key at least 32 characters long used for signing JSON Web Tokens
