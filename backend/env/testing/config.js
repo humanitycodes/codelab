@@ -7,6 +7,5 @@ module.exports = {
   githubAuthBaseURL: 'https://api.github.com',
   githubAuthClientID: '740ecf728a1bf799961b',
 
-  githubEventsBaseURL: 'https://codelab.cas.msu.edu/api',
-  githubEventsPath: '/github-events/eb564a2f-fca6-41fa-8e6d-11009a330e0b'
+  githubEventsBaseURL: 'https://codelab.cas.msu.edu/api/github-events'
 }
