@@ -22,10 +22,18 @@ e.g. `5432`
 The usernamed used to authenticate against the application's database server.
 e.g. `codelab_app`
 
-### `CODELAB_MSU_AUTH_CLIENT_SECRET`
+### `CODELAB_GITHUB_AUTH_CLIENT_SECRET`
 
 A secret key provided by GitHub self-service that is required to successfully
 authenticate an account using GitHub's OAuth service.
+
+### `CODELAB_GITHUB_EVENTS_PATH_SECRET`
+
+The secret path to where GitHub should post webhooks when users interact with
+their repositories for a given environment. This value is provided to GitHub
+any time a repository is created inside the application. In other words, no
+external configuration on GitHub.com is needed if this value changes.
+e.g. `871255a9-83c9-496b-90b8-24440f16dc77`
 
 ### `CODELAB_JWT_SECRET`
 

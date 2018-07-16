@@ -1,0 +1,1 @@
+module.exports = process.env.CODELAB_GITHUB_EVENTS_PATH_SECRET || '871255a9-83c9-496b-90b8-24440f16dc77'

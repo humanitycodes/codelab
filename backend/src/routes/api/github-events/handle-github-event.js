@@ -1,12 +1,12 @@
 import joi from 'joi'
 import boom from 'boom'
 
-import { config } from '../../../../env/config'
+import CODELAB_GITHUB_EVENTS_PATH_SECRET from '../../../../env/github-events-path-secret'
 import githubEventHandlerMap from './_helpers/github-event-handler-map'
 
 export default {
   method: 'POST',
-  path: config.githubEventsPath,
+  path: `/github-events/${CODELAB_GITHUB_EVENTS_PATH_SECRET}`,
   config: {
     auth: false,
     validate: {
