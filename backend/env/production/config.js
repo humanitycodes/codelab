@@ -3,7 +3,6 @@ module.exports = {
 
   msuAuthBaseURL: 'https://oauth.itservices.msu.edu',
   msuAuthClientID: 'OAuth-MI-MSU-Lansing-Codes',
-  msuAuthClientSecret: 'wh8tUDRqeachBH3paG9T1JcPEkgh9uwNsasUnKtP',
 
   githubAuthBaseURL: 'https://api.github.com',
   githubAuthClientID: '0a6d06c7ff456bd2175b',
