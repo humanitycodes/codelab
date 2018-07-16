@@ -33,3 +33,8 @@ Set to `true` to log every incoming and outgoing HTTP request. This will log
 every part of the HTTP request (query parameters, headers, body, etc.) so it
 should not be enabled in any environment where sensitive information may be
 recorded.
+
+### `CODELAB_MSU_AUTH_CLIENT_SECRET`
+
+A secret key provided by MSU IT Services that is required to successfully
+authenticate an account using MSU's OAuth service.
