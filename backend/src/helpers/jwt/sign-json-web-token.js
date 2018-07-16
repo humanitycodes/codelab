@@ -1,4 +1,4 @@
 import jwt from 'jsonwebtoken'
-import jwtSecret from '../../../env/jwt-secret'
+import CODELAB_JWT_SECRET from '../../../env/jwt-secret'
 
-export default ({ user }) => jwt.sign({ user }, jwtSecret)
+export default ({ user }) => jwt.sign({ user }, CODELAB_JWT_SECRET)

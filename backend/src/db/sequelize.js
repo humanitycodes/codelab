@@ -6,13 +6,16 @@
 require('pg').defaults.parseInt8 = true
 
 import Sequelize from 'sequelize'
-import { config } from '../../env/config'
+import CODELAB_DB_HOST from '../../env/db-host'
+import CODELAB_DB_PORT from '../../env/db-port'
+import CODELAB_DB_USERNAME from '../../env/db-username'
+import CODELAB_DB_PASSWORD from '../../env/db-password'
 
 export default new Sequelize({
-  host: config.db.host,
-  port: config.db.port,
-  username: config.db.username,
-  password: config.db.password,
+  host: CODELAB_DB_HOST,
+  port: CODELAB_DB_PORT,
+  username: CODELAB_DB_USERNAME,
+  password: CODELAB_DB_PASSWORD,
   database: 'codelab',
   dialect: 'postgres',
   pool: {
