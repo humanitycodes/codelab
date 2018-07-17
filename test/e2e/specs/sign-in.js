@@ -1,30 +1,36 @@
-const db = require('../helpers/db').init()
-const dgen = require('../helpers/data-generator')
-const waitTime = 30000
+// Explicitly add source map support until Nightwatch adds it natively
+import 'source-map-support/register'
+
+import db from '../helpers/db'
+import dgen from '../helpers/data-generator'
+import waitTime from '../const/wait-time'
 
 const user = dgen.user()
 
-module.exports = {
-  before: browser => {
-    db.createStudent(user)
+export default {
+  async before (browser, done) {
+    await db.init()
+    const userRecord = await db.createStudent(user)
+    console.log('Created user', userRecord.userId)
+    done()
   },
 
-  after: browser => {
-    db.close()
+  async after (browser, done) {
+    await db.close()
+    done()
   },
 
   'Sign In link exist': browser => {
     browser
-      .url(browser.globals.devServerURL)
+      .url(browser.launchUrl)
       .waitForElementVisible('.msu-standalone-signin-container', waitTime)
-
-    browser.expect.element('a[href^=\'https://oauth.itservices.msu.edu/oauth/authorize\']').to.be.present
-    browser.end()
+      .assert.elementPresent('a[href^=\'https://oauth.itservices.msu.edu/oauth/authorize\']')
+      .end()
   },
 
   'Successful Sign In with Email shows dashboard': browser => {
     browser
-      .url(`${browser.globals.devServerURL}/email-sign-in`)
+      .url(`${browser.launchUrl}/email-sign-in`)
       .waitForElementVisible('button', waitTime)
       .setValue('input[type=text]', user.email)
       .setValue('input[type=password]', db.getDefaultPassword())

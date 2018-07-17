@@ -1,45 +1,42 @@
-const uuid = require('uuid')
-const randomatic = require('randomatic')
+import randomatic from 'randomatic'
 
-module.exports = {
-  user: () => {
-    const userKey = uuid.v4()
-    const userEmail = userKey.replace(/-/g, '')
+export default {
+  user () {
     return {
-      key: userKey,
-      email: `${userEmail}@msu.edu`,
+      email: `${randomatic('a', 10)}@somewhere.com`,
       fullName: 'Test User'
     }
   },
 
-  lesson: (lesson) => {
+  lesson (lesson) {
     return Object.assign({
-      key: `css-${randomatic('a', 10)}`,
-      createdBy: {},
+      lessonKey: `css-${randomatic('a', 10)}`,
       title: 'Test Title',
       estimatedHours: 1,
       content: 'Test Content',
       notes: 'Test Lesson Notes',
-      learningObjectives: {
-        [`${uuid.v4()}`]: {
+      learningObjectives: [
+        {
+          position: 0,
           content: 'Learn something'
         }
-      }
-    }, lesson)
+      ],
+      prerequisiteLessonIds: []
+    }, lesson || {})
   },
 
-  course: (course) => {
+  course (course) {
     return Object.assign({
-      key: `MI-${randomatic('0', 3)}-FS${randomatic('0', 2)}-${randomatic('0', 3)}`,
-      createdBy: {},
+      courseKey: `MI-${randomatic('0', 3)}-FS${randomatic('0', 2)}-${randomatic('0', 3)}`,
       title: 'Test Course',
       credits: 2,
       syllabus: 'Test Syllabus',
       startDate: new Date('Mon Dec 31 2007 23:59:59 GMT-0500 (EST)').getTime(),
       endDate: new Date('Mon Dec 31 2087 23:59:59 GMT-0500 (EST)').getTime(),
       notes: 'Test Course Notes',
-      lessonKeys: [],
-      studentKeys: []
-    }, course)
+      instructorIds: [],
+      lessonIds: [],
+      studentIds: []
+    }, course || {})
   }
 }

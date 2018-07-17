@@ -1,16 +1,18 @@
-const HtmlReporter = require('nightwatch-html-reporter');
+import path from 'path'
+import HtmlReporter from 'nightwatch-html-reporter'
+
 const config = require('../../frontend/config')
 
 const reporter = new HtmlReporter({
   openBrowser: false,
-  reportsDirectory: __dirname + '/reports'
-})
+  reportsDirectory: path.join(__dirname, 'reports')
+}).fn
 
 // http://nightwatchjs.org/guide#settings-file
 module.exports = {
-  src_folders: ['e2e/specs'],
-  output_folder: 'e2e/reports',
-  custom_assertions_path: ['e2e/custom-assertions'],
+  src_folders: ['dist/specs'],
+  output_folder: 'dist/reports',
+  custom_assertions_path: ['dist/custom-assertions'],
 
   selenium: {
     start_process: true,
@@ -24,12 +26,12 @@ module.exports = {
 
   test_settings: {
     default: {
+      launch_url: 'http://localhost:' + (process.env.PORT || config.dev.port),
       selenium_port: 4444,
       selenium_host: 'localhost',
       silent: true,
       globals: {
-        reporter: reporter.fn,
-        devServerURL: 'http://localhost:' + (process.env.PORT || config.dev.port)
+        reporter
       }
     },
 

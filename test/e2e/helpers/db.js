@@ -1,220 +1,110 @@
-const firebaseAdmin = require('firebase-admin')
-const uuid = require('uuid')
+import sequelize from '../../../backend/dist/db/sequelize'
+import createCourseRecord from '../../../backend/dist/db/course/create'
+import readCourseRecordById from '../../../backend/dist/db/course/read-by-id'
+import deleteCourseRecord from '../../../backend/dist/db/course/delete'
+import createLessonRecord from '../../../backend/dist/db/lesson/create'
+import readLessonRecordById from '../../../backend/dist/db/lesson/read-by-id'
+import deleteLessonRecord from '../../../backend/dist/db/lesson/delete'
+import createUserRecord from '../../../backend/dist/db/user/create'
+import readUserRecordById from '../../../backend/dist/db/user/read-by-id'
+import deleteUserRecord from '../../../backend/dist/db/user/delete'
 
-const firebaseSettings = require('../../../backend/src/firebase-settings')
+export default {
+  cleanupCourseIds: [],
+  cleanupLessonIds: [],
+  cleanupUserIds: [],
 
-const DEFAULT_PASSWORD = 'toomanysecrets'
+  // Call this in your test's "before" to connect your tests to the database
+  async init () {
+    try {
+      this.cleanupCourseIds = []
+      this.cleanupLessonIds = []
+      this.cleanupUserIds = []
 
-module.exports = {
-  init: function () {
-    const firebase = firebaseAdmin.initializeApp(firebaseSettings.appConfig, uuid.v4())
-    let cleanupActions = []
-
-    return {
-      // Call this in your test's 'after' so Nightwatch shuts down properly
-      close: (doCleanup = true) => {
-        let cleanupPromises = []
-        if (doCleanup) {
-          cleanupActions.forEach(({ callback, args }) => {
-            cleanupPromises.push(callback(...args))
-          })
-        }
-        cleanupActions = []
-        return Promise.all(cleanupPromises).then(() => firebase.delete())
-      },
-
-      cleanupLater: (callback, args) => {
-        cleanupActions.push({
-          callback: callback,
-          args: args
-        })
-      },
-
-      // ------
-      // USERS
-      // ------
-
-      getDefaultPassword: function () {
-        return DEFAULT_PASSWORD
-      },
-
-      createUser: function  (user, roles) {
-        this.cleanupLater(this.destroyUser, [user])
-
-        let db = firebase.database()
-        return Promise.all([
-          firebase.auth().createUser({
-            uid: user.key,
-            email: user.email,
-            emailVerified: true,
-            displayName: user.fullName,
-            password: DEFAULT_PASSWORD
-          }),
-          db.ref('users').child(user.key).set({
-            email: user.email,
-            fullName: user.fullName
-          }),
-          db.ref('roles').child(user.key).set(roles)
-        ])
-      },
-
-      createStudent: function (user) {
-        return this.createUser(user, { instructor: false })
-      },
-
-      createInstructor: function (user) {
-        return this.createUser(user, { instructor: true })
-      },
-
-      destroyUser: function (user) {
-        if (!user) return Promise.resolve()
-
-        let db = firebase.database()
-        return Promise.all([
-          firebase.auth().deleteUser(user.key),
-          db.ref('roles').child(user.key).remove(),
-          db.ref('users').child(user.key).remove()
-        ])
-      },
-
-      // --------
-      // LESSONS
-      // --------
-
-      createLesson: function (lesson) {
-        this.cleanupLater(this.destroyLesson, [lesson])
-
-        let lessonCopy = Object.assign({}, lesson)
-        delete lessonCopy.key
-
-        let db = firebase.database()
-        return Promise.all([
-          db.ref('lessons/fieldGroups/large/instructor').child(lesson.key).set({
-            notes: lesson.notes
-          }),
-          db.ref('lessons/fieldGroups/large/student').child(lesson.key).set({
-            content: lesson.content
-          }),
-          db.ref('lessons/fieldGroups/small/instructor').child(lesson.key).set({
-            learningObjectives: lesson.learningObjectives
-          }),
-          db.ref('lessons/fieldGroups/small/student').child(lesson.key).set({
-            estimatedHours: lesson.estimatedHours,
-            title: lesson.title
-          }),
-          db.ref('lessons/meta').child(lesson.key).set({
-            createdAt: 1480827219022,
-            createdBy: lesson.createdBy,
-            updatedAt: 1480827219022,
-            updatedBy: lesson.createdBy
-          })
-        ])
-      },
-
-      destroyLesson: function (lesson) {
-        if (!lesson) return Promise.resolve()
-
-        let db = firebase.database()
-        return Promise.all([
-          db.ref('lessons/fieldGroups/large/instructor').child(lesson.key).remove(),
-          db.ref('lessons/fieldGroups/large/student').child(lesson.key).remove(),
-          db.ref('lessons/fieldGroups/small/instructor').child(lesson.key).remove(),
-          db.ref('lessons/fieldGroups/small/student').child(lesson.key).remove(),
-          db.ref('lessons/meta').child(lesson.key).remove(),
-          db.ref('lessons/relationships').child(lesson.key).remove()
-        ])
-      },
-
-      // --------
-      // COURSES
-      // --------
-
-      createCourse: function (course) {
-        this.cleanupLater(this.destroyCourse, [course])
-
-        let courseCopy = Object.assign({}, course)
-        delete courseCopy.key
-
-        let db = firebase.database()
-        let actions = [
-          db.ref('courses/fieldGroups/large/authed').child(course.key).set({
-            syllabus: course.syllabus
-          }),
-          db.ref('courses/fieldGroups/small/authed').child(course.key).set({
-            credits: course.credits,
-            startDate: course.startDate,
-            endDate: course.endDate,
-            title: course.title
-          }),
-          db.ref('courses/meta').child(course.key).set({
-            createdAt: 1480827219022,
-            createdBy: course.createdBy,
-            updatedAt: 1480827219022,
-            updatedBy: course.createdBy
-          })
-        ]
-
-        if (course.lessonKeys.length || course.studentKeys.length) {
-          let courseRelationships = {}
-
-          if (course.lessonKeys.length) {
-            // Relate course and lessons
-            courseRelationships.lessons = {}
-            course.lessonKeys.forEach(lessonKey => {
-              courseRelationships.lessons[lessonKey] = {
-                createdAt: 1480827219022,
-                createdBy: course.createdBy
-              }
-
-              // Relate lesson to course and any students
-              let lessonRelationships = {
-                courses: {
-                  [course.key]: {
-                    createdAt: 1480827219022,
-                    createdBy: course.createdBy
-                  }
-                }
-              }
-              if (course.studentKeys.length) {
-                lessonRelationships.students = {}
-                course.studentKeys.forEach(studentKey => {
-                  lessonRelationships.students[studentKey] = {
-                    courses: lessonRelationships.courses
-                  }
-                })
-              }
-              actions.push(db.ref('lessons/relationships').child(lessonKey).set(lessonRelationships))
-            })
-          }
-
-          if (course.studentKeys.length) {
-            // Relate course and students
-            courseRelationships.students = {}
-            course.studentKeys.forEach(studentKey => {
-              courseRelationships.students[studentKey] = {
-                createdAt: 1480827219022,
-                createdBy: course.createdBy
-              }
-            })
-          }
-
-          actions.push(db.ref('courses/relationships').child(course.key).set(courseRelationships))
-        }
-
-        return Promise.all(actions)
-      },
-
-      destroyCourse: function (course) {
-        if (!course) return Promise.resolve()
-
-        let db = firebase.database()
-        return Promise.all([
-          db.ref('courses/fieldGroups/large/authed').child(course.key).remove(),
-          db.ref('courses/fieldGroups/small/authed').child(course.key).remove(),
-          db.ref('courses/meta').child(course.key).remove(),
-          db.ref('courses/relationships').child(course.key).remove()
-        ])
-      }
+      await sequelize.authenticate()
+      console.log('Successfully connected to database.')
+    } catch (error) {
+      console.error('Error connecting to database:', error)
+      throw new Error('Unable to connect to database', error)
     }
+  },
+
+  // Call this in your test's "after" so Nightwatch shuts down properly
+  async close () {
+    return Promise.all(this.cleanupCourseIds.map(async id => {
+      const record = await readCourseRecordById(id)
+      if (record) await deleteCourseRecord(record)
+    }))
+    .then(() => Promise.all(this.cleanupLessonIds.map(async id => {
+      const record = await readLessonRecordById(id)
+      if (record) await deleteLessonRecord(record)
+    })))
+    .then(() => Promise.all(this.cleanupUserIds.map(async id => {
+      const record = await readUserRecordById(id)
+      if (record) await deleteUserRecord(record)
+    })))
+    .then(() => sequelize.close())
+    .catch(error => {
+      console.error('Error cleaning up after test:', error)
+      console.warn(
+        'Database may need to be cleaned up by hand.',
+        '\nCourse IDs:', this.cleanupCourseIds,
+        '\nLesson IDs:', this.cleanupLessonIds,
+        '\nUser IDs:', this.cleanupUserIds
+      )
+      sequelize.close()
+    })
+  },
+
+  cleanupCourseIdLater (id) {
+    this.cleanupCourseIds.push(id)
+  },
+
+  cleanupLessonIdLater (id) {
+    this.cleanupLessonIds.push(id)
+  },
+
+  cleanupUserIdLater (id) {
+    this.cleanupUserIds.push(id)
+  },
+
+  // ------
+  // USERS
+  // ------
+
+  async createUser (user) {
+    const userRecord = await createUserRecord(user)
+    this.cleanupUserIdLater(userRecord.userId)
+    return userRecord
+  },
+
+  async createStudent (user) {
+    user.isInstructor = false
+    return this.createUser(user)
+  },
+
+  async createInstructor (user) {
+    user.isInstructor = true
+    return this.createUser(user)
+  },
+
+  // --------
+  // LESSONS
+  // --------
+
+  async createLesson (lesson) {
+    const lessonRecord = await createLessonRecord(lesson)
+    this.cleanupLessonIdLater(lessonRecord.lessonId)
+    return lessonRecord
+  },
+
+  // --------
+  // COURSES
+  // --------
+
+  async createCourse (course) {
+    const courseRecord = await createCourseRecord(course)
+    this.cleanupCourseIdLater(courseRecord.courseId)
+    return courseRecord
   }
 }
