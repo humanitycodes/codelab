@@ -22,9 +22,7 @@ export default {
       this.cleanupUserIds = []
 
       await sequelize.authenticate()
-      console.log('Successfully connected to database.')
     } catch (error) {
-      console.error('Error connecting to database:', error)
       throw new Error('Unable to connect to database', error)
     }
   },

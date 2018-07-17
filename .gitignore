@@ -1,4 +1,3 @@
-backend/.env
 .DS_Store
 node_modules/
 dist/
@@ -6,3 +5,4 @@ coverage/
 reports/
 *.log
 *.log.*
+.env*

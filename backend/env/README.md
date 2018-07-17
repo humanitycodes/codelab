@@ -47,6 +47,12 @@ every part of the HTTP request (query parameters, headers, body, etc.) so it
 should not be enabled in any environment where sensitive information may be
 recorded.
 
+### `CODELAB_LOG_SQL_STATEMENTS`
+
+Set to `true` to log every SQL statement executed against the database. Only
+the statements, including query parameters, will be logged. Query results will
+never be logged.
+
 ### `CODELAB_MSU_AUTH_CLIENT_SECRET`
 
 A secret key provided by MSU IT Services that is required to successfully
