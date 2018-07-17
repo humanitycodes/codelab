@@ -4,14 +4,11 @@ import 'source-map-support/register'
 import db from '../helpers/db'
 import dgen from '../helpers/data-generator'
 import waitTime from '../const/wait-time'
-
-const user = dgen.user()
+import signJsonWebToken from '../../../backend/dist/helpers/jwt/sign-json-web-token'
 
 export default {
   async before (browser, done) {
     await db.init()
-    const userRecord = await db.createStudent(user)
-    console.log('Created user', userRecord.userId)
     done()
   },
 
@@ -28,13 +25,16 @@ export default {
       .end()
   },
 
-  'Successful Sign In with Email shows dashboard': browser => {
+  'Sign In with token shows dashboard': async browser => {
+    const userRecord = await db.createStudent(dgen.user())
+    const token = signJsonWebToken({ user: userRecord.get() })
+    console.log('Created user', userRecord.userId)
+
     browser
-      .url(`${browser.launchUrl}/email-sign-in`)
-      .waitForElementVisible('button', waitTime)
-      .setValue('input[type=text]', user.email)
-      .setValue('input[type=password]', db.getDefaultPassword())
-      .click('button')
+      .url(browser.launchUrl)
+      .waitForElementVisible('.msu-standalone-signin-container', waitTime)
+      .setLocalStorage('auth_token', token)
+      .url(browser.launchUrl)
       .waitForElementVisible('.main-nav a[href^=\'/sign-out\']', waitTime)
       .end()
   }
