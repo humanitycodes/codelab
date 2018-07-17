@@ -10,6 +10,7 @@ import CODELAB_DB_HOST from '../../env/db-host'
 import CODELAB_DB_PORT from '../../env/db-port'
 import CODELAB_DB_USERNAME from '../../env/db-username'
 import CODELAB_DB_PASSWORD from '../../env/db-password'
+import CODELAB_LOG_SQL_STATEMENTS from '../../env/log-sql-statements'
 
 export default new Sequelize({
   host: CODELAB_DB_HOST,
@@ -18,6 +19,7 @@ export default new Sequelize({
   password: CODELAB_DB_PASSWORD,
   database: 'codelab',
   dialect: 'postgres',
+  logging: CODELAB_LOG_SQL_STATEMENTS ? console.log : false,
   pool: {
     max: 20
   },
