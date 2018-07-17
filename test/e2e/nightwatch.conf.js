@@ -13,6 +13,7 @@ module.exports = {
   src_folders: ['dist/specs'],
   output_folder: 'dist/reports',
   custom_assertions_path: ['dist/custom-assertions'],
+  custom_commands_path: 'dist/custom-commands',
 
   selenium: {
     start_process: true,
@@ -32,22 +33,23 @@ module.exports = {
       silent: true,
       globals: {
         reporter
+      },
+      desiredCapabilities: {
+        webStorageEnabled: true,
+        javascriptEnabled: true,
+        acceptSslCerts: true
       }
     },
 
     chrome: {
       desiredCapabilities: {
-        browserName: 'chrome',
-        javascriptEnabled: true,
-        acceptSslCerts: true
+        browserName: 'chrome'
       }
     },
 
     firefox: {
       desiredCapabilities: {
-        browserName: 'firefox',
-        javascriptEnabled: true,
-        acceptSslCerts: true
+        browserName: 'firefox'
       }
     }
   }
