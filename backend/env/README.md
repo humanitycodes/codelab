@@ -40,7 +40,7 @@ e.g. `871255a9-83c9-496b-90b8-24440f16dc77`
 A secret key at least 32 characters long used for signing JSON Web Tokens
 for client authentication.
 
-### `CODELAB_LOG_REQUESTS`
+### `CODELAB_LOG_HTTP_REQUESTS`
 
 Set to `true` to log every incoming and outgoing HTTP request. This will log
 every part of the HTTP request (query parameters, headers, body, etc.) so it

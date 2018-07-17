@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.json src",
-    "serve:dev": "cross-env CODELAB_LOG_REQUESTS=true nodemon src/main.js --exec babel-node",
+    "serve:dev": "cross-env CODELAB_LOG_HTTP_REQUESTS=true nodemon src/main.js --exec babel-node",
     "dev": "run-s lint serve:dev",
     "build": "babel src -d dist",
     "serve:prod": "node dist/main.js",

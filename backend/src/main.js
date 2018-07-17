@@ -7,9 +7,9 @@ import 'app-module-path/register'
 import hapi from 'hapi'
 import boom from 'boom'
 import CODELAB_JWT_SECRET from '../env/jwt-secret'
-import CODELAB_LOG_REQUESTS from '../env/log-requests'
+import CODELAB_LOG_HTTP_REQUESTS from '../env/log-http-requests'
 import frontendDir from 'constants/frontend-dir'
-import logRequests from 'log-requests'
+import enableHttpRequestLogger from 'enable-http-request-logger'
 import sequelize from 'db/sequelize'
 import validateJsonWebToken from 'helpers/jwt/validate-json-web-token'
 import gatherRoutesForDir from 'routes/_helpers/gather-routes-for-dir'
@@ -119,8 +119,8 @@ const start = async () => {
   })
 
   // Log all requests
-  if (CODELAB_LOG_REQUESTS) {
-    logRequests()
+  if (CODELAB_LOG_HTTP_REQUESTS) {
+    enableHttpRequestLogger()
   }
 
   // Start serving
