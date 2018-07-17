@@ -4,7 +4,6 @@ import 'source-map-support/register'
 import db from '../helpers/db'
 import dgen from '../helpers/data-generator'
 import waitTime from '../const/wait-time'
-import signJsonWebToken from '../../../backend/dist/helpers/jwt/sign-json-web-token'
 
 export default {
   async before (browser, done) {
@@ -27,15 +26,10 @@ export default {
 
   'Sign In with token shows dashboard': async browser => {
     const userRecord = await db.createStudent(dgen.user())
-    const token = signJsonWebToken({ user: userRecord.get() })
-    console.log('Created user', userRecord.userId)
 
     browser
-      .url(browser.launchUrl)
-      .waitForElementVisible('.msu-standalone-signin-container', waitTime)
-      .setLocalStorage('auth_token', token)
-      .url(browser.launchUrl)
-      .waitForElementVisible('.main-nav a[href^=\'/sign-out\']', waitTime)
+      .signInUser(userRecord.get())
+      .assert.containsText('.main-nav-user-name', userRecord.fullName)
       .end()
   }
 }

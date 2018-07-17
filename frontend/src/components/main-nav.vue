@@ -42,7 +42,7 @@
           {{ currentUser.githubLogin ? 'Reconnect GitHub' : 'Connect GitHub' }}
         </AuthLink>
       </li>
-      <li v-if="isUserSignedIn">
+      <li v-if="isUserSignedIn" class="main-nav-user-name">
         {{ currentUser.fullName }}
       </li>
       <li v-if="isUserSignedIn">
