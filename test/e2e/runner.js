@@ -1,9 +1,13 @@
-const spawn = require('cross-spawn')
-const axios = require('axios')
+// Polyfill features that are not yet natively supported in node
+import 'babel-polyfill'
 
-const frontendURL = require('./nightwatch.conf').test_settings.default.globals.devServerURL
+import spawn from 'cross-spawn'
+import axios from 'axios'
+import nightwatchConfig from './nightwatch.conf'
 
-// 1. start the dev server using production config
+const frontendUrl = nightwatchConfig.test_settings.default.launch_url
+
+// 1. start the dev server using test config
 process.env.NODE_ENV = 'testing'
 
 let servers
@@ -17,7 +21,9 @@ function shutdown (result) {
   }
 
   if (result) {
-    if (isNaN(result)) console.error('Test runner failed with result:', result)
+    if (isNaN(result)) {
+      console.error('Test runner failed with result:', result)
+    }
     process.exit(1)
   } else {
     process.exit(0)
@@ -39,7 +45,7 @@ function waitForServers (maxWait) {
   function checkForServers (resolve, reject) {
     totalWait += delay
 
-    axios.get(frontendURL).then(response => {
+    axios.get(frontendUrl).then(response => {
       if (response.status === 200) {
         resolve()
       } else if (totalWait > maxWait) {
@@ -71,7 +77,7 @@ function startRunner () {
   // http://nightwatchjs.org/guide#settings-file
   var opts = process.argv.slice(2)
   if (opts.indexOf('--config') === -1) {
-    opts = opts.concat(['--config', 'e2e/nightwatch.conf.js'])
+    opts = opts.concat(['--config', 'dist/nightwatch.conf.js'])
   }
   if (opts.indexOf('--env') === -1) {
     opts = opts.concat(['--env', 'chrome'])

@@ -1,19 +1,15 @@
-// For authoring Nightwatch tests, see
-// http://nightwatchjs.org/guide#usage
-const waitTime = 30000
+// Explicitly add source map support until Nightwatch adds it natively
+import 'source-map-support/register'
 
-module.exports = {
-  'default e2e tests': function (browser) {
-    // automatically uses dev Server port from /config.index.js
-    // default: http://localhost:8080
-    // see nightwatch.conf.js
-    const devServer = browser.globals.devServerURL
+import waitTime from '../const/wait-time'
 
+export default {
+  'default e2e tests': browser => {
     browser
-      .url(devServer)
+      .url(browser.launchUrl)
       .waitForElementVisible('.msu-standalone-signin-container', waitTime)
-    browser.expect.element('h1').to.be.present
-    browser.expect.element('.msu-standalone-signin-button').to.be.present
-    browser.end()
+      .assert.elementPresent('h1')
+      .assert.elementPresent('.msu-standalone-signin-button')
+      .end()
   }
 }

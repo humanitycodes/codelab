@@ -1,10 +1,11 @@
-const randomatic = require('randomatic')
-const datefns = require('date-fns')
+// Explicitly add source map support until Nightwatch adds it natively
+import 'source-map-support/register'
 
-const waitTime = 30000
-
-const db = require('../helpers/db').init()
-const dgen = require('../helpers/data-generator')
+import randomatic from 'randomatic'
+import datefns from 'date-fns'
+import db from '../helpers/db'
+import dgen from '../helpers/data-generator'
+import waitTime from '../const/wait-time'
 
 const student = dgen.user()
 student.fullName = 'Test Student'
@@ -13,12 +14,11 @@ const instructor = dgen.user()
 instructor.fullName = 'Test Instructor'
 
 const prereqLesson = dgen.lesson({
-  createdBy: instructor,
   title: `Prereq Title ${randomatic('a', 10)}`
 })
 
-const lesson = dgen.lesson({ createdBy: instructor })
-const [lessonKeyPrefix, lessonKeySuffix] = lesson.key.split('-')
+const lesson = dgen.lesson()
+const [lessonKeyPrefix, lessonKeySuffix] = lesson.lessonKey.split('-')
 
 const courseKeyDep = 'MI'
 const courseKeyNum = randomatic('0', 3)
@@ -26,26 +26,28 @@ const courseKeySem = 'FS'
 const courseKeyYear = randomatic('0', 2)
 const courseKeySec = randomatic('0', 3)
 const courseKey = `${courseKeyDep}-${courseKeyNum}-${courseKeySem}${courseKeyYear}-${courseKeySec}`
-const course = dgen.course({
-  key: courseKey,
-  createdBy: instructor
-})
+const course = dgen.course({ courseKey })
 
-module.exports = {
-  before: browser => {
-    db.createStudent(student)
-    db.createInstructor(instructor)
-    db.createLesson(prereqLesson)
-    db.cleanupLater(db.destroyLesson, [lesson])
-    db.cleanupLater(db.destroyCourse, [course])
+export default {
+  '@disabled': true,
+
+  async before (browser, done) {
+    await db.init()
+    await db.createStudent(student)
+    await db.createInstructor(instructor)
+    await db.createLesson(prereqLesson)
+    await db.cleanupLater(db.destroyLesson, [lesson])
+    await db.cleanupLater(db.destroyCourse, [course])
+    done()
   },
 
-  after: browser => {
-    db.close()
+  async after (browser, done) {
+    await db.close()
+    done()
   },
 
   'Instructor can create and edit lesson': browser => {
-    const baseURL = browser.globals.devServerURL
+    const baseURL = browser.launchUrl
 
     browser
       // Sign in
@@ -101,7 +103,7 @@ module.exports = {
   },
 
   'Instructor can create and edit course': browser => {
-    const baseURL = browser.globals.devServerURL
+    const baseURL = browser.launchUrl
 
     browser
       // Sign in
