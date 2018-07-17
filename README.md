@@ -43,6 +43,8 @@ And open a pull request.
 
 The development environment can be launched for either the frontend or the backend, by running `npm run dev` from those directories. The frontend launches to port 8080 and the backend to port 4000. On the frontend, `/api` is proxied to the backend. From the root directory, you can also run `npm run dev-all` to launch the entire app.
 
+It may be helpful to enable extra logging when testing in a development environment, in particular, HTTP request logging and SQL statement logging. This can be done by setting the environment variables `CODELAB_LOG_HTTP_REQUESTS` and `CODELAB_LOG_SQL_STATEMENTS` to `true`, respectively. For more information about environment variables, see `backend/env/README.md`.
+
 ## Continuous Integration and Deployment
 
 When builds pass on CircleCI, GitHub's:
