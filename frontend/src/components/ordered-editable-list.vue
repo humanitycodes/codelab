@@ -37,7 +37,7 @@ export default {
         : 'ordered-editable-list-multi-input'
     },
     orderedItems () {
-      return orderBy(this.items, 'position')
+      return orderBy(this.items, [item => item.position])
     }
   },
   methods: {

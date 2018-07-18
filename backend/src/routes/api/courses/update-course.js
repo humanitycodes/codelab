@@ -70,8 +70,6 @@ export default {
 
       const updatedCourse = translateCourseFromPayload({ payload: request.payload })
 
-      console.log('Updated course version:', updatedCourse.version)
-      console.log('Existing course version:', courseRecord.version)
       // Unique identifiers and version cannot be changed by clients
       if (updatedCourse.version !== courseRecord.version) {
         throw boom.conflict('course.update.version.mismatch')
@@ -99,6 +97,7 @@ export default {
       // Update, refresh, and send the course to the client
       await updateCourseRecord(courseRecord, { transaction })
       await refreshCourseRecord(courseRecord, { transaction })
+
       const course = translateCourseFromRecord({ authUser, courseRecord })
       await transaction.commit()
 

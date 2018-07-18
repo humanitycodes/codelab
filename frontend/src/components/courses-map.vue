@@ -42,7 +42,7 @@ export default {
   },
   computed: {
     orderedCourses () {
-      return orderBy(this.courses, 'courseKey')
+      return orderBy(this.courses, [course => course.courseKey])
     }
   },
   methods: {

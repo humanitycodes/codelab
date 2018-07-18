@@ -12,7 +12,45 @@ The provided link is useful for local installation. For installation on Heroku
 or some other remote provider, you should follow their instructions to install
 a new Postgres instance.
 
-## 2. Run DDL scripts
+## 2. Configure timezone
+
+The default installation of Postgres usually configures timestamps to be read
+from the database using the system's default timezone instead of UTC. To ensure
+that Postgres always treats timestamps with no timezone as UTC, update the
+`postgresql.conf` file on the Postgres server.
+
+First, locate the `postgresql.conf` file by running the following SQL on the
+server:
+
+``` sql
+SHOW hba_file;
+```
+
+The `postgresql.conf` file will be in the same directoy as the `pg_hba.conf`
+file.
+
+Second, replace the line starting with `timezone =` with the following:
+
+```
+timezone = 'UTC'
+```
+
+Finally, restart the Postgres server for the change to take effect. If you use
+the `pg_ctl` command, then run it as follows:
+
+``` sh
+pg_ctl restart -D <DATAFILE>
+```
+
+Where `<DATAFILE>` can be found by running the following SQL:
+
+``` sql
+select setting
+from pg_settings
+where name = 'data_directory';
+```
+
+## 3. Run DDL scripts
 
 Run each DDL script in numerical order using `psql`. For example:
 
@@ -30,7 +68,7 @@ DROP ROLE IF EXISTS codelab_app;
 DROP ROLE IF EXISTS codelab_admin;
 ```
 
-## 3. Secure database access
+## 4. Secure database access
 
 By default, Postgres allows local connections without collecting or verifying
 a password. To ensure a password is required for users of the `codelab`

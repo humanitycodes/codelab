@@ -34,9 +34,7 @@ export default {
       if (!this.course.startDate || !this.course.endDate) {
         return 'Both the start date and end date must be entered before students can be enrolled in a course.'
       }
-      const startDate = Date.parse(this.course.startDate)
-      const endDate = Date.parse(this.course.endDate)
-      if (startDate >= endDate) {
+      if (this.course.startDate >= this.course.endDate) {
         return 'The end date must come after the start date.'
       }
       return ''
