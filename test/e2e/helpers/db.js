@@ -2,6 +2,7 @@ import sequelize from '../../../backend/dist/db/sequelize'
 import createCourseRecord from '../../../backend/dist/db/course/create'
 import readCourseRecordByKey from '../../../backend/dist/db/course/read-by-key'
 import deleteCourseRecord from '../../../backend/dist/db/course/delete'
+import refreshCourseRecord from '../../../backend/dist/db/course/refresh'
 import createLessonRecord from '../../../backend/dist/db/lesson/create'
 import readLessonRecordByKey from '../../../backend/dist/db/lesson/read-by-key'
 import deleteLessonRecord from '../../../backend/dist/db/lesson/delete'
@@ -102,6 +103,15 @@ export default {
   async createCourse (course) {
     const courseRecord = await createCourseRecord(course)
     this.cleanupCourseLater(courseRecord)
+    // Associate lessons
+    await Promise.all(course.lessonIds.map(
+      async lessonId => courseRecord.addLesson(lessonId)
+    ))
+    // Associate students
+    await Promise.all(course.studentIds.map(
+      async studentId => courseRecord.addStudent(studentId)
+    ))
+    await refreshCourseRecord(courseRecord)
     return courseRecord
   }
 }

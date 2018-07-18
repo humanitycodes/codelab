@@ -11,25 +11,24 @@ enrolledStudent.fullName = 'Test Enrolled Student'
 const hackerStudent = dgen.user()
 hackerStudent.fullName = 'Test Hacker Student'
 
-const instructor = dgen.user()
-instructor.fullName = 'Test Instructor'
-
 const lesson = dgen.lesson()
-
 const course = dgen.course()
-course.lessonIds.push(lesson.lessonId)
-course.studentIds.push(enrolledStudent.userId)
+
+let enrolledStudentRecord, hackerStudentRecord
 
 module.exports = {
-  '@disabled': true,
-
   async before (browser, done) {
     await db.init()
-    await db.createStudent(enrolledStudent)
-    await db.createStudent(hackerStudent)
-    await db.createInstructor(instructor)
-    await db.createLesson(lesson)
+
+    enrolledStudentRecord = await db.createStudent(enrolledStudent)
+    hackerStudentRecord = await db.createStudent(hackerStudent)
+    const lessonRecord = await db.createLesson(lesson)
+
+    course.studentIds.push(enrolledStudentRecord.userId)
+    course.lessonIds.push(lessonRecord.lessonId)
     await db.createCourse(course)
+
+    done()
   },
 
   async after (browser, done) {
@@ -40,59 +39,48 @@ module.exports = {
   'Enrolled student can access course and lesson': browser => {
     browser
       // Sign in
-      .url(`${browser.launchUrl}/email-sign-in`)
-      .waitForElementVisible('button', waitTime)
-      .setValue('input[type=text]', enrolledStudent.email)
-      .setValue('input[type=password]', db.getDefaultPassword())
-      .click('button')
+      .signInUser(enrolledStudentRecord.get())
 
       // Navigate to course list
-      .waitForElementVisible(`.main-nav a[href^='/courses']`, waitTime)
+      .assert.visible(`.main-nav a[href^='/courses']`)
       .click(`.main-nav a[href^='/courses']`)
-      .pause(200).refresh() // todo: Content below 'Courses' does not render w/o this. Can sometimes recreate manually.
 
       // Navigate to the course
-      .waitForElementVisible(`a[href^='/courses/${course.key}']`, waitTime)
-      .click(`a[href^='/courses/${course.key}']`)
+      .waitForElementVisible(`a[href^='/courses/${course.courseKey}']:first-child`, waitTime)
+      .click(`a[href^='/courses/${course.courseKey}']`)
       .waitForElementVisible('.lesson-graph-container', waitTime)
 
       // Make sure syllabus and lessons are visible
       .assert.containsText('.rendered-content', course.syllabus)
-      .assert.elementPresent(`a[href^='/courses/${course.key}/lessons/${lesson.key}']`)
+      .assert.elementPresent(`a[href^='/courses/${course.courseKey}/lessons/${lesson.lessonKey}']`)
 
       // Navigate to the lesson
-      .click(`a[href^='/courses/${course.key}/lessons/${lesson.key}']`)
-      .pause(200).refresh() // todo: Sometimes lesson content doesn't render w/o refreshing first.
-      .waitForElementVisible('.rendered-content', waitTime)
+      .click(`a[href^='/courses/${course.courseKey}/lessons/${lesson.lessonKey}']`)
+      .waitForElementVisible('.course-lesson-content', waitTime)
 
       // Make sure the lesson content is visible
-      .assert.containsText('.rendered-content', lesson.content)
+      .assert.visible('.course-lesson-content .rendered-content')
+      .assert.containsText('.course-lesson-content .rendered-content', lesson.content)
 
       // Close the browser and end the test
       .end()
   },
 
   'Student cannot access courses they are not enrolled in': browser => {
-    const baseURL = browser.launchUrl
-
     browser
       // Sign in
-      .url(`${baseURL}/email-sign-in`)
-      .waitForElementVisible('button', waitTime)
-      .setValue('input[type=text]', hackerStudent.email)
-      .setValue('input[type=password]', db.getDefaultPassword())
-      .click('button')
+      .signInUser(hackerStudentRecord.get())
 
       // Navigate to course list
-      .waitForElementVisible(`.main-nav a[href^='/courses']`, waitTime)
+      .assert.visible(`.main-nav a[href^='/courses']`)
       .click(`.main-nav a[href^='/courses']`)
-      .pause(200).refresh() // todo: Content below 'Courses' does not render w/o this. Can sometimes recreate manually.
 
       // No courses should be listed
-      .assert.elementNotPresent(`a[href^='/courses/${course.key}']`)
+      .waitForElementVisible('h1', waitTime)
+      .assert.elementNotPresent(`a[href^='/courses/${course.courseKey}']`)
 
       // Try to navigate to course anyway
-      .url(`${baseURL}/courses/${course.key}`)
+      .url(`${browser.launchUrl}/courses/${course.courseKey}`)
       .waitForElementVisible(`.main-nav`, waitTime)
 
       // Should not see course content
@@ -103,35 +91,28 @@ module.exports = {
   },
 
   'Enrolled student cannot add or edit courses': browser => {
-    const baseURL = browser.launchUrl
-
     browser
       // Sign in
-      .url(`${baseURL}/email-sign-in`)
-      .waitForElementVisible('button', waitTime)
-      .setValue('input[type=text]', enrolledStudent.email)
-      .setValue('input[type=password]', db.getDefaultPassword())
-      .click('button')
+      .signInUser(enrolledStudentRecord.get())
 
       // Navigate to course list
       .waitForElementVisible(`.main-nav a[href^='/courses']`, waitTime)
       .click(`.main-nav a[href^='/courses']`)
-      .pause(200).refresh() // todo: Content below 'Courses' does not render w/o this. Can sometimes recreate manually.
-      .waitForElementVisible(`a[href^='/courses/${course.key}']`, waitTime)
+      .waitForElementVisible(`a[href^='/courses/${course.courseKey}']:first-child`, waitTime)
 
       // New and Edit links should not be present
       .assert.elementNotPresent(`a[href^='/courses/new']`)
-      .assert.elementNotPresent(`a[href^='/courses/${course.key}/edit']`)
+      .assert.elementNotPresent(`a[href^='/courses/${course.courseKey}/edit']`)
 
       // Try to create a new course via URL
-      .url(`${baseURL}/courses/new`)
+      .url(`${browser.launchUrl}/courses/new`)
       .waitForElementVisible(`.main-nav`, waitTime)
 
       // Should not see new course form
       .assert.elementNotPresent('.key-field')
 
       // Try to edit a course via URL
-      .url(`${baseURL}/courses/${course.key}`)
+      .url(`${browser.launchUrl}/courses/${course.courseKey}`)
       .waitForElementVisible(`.main-nav`, waitTime)
 
       // Should not see editable course fields
