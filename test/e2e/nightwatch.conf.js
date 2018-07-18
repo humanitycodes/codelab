@@ -1,14 +1,6 @@
-import path from 'path'
-import HtmlReporter from 'nightwatch-html-reporter'
+import reportAndCleanup from './report-and-cleanup'
+import backendServerPort from '../../backend/env/port'
 
-const config = require('../../frontend/config')
-
-const reporter = new HtmlReporter({
-  openBrowser: false,
-  reportsDirectory: path.join(__dirname, 'reports')
-}).fn
-
-// http://nightwatchjs.org/guide#settings-file
 module.exports = {
   src_folders: ['dist/specs'],
   output_folder: 'dist/reports',
@@ -27,12 +19,12 @@ module.exports = {
 
   test_settings: {
     default: {
-      launch_url: 'http://localhost:' + (process.env.PORT || config.dev.port),
+      launch_url: `http://localhost:${backendServerPort}`,
       selenium_port: 4444,
       selenium_host: 'localhost',
       silent: true,
       globals: {
-        reporter
+        reporter: reportAndCleanup
       },
       desiredCapabilities: {
         webStorageEnabled: true,

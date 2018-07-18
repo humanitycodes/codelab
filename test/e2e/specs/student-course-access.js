@@ -51,7 +51,7 @@ module.exports = {
       .waitForElementVisible('.lesson-graph-container', waitTime)
 
       // Make sure syllabus and lessons are visible
-      .assert.containsText('.rendered-content', course.syllabus)
+      .assert.containsText('.course-syllabus-container .rendered-content', course.syllabus)
       .assert.elementPresent(`a[href^='/courses/${course.courseKey}/lessons/${lesson.lessonKey}']`)
 
       // Navigate to the lesson

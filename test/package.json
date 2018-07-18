@@ -5,15 +5,15 @@
   "private": true,
   "scripts": {
     "install:chromedriver": "node node_modules/chromedriver/install.js",
-    "build": "run-p build:*",
+    "build": "run-p install:* build:*",
     "build:backend": "cd ../backend && yarn run build",
+    "build:frontend": "cd ../frontend && yarn run build",
     "build:e2e": "babel e2e -d dist --source-maps",
     "lint": "eslint --ext .js,.json e2e",
-    "pretest": "run-s install:* lint build",
+    "pretest": "run-s lint build",
     "test": "node dist/runner.js"
   },
   "devDependencies": {
-    "axios": "^0.15.3",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.5",
@@ -23,7 +23,6 @@
     "babel-preset-stage-2": "^6.24.1",
     "chai": "^3.5.0",
     "chromedriver": "^2.36.0",
-    "cross-env": "^5.2.0",
     "cross-spawn": "^5.0.1",
     "eslint": "^5.0.1",
     "eslint-config-standard": "^11.0.0",
@@ -34,11 +33,9 @@
     "moment": "^2.22.2",
     "nightwatch": "^0.9.20",
     "nightwatch-html-reporter": "^2.0.5",
-    "node-rsa": "^0.4.2",
     "npm-run-all": "^4.1.3",
     "randomatic": "^1.1.6",
     "selenium-server": "=3.8.1",
-    "source-map-support": "^0.5.6",
-    "uuid": "^3.0.1"
+    "source-map-support": "^0.5.6"
   }
 }
