@@ -3,9 +3,7 @@
 </template>
 
 <script>
-import startOfDay from 'date-fns/start_of_day'
-import endOfDay from 'date-fns/end_of_day'
-import formatDate from 'date-fns/format'
+import moment from 'moment'
 
 export default {
   props: {
@@ -19,7 +17,7 @@ export default {
   computed: {
     simplifiedDate () {
       if (!this.value) return ''
-      return formatDate(this.value, 'YYYY-MM-DD')
+      return moment(this.value).format('YYYY-MM-DD')
     }
   },
   methods: {
@@ -28,10 +26,10 @@ export default {
       if (!value) return
       const dateNumber = (
         this.atDay === 'start'
-          ? startOfDay(value)
-          : endOfDay(value)
-      ).getTime()
-      this.$emit('input', dateNumber)
+          ? moment(value, 'YYYY-MM-DD').startOf('day')
+          : moment(value, 'YYYY-MM-DD').endOf('day')
+      )
+      this.$emit('input', dateNumber.valueOf())
     }
   }
 }

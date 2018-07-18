@@ -147,7 +147,7 @@
 </template>
 
 <script>
-import formatDate from 'date-fns/format'
+import moment from 'moment'
 import Layout from '@layouts/main'
 import CourseNotFound from '@components/course-not-found'
 import LessonsMap from '@components/lessons-map'
@@ -166,8 +166,6 @@ import maxGrade from '@constants/grade-max'
 import gradeMilestones from '@constants/grade-milestones'
 import courseLessonUserStatus from '@helpers/computed/course-lesson-user-status'
 import getGradeReported from '@helpers/utils/get-grade-reported'
-
-const dateFormat = 'MMMM Do, YYYY'
 
 export default {
   components: {
@@ -303,7 +301,7 @@ export default {
     },
     humanizeDate (date) {
       if (!date) return 'Not yet defined'
-      return formatDate(date, dateFormat)
+      return moment(date).format('MMMM Do, YYYY')
     }
   }
 }

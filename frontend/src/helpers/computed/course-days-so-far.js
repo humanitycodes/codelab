@@ -1,7 +1,7 @@
-import differenceInDays from 'date-fns/difference_in_days'
+import daysSince from './days-since'
 
 export default course => {
   const { startDate } = course
-  const daysSoFar = differenceInDays(Date.now(), startDate) + 1
+  const daysSoFar = daysSince(startDate) + 1
   return Math.max(0, daysSoFar)
 }

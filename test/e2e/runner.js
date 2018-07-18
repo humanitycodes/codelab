@@ -36,6 +36,7 @@ function watch (child) {
   child.on('error', shutdown)
   child.on('exit', shutdown)
   child.on('uncaughtException', shutdown)
+  child.on('unhandledRejection', shutdown)
 }
 
 function waitForServers (maxWait) {

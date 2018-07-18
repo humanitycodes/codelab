@@ -125,7 +125,7 @@
 </template>
 
 <script>
-import differenceInDays from 'date-fns/difference_in_days'
+import daysSince from '@helpers/computed/days-since'
 import { userGetters, projectCompletionGetters } from '@state/helpers'
 import courseUserGradeCurrentRounded from '@helpers/computed/course-user-grade-current-rounded'
 import courseGradeMinExpectedRounded from '@helpers/computed/course-grade-min-expected-rounded'
@@ -227,7 +227,7 @@ export default {
         completion.instructorCommentedLast
       ).map(completion => {
         if (!completion.lastCommentedAt) return -1
-        return differenceInDays(Date.now(), completion.lastCommentedAt)
+        return daysSince(completion.lastCommentedAt)
       }).reduce((a, b) => Math.max(a, b), -1)
       return result !== -1 ? result : '--'
     },
@@ -237,7 +237,7 @@ export default {
         !completion.approved
       ).map(completion => {
         if (!completion.firstSubmittedAt) return -1
-        return differenceInDays(Date.now(), completion.firstSubmittedAt)
+        return daysSince(completion.firstSubmittedAt)
       }).reduce((a, b) => Math.max(a, b), -1)
       return result !== -1 ? result : '--'
     },
@@ -248,7 +248,7 @@ export default {
       ).map(completion => {
         const activityDate = this.getMostRecentStudentActivityDate(completion)
         if (!activityDate) return 999
-        return differenceInDays(Date.now(), activityDate)
+        return daysSince(activityDate)
       }).reduce((a, b) => Math.min(a, b), 999)
       return result !== 999 ? result : '😵'
     },

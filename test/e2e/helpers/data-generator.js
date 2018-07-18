@@ -1,4 +1,5 @@
 import randomatic from 'randomatic'
+import moment from 'moment'
 
 export default {
   user () {
@@ -15,12 +16,7 @@ export default {
       estimatedHours: 1,
       content: 'Test Content',
       notes: 'Test Lesson Notes',
-      learningObjectives: [
-        {
-          position: 0,
-          content: 'Learn something'
-        }
-      ],
+      learningObjectives: [],
       prerequisiteLessonIds: []
     }, lesson || {})
   },
@@ -31,8 +27,8 @@ export default {
       title: 'Test Course',
       credits: 2,
       syllabus: 'Test Syllabus',
-      startDate: new Date('Mon Dec 31 2007 23:59:59 GMT-0500 (EST)').getTime(),
-      endDate: new Date('Mon Dec 31 2087 23:59:59 GMT-0500 (EST)').getTime(),
+      startDate: moment('2007-12-31', 'YYYY-MM-DD').startOf('day').valueOf(),
+      endDate: moment('2087-12-31', 'YYYY-MM-DD').endOf('day').valueOf(),
       notes: 'Test Course Notes',
       instructorIds: [],
       lessonIds: [],

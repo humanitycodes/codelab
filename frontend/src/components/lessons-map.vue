@@ -183,7 +183,7 @@ export default {
         // so that more difficult to place nodes are given priority
         sortBy(
           this.getPostrequisiteLessons(lesson),
-          postreq => -1 * this.getImmediatePrereqsCount(postreq)
+          [postreq => -1 * this.getImmediatePrereqsCount(postreq)]
         ).forEach(postreq => {
           layout.setEdge(lessonId, postreq.lessonId)
         })

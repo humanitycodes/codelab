@@ -37,7 +37,6 @@ export default {
       ) || (
         this.course.title &&
         this.course.credits && this.course.credits > 0 &&
-        this.course.syllabus &&
         this.course.startDate &&
         this.course.endDate &&
         this.course.startDate < this.course.endDate &&

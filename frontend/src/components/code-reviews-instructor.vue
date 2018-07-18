@@ -155,9 +155,8 @@ import courseProjectCompletionRepoName from '@helpers/computed/course-project-co
 import courseProjectCompletionHostedUrl from '@helpers/computed/course-project-completion-hosted-url'
 import userById from '@helpers/finders/user-by-id'
 import orderBy from 'lodash/orderBy'
-import differenceInDays from 'date-fns/difference_in_days'
-import formatDate from 'date-fns/format'
-import mostRecentDate from 'date-fns/max'
+import moment from 'moment'
+import daysSince from '@helpers/computed/days-since'
 import updateProjectCompletionInstructor from '@api/project-completions/update-project-completion-instructor'
 
 export default {
@@ -240,22 +239,20 @@ export default {
       return instructor.fullName.replace(/[^A-Z]/g, '')
     },
     getProjectCompletionAgeInDays (codeReview) {
-      return 1 + differenceInDays(
-        Date.now(),
-        codeReview.projectCompletion.firstSubmittedAt
-      )
+      return 1 + daysSince(codeReview.projectCompletion.firstSubmittedAt)
     },
     getProjectCompletionLastUpdatedDate (codeReview) {
-      return mostRecentDate(
+      return moment.max([
         codeReview.projectCompletion.approvedAt || 0,
         codeReview.projectCompletion.firstSubmittedAt || 0,
         codeReview.projectCompletion.lastCommentedAt || 0,
         codeReview.projectCompletion.repositoryCreatedAt || 0,
         codeReview.projectCompletion.firstCommittedAt || 0
-      )
+      ].map(timestamp => moment(timestamp)))
     },
     getProjectCompletionLastUpdatedDateFormatted (codeReview) {
-      return formatDate(this.getProjectCompletionLastUpdatedDate(codeReview), 'MMM D')
+      const lastUpdated = this.getProjectCompletionLastUpdatedDate(codeReview)
+      return moment(lastUpdated).format('MMM D')
     },
     sortCodeReviews (codeReviews) {
       return orderBy(codeReviews, [
