@@ -1,5 +1,4 @@
 /* eslint-disable import/first */
-
 const pg = require('pg')
 
 // Parse BIGINT fields (IDs) as numbers instead of strings, limiting the max
