@@ -6,13 +6,15 @@ jobs:
     shell: /bin/bash --login
     # CircleCI 2.0 does not support environment variables that refer to each other
     environment:
+      # Sensitive data (like passwords) are set in the CircleCI web interface
       NODE_ENV: testing
       TZ: /usr/share/zoneinfo/America/Detroit
       YARN_VERSION: 1.7.0
-    # Pre-built images list: https://circleci.com/docs/2.0/circleci-images/#nodejs
+    # Pre-built images list: https://circleci.com/docs/2.0/circleci-images/
     docker:
     - image: circleci/node:8.11.3-browsers
       command: /sbin/init
+    - image: circleci/postgres:10.4-alpine-ram
     steps:
     # Setup PATH (can't do in environment section because PATH refers to itself)
     - run:
@@ -27,13 +29,27 @@ jobs:
         - v1-dep-{{ .Branch }}-
         # Default branch if not
         - v1-dep-master-
+    # Get the database ready for testing
+    - run: sudo apt-get update
+    - run: sudo apt-get install postgresql-10
+    - run:
+        name: Create codelab database, users, and tables
+        command: |
+          for sqlfile in `ls -1 ./database/scripts/ddl/*.sql | sort`; do
+            echo Running ${sqlfile}
+            psql -a -f "${sqlfile}"
+            if test $? -ne 0; then
+              echo Error encountered running ${sqlfile}. Aborting...
+              exit 1
+            fi
+          done
     # Ensure yarn and various cached directories are in place
     - run: |
         if [[ ! -e ~/.yarn/bin/yarn || $(yarn --version) != "${YARN_VERSION}" ]]; then
           curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
         fi
-    - run: sudo mkdir -p ~/.cache/yarn frontend/node_modules backend/node_modules firebase/node_modules test/node_modules
-    - run: sudo chmod -R 777 ~/.cache/yarn frontend/node_modules backend/node_modules firebase/node_modules test/node_modules
+    - run: sudo mkdir -p ~/.cache/yarn frontend/node_modules backend/node_modules test/node_modules
+    - run: sudo chmod -R 777 ~/.cache/yarn frontend/node_modules backend/node_modules test/node_modules
     # Install all dependencies (if necessary)
     - run: yarn install --pure-lockfile
     # Save dependency cache
@@ -44,7 +60,6 @@ jobs:
         - ~/.cache/yarn
         - frontend/node_modules
         - backend/node_modules
-        - firebase/node_modules
         - test/node_modules
         - ./node_modules
     # Run unit and end-to-end tests
