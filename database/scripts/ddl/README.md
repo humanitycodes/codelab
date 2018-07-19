@@ -52,6 +52,14 @@ where name = 'data_directory';
 
 ## 3. Run DDL scripts
 
+> ### When starting from scratch
+>
+> Before running the script `20180605-01-db-and-users.sql`,
+> make sure that the `CODELAB_DB_PASSWORD` environment variable is set! This
+> environment variable is used by the DDL script to set the password of the
+> `codelab_app` user as well as by the application when connecting to the
+> database.
+
 Run each DDL script in numerical order using `psql`. For example:
 
 ``` sh
@@ -66,6 +74,29 @@ do so:
 DROP DATABASE IF EXISTS codelab;
 DROP ROLE IF EXISTS codelab_app;
 DROP ROLE IF EXISTS codelab_admin;
+```
+
+Then you can run all of the scripts in order by using the following shell
+script:
+
+``` sh
+for sqlfile in `ls -1 *.sql | sort`; do
+  echo Running ${sqlfile}
+  psql -a -f "${sqlfile}"
+  if test $? -ne 0; then
+    echo Error encountered running ${sqlfile}. Aborting...
+    exit 1
+  fi
+done
+```
+
+To test that you can connect to the new database as the `codelab_app` user
+(which is the user that the application uses), use the following command and
+provide the password from the environment variable `CODELAB_DB_PASSWORD` when
+prompted:
+
+``` sh
+psql -U codelab_app -d codelab
 ```
 
 ## 4. Secure database access
@@ -83,9 +114,9 @@ SHOW hba_file;
 Second, add the following lines to the _front_ of the `pg_hba.conf` file:
 
 ```
-local   all             codelab_app                             password
-host    all             codelab_app     127.0.0.1/32            password
-host    all             codelab_app     ::1/128                 password
+local   all             codelab_app                             md5
+host    all             codelab_app     127.0.0.1/32            md5
+host    all             codelab_app     ::1/128                 md5
 ```
 
 Third, restart the Postgres server. If you use the `pg_ctl` command, then

@@ -1,4 +1,5 @@
-\connect codelab;
+\set ON_ERROR_STOP on
+\connect codelab
 SET ROLE codelab_admin;
 
 -- id_sequence
