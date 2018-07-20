@@ -83,7 +83,7 @@ jobs:
     - store_test_results:
         path: ./frontend/test/unit/coverage/frontend-coverage
     - store_test_results:
-        path: ./dist/e2e-reports
+        path: ./test/dist/e2e-reports
   deploy_staging:
     working_directory: ~/msu.lansing.codes
     docker:
