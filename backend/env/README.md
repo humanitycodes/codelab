@@ -5,22 +5,38 @@ instances of the Code Lab application.
 
 ### `CODELAB_DB_HOST`
 
-The hostname or IP address of the application's database server.
-e.g. `localhost`
+The hostname or IP address of the application's database server. The default
+database host is `localhost`.
+
+See alo `DATABASE_URL`.
+
+### `CODELAB_DB_NAME`
+
+The name of the database that the application will attempt to use after
+successfully connecting. The default database name is `codelab`.
+
+See alo `DATABASE_URL`.
 
 ### `CODELAB_DB_PASSWORD`
 
 The password used to authenticate against the application's database server.
+The default database password is `Jenny*^&%#)(`.
+
+See alo `DATABASE_URL`.
 
 ### `CODELAB_DB_PORT`
 
 The port on which the application's database server allows incoming connections.
-e.g. `5432`
+The default database port is `5432`.
+
+See alo `DATABASE_URL`.
 
 ### `CODELAB_DB_USERNAME`
 
 The usernamed used to authenticate against the application's database server.
-e.g. `codelab_app`
+The default database username is `codelab_app`.
+
+See alo `DATABASE_URL`.
 
 ### `CODELAB_GITHUB_AUTH_CLIENT_SECRET`
 
@@ -57,6 +73,14 @@ never be logged.
 
 A secret key provided by MSU IT Services that is required to successfully
 authenticate an account using MSU's OAuth service.
+
+### `DATABASE_URL`
+
+In hosted environments such as Heroku, the `DATABASE_URL` environment variable
+may automatically be provided with all of the information needed to connect to
+the database. If `DATABASE_URL` is set, the application will ignore all other
+`CODELAB_DB_*` environment variables and instead use `DATABASE_URL` as the sole
+means for connecting to the database in that environment.
 
 ### `PORT`
 
