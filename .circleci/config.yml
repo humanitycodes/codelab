@@ -43,10 +43,10 @@ jobs:
     - run:
         name: Create codelab database, user, and tables
         command: |
-          psql -a -f ./database/scripts/ddl/00-db-and-users.ddl
+          psql -a -h localhost -p 5432 -U postgres -f ./database/scripts/ddl/00-db-and-users.ddl
           for sqlfile in `ls -1 ./database/scripts/ddl/*.sql | sort`; do
             echo Running ${sqlfile}
-            psql -a -w -U codelab_app -d codelab -f "${sqlfile}"
+            psql -a -h localhost -p 5432 -w -U codelab_app -d codelab -f "${sqlfile}"
             if test $? -ne 0; then
               echo Error encountered running ${sqlfile}. Aborting...
               exit 1
