@@ -13,9 +13,9 @@ export default (results, done) => {
     reportsDirectory: path.join(__dirname, 'reports')
   }).fn
 
-  reportHtml(results, () => {
-    sequelize.close()
-    .then(done)
-    .catch(done)
+  reportHtml(results, error => {
+    return sequelize.close()
+      .then(() => done(error))
+      .catch(() => done(error))
   })
 }

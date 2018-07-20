@@ -48,7 +48,7 @@ module.exports = {
       // Navigate to the course
       .waitForElementVisible(`a[href^='/courses/${course.courseKey}']:first-child`, waitTime)
       .click(`a[href^='/courses/${course.courseKey}']`)
-      .waitForElementVisible('.lesson-graph-container', waitTime)
+      .waitForElementVisible('.course-syllabus-container', waitTime)
 
       // Make sure syllabus and lessons are visible
       .assert.containsText('.course-syllabus-container .rendered-content', course.syllabus)
