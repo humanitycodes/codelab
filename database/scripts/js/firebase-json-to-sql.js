@@ -11,7 +11,13 @@ const { users, roles, lessons, courses } = data
 
 // Returns a string value wrapped with apostrophes if non-null,
 // or the value 'null' otherwise
-const quote = value => value ? `'${value}'` : 'null'
+const quote = value => {
+  if (value && value.length) {
+    const escaped = value.replace(/'/g, `''`)
+    return `'${escaped}'`
+  }
+  return 'null'
+}
 
 // Returns a numeric value if non-null, or the value 'null' otherwise
 const num = value => isNaN(value) ? 'null' : value
@@ -37,7 +43,7 @@ console.log('delete from app_user;')
 console.log()
 
 //------------------------------------------------------------------------------
-// USERS
+// APP_USER
 //------------------------------------------------------------------------------
 
 const userKeys = Object.keys(users)
@@ -79,6 +85,75 @@ userKeys.forEach(userKey => {
       quote(github.tokenType),
       num(github.userId),
       quote(user.msuUid),
+      0
+    ].join(`, `),
+    `);`
+  )
+  console.log()
+})
+
+//------------------------------------------------------------------------------
+// LESSON
+//------------------------------------------------------------------------------
+
+const lessonKeys = Object.keys(lessons.meta)
+
+console.log(`-- Converting ${lessonKeys.length} lessons`)
+console.log()
+
+lessonKeys.forEach(lessonKey => {
+  const smallStudentFields = lessons.fieldGroups.small.student[lessonKey]
+  const largeStudentFields = lessons.fieldGroups.large.student[lessonKey]
+  const largeInstructorFields = lessons.fieldGroups.large.instructor[lessonKey]
+  const projectKey =
+    largeStudentFields &&
+    largeStudentFields.projects &&
+    Object.keys(largeStudentFields.projects)[0]
+
+  console.log(
+    `insert into lesson (`,
+    [
+      `lesson_key`,
+      `title`,
+      `estimated_hours`,
+      `content`,
+      `notes`,
+      `project_key`,
+      `project_title`,
+      `project_hosting`,
+      `version`
+    ].join(`, `),
+    `)`
+  )
+  console.log(
+    `values (`,
+    [
+      quote(lessonKey),
+      quote(
+        smallStudentFields &&
+        smallStudentFields.title
+      ),
+      num(
+        smallStudentFields &&
+        smallStudentFields.estimatedHours
+      ),
+      quote(
+        largeStudentFields &&
+        largeStudentFields.content
+      ),
+      quote(
+        largeInstructorFields &&
+        largeInstructorFields.notes
+      ),
+      quote(projectKey),
+      quote(
+        projectKey &&
+        largeStudentFields.projects[projectKey].title
+      ),
+      quote(
+        projectKey &&
+        largeStudentFields.projects[projectKey].hosting
+      ),
       0
     ].join(`, `),
     `);`
