@@ -142,7 +142,6 @@ const start = async () => {
         console.log('Disconnected from database')
       })
       console.log('Server stopped')
-      process.exit(0)
     }
   }
 

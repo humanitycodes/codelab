@@ -14,12 +14,6 @@ app.then(server => {
     opts = opts.concat(['--env', 'chrome'])
   }
 
-  // Spawn custom Nightwatch runner that lets us do cleanup after all tests
-  const spawn = require('cross-spawn')
-  const runner = spawn(
-    './node_modules/.bin/nightwatch', opts, { stdio: 'inherit' }
-  )
-
   const stopServer = async () => {
     if (server) {
       console.log('Testing complete. Stopping server...')
@@ -27,13 +21,27 @@ app.then(server => {
     }
   }
 
-  runner.on('exit', async code => {
-    await stopServer()
-    process.exit(code)
-  })
+  return new Promise((resolve, reject) => {
+    const spawn = require('cross-spawn')
+    const runner = spawn(
+      './node_modules/.bin/nightwatch', opts, { stdio: 'inherit' }
+    )
 
-  runner.on('error', async err => {
-    await stopServer()
-    throw err
+    runner.on('exit', async code => {
+      console.log('Exiting with code', code)
+      await stopServer()
+      resolve(code)
+    })
+
+    runner.on('error', async error => {
+      console.log('Exiting with error', error)
+      await stopServer()
+      reject(error)
+    })
   })
+})
+.then(process.exit)
+.catch(error => {
+  console.error('Test runner ending unexpectedly. Reason:', error)
+  process.exit(1)
 })
