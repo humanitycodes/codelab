@@ -27,7 +27,7 @@ module.exports = {
         enabled: true,
         on_failure: true,
         on_error: true,
-        path: './screenshots'
+        path: 'e2e/reports/screenshots'
       },
       globals: {
         reporter: reportAndCleanup
