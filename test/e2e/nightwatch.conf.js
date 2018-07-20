@@ -23,6 +23,12 @@ module.exports = {
       selenium_port: 4444,
       selenium_host: 'localhost',
       silent: true,
+      screenshots: {
+        enabled: true,
+        on_failure: true,
+        on_error: true,
+        path: './screenshots'
+      },
       globals: {
         reporter: reportAndCleanup
       },
