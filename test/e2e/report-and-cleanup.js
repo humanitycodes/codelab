@@ -10,7 +10,8 @@ import sequelize from '../../backend/dist/db/sequelize'
 export default (results, done) => {
   const reportHtml = new HtmlReporter({
     openBrowser: false,
-    reportsDirectory: path.join(__dirname, 'reports')
+    reportsDirectory: path.join(__dirname, 'e2e-reports'),
+    relativeScreenshots: true
   }).fn
 
   reportHtml(results, error => {

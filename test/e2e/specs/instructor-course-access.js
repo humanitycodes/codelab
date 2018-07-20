@@ -54,7 +54,7 @@ export default {
       .signInUser(instructorRecord.get())
 
       // Navigate to lesson list
-      .assert.visible(`.main-nav a[href$='/lessons']`)
+      .assert.visible(`.main-navs a[href$='/lessons']`)
       .click(`.main-nav a[href$='/lessons']`)
       .waitForElementVisible(`a[href$='/lessons/new']`, waitTime)
 

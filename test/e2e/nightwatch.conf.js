@@ -3,7 +3,7 @@ import backendServerPort from '../../backend/env/port'
 
 module.exports = {
   src_folders: ['dist/specs'],
-  output_folder: 'dist/reports',
+  output_folder: 'dist/e2e-reports',
   custom_assertions_path: ['dist/custom-assertions'],
   custom_commands_path: 'dist/custom-commands',
 
@@ -27,7 +27,7 @@ module.exports = {
         enabled: true,
         on_failure: true,
         on_error: true,
-        path: 'e2e/reports/screenshots'
+        path: 'dist/e2e-reports/screenshots'
       },
       globals: {
         reporter: reportAndCleanup
