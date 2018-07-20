@@ -82,7 +82,7 @@ module.exports = function (config) {
       noInfo: true
     },
     coverageReporter: {
-      dir: './coverage',
+      dir: './coverage/frontend-coverage',
       reporters: [
         { type: 'lcov', subdir: '.' },
         { type: 'text-summary' }
