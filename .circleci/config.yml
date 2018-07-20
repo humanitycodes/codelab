@@ -76,10 +76,8 @@ jobs:
     # Save test artifacts
     - store_artifacts:
         path: ./frontend/test/unit/coverage/frontend-coverage
-        destination: frontend-coverage
     - store_artifacts:
-        path: ./dist/e2e-reports
-        destination: e2e-reports
+        path: ./test/dist/e2e-reports
     - store_test_results:
         path: ./frontend/test/unit/coverage/frontend-coverage
     - store_test_results:
