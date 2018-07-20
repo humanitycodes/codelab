@@ -75,10 +75,10 @@ jobs:
     - run: yarn test-all
     # Save test artifacts
     - store_artifacts:
-        path: frontend/test/unit/coverage/lcov-report
+        path: ./frontend/test/unit/coverage/lcov-report
         destination: frontend-tests
     - store_artifacts:
-        path: test/e2e/reports
+        path: ./test/e2e/reports
         destination: e2e-tests
   deploy_staging:
     working_directory: ~/msu.lansing.codes
