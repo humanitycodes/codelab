@@ -63,7 +63,14 @@ where name = 'data_directory';
 Run each DDL script in numerical order using `psql`. For example:
 
 ``` sh
-psql -f 20180605-01-db-and-users.sql
+psql -f 20180605-02-initial-tables.sql
+```
+
+Or for a Heroku Postgres database (making sure to check the environment first):
+
+``` sh
+heroku addons
+cat 20180605-02-initial-tables.sql | heroku pg:psql
 ```
 
 If you need to start a database completely from scratch, losing all data in the
@@ -73,16 +80,36 @@ do so:
 ``` sql
 DROP DATABASE IF EXISTS codelab;
 DROP ROLE IF EXISTS codelab_app;
-DROP ROLE IF EXISTS codelab_admin;
+```
+
+Or if you really goofed and need to drop individual objects:
+
+``` sql
+DROP TABLE project_completion;
+DROP TABLE course_student_pending;
+DROP TABLE course_student;
+DROP TABLE course_instructor;
+DROP TABLE course_lesson;
+DROP TABLE course;
+DROP TABLE lesson_prerequisite;
+DROP TABLE lesson_project_criterion;
+DROP TABLE lesson_learning_objective;
+DROP TABLE lesson;
+DROP TABLE app_user;
+DROP SEQUENCE id_sequence;
+DROP DATABASE IF EXISTS codelab;
+DROP ROLE IF EXISTS codelab_app;
 ```
 
 Then you can run all of the scripts in order by using the following shell
 script:
 
 ``` sh
+psql -a -f 00-db-and-users.ddl
+
 for sqlfile in `ls -1 *.sql | sort`; do
   echo Running ${sqlfile}
-  psql -a -f "${sqlfile}"
+  psql -a -w -U codelab_app -d codelab -f "${sqlfile}"
   if test $? -ne 0; then
     echo Error encountered running ${sqlfile}. Aborting...
     exit 1
@@ -114,9 +141,9 @@ SHOW hba_file;
 Second, add the following lines to the _front_ of the `pg_hba.conf` file:
 
 ```
-local   all             codelab_app                             md5
-host    all             codelab_app     127.0.0.1/32            md5
-host    all             codelab_app     ::1/128                 md5
+local   all             codelab_app                             trust
+host    all             codelab_app     127.0.0.1/32            trust
+host    all             codelab_app     ::1/128                 trust
 ```
 
 Third, restart the Postgres server. If you use the `pg_ctl` command, then
@@ -129,7 +156,5 @@ pg_ctl restart -D <DATAFILE>
 Where `<DATAFILE>` can be found by running the following SQL:
 
 ``` sql
-select setting
-from pg_settings
-where name = 'data_directory';
+SELECT setting FROM pg_settings WHERE name = 'data_directory';
 ```

@@ -31,13 +31,14 @@ jobs:
         - v1-dep-master-
     # Get the database ready for testing
     - run: sudo apt-get update
-    - run: sudo apt-get install postgresql-client-10
+    - run: sudo apt-get install postgresql-client
     - run:
-        name: Create codelab database, users, and tables
+        name: Create codelab database, user, and tables
         command: |
+          psql -a -f ./database/scripts/ddl/00-db-and-users.ddl
           for sqlfile in `ls -1 ./database/scripts/ddl/*.sql | sort`; do
             echo Running ${sqlfile}
-            psql -a -f "${sqlfile}"
+            psql -a -w -U codelab_app -d codelab -f "${sqlfile}"
             if test $? -ne 0; then
               echo Error encountered running ${sqlfile}. Aborting...
               exit 1

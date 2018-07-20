@@ -16,29 +16,24 @@ pg.types.setTypeParser(1114, dateString => {
 })
 
 import Sequelize from 'sequelize'
-import CODELAB_DB_HOST from '../../env/db-host'
-import CODELAB_DB_PORT from '../../env/db-port'
-import CODELAB_DB_USERNAME from '../../env/db-username'
-import CODELAB_DB_PASSWORD from '../../env/db-password'
+import DATABASE_URL from '../../env/database-url'
 import CODELAB_LOG_SQL_STATEMENTS from '../../env/log-sql-statements'
 
-export default new Sequelize({
-  host: CODELAB_DB_HOST,
-  port: CODELAB_DB_PORT,
-  username: CODELAB_DB_USERNAME,
-  password: CODELAB_DB_PASSWORD,
-  database: 'codelab',
-  dialect: 'postgres',
-  timezone: 'UTC',
-  logging: CODELAB_LOG_SQL_STATEMENTS ? console.log : false,
-  pool: {
-    max: 20
-  },
-  operatorsAliases: false,
-  define: {
-    freezeTableName: true,
-    timestamps: false,
-    underscored: true,
-    version: true
+export default new Sequelize(
+  DATABASE_URL,
+  {
+    dialect: 'postgres',
+    timezone: 'UTC',
+    logging: CODELAB_LOG_SQL_STATEMENTS ? console.log : false,
+    pool: {
+      max: 20
+    },
+    operatorsAliases: false,
+    define: {
+      freezeTableName: true,
+      timestamps: false,
+      underscored: true,
+      version: true
+    }
   }
-})
+)
