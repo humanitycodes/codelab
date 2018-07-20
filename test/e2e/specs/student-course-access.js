@@ -42,20 +42,20 @@ module.exports = {
       .signInUser(enrolledStudentRecord.get())
 
       // Navigate to course list
-      .assert.visible(`.main-nav a[href^='/courses']`)
-      .click(`.main-nav a[href^='/courses']`)
+      .assert.visible(`.main-nav a[href$='/courses']`)
+      .click(`.main-nav a[href$='/courses']`)
 
       // Navigate to the course
-      .waitForElementVisible(`a[href^='/courses/${course.courseKey}']:first-child`, waitTime)
-      .click(`a[href^='/courses/${course.courseKey}']`)
+      .waitForElementVisible(`a[href$='/courses/${course.courseKey}']:first-child`, waitTime)
+      .click(`a[href$='/courses/${course.courseKey}']`)
       .waitForElementVisible('.course-syllabus-container .rendered-content', waitTime)
 
       // Make sure syllabus and lessons are visible
-      .assert.containsText('.course-syllabus-container .rendered-content span', course.syllabus)
-      .assert.elementPresent(`a[href^='/courses/${course.courseKey}/lessons/${lesson.lessonKey}']`)
+      .assert.containsText('.course-syllabus-container .rendered-content', course.syllabus)
+      .assert.elementPresent(`a[href$='/courses/${course.courseKey}/lessons/${lesson.lessonKey}']`)
 
       // Navigate to the lesson
-      .click(`a[href^='/courses/${course.courseKey}/lessons/${lesson.lessonKey}']`)
+      .click(`a[href$='/courses/${course.courseKey}/lessons/${lesson.lessonKey}']`)
       .waitForElementVisible('.course-lesson-content', waitTime)
 
       // Make sure the lesson content is visible
@@ -72,12 +72,12 @@ module.exports = {
       .signInUser(hackerStudentRecord.get())
 
       // Navigate to course list
-      .assert.visible(`.main-nav a[href^='/courses']`)
-      .click(`.main-nav a[href^='/courses']`)
+      .assert.visible(`.main-nav a[href$='/courses']`)
+      .click(`.main-nav a[href$='/courses']`)
 
       // No courses should be listed
       .waitForElementVisible('h1', waitTime)
-      .assert.elementNotPresent(`a[href^='/courses/${course.courseKey}']`)
+      .assert.elementNotPresent(`a[href$='/courses/${course.courseKey}']`)
 
       // Try to navigate to course anyway
       .url(`${browser.launchUrl}/courses/${course.courseKey}`)
@@ -96,13 +96,13 @@ module.exports = {
       .signInUser(enrolledStudentRecord.get())
 
       // Navigate to course list
-      .waitForElementVisible(`.main-nav a[href^='/courses']`, waitTime)
-      .click(`.main-nav a[href^='/courses']`)
-      .waitForElementVisible(`a[href^='/courses/${course.courseKey}']:first-child`, waitTime)
+      .waitForElementVisible(`.main-nav a[href$='/courses']`, waitTime)
+      .click(`.main-nav a[href$='/courses']`)
+      .waitForElementVisible(`a[href$='/courses/${course.courseKey}']:first-child`, waitTime)
 
       // New and Edit links should not be present
-      .assert.elementNotPresent(`a[href^='/courses/new']`)
-      .assert.elementNotPresent(`a[href^='/courses/${course.courseKey}/edit']`)
+      .assert.elementNotPresent(`a[href$='/courses/new']`)
+      .assert.elementNotPresent(`a[href$='/courses/${course.courseKey}/edit']`)
 
       // Try to create a new course via URL
       .url(`${browser.launchUrl}/courses/new`)

@@ -54,12 +54,12 @@ export default {
       .signInUser(instructorRecord.get())
 
       // Navigate to lesson list
-      .assert.visible(`.main-nav a[href^='/lessons']`)
-      .click(`.main-nav a[href^='/lessons']`)
-      .waitForElementVisible(`a[href^='/lessons/new']`, waitTime)
+      .assert.visible(`.main-nav a[href$='/lessons']`)
+      .click(`.main-nav a[href$='/lessons']`)
+      .waitForElementVisible(`a[href$='/lessons/new']`, waitTime)
 
       // Create new lesson
-      .click(`a[href^='/lessons/new']`)
+      .click(`a[href$='/lessons/new']`)
       .waitForElementVisible('input[name=lesson-key]', waitTime)
       .setValue('select[name=lesson-category]', lessonKeyPrefix)
       .setValue('input[name=lesson-key]', lessonKeySuffix)
@@ -85,11 +85,11 @@ export default {
       .click('button[name=done-button]:first-child')
 
       // Make sure the lesson is in the master list
-      .waitForElementVisible(`a[href^='/lessons/new']`, waitTime)
-      .assert.visible(`a[href^='/lessons/${lesson.lessonKey}/edit']`)
+      .waitForElementVisible(`a[href$='/lessons/new']`, waitTime)
+      .assert.visible(`a[href$='/lessons/${lesson.lessonKey}/edit']`)
 
       // View the recently edited lesson
-      .click(`a[href^='/lessons/${lesson.lessonKey}/edit']`)
+      .click(`a[href$='/lessons/${lesson.lessonKey}/edit']`)
       .waitForElementVisible('input[name=lesson-title]', waitTime)
       .assert.value(`input[name=lesson-title]`, lesson.title)
       .assert.value(`input[name=lesson-estimated-hours]`, lesson.estimatedHours.toString())
@@ -106,12 +106,12 @@ export default {
       .signInUser(instructorRecord.get())
 
       // Navigate to course list
-      .assert.visible(`.main-nav a[href^='/courses']`)
-      .click(`.main-nav a[href^='/courses']`)
-      .waitForElementVisible(`a[href^='/courses/new']`, waitTime)
+      .assert.visible(`.main-nav a[href$='/courses']`)
+      .click(`.main-nav a[href$='/courses']`)
+      .waitForElementVisible(`a[href$='/courses/new']`, waitTime)
 
       // Create new course
-      .click(`a[href^='/courses/new']`)
+      .click(`a[href$='/courses/new']`)
       .waitForElementVisible('input[name=course-number]', waitTime)
       .setValue('select[name=course-prefix]', courseKeyDep)
       .setValue('input[name=course-number]', courseKeyNum)
@@ -148,11 +148,11 @@ export default {
       .click('button[name=done-button]:first-child')
 
       // Make sure the course is in the master list
-      .waitForElementVisible(`a[href^='/courses/new']`, waitTime)
-      .assert.visible(`a[href^='/courses/${course.courseKey}/edit']`)
+      .waitForElementVisible(`a[href$='/courses/new']`, waitTime)
+      .assert.visible(`a[href$='/courses/${course.courseKey}/edit']`)
 
       // View the recently edited course
-      .click(`a[href^='/courses/${course.courseKey}/edit']`)
+      .click(`a[href$='/courses/${course.courseKey}/edit']`)
       .waitForElementVisible('input[name=course-title]', waitTime)
       .assert.value(`input[name=course-title]`, course.title)
       .assert.value(`input[name=course-credits]`, course.credits.toString())
