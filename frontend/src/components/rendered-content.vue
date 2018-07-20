@@ -11,9 +11,9 @@
         class="rendered-content"
       >
         <span
-          v-for="content in pages[validatedCurrentPage - 1].contentPartitions"
+          v-for="(content, index) in currentPageContentPartitions"
           v-html="content"
-          :key="content"
+          :key="index"
         />
       </div>
       <PageNavigation
@@ -134,6 +134,9 @@ export default {
   computed: {
     contentHtml () {
       return convertRichContentToHtml(this.content)
+    },
+    currentPageContentPartitions () {
+      return this.pages[this.validatedCurrentPage - 1].contentPartitions
     },
     pages () {
       return chunk(compact(this.contentHtml.split(/<h2>(.+?)<\/h2>/)), 2).map(page => {

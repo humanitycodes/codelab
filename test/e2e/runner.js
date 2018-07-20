@@ -28,13 +28,11 @@ app.then(server => {
     )
 
     runner.on('exit', async code => {
-      console.log('Exiting with code', code)
       await stopServer()
       resolve(code)
     })
 
     runner.on('error', async error => {
-      console.log('Exiting with error', error)
       await stopServer()
       reject(error)
     })
