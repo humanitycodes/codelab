@@ -14,7 +14,9 @@ export const setAuthToken = token => {
 
 // If the server issues a new JWT via the 'x-token-refresh' header,
 // save and re-configure the app to use the new token
-export const refreshTokenFromResponse = response => {
+export const refreshTokenFromResponse = result => {
+  // The result may be a response or an error with a response property
+  const response = result.response || result
   if (
     response &&
     response.headers &&

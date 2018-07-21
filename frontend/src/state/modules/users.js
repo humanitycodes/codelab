@@ -53,7 +53,7 @@ export default {
       // Look in response headers for updated user/auth information
       if (!syncCache.refreshTokenInterceptor) {
         syncCache.refreshTokenInterceptor = axios.interceptors.response.use(
-          refreshTokenFromResponse
+          refreshTokenFromResponse, refreshTokenFromResponse
         )
       }
 
