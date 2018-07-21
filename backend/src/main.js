@@ -135,19 +135,21 @@ const start = async () => {
   }
 
   // Cleanup before shutting down
-  const cleanup = event => {
+  const cleanup = ({ exit }) => {
     return async () => {
-      console.log(`Server received ${event} event. Cleaning up...`)
-      await sequelize.close().then(() => {
-        console.log('Disconnected from database')
-      })
-      console.log('Server stopped')
+      console.log('Shutting down...')
+      await sequelize.close()
+      console.log('Disconnected from database')
+      if (exit) {
+        console.log('Exiting...')
+        process.exit(0)
+      }
     }
   }
 
-  process.on('error', cleanup('error'))
-  process.on('SIGINT', cleanup('SIGINT'))
-  server.events.on('stop', cleanup('stop'))
+  process.on('error', cleanup({ exit: true }))
+  process.on('SIGINT', cleanup({ exit: true }))
+  server.events.on('stop', cleanup({ exit: false }))
 
   // Start serving
   try {
