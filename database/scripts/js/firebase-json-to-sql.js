@@ -205,3 +205,53 @@ lessonKeys.forEach(lessonKey => {
     })
   }
 })
+
+//------------------------------------------------------------------------------
+// LESSON_PROJECT_CRITERION
+//------------------------------------------------------------------------------
+
+console.log(`-- Converting lesson project criterion`)
+console.log()
+
+lessonKeys.forEach(lessonKey => {
+  const largeStudentFields = lessons.fieldGroups.large.student[lessonKey]
+  const projectKey =
+    largeStudentFields &&
+    largeStudentFields.projects &&
+    Object.keys(largeStudentFields.projects)[0]
+
+  if (
+    projectKey &&
+    largeStudentFields.projects[projectKey].criteria
+  ) {
+    const criteria = largeStudentFields.projects[projectKey].criteria
+    const criterionKeys = Object.keys(criteria)
+
+    criterionKeys.forEach(criterionKey => {
+      const criterion = criteria[criterionKey]
+      console.log(
+        `insert into lesson_project_criterion (`,
+        [
+          `lesson_id`,
+          `position`,
+          `content`,
+          `version`
+        ].join(`, `),
+        `)`
+      )
+      console.log(
+        `select`,
+        [
+          `lesson_id`,
+          num(criterion.position),
+          quote(criterion.content),
+          0
+        ].join(`, `)
+      )
+      console.log(
+        `from lesson where lesson_key = '${lessonKey}';`
+      )
+      console.log()
+    })
+  }
+})
