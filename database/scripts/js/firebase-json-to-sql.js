@@ -37,7 +37,7 @@ console.log('delete from course_lesson;')
 console.log('delete from course;')
 console.log('delete from lesson_prerequisite;')
 console.log('delete from lesson_project_criterion;')
-console.log('delete from lesson_learning_objective;')
+console.log('delete from LESSON_LEARNING_OBJECTIVE;')
 console.log('delete from lesson;')
 console.log('delete from app_user;')
 console.log()
@@ -159,4 +159,49 @@ lessonKeys.forEach(lessonKey => {
     `);`
   )
   console.log()
+})
+
+//------------------------------------------------------------------------------
+// LESSON_LEARNING_OBJECTIVE
+//------------------------------------------------------------------------------
+
+console.log(`-- Converting lesson learning objectives`)
+console.log()
+
+lessonKeys.forEach(lessonKey => {
+  const smallStudentFields = lessons.fieldGroups.small.student[lessonKey]
+
+  if (
+    smallStudentFields &&
+    smallStudentFields.learningObjectives
+  ) {
+    const objectiveKeys = Object.keys(smallStudentFields.learningObjectives)
+
+    objectiveKeys.forEach(objectiveKey => {
+      const objective = smallStudentFields.learningObjectives[objectiveKey]
+      console.log(
+        `insert into lesson_learning_objective (`,
+        [
+          `lesson_id`,
+          `position`,
+          `content`,
+          `version`
+        ].join(`, `),
+        `)`
+      )
+      console.log(
+        `select`,
+        [
+          `lesson_id`,
+          num(objective.position),
+          quote(objective.content),
+          0
+        ].join(`, `)
+      )
+      console.log(
+        `from lesson where lesson_key = '${lessonKey}';`
+      )
+      console.log()
+    })
+  }
 })
