@@ -475,3 +475,43 @@ courseKeys.forEach(courseKey => {
     })
   }
 })
+
+//------------------------------------------------------------------------------
+// COURSE_STUDENT_PENDING
+//------------------------------------------------------------------------------
+
+console.log(`-- Converting pending course students`)
+console.log()
+
+courseKeys.forEach(courseKey => {
+  const preenrollments =
+    courses.fieldGroups.small.instructor &&
+    courses.fieldGroups.small.instructor[courseKey] &&
+    courses.fieldGroups.small.instructor[courseKey].preenrollments
+
+  if (preenrollments) {
+    Object.keys(preenrollments).forEach(encodedEmail => {
+      console.log(
+        `insert into course_student_pending (`,
+        [
+          `course_id`,
+          `email`,
+          `version`
+        ].join(`, `),
+        `)`
+      )
+      console.log(
+        `select`,
+        [
+          `course_id`,
+          quote(
+            decodeURIComponent(encodedEmail)
+          ),
+          0
+        ].join(`, `)
+      )
+      console.log(`from course where course_key = '${courseKey}';`)
+      console.log()
+    })
+  }
+})
