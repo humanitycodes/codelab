@@ -397,3 +397,42 @@ courseKeys.forEach(courseKey => {
     })
   }
 })
+
+//------------------------------------------------------------------------------
+// COURSE_INSTRUCTOR
+//------------------------------------------------------------------------------
+
+console.log(`-- Converting course instructors`)
+console.log()
+
+courseKeys.forEach(courseKey => {
+  const courseInstructors =
+    courses.relationships[courseKey] &&
+    courses.relationships[courseKey].instructors
+
+  if (courseInstructors) {
+    Object.keys(courseInstructors).forEach(userKey => {
+      console.log(
+        `insert into course_instructor (`,
+        [
+          `course_id`,
+          `user_id`,
+          `version`
+        ].join(`, `),
+        `)`
+      )
+      console.log(
+        `select`,
+        [
+          `c.course_id`,
+          `u.user_id`,
+          0
+        ].join(`, `)
+      )
+      console.log(`from course c, app_user u`)
+      console.log(`where c.course_key = '${courseKey}'`)
+      console.log(`and u.email = '${users[userKey].email}';`)
+      console.log()
+    })
+  }
+})
