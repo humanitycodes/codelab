@@ -358,3 +358,42 @@ courseKeys.forEach(courseKey => {
   )
   console.log()
 })
+
+//------------------------------------------------------------------------------
+// COURSE_LESSON
+//------------------------------------------------------------------------------
+
+console.log(`-- Converting course lessons`)
+console.log()
+
+courseKeys.forEach(courseKey => {
+  const courseLessons =
+    courses.relationships[courseKey] &&
+    courses.relationships[courseKey].lessons
+
+  if (courseLessons) {
+    Object.keys(courseLessons).forEach(lessonKey => {
+      console.log(
+        `insert into course_lesson (`,
+        [
+          `course_id`,
+          `lesson_id`,
+          `version`
+        ].join(`, `),
+        `)`
+      )
+      console.log(
+        `select`,
+        [
+          `c.course_id`,
+          `l.lesson_id`,
+          0
+        ].join(`, `)
+      )
+      console.log(`from course c, lesson l`)
+      console.log(`where c.course_key = '${courseKey}'`)
+      console.log(`and l.lesson_key = '${lessonKey}';`)
+      console.log()
+    })
+  }
+})
