@@ -22,7 +22,7 @@ jobs:
         command: echo -e "export PATH=${PATH}:~/msu.lansing.codes/.yarn/bin:~/msu.lansing.codes/node_modules/.bin" >> $BASH_ENV
     # The following `checkout` command checks out your code to your working directory
     - checkout
-    # Restore the dependency caches
+    # Restore dependency caches
     - restore_cache:
         keys:
         - yarn-v1-{{ .Branch }}-{{ .Revision }}
