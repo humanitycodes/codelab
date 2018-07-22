@@ -210,7 +210,7 @@ lessonKeys.forEach(lessonKey => {
 // LESSON_PROJECT_CRITERION
 //------------------------------------------------------------------------------
 
-console.log(`-- Converting lesson project criterion`)
+console.log(`-- Converting lesson project criteria`)
 console.log()
 
 lessonKeys.forEach(lessonKey => {
@@ -251,6 +251,46 @@ lessonKeys.forEach(lessonKey => {
       console.log(
         `from lesson where lesson_key = '${lessonKey}';`
       )
+      console.log()
+    })
+  }
+})
+
+//------------------------------------------------------------------------------
+// LESSON_PREREQUISITE
+//------------------------------------------------------------------------------
+
+console.log(`-- Converting lesson prerequisites`)
+console.log()
+
+lessonKeys.forEach(lessonKey => {
+  const relationships = lessons.relationships[lessonKey]
+
+  if (
+    relationships &&
+    relationships.prereqs
+  ) {
+    Object.keys(relationships.prereqs).forEach(prereqLessonKey => {
+      console.log(
+        `insert into lesson_prerequisite (`,
+        [
+          `lesson_id`,
+          `prerequisite_lesson_id`,
+          `version`
+        ].join(`, `),
+        `)`
+      )
+      console.log(
+        `select`,
+        [
+          `l1.lesson_id`,
+          `l2.lesson_id`,
+          0
+        ].join(`, `)
+      )
+      console.log(`from lesson l1, lesson l2`)
+      console.log(`where l1.lesson_key = '${lessonKey}'`)
+      console.log(`and l2.lesson_key = '${prereqLessonKey}';`)
       console.log()
     })
   }
