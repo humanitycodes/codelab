@@ -22,13 +22,37 @@ jobs:
         command: echo -e "export PATH=${PATH}:~/msu.lansing.codes/.yarn/bin:~/msu.lansing.codes/node_modules/.bin" >> $BASH_ENV
     # The following `checkout` command checks out your code to your working directory
     - checkout
-    # Restore the dependency cache
+    # Restore the dependency caches
     - restore_cache:
         keys:
-        # This branch if available
-        - v1-dep-{{ .Branch }}-
-        # Default branch if not
-        - v1-dep-master-
+        - yarn-v1-{{ .Branch }}-{{ .Revision }}
+        - yarn-v1-{{ .Branch }}-
+        - yarn-v1-master-
+        - yarn-v1-
+    - restore_cache:
+        keys:
+        - frontend-deps-v1-{{ .Branch }}-{{ checksum "frontend/yarn.lock" }}
+        - frontend-deps-v1-{{ .Branch }}-
+        - frontend-deps-v1-master-
+        - frontend-deps-v1-
+    - restore_cache:
+        keys:
+        - backend-deps-v1-{{ .Branch }}-{{ checksum "backend/yarn.lock" }}
+        - backend-deps-v1-{{ .Branch }}-
+        - backend-deps-v1-master-
+        - backend-deps-v1-
+    - restore_cache:
+        keys:
+        - test-deps-v1-{{ .Branch }}-{{ checksum "test/yarn.lock" }}
+        - test-deps-v1-{{ .Branch }}-
+        - test-deps-v1-master-
+        - test-deps-v1-
+    - restore_cache:
+        keys:
+        - base-deps-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+        - base-deps-v1-{{ .Branch }}-
+        - base-deps-v1-master-
+        - base-deps-v1-
     # Get the database ready for testing
     - run:
         name: install dockerize
@@ -63,13 +87,25 @@ jobs:
     - run: yarn install --pure-lockfile
     # Save dependency cache
     - save_cache:
-        key: v1-dep-{{ .Branch }}-{{ epoch }}
+        key: yarn-v1-{{ .Branch }}-{{ .Revision }}
         paths:
         - ~/.yarn
         - ~/.cache/yarn
+    - save_cache:
+        key: frontend-deps-v1-{{ .Branch }}-{{ checksum "frontend/yarn.lock" }}
+        paths:
         - frontend/node_modules
+    - save_cache:
+        key: backend-deps-v1-{{ .Branch }}-{{ checksum "backend/yarn.lock" }}
+        paths:
         - backend/node_modules
+    - save_cache:
+        key: test-deps-v1-{{ .Branch }}-{{ checksum "test/yarn.lock" }}
+        paths:
         - test/node_modules
+    - save_cache:
+        key: base-deps-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+        paths:
         - ./node_modules
     # Run unit and end-to-end tests
     - run: yarn test-all
