@@ -1,5 +1,7 @@
-const structure =
-{
+// This file isn't used anywhere. It's simply a reference for what the Firebase
+// data structure looks like without having to sift through lots and lots of
+// rows or adapter code.
+const structure = {
   courses: {
     fieldGroups: {
       small: {
@@ -33,15 +35,18 @@ const structure =
               // [completionKey] = [projectKey]-[userKey]
               [completionKey]: {
                 committed: 'boolean',
+                firstCommittedAt: 'timestamp',
                 lessonKey: [lessonKey],
                 position: 'number',
                 projectKey: [projectKey],
+                repositoryCreatedAt: 'timestamp',
                 students: {
                   [userKey]: {
                     position: 'number'
                   }
                 },
                 submission: {
+                  approvedAt: 'timestamp',
                   assignedInstructor: [userKey],
                   firstSubmittedAt: 'timestamp',
                   instructorCommentedLast: 'boolean',

@@ -5,14 +5,15 @@ import readCourseRecordByPartialKeyAndStudentId from 'db/course/read-by-partial-
 import readLessonRecordByKey from 'db/lesson/read-by-key'
 import readProjectCompletionRecordByCourseLessonStudentIds from 'db/project-completion/read-by-course-lesson-student-ids'
 
-// fullRepoName: egillespie/MI-654-css-intro
 export default async (fullRepoName, { transaction }) => {
   // Figure out the owner, course, lesson, and project from the repo
   const identifiers = parseIdentifiersFromFullRepoName(fullRepoName)
   if (!identifiers) {
     throw boom.badData('fullRepoName.unparseable', fullRepoName)
   }
-  const { githubLogin, partialCourseKey, lessonKey } = identifiers
+
+  const { githubLogin, lessonKey } = identifiers
+  const partialCourseKey = identifiers.partialCourseKey || identifiers.courseKey
 
   // Get the associated student
   const userRecord = await readUserRecordByGitHubLogin(
