@@ -28,6 +28,9 @@ const timestamp = value => {
   return `to_timestamp(${parseInt(value / 1000)})`
 }
 
+// Returns a boolean true value if non-null and true, false otherwise
+const bool = value => value === true
+
 //------------------------------------------------------------------------------
 // EMPTY DATABASE
 //------------------------------------------------------------------------------
@@ -511,6 +514,121 @@ courseKeys.forEach(courseKey => {
         ].join(`, `)
       )
       console.log(`from course where course_key = '${courseKey}';`)
+      console.log()
+    })
+  }
+})
+
+//------------------------------------------------------------------------------
+// PROJECT_COMPLETION
+//------------------------------------------------------------------------------
+
+console.log(`-- Converting project completions`)
+console.log()
+
+courseKeys.forEach(courseKey => {
+  const completions =
+    courses.fieldGroups.large.student &&
+    courses.fieldGroups.large.student[courseKey] &&
+    courses.fieldGroups.large.student[courseKey].projectCompletions
+
+  if (completions) {
+    Object.keys(completions).forEach(completionKey => {
+      const completion = completions[completionKey]
+      const studentUserKey = Object.keys(completion.students)[0]
+      const submission = completion.submission || {}
+      const instructorUserKey = submission.assignedInstructor
+
+      // Make sure the assigned instructor is still related to the course
+      if (instructorUserKey) {
+        const courseInstructors =
+          courses.relationships[courseKey] &&
+          courses.relationships[courseKey].instructors
+    
+        if (
+          !courseInstructors ||
+          !courseInstructors[instructorUserKey]
+        ) {
+          console.log(
+            `insert into course_instructor (`,
+            [
+              `course_id`,
+              `user_id`,
+              `version`
+            ].join(`, `),
+            `)`
+          )
+          console.log(
+            `select`,
+            [
+              `c.course_id`,
+              `u.user_id`,
+              0
+            ].join(`, `)
+          )
+          console.log(`from course c, app_user u`)
+          console.log(`where c.course_key = '${courseKey}'`)
+          console.log(`and u.email = '${users[instructorUserKey].email}'`)
+          console.log(`on conflict do nothing;`)
+          console.log()
+        }
+      }
+
+      console.log(
+        `insert into project_completion (`,
+        [
+          `course_id`,
+          `lesson_id`,
+          `student_user_id`,
+          `repository_created_at`,
+          `approved`,
+          `committed`,
+          `instructor_commented_last`,
+          `first_committed_at`,
+          `approved_at`,
+          `instructor_user_id`,
+          `first_submitted_at`,
+          `last_commented_at`,
+          `version`
+        ].join(`, `),
+        `)`
+      )
+      console.log(
+        `select`,
+        [
+          `c.course_id`,
+          `l.lesson_id`,
+          `s.user_id`,
+          timestamp(
+            completion.repositoryCreatedAt ||
+            completion.firstCommittedAt ||
+            submission.firstSubmittedAt ||
+            submission.lastCommentedAt ||
+            submission.approvedAt ||
+            Date.now()
+          ),
+          bool(submission.isApproved),
+          bool(completion.committed),
+          bool(submission.instructorCommentedLast),
+          timestamp(completion.firstCommittedAt),
+          timestamp(submission.approvedAt),
+          instructorUserKey ? `i.user_id` : 'null',
+          timestamp(submission.firstSubmittedAt),
+          timestamp(submission.lastCommentedAt),
+          0
+        ].join(`, `)
+      )
+      console.log(
+        `from course c, lesson l, ` +
+        (instructorUserKey ? `app_user i, ` : '') +
+        `app_user s`
+      )
+      console.log(`where c.course_key = '${courseKey}'`)
+      console.log(`and l.lesson_key = '${completion.lessonKey}'`)
+      if (instructorUserKey) {
+        console.log(`and i.email = '${users[instructorUserKey].email}'`)
+      }
+      console.log(`and s.email = '${users[studentUserKey].email}';`)
       console.log()
     })
   }
