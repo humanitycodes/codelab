@@ -22,6 +22,12 @@ const quote = value => {
 // Returns a numeric value if non-null, or the value 'null' otherwise
 const num = value => isNaN(value) ? 'null' : value
 
+// Returns a datetime string from a non-null JS timestamp, or 'null' if null
+const timestamp = value => {
+  if (isNaN(value)) return 'null'
+  return `to_timestamp(${parseInt(value / 1000)})`
+}
+
 //------------------------------------------------------------------------------
 // EMPTY DATABASE
 //------------------------------------------------------------------------------
@@ -294,4 +300,61 @@ lessonKeys.forEach(lessonKey => {
       console.log()
     })
   }
+})
+
+//------------------------------------------------------------------------------
+// COURSE
+//------------------------------------------------------------------------------
+
+const courseKeys = Object.keys(courses.meta)
+
+console.log(`-- Converting ${courseKeys.length} courses`)
+console.log()
+
+courseKeys.forEach(courseKey => {
+  const smallAuthedFields = courses.fieldGroups.small.authed[courseKey]
+  const largeAuthedFields = courses.fieldGroups.large.authed[courseKey]
+
+  console.log(
+    `insert into course (`,
+    [
+      `course_key`,
+      `title`,
+      `credits`,
+      `start_date`,
+      `end_date`,
+      `syllabus`,
+      `version`,
+    ].join(`, `),
+    `)`
+  )
+  console.log(
+    `values (`,
+    [
+      quote(courseKey),
+      quote(
+        smallAuthedFields &&
+        smallAuthedFields.title
+      ),
+      num(
+        smallAuthedFields &&
+        smallAuthedFields.credits
+      ),
+      timestamp(
+        smallAuthedFields &&
+        smallAuthedFields.startDate
+      ),
+      timestamp(
+        smallAuthedFields &&
+        smallAuthedFields.endDate
+      ),
+      quote(
+        largeAuthedFields &&
+        largeAuthedFields.syllabus
+      ),
+      0
+    ].join(`, `),
+    `);`
+  )
+  console.log()
 })
