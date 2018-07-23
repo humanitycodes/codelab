@@ -1,7 +1,8 @@
 import translateLearningObjectiveFromRecord from './learning-objective/from-record'
 import translateProjectCriterionFromRecord from './project-criterion/from-record'
+import canReadAllLessons from 'helpers/permission/can-read-all-lessons'
 
-export default ({ lessonRecord }) => {
+export default ({ authUser, lessonRecord }) => {
   // Whitelist of fields that are available to clients
   let lesson = {
     lessonId: lessonRecord.lessonId,
@@ -9,7 +10,6 @@ export default ({ lessonRecord }) => {
     title: lessonRecord.title,
     estimatedHours: lessonRecord.estimatedHours,
     content: lessonRecord.content,
-    notes: lessonRecord.notes,
     projectKey: lessonRecord.projectKey,
     projectTitle: lessonRecord.projectTitle,
     projectHosting: lessonRecord.projectHosting,
@@ -17,6 +17,11 @@ export default ({ lessonRecord }) => {
     learningObjectives: [],
     projectCriteria: [],
     prerequisiteLessonIds: []
+  }
+
+  // Students cannot see lesson notes
+  if (canReadAllLessons(authUser)) {
+    lesson.notes = lessonRecord.notes
   }
 
   // Translate learning objectives
