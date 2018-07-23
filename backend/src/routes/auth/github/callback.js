@@ -11,6 +11,7 @@ import updateUserRecord from 'db/user/update'
 import translateUserFromRecord from 'translators/user/from-record'
 import getGitHubAccessToken from 'services/github/get-access-token'
 import getGitHubUserProfile from 'services/github/get-user-profile'
+import getGitHubUserEmails from 'services/github/get-user-emails'
 
 export default {
   method: 'GET',
@@ -31,7 +32,8 @@ export default {
 
       // Lookup the user from GitHub
       const tokenBody = await getGitHubAccessToken(request.query.code)
-      const githubProfile = await getGitHubUserProfile(tokenBody.access_token)
+      const githubToken = tokenBody.access_token
+      const githubProfile = await getGitHubUserProfile(githubToken)
 
       let userRecord
       if (request.query.state) {
@@ -52,10 +54,15 @@ export default {
           githubProfile.login, { transaction }
         )
         if (!userRecord) {
-          userRecord = await registerNewUser({
-            email: githubProfile.email,
-            fullName: githubProfile.name
-          }, { transaction })
+          // Lookup primary email and register new user
+          const fullName = githubProfile.name
+          const githubEmails = await getGitHubUserEmails(githubToken)
+          const email = githubEmails.find(
+            githubEmail => githubEmail.primary
+          ).email
+          userRecord = await registerNewUser(
+            { email, fullName }, { transaction }
+          )
         }
       }
 
