@@ -8,7 +8,7 @@
     "serve:dev": "nodemon --inspect src/main.js --exec babel-node",
     "dev": "run-s lint serve:dev",
     "build": "babel src -d dist",
-    "serve:prod": "node dist/main.js",
+    "serve:prod": "node --optimize_for_size --max_old_space_size=460 --gc_interval=100 dist/main.js",
     "start": "run-s lint build serve:prod"
   },
   "main": "src/main.js",
