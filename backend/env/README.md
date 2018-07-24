@@ -33,7 +33,7 @@ See alo `DATABASE_URL`.
 
 ### `CODELAB_DB_USERNAME`
 
-The usernamed used to authenticate against the application's database server.
+The username used to authenticate against the application's database server.
 The default database username is `codelab_app`.
 
 See alo `DATABASE_URL`.
