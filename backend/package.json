@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.json src",
-    "serve:dev": "nodemon src/main.js --exec babel-node",
+    "serve:dev": "nodemon --inspect src/main.js --exec babel-node",
     "dev": "run-s lint serve:dev",
     "build": "babel src -d dist",
     "serve:prod": "node dist/main.js",
@@ -31,7 +31,7 @@
     "pg": "^7.4.3",
     "pg-hstore": "^2.3.2",
     "retry-as-promised": "^2.3.2",
-    "sequelize": "^4.37.10"
+    "sequelize": "=4.32.6"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
