@@ -20,7 +20,6 @@ const isUserVersionDifferent = (oldUser, newUser) => {
 export default {
   type: 'onPostAuth',
   method (request, h) {
-    console.log('Memory usage before request:', process.memoryUsage())
     let jwt = request.auth.credentials
     if (jwt && jwt.user) {
       return readUserById(jwt.user.userId)
