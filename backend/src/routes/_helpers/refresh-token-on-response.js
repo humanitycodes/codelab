@@ -12,6 +12,7 @@ export default {
     ) {
       request.response.headers['x-token-refresh'] = request.headers['x-token-refresh']
     }
+    console.log('Memory usage after request:', process.memoryUsage())
     return h.continue
   }
 }
