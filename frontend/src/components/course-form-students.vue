@@ -23,6 +23,12 @@
             target="_blank"
           >{{ student.email }}</a>)
           <button
+            :disabled="studentHasProjectCompletions(student)"
+            :title="
+              studentHasProjectCompletions(student)
+                ? 'Students cannot be removed once they have started projects in the course'
+                : 'Remove the student from this course'
+            "
             @click="showRemoveStudentModal(student)"
             class="inline danger"
             name="course-remove-student"
@@ -89,7 +95,7 @@
 <script>
 import Dropdown from './dropdown'
 import ModalConfirm from './modal-confirm'
-import { userGetters } from '@state/helpers'
+import { userGetters, projectCompletionGetters } from '@state/helpers'
 
 export default {
   components: {
@@ -117,6 +123,7 @@ export default {
   },
   computed: {
     ...userGetters,
+    ...projectCompletionGetters,
     students () {
       return this.users.filter(
         user => this.course.studentIds.includes(user.userId)
@@ -177,6 +184,12 @@ export default {
         const index = this.course.pendingStudentEmails.indexOf(email)
         this.course.pendingStudentEmails.splice(index, 1)
       }
+    },
+    studentHasProjectCompletions (student) {
+      return this.projectCompletions.some(completion =>
+        completion.courseId === this.course.courseId &&
+        completion.studentUserId === student.userId
+      )
     }
   }
 }
