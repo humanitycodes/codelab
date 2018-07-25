@@ -88,3 +88,9 @@ Used in non-development environments to indicate which port the backend server
 will run on. In these environments, the `PORT` environment variable is usually
 set automatically and the value is used internally and mapped to ports 80/443
 for public access. The default value is `4000`.
+
+### `WEB_CONCURRENCY`
+
+Used to indicate the number of CPU cores available for the server to spawn
+additional worker processes. This environment variable is automatically set
+in some hosted environments such as Heroku. The default value is `1`.
