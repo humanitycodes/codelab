@@ -100,4 +100,9 @@ Course.hasMany(CourseStudentPending, {
   sourceKey: 'course_id'
 })
 
+CourseStudentPending.belongsTo(Course, {
+  as: 'course',
+  foreignKey: 'course_id'
+})
+
 export default Course

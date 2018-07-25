@@ -63,7 +63,9 @@ export default {
 
       // Send the newly created course to the client
       await refreshCourseRecord(courseRecord, { transaction })
-      const course = translateCourseFromRecord({ authUser, courseRecord })
+      const course = await translateCourseFromRecord({
+        authUser, courseRecord, transaction
+      })
       await transaction.commit()
 
       return course

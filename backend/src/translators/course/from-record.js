@@ -1,6 +1,7 @@
 import dateToTimestamp from '../_helpers/date-to-timestamp'
+import readCourseStudentPendingRecordsForCourseId from 'db/course/student-pending/read-for-course-id'
 
-export default ({ authUser, courseRecord }) => {
+export default async ({ authUser, courseRecord, transaction }) => {
   // Whitelist of fields that are available to clients
   let course = {
     courseId: courseRecord.courseId,
@@ -18,41 +19,45 @@ export default ({ authUser, courseRecord }) => {
   }
 
   // Translate instructors (IDs only)
-  if (courseRecord.instructors) {
-    course.instructorIds = courseRecord.instructors.map(
-      userRecord => userRecord.userId
-    )
-  }
+  const instructors = await courseRecord.getInstructors({
+    attributes: ['userId'], transaction
+  })
+  course.instructorIds = instructors.map(userRecord => userRecord.userId)
 
   // Translate a student (ID only) if the requester instructs the course
   // or the requester is the student being translated
-  if (courseRecord.students) {
-    const isInstructorInCourse = (
-      courseRecord.instructors &&
-      courseRecord.instructors.some(
-        instructor => authUser.userId === instructor.userId
-      )
-    )
-    course.studentIds = courseRecord.students.map(
-      userRecord => userRecord.userId
-    ).filter(
-      studentId => isInstructorInCourse || studentId === authUser.userId
-    )
-  }
+  const isInstructorInCourse = course.instructorIds.includes(authUser.userId)
+  const students = await courseRecord.getStudents({
+    attributes: ['userId'], transaction
+  })
+  students.forEach(userRecord => {
+    if (isInstructorInCourse || userRecord.userId === authUser.userId) {
+      course.studentIds.push(userRecord.userId)
+    }
+  })
 
   // Translate lessons (IDs only)
-  if (courseRecord.lessons) {
-    course.lessonIds = courseRecord.lessons.map(
-      lessonRecord => lessonRecord.lessonId
-    )
-  }
+  const lessons = await courseRecord.getLessons({
+    attributes: ['lessonId'], transaction
+  })
+  course.lessonIds = lessons.map(lessonRecord => lessonRecord.lessonId)
 
   // Translate pending students (emails only)
-  if (courseRecord.pendingStudents) {
-    course.pendingStudentEmails = courseRecord.pendingStudents.map(
-      courseStudentPendingRecord => courseStudentPendingRecord.email
-    )
-  }
+  // Lazy-loading this relationship uses a bogus query:
+  // ``` sql
+  //   SELECT "course_id" AS "courseId", "email", "version", "course_id"
+  //   FROM "course_student_pending" AS "courseStudentPending"
+  //   WHERE "courseStudentPending"."course_id" = NULL;
+  // ```
+  // So use an explicit query using the courseId to avoid the outer joins
+  // that come with eager loading.
+  const pendingStudents = await readCourseStudentPendingRecordsForCourseId(
+    courseRecord.courseId,
+    { attributes: ['email'], transaction }
+  )
+  course.pendingStudentEmails = pendingStudents.map(
+    courseStudentPendingRecord => courseStudentPendingRecord.email
+  )
 
   return course
 }
