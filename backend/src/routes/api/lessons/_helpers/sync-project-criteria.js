@@ -7,7 +7,7 @@ import updateProjectCriterionRecord from 'db/lesson/project-criterion/update'
 
 export default async ({ lessonRecord, updatedLesson, transaction }) => {
   const findParams = {
-    existingRecords: lessonRecord.projectCriteria,
+    existingRecords: await lessonRecord.getProjectCriteria({ transaction }),
     updatedObjects: updatedLesson.projectCriteria,
     key: 'lessonProjectCriterionId'
   }

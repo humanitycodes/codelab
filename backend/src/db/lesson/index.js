@@ -59,14 +59,14 @@ const Lesson = sequelize.define('lesson', {
 
 Lesson.hasMany(LessonLearningObjective, {
   as: 'learningObjectives',
-  foreignKey: 'lesson_id',
-  sourceKey: 'lesson_id'
+  foreignKey: 'lessonId',
+  sourceKey: 'lessonId'
 })
 
 Lesson.hasMany(LessonProjectCriterion, {
   as: 'projectCriteria',
-  foreignKey: 'lesson_id',
-  sourceKey: 'lesson_id'
+  foreignKey: 'lessonId',
+  sourceKey: 'lessonId'
 })
 
 Lesson.belongsToMany(Lesson, {

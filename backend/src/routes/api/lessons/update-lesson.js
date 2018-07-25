@@ -100,13 +100,15 @@ export default {
       await Promise.all([
         syncLearningObjectives({ lessonRecord, updatedLesson, transaction }),
         syncProjectCriteria({ lessonRecord, updatedLesson, transaction }),
-        syncPrerequisiteLessons({ lessonRecord, updatedLesson })
+        syncPrerequisiteLessons({ lessonRecord, updatedLesson, transaction })
       ])
 
       // Update, refresh, and send the lesson to the client
       await updateLessonRecord(lessonRecord, { transaction })
       await refreshLessonRecord(lessonRecord, { transaction })
-      const lesson = translateLessonFromRecord({ lessonRecord })
+      const lesson = await translateLessonFromRecord({
+        lessonRecord, transaction
+      })
       await transaction.commit()
 
       return lesson

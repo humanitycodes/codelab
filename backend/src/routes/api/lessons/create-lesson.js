@@ -42,13 +42,16 @@ export default {
 
       // Send the newly created lesson to the client
       await refreshLessonRecord(lessonRecord, { transaction })
-      const lesson = translateLessonFromRecord({ lessonRecord })
+      const lesson = await translateLessonFromRecord({
+        lessonRecord, transaction
+      })
       await transaction.commit()
 
       return lesson
     } catch (error) {
       console.error(
-        `Unable to create lesson for user ${authUser.userId} (${authUser.fullName}).`,
+        'Unable to create lesson',
+        `for user ${authUser.userId} (${authUser.fullName}).`,
         'Reason:', error
       )
       await transaction.rollback()
