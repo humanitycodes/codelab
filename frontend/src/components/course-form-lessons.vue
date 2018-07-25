@@ -112,8 +112,9 @@ export default {
       this.$refs.queryInput.focus()
     },
     lessonHasProjectCompletions (lesson) {
-      return this.projectCompletions.some(
-        completion => completion.lessonId === lesson.lessonId
+      return this.projectCompletions.some(completion =>
+        completion.courseId === this.course.courseId &&
+        completion.lessonId === lesson.lessonId
       )
     },
     showRemoveLessonModal (lesson) {
