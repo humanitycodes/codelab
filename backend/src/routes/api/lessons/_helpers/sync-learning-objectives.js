@@ -7,7 +7,7 @@ import updateLearningObjectiveRecord from 'db/lesson/learning-objective/update'
 
 export default async ({ lessonRecord, updatedLesson, transaction }) => {
   const findParams = {
-    existingRecords: lessonRecord.learningObjectives,
+    existingRecords: await lessonRecord.getLearningObjectives({ transaction }),
     updatedObjects: updatedLesson.learningObjectives,
     key: 'lessonLearningObjectiveId'
   }

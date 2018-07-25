@@ -2,7 +2,7 @@ import translateLearningObjectiveFromRecord from './learning-objective/from-reco
 import translateProjectCriterionFromRecord from './project-criterion/from-record'
 import canReadAllLessons from 'helpers/permission/can-read-all-lessons'
 
-export default ({ authUser, lessonRecord }) => {
+export default async ({ authUser, lessonRecord, transaction }) => {
   // Whitelist of fields that are available to clients
   let lesson = {
     lessonId: lessonRecord.lessonId,
@@ -25,36 +25,34 @@ export default ({ authUser, lessonRecord }) => {
   }
 
   // Translate learning objectives
-  if (lessonRecord.learningObjectives) {
-    lesson.learningObjectives = lessonRecord.learningObjectives.map(
-      lessonLearningObjectiveRecord => translateLearningObjectiveFromRecord({
-        lessonLearningObjectiveRecord
-      })
-    )
-  }
+  const learningObjectives = await lessonRecord.getLearningObjectives({
+    transaction
+  })
+  lesson.learningObjectives = learningObjectives.map(
+    lessonLearningObjectiveRecord =>
+      translateLearningObjectiveFromRecord({ lessonLearningObjectiveRecord })
+  )
 
   // Translate project criteria
-  if (lessonRecord.projectCriteria) {
-    lesson.projectCriteria = lessonRecord.projectCriteria.map(
-      lessonProjectCriterionRecord => translateProjectCriterionFromRecord({
-        lessonProjectCriterionRecord
-      })
-    )
-  }
+  const projectCriteria = await lessonRecord.getProjectCriteria({ transaction })
+  lesson.projectCriteria = projectCriteria.map(
+    lessonProjectCriterionRecord =>
+      translateProjectCriterionFromRecord({ lessonProjectCriterionRecord })
+  )
 
   // Translate prerequisite lessons (IDs only)
-  if (lessonRecord.prerequisiteLessons) {
-    lesson.prerequisiteLessonIds = lessonRecord.prerequisiteLessons.map(
-      prerequisiteLessonRecord => prerequisiteLessonRecord.lessonId
-    )
-  }
+  const prerequisiteLessons = await lessonRecord.getPrerequisiteLessons({
+    attributes: ['lessonId'], transaction
+  })
+  lesson.prerequisiteLessonIds = prerequisiteLessons.map(
+    prerequisiteLessonRecord => prerequisiteLessonRecord.lessonId
+  )
 
   // Translate courses (IDs only)
-  if (lessonRecord.courses) {
-    lesson.courseIds = lessonRecord.courses.map(
-      courseRecord => courseRecord.courseId
-    )
-  }
+  const courses = await lessonRecord.getCourses({
+    attributes: ['courseId'], transaction
+  })
+  lesson.courseIds = courses.map(courseRecord => courseRecord.courseId)
 
   return lesson
 }

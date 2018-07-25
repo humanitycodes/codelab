@@ -17,13 +17,12 @@ export default async (lessonRecord, options) => {
       }
     })
   ]
-  if (lessonRecord.prerequisiteLessons) {
-    removeRelationships.push(
-      lessonRecord.removePrerequisiteLessons(
-        lessonRecord.prerequisiteLessons
-      )
-    )
-  }
+
+  const prerequisiteLessons = await lessonRecord.getPrerequisiteLessons(options)
+  removeRelationships.push(
+    lessonRecord.removePrerequisiteLessons(prerequisiteLessons, options)
+  )
+
   return Promise.all(removeRelationships)
     .then(() => lessonRecord.destroy(options))
 }

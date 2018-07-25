@@ -1,13 +1,17 @@
-export default async ({ lessonRecord, updatedLesson }) => {
+export default async ({ lessonRecord, updatedLesson, transaction }) => {
+  const prerequisiteLessons = await lessonRecord.getPrerequisiteLessons({
+    transaction
+  })
+
   // Create prereqs that don't already have a relationship
   const toCreate = updatedLesson.prerequisiteLessonIds.filter(
-    prerequisiteLessonId => !lessonRecord.prerequisiteLessons.some(
+    prerequisiteLessonId => !prerequisiteLessons.some(
       prerequisiteLesson => prerequisiteLesson.lessonId === prerequisiteLessonId
     )
   )
 
   // Delete relationships that don't exist in the updated lesson
-  const toDelete = lessonRecord.prerequisiteLessons.filter(
+  const toDelete = prerequisiteLessons.filter(
     prerequisiteLesson => !updatedLesson.prerequisiteLessonIds.some(
       prerequisiteLessonId => prerequisiteLessonId === prerequisiteLesson.lessonId
     )
