@@ -36,7 +36,7 @@ export default {
       }
 
       // Only instructors in a course can delete it
-      if (!isCourseInstructor(courseRecord, authUser.userId)) {
+      if (!(await isCourseInstructor(courseRecord, authUser.userId))) {
         throw boom.unauthorized('course.update.instructor.unauthorized')
       }
 

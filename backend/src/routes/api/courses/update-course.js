@@ -64,7 +64,7 @@ export default {
       }
 
       // Only instructors in a course can make updates
-      if (!isCourseInstructor(courseRecord, authUser.userId)) {
+      if (!(await isCourseInstructor(courseRecord, authUser.userId))) {
         throw boom.unauthorized('course.update.instructor.unauthorized')
       }
 
@@ -98,7 +98,9 @@ export default {
       await updateCourseRecord(courseRecord, { transaction })
       await refreshCourseRecord(courseRecord, { transaction })
 
-      const course = translateCourseFromRecord({ authUser, courseRecord })
+      const course = await translateCourseFromRecord({
+        authUser, courseRecord, transaction
+      })
       await transaction.commit()
 
       return course

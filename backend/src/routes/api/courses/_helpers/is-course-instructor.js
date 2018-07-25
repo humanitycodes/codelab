@@ -1,3 +1,6 @@
-export default (courseRecord, userId) => courseRecord.instructors.some(
-  courseInstructorRecord => courseInstructorRecord.userId === userId
-)
+export default async (courseRecord, userId) => {
+  const instructors = await courseRecord.getInstructors()
+  return instructors.some(
+    courseInstructorRecord => courseInstructorRecord.userId === userId
+  )
+}

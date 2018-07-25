@@ -1,13 +1,15 @@
 export default async ({ courseRecord, updatedCourse, transaction }) => {
+  const instructorRecords = await courseRecord.getInstructors({ transaction })
+
   // Create instructors that don't already have a relationship
   const toCreate = updatedCourse.instructorIds.filter(
-    instructorId => !courseRecord.instructors.some(
+    instructorId => !instructorRecords.some(
       courseInstructorRecord => courseInstructorRecord.userId === instructorId
     )
   )
 
   // Delete relationships that don't exist in the updated course
-  const toDelete = courseRecord.instructors.filter(
+  const toDelete = instructorRecords.filter(
     courseInstructorRecord => !updatedCourse.instructorIds.some(
       instructorId => instructorId === courseInstructorRecord.userId
     )
