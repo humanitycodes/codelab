@@ -3,9 +3,9 @@ import 'babel-polyfill'
 
 process.env.NODE_ENV = 'testing'
 
-const app = require('../../backend/dist/main')
+const startWorker = require('../../backend/dist/start-worker').default
 
-app.then(server => {
+startWorker().then(server => {
   let opts = process.argv.slice(2)
   if (opts.indexOf('--config') === -1) {
     opts = opts.concat(['--config', 'dist/nightwatch.conf.js'])
