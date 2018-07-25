@@ -29,6 +29,12 @@
             target="_blank"
           >{{ instructor.email }}</a>)
           <button
+            :disabled="instructorHasProjectCompletions(instructor)"
+            :title="
+              instructorHasProjectCompletions(instructor)
+                ? 'Instructors cannot be removed once they are assigned code reviews in the course'
+                : 'Remove the instructor from this course'
+            "
             @click="removeInstructor(instructor)"
             class="inline danger"
             name="course-remove-instructor"
@@ -45,7 +51,7 @@
 
 <script>
 import Dropdown from './dropdown'
-import { userGetters } from '@state/helpers'
+import { userGetters, projectCompletionGetters } from '@state/helpers'
 
 export default {
   components: {
@@ -68,6 +74,7 @@ export default {
   },
   computed: {
     ...userGetters,
+    ...projectCompletionGetters,
     queryResults () {
       if (!this.instructorQuery || !this.users.length) return []
       const queryRegex = new RegExp(this.instructorQuery, 'i')
@@ -98,6 +105,12 @@ export default {
     removeInstructor (instructor) {
       const index = this.course.instructorIds.indexOf(instructor.userId)
       this.course.instructorIds.splice(index, 1)
+    },
+    instructorHasProjectCompletions (instructor) {
+      return this.projectCompletions.some(completion =>
+        completion.courseId === this.course.courseId &&
+        completion.instructorUserId === instructor.userId
+      )
     }
   }
 }
