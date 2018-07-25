@@ -25,6 +25,7 @@ export default new Sequelize(
     dialect: 'postgres',
     timezone: 'UTC',
     logging: CODELAB_LOG_SQL_STATEMENTS ? console.log : false,
+    benchmark: true,
     pool: {
       max: 20
     },
