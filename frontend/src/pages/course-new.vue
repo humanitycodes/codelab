@@ -143,7 +143,7 @@ export default {
           courseKey,
           instructors: [{ userId: this.currentUser.userId }]
         })
-        .then(() => store.dispatch('syncAllCourses'))
+        .then(newCourse => store.dispatch('mergeCourses', [newCourse]))
         .then(() => this.$router.replace(`/courses/${courseKey}/edit`))
       }
     }

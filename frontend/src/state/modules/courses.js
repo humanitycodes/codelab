@@ -1,4 +1,5 @@
 import getCourses from '@api/courses/get-courses'
+import mergeByIdAndVersion from './_helpers/merge-by-id-and-version'
 
 export default {
   state: {
@@ -31,6 +32,12 @@ export default {
           commit('SET_ALL_COURSES', [])
           throw error
         })
+    },
+    mergeCourses ({ commit, state }, courses) {
+      // Add or replace some courses in the local state
+      if (!courses || !courses.length) return
+      const mergedCourses = mergeByIdAndVersion('courseId', state.all, courses)
+      commit('SET_ALL_COURSES', mergedCourses)
     }
   },
   mutations: {
