@@ -1,27 +1,24 @@
 export default async (courseRecord, options) => {
   // Delete foreign keys first
-  const removeRelationships = []
-  if (courseRecord.instructors) {
-    removeRelationships.push(
-      courseRecord.removeInstructors(courseRecord.instructors)
-    )
-  }
-  if (courseRecord.students) {
-    removeRelationships.push(
-      courseRecord.removeStudents(courseRecord.students)
-    )
-  }
-  if (courseRecord.lessons) {
-    removeRelationships.push(
-      courseRecord.removeLessons(courseRecord.lessons)
-    )
-  }
-  if (courseRecord.pendingStudents) {
-    removeRelationships.push(
-      courseRecord.removePendingStudents(courseRecord.pendingStudents)
-    )
+  const instructors = await courseRecord.getInstructors(options)
+  if (instructors.length) {
+    await courseRecord.removeInstructors(instructors, options)
   }
 
-  return Promise.all(removeRelationships)
-    .then(() => courseRecord.destroy(options))
+  const students = await courseRecord.getStudents(options)
+  if (students.length) {
+    await courseRecord.removeStudents(students, options)
+  }
+
+  const lessons = await courseRecord.getLessons(options)
+  if (lessons.length) {
+    await courseRecord.removeLessons(lessons, options)
+  }
+
+  const pendingStudents = await courseRecord.getPendingStudents(options)
+  if (pendingStudents.length) {
+    await courseRecord.removePendingStudents(pendingStudents, options)
+  }
+
+  await courseRecord.destroy(options)
 }

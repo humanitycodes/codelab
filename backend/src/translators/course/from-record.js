@@ -1,5 +1,4 @@
 import dateToTimestamp from '../_helpers/date-to-timestamp'
-import readCourseStudentPendingRecordsForCourseId from 'db/course/student-pending/read-for-course-id'
 
 export default async ({ authUser, courseRecord, transaction }) => {
   // Whitelist of fields that are available to clients
@@ -43,18 +42,9 @@ export default async ({ authUser, courseRecord, transaction }) => {
   course.lessonIds = lessons.map(lessonRecord => lessonRecord.lessonId)
 
   // Translate pending students (emails only)
-  // Lazy-loading this relationship uses a bogus query:
-  // ``` sql
-  //   SELECT "course_id" AS "courseId", "email", "version", "course_id"
-  //   FROM "course_student_pending" AS "courseStudentPending"
-  //   WHERE "courseStudentPending"."course_id" = NULL;
-  // ```
-  // So use an explicit query using the courseId to avoid the outer joins
-  // that come with eager loading.
-  const pendingStudents = await readCourseStudentPendingRecordsForCourseId(
-    courseRecord.courseId,
-    { attributes: ['email'], transaction }
-  )
+  const pendingStudents = await courseRecord.getPendingStudents({
+    attributes: ['email'], transaction
+  })
   course.pendingStudentEmails = pendingStudents.map(
     courseStudentPendingRecord => courseStudentPendingRecord.email
   )

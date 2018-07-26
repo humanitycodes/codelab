@@ -96,13 +96,8 @@ Lesson.belongsToMany(Course, {
 // course_student_pending relationship
 Course.hasMany(CourseStudentPending, {
   as: 'pendingStudents',
-  foreignKey: 'course_id',
-  sourceKey: 'course_id'
-})
-
-CourseStudentPending.belongsTo(Course, {
-  as: 'course',
-  foreignKey: 'course_id'
+  foreignKey: 'courseId',
+  sourceKey: 'courseId'
 })
 
 export default Course
