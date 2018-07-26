@@ -67,7 +67,7 @@ export default {
     },
     saveLesson () {
       updateLesson(this.lesson)
-      .then(() => store.dispatch('syncAllLessons'))
+      .then(updatedLesson => store.dispatch('mergeLessons', [updatedLesson]))
       .then(() => goBackOrFallback())
     }
   }

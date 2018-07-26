@@ -2,7 +2,8 @@ import axios from 'axios'
 import isEqual from 'lodash/isEqual'
 import jwtDecode from 'jwt-decode'
 import requiredGitHubScopes from '@constants/github-scopes'
-import { setAuthToken, refreshTokenFromResponse } from './_helpers'
+import setAuthToken from './_helpers/set-auth-token'
+import refreshTokenFromResponse from './_helpers/refresh-token-from-response'
 import getUsers from '@api/users/get-users'
 
 const syncCache = {}
@@ -44,7 +45,7 @@ export default {
         ? dispatch('signIn', { token })
         : dispatch('signOut')
     },
-    signIn ({ commit, dispatch, state }, { token }) {
+    signIn ({ commit, dispatch }, { token }) {
       setAuthToken(token)
 
       const user = jwtDecode(token).user

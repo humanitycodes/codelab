@@ -1,16 +1,5 @@
-import axios from 'axios'
 import store from '@state/store'
-
-// Save JWT to local storage and configure Axios to authenticate with it
-export const setAuthToken = token => {
-  if (token) {
-    localStorage.setItem('auth_token', token)
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-  } else {
-    localStorage.removeItem('auth_token')
-    axios.defaults.headers.common['Authorization'] = null
-  }
-}
+import setAuthToken from './set-auth-token'
 
 // If the server issues a new JWT via the 'x-token-refresh' header,
 // save and re-configure the app to use the new token
