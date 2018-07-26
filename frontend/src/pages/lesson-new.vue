@@ -84,7 +84,7 @@ export default {
       if (this.keyIsValid) {
         const lessonKey = `${this.categoryPrefix}-${this.key}`
         createLesson({ lessonKey })
-        .then(() => store.dispatch('syncAllLessons'))
+        .then(newLesson => store.dispatch('mergeLessons', [newLesson]))
         .then(() => this.$router.replace(`/lessons/${lessonKey}/edit`))
       }
     }

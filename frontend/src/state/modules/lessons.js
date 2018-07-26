@@ -1,4 +1,5 @@
 import getLessons from '@api/lessons/get-lessons'
+import mergeByIdAndVersion from './_helpers/merge-by-id-and-version'
 
 export default {
   state: {
@@ -25,12 +26,19 @@ export default {
   },
   actions: {
     syncAllLessons ({ commit }) {
+      // Get all available lessons from API and save them in the local state
       return getLessons()
         .then(lessons => commit('SET_ALL_LESSONS', lessons))
         .catch(error => {
           commit('SET_ALL_LESSONS', [])
           throw error
         })
+    },
+    mergeLessons ({ commit, state }, lessons) {
+      // Add or replace some users in the local state
+      if (!lessons || !lessons.length) return
+      const mergedLessons = mergeByIdAndVersion('lessonId', state.all, lessons)
+      commit('SET_ALL_LESSONS', mergedLessons)
     }
   },
   mutations: {
