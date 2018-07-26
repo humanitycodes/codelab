@@ -63,7 +63,7 @@ export default {
       this.showModalConfirmRemoveCourse = false
       if (confirmed) {
         deleteCourse(this.course.courseId)
-        .then(() => store.dispatch('syncAllCourses'))
+        .then(() => store.dispatch('removeCourses', [this.course.courseId]))
         .then(() => this.$router.replace('/courses'))
       }
     },

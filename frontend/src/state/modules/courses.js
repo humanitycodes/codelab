@@ -1,5 +1,6 @@
 import getCourses from '@api/courses/get-courses'
 import mergeByIdAndVersion from './_helpers/merge-by-id-and-version'
+import removeById from './_helpers/remove-by-id'
 
 export default {
   state: {
@@ -38,6 +39,12 @@ export default {
       if (!courses || !courses.length) return
       const mergedCourses = mergeByIdAndVersion('courseId', state.all, courses)
       commit('SET_ALL_COURSES', mergedCourses)
+    },
+    removeCourses ({ commit, state }, courseIds) {
+      // Remove some courses from the local state
+      if (!courseIds || !courseIds.length) return
+      const courses = removeById('courseId', state.all, courseIds)
+      commit('SET_ALL_COURSES', courses)
     }
   },
   mutations: {

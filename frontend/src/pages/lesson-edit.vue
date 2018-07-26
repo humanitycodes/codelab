@@ -61,7 +61,7 @@ export default {
       this.showModalConfirmRemoveLesson = false
       if (confirmed) {
         deleteLesson(this.lesson.lessonId)
-        .then(() => store.dispatch('syncAllLessons'))
+        .then(() => store.dispatch('removeLessons', [this.lesson.lessonId]))
         .then(() => this.$router.replace('/lessons'))
       }
     },

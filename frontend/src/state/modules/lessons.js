@@ -1,5 +1,6 @@
 import getLessons from '@api/lessons/get-lessons'
 import mergeByIdAndVersion from './_helpers/merge-by-id-and-version'
+import removeById from './_helpers/remove-by-id'
 
 export default {
   state: {
@@ -39,6 +40,12 @@ export default {
       if (!lessons || !lessons.length) return
       const mergedLessons = mergeByIdAndVersion('lessonId', state.all, lessons)
       commit('SET_ALL_LESSONS', mergedLessons)
+    },
+    removeLessons ({ commit, state }, lessonIds) {
+      // Remove some lessons from the local state
+      if (!lessonIds || !lessonIds.length) return
+      const lessons = removeById('lessonId', state.all, lessonIds)
+      commit('SET_ALL_LESSONS', lessons)
     }
   },
   mutations: {
