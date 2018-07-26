@@ -35,7 +35,7 @@ export default {
         })
     },
     mergeLessons ({ commit, state }, lessons) {
-      // Add or replace some users in the local state
+      // Add or replace some lessons in the local state
       if (!lessons || !lessons.length) return
       const mergedLessons = mergeByIdAndVersion('lessonId', state.all, lessons)
       commit('SET_ALL_LESSONS', mergedLessons)

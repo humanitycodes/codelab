@@ -69,7 +69,7 @@ export default {
     },
     saveCourse () {
       updateCourse(this.course)
-      .then(() => store.dispatch('syncAllCourses'))
+      .then(updatedCourse => store.dispatch('mergeCourses', [updatedCourse]))
       .then(() => goBackOrFallback())
     }
   }
