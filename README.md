@@ -2,15 +2,29 @@
 
 ## Organization
 
-The codebase is split into two parts: the `frontend` and the `backend`. Each of these directories manages its own dependencies, so if you want to install a new library, first `cd` into the appropriate directory, _then_ `npm install --save some-awesome-lib`.
+The codebase is split into several parts:
+
+* `.circleci` - Continuous integration configuration via [CircleCI](https://circleci.com/gh/chrisvfritz/msu.lansing.codes)
+* `.vscode` - VS Code is the editor of choice for this project and workspace configuration is provided in this directory
+* `backend` - Code for the server-side API, which also hosts the client code in non-dev environments
+* `database` - Anything related specifically to the Postgres database (docs, migration scripts, etc.)
+* `frontend` - All Vue components, styles, and client-side content are here, built with Webpack
+* `test` - End-to-end and any other cross-module tests will be found here
+
+
+Each of these directories manages its own dependencies. If you want to install a new library, first `cd` into the appropriate directory, _then_ use `yarn add` to add the dependency.
 
 ## Linting
 
-From the `frontend` or `backend` directories, you can run `npm run lint` to scan your files for style violations with ESLint. The conventions in both directories build off the [JS Standard Code Style](https://github.com/feross/eslint-config-standard). It's also recommended to install ESLint integration for your code editor. Here are instructions [Atom](https://github.com/lansingcodelab/www/blob/master/coursework/lessons/slides/js-eslint.md#2-install-the-linter-eslint-plugin-for-atom) and [Sublime Text](https://github.com/roadhump/SublimeLinter-eslint#plugin-installation).
+From the `frontend`, `backend`, and `test` directories, you can run `yarn lint` to scan your files for style violations with ESLint. The conventions in both directories build off the [JS Standard Code Style](https://github.com/feross/eslint-config-standard). VS Code configuration for ESLint is also provided in the `.vscode` directory.
 
 ## Testing
 
-No testing framework is yet configured for the backend (Erik, I'll let you do that and update this document). For the frontend, there are [unit tests](http://vuejs-templates.github.io/webpack/unit.html) and [end-to-end tests](http://vuejs-templates.github.io/webpack/e2e.html) configured. They can be run from the `frontend` directory with `npm run unit` and `npm run e2e`, respectively - or `npm run test` to run them all.
+Unit tests are maintained for frontend components and helper functions. Currently all statement, branch, and function coverage is above 80% and should be kept that way.
+
+End-to-end tests exist in the `test` directory and cover primarily core functionality and security checks.
+
+All tests run as part of continuous integration and merging features is not allowed until all tests pass. To run tests for a specific module, first `cd` into that directory and then run `yarn test`. To run all tests, which is recommended before submitting a PR, run `yarn test-all` from the top-most project directory.
 
 ## Contributing
 
@@ -41,9 +55,17 @@ And open a pull request.
 
 ## Development
 
-The development environment can be launched for either the frontend or the backend, by running `npm run dev` from those directories. The frontend launches to port 8080 and the backend to port 4000. On the frontend, `/api` is proxied to the backend. From the root directory, you can also run `npm run dev-all` to launch the entire app.
+The development environment can be launched for either the frontend or the backend, by running `yarn dev` from the respective directory. The frontend launches to port 8080 and the backend to port 4000. On the frontend, the `/api` and `/auth` routes are proxied to the backend. From the top-most directory, you can also run `yarn dev-all` to launch the entire app, complete with hot-reloading.
+
+Once the app is running, you can go to `https://localhost:8080/github-sign-in` to sign in with your GitHub account. To sign in with your MSU Net ID, visit `https://localhost:8080/msu-sign-in`.
 
 It may be helpful to enable extra logging when testing in a development environment, in particular, HTTP request logging and SQL statement logging. This can be done by setting the environment variables `CODELAB_LOG_HTTP_REQUESTS` and `CODELAB_LOG_SQL_STATEMENTS` to `true`, respectively. For more information about environment variables, see `backend/env/README.md`.
+
+### Initial Setup
+
+After cloning the repository, run `yarn install` at the top-most directory to download and install all project dependencies for all modules.
+
+You will also need to install [Postgres 10.4 or higher](https://www.postgresql.org/download/). Once your Postgres server is running, follow all of the instructions in `database/README.md` to create the `codelab` database, users, and tables.
 
 ## Continuous Integration and Deployment
 
