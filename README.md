@@ -20,7 +20,7 @@ From the `frontend`, `backend`, and `test` directories, you can run `yarn lint` 
 
 ## Testing
 
-Unit tests are maintained for frontend components and helper functions. Currently all statement, branch, and function coverage is above 80% and should be kept that way.
+Unit tests are maintained for frontend components and helper functions. All statement, branch, and function coverage should be kept above 80%.
 
 End-to-end tests exist in the `test` directory and cover primarily core functionality and security checks.
 
