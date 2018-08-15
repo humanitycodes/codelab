@@ -4,7 +4,7 @@ var path = require('path')
 let buildEnvFile = './prod.env'
 let buildIndexFile = path.resolve(__dirname, '../dist/index.html')
 
-if (process.env.NODE_ENV === 'staging') {
+if (process.env.NODE_ENV.substr(-8) === '-staging') {
   buildEnvFile = './staging.env'
 } else if (process.env.NODE_ENV === 'testing') {
   buildEnvFile = './test.env'
