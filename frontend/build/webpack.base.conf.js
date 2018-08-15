@@ -8,8 +8,8 @@ function chooseEnvironmentFile () {
   const username = require('os').userInfo().username
   if (process.env.NODE_ENV === 'production') {
     return path.resolve(__dirname, '../src/env/prod')
-  } else if (process.env.NODE_ENV === 'staging') {
-    return path.resolve(__dirname, '../src/env/staging')
+  } else if (process.env.NODE_ENV.substr(-8) === '-staging') {
+    return path.resolve(__dirname, `../src/env/${process.env.NODE_ENV}`)
   } else {
     try {
       // Try to use user-specific dev config
