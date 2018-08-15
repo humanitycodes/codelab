@@ -118,7 +118,7 @@ jobs:
         path: ./frontend/test/unit/coverage/frontend-coverage
     - store_test_results:
         path: ./test/dist/e2e-reports
-  deploy_staging:
+  deploy_msu_staging:
     working_directory: ~/msu.lansing.codes
     docker:
     - image: docker:stable-git
@@ -126,8 +126,17 @@ jobs:
     - checkout
     - run:
         name: Deploy master branch to msu-codes-staging on Heroku
-        command: .circleci/deploy-staging.sh
-  deploy_production:
+        command: .circleci/deploy-heroku.sh msu-codes-staging
+  deploy_codelab517_staging:
+    working_directory: ~/msu.lansing.codes
+    docker:
+    - image: docker:stable-git
+    steps:
+    - checkout
+    - run:
+        name: Deploy master branch to codelab517-staging on Heroku
+        command: .circleci/deploy-heroku.sh codelab517-staging
+  deploy_msu_production:
     working_directory: ~/msu.lansing.codes
     docker:
     - image: docker:stable-git
@@ -135,20 +144,26 @@ jobs:
     - checkout
     - run:
         name: Deploy production branch to msu-lansing-codes on Heroku
-        command: .circleci/deploy-production.sh
+        command: .circleci/deploy-heroku.sh msu-lansing-codes
 
 workflows:
   version: 2
   build_test_deploy:
     jobs:
     - build
-    - deploy_staging:
+    - deploy_msu_staging:
         requires:
         - build
         filters:
           branches:
             only: master
-    - deploy_production:
+    - deploy_codelab517_staging:
+        requires:
+        - build
+        filters:
+          branches:
+            only: master
+    - deploy_msu_production:
         requires:
         - build
         filters:
