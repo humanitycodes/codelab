@@ -3,6 +3,12 @@
 The following environment variables can be defined to configure different
 instances of the Code Lab application.
 
+~~~
+When making a change to any of these environment variables in a testing,
+staging, or production environment, make sure to update the value in that
+environment's KeePass database as well!
+~~~
+
 ### `CODELAB_DB_HOST`
 
 The hostname or IP address of the application's database server. The default

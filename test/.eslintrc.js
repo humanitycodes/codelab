@@ -19,6 +19,6 @@ module.exports = {
     // allow promise chains to line up on left side
     'indent': ['error', 2, { MemberExpression: 'off' }],
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
+    'no-debugger': (process.env.NODE_ENV || '').substr(-5) === '-prod' ? 2 : 0
   }
 }

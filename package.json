@@ -1,11 +1,11 @@
 {
-  "name": "codelab.cas.msu.edu",
+  "name": "codelab",
   "version": "1.0.0",
   "license": "UNLICENSED",
   "private": true,
   "author": "Humanity Codes, LLC",
   "homepage": "https://github.com/chrisvfritz/msu.lansing.codes#readme",
-  "description": "Learning Management System for MSU Coding Courses",
+  "description": "Learning Management System for Coding Courses",
   "contributors": [
     "Chris Fritz",
     "Erik Gillespie",
@@ -39,10 +39,12 @@
     "build-all": "run-p build:*",
     "serve-all": "run-p serve:*",
     "start": "run-s serve-all",
-    "deploy:staging-to-production": "git fetch origin && git push --force origin origin/master:production",
-    "deploy-force:local-to-staging": "git push --force ssh://git@heroku.com/msu-codes-staging.git `git rev-parse --abbrev-ref HEAD`:master",
-    "deploy-force:local-to-production": "git push --force ssh://git@heroku.com/msu-lansing-codes.git `git rev-parse --abbrev-ref HEAD`:master",
-    "ssl:renew": "sudo certbot certonly --manual -d codelab.cas.msu.edu && sudo heroku certs:update /etc/letsencrypt/live/msu.lansing.codes/fullchain.pem /etc/letsencrypt/live/msu.lansing.codes/privkey.pem --confirm msu-lansing-codes"
+    "deploy:msu-staging-to-production": "git fetch origin && git push --force origin origin/master:msu-prod",
+    "deploy-force:msu-local-to-staging": "git push --force ssh://git@heroku.com/msu-codes-staging.git `git rev-parse --abbrev-ref HEAD`:master",
+    "deploy-force:msu-local-to-production": "git push --force ssh://git@heroku.com/msu-lansing-codes.git `git rev-parse --abbrev-ref HEAD`:master",
+    "deploy:codelab517-staging-to-production": "git fetch origin && git push --force origin origin/master:codelab517-prod",
+    "deploy-force:codelab517-local-to-staging": "git push --force ssh://git@heroku.com/codelab517-staging.git `git rev-parse --abbrev-ref HEAD`:master",
+    "deploy-force:codelab517-local-to-production": "git push --force ssh://git@heroku.com/codelab517.git `git rev-parse --abbrev-ref HEAD`:master"
   },
   "dependencies": {
     "npm-run-all": "^4.1.3"

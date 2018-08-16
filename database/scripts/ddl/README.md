@@ -66,11 +66,11 @@ Run each DDL script in numerical order using `psql`. For example:
 psql -f 20180605-01-initial-tables.sql
 ```
 
-Or for a Heroku Postgres database (making sure to check the environment first):
+Or for a Heroku Postgres database:
 
 ``` sh
-heroku addons
-cat 20180605-01-initial-tables.sql | heroku pg:psql
+heroku addons -a msu-codes-staging
+cat 20180605-01-initial-tables.sql | heroku pg:psql -a msu-codes-staging
 ```
 
 If you need to start a database completely from scratch, losing all data in the
