@@ -11,7 +11,6 @@ The codebase is split into several parts:
 * `frontend` - All Vue components, styles, and client-side content are here, built with Webpack
 * `test` - End-to-end and any other cross-module tests will be found here
 
-
 Each of these directories manages its own dependencies. If you want to install a new library, first `cd` into the appropriate directory, _then_ use `yarn add` to add the dependency.
 
 ## Linting
@@ -69,27 +68,59 @@ You will also need to install [Postgres 10.4 or higher](https://www.postgresql.o
 
 ## Continuous Integration and Deployment
 
-When builds pass on CircleCI, GitHub's:
+This software is configured to deploy to numerous environments via CircleCI:
 
-- `master` branch deploys to the [staging server](https://msu-codes-staging.herokuapp.com)
-- `production` branch deploys to the [production server](https://codelab.cas.msu.edu/)
+* `testing` is a temporary environment used for running tests after every push to GitHub
+* `msu-staging` is the short name for the [MSU Code Lab staging environment](https://msu-codes-staging.herokuapp.com) that is automatically deployed every time changes are promoted to the `master` branch
+* `codelab517-staging` is the short name for the [Code Lab 517 staging environment](https://codelab517-staging.herokuapp.com) that is automatically deployed every time changes are promoted to the `master` branch
+* `msu-prod` is the short name for the [MSU Code Lab production environment](https://codelab.cas.msu.edu) that is automatically deployed every time changes are promoted to the `msu-prod` branch
+* `codelab517-prod` is the short name for the [Code Lab 517 production environment](https://codelab517.com) that is automatically deployed every time changes are promoted to the `codelab517-prod` branch
 
-There are also several commands you can use:
+When a code change is promoted to the `master` branch, all staging environments (environments that end with `-staging`) will be deployed simultaneously. These environments all run in Heroku using free hobby plans.
 
-### `yarn deploy:staging-to-production`
+To add the git remote endpoints to your local environment, make sure you have access to the apps in Heroku, download the Heroku CLI tool and login, then run the following commands:
 
-When code on staging passes QA, this promotes the `master` branch on GitHub to `production` and pushes to the production server on a successful build.
+``` sh
+heroku git:remote -a msu-codes-staging -r msu-staging
+heroku git:remote -a codelab517-staging -r codelab517-staging
+```
 
-### `yarn deploy-force:local-to-staging`
+There are also several commands you can use to initiate deployments:
 
-Bypasses GitHub to deploy your current branch directly to staging, skipping any linting or tests. This should ONLY be used when all of these are true:
+### `yarn deploy:msu-staging-to-production`
+
+When code on staging passes QA, this promotes the `master` branch on GitHub to `msu-prod` and pushes to the production server on a successful build.
+
+### `yarn deploy-force:msu-local-to-staging`
+
+Bypasses GitHub to deploy your current branch directly to `msu-staging`, skipping any linting or tests. This should ONLY be used when all of these are true:
 
 1. What's currently on staging has already been approved for production
 2. You want to do some QA before completing the code review
 
-### `yarn deploy-force:local-to-production`
+### `yarn deploy-force:msu-local-to-production`
 
-To be used ONLY for hotfixes in emergency situations. For example:
+Deploys your current branch directly to `msu-prod`. To be used ONLY for hotfixes in emergency situations. For example:
+
+- The app isn't working on production and it's blocking students from doing any work
+- Students are seeing incorrect information, which is causing a great deal of confusion
+
+Since this bypasses linting, tests, and QA, it is up to you to confirm that your changes do not cause more harm than good.
+
+### `yarn deploy:codelab517-staging-to-production`
+
+When code on staging passes QA, this promotes the `master` branch on GitHub to `codelab517-prod` and pushes to the production server on a successful build.
+
+### `yarn deploy-force:codelab517-local-to-staging`
+
+Bypasses GitHub to deploy your current branch directly to `codelab517-staging`, skipping any linting or tests. This should ONLY be used when all of these are true:
+
+1. What's currently on staging has already been approved for production
+2. You want to do some QA before completing the code review
+
+### `yarn deploy-force:codelab517-local-to-production`
+
+Deploys your current branch directly to `codelab517-prod`. To be used ONLY for hotfixes in emergency situations. For example:
 
 - The app isn't working on production and it's blocking students from doing any work
 - Students are seeing incorrect information, which is causing a great deal of confusion
@@ -98,6 +129,5 @@ Since this bypasses linting, tests, and QA, it is up to you to confirm that your
 
 ## SSL Certificate Renewal
 
-The SSL certificate for codelab.cas.msu.edu is automatically managed and renewed
-by Heroku. More information can be found in the _Domains and Certificates_
-section of the `msu-lansing-codes` settings page at heroku.com.
+The SSL certificates for [codelab.cas.msu.edu](https://codelab.cas.msu.edu) and [codelab517.com](https://codelab517.com) are automatically managed and renewed by Heroku. More information can be found in the _Domains and Certificates_
+section of the respective environment's settings on [heroku.com](https://dashboard.heroku.com/apps).

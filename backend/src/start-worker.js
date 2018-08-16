@@ -19,6 +19,8 @@ import refreshTokenOnRequest from 'routes/_helpers/refresh-token-on-request'
 import refreshTokenOnResponse from 'routes/_helpers/refresh-token-on-response'
 import stopWorker from './stop-worker'
 
+const isProduction = (process.env.NODE_ENV || '').substr(-5) === '-prod'
+
 // Code to start each worker
 export default async () => {
   console.log('Starting worker process')
@@ -41,11 +43,11 @@ export default async () => {
       },
       validate: {
         options: {
-          abortEarly: process.env.NODE_ENV === 'production'
+          abortEarly: isProduction
         },
         async failAction (request, h, err) {
           console.error('Bad request from client. Reason:', err)
-          if (process.env.NODE_ENV === 'production') {
+          if (isProduction) {
             // Respond with a bad request error that does not leak schema info
             throw boom.badRequest('Invalid request payload input')
           } else {
@@ -58,7 +60,7 @@ export default async () => {
   })
 
   // Enforce HTTPS in production
-  if (process.env.NODE_ENV === 'production') {
+  if (isProduction) {
     await server.register(require('hapi-require-https'))
   }
 

@@ -145,6 +145,15 @@ jobs:
     - run:
         name: Deploy production branch to msu-lansing-codes on Heroku
         command: .circleci/deploy-heroku.sh msu-lansing-codes
+  deploy_codelab517_production:
+    working_directory: ~/msu.lansing.codes
+    docker:
+    - image: docker:stable-git
+    steps:
+    - checkout
+    - run:
+        name: Deploy production branch to codelab517 on Heroku
+        command: .circleci/deploy-heroku.sh codelab517
 
 workflows:
   version: 2
@@ -168,4 +177,10 @@ workflows:
         - build
         filters:
           branches:
-            only: production
+            only: msu-prod
+    - deploy_codelab517_production:
+        requires:
+        - build
+        filters:
+          branches:
+            only: codelab517-prod

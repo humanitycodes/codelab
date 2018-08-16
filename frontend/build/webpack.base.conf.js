@@ -5,15 +5,17 @@ var projectRoot = path.resolve(__dirname, '../')
 var fs = require('fs')
 
 function chooseEnvironmentFile () {
-  const username = require('os').userInfo().username
-  if (process.env.NODE_ENV === 'production') {
-    return path.resolve(__dirname, '../src/env/prod')
-  } else if (process.env.NODE_ENV.substr(-8) === '-staging') {
+  const env = process.env.NODE_ENV || ''
+  if (
+    env.substr(-5) === '-prod' ||
+    env.substr(-8) === '-staging'
+  ) {
     return path.resolve(__dirname, `../src/env/${process.env.NODE_ENV}`)
   } else {
     try {
       // Try to use user-specific dev config
-      var userConfigFile = path.resolve(__dirname, '../src/env/dev-' + username + '.js')
+      const username = require('os').userInfo().username
+      const userConfigFile = path.resolve(__dirname, `../src/env/dev-${username}.js`)
       fs.accessSync(userConfigFile, fs.F_OK)
       return userConfigFile
     } catch (e) {

@@ -1,13 +1,16 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 
-let buildEnvFile = './prod.env'
+let buildEnvFile = './test.env'
 let buildIndexFile = path.resolve(__dirname, '../dist/index.html')
 
-if (process.env.NODE_ENV.substr(-8) === '-staging') {
-  buildEnvFile = './staging.env'
+const env = process.env.NODE_ENV || ''
+if (
+  env.substr(-5) === '-prod' ||
+  env.substr(-8) === '-staging'
+) {
+  buildEnvFile = `./${env}.env`
 } else if (process.env.NODE_ENV === 'testing') {
-  buildEnvFile = './test.env'
   buildIndexFile = 'index.html'
 }
 
