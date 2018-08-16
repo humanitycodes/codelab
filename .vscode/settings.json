@@ -16,5 +16,8 @@
     "backend",
     "frontend",
     "test"
-  ]
+  ],
+  "files.associations": {
+    "*.ddl": "sql"
+  }
 }
