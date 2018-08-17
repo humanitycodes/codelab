@@ -74,7 +74,7 @@ This software is configured to deploy to numerous environments via CircleCI:
 * `msu-staging` is the short name for the [MSU Code Lab staging environment](https://msu-codes-staging.herokuapp.com) that is automatically deployed every time changes are promoted to the `master` branch
 * `codelab517-staging` is the short name for the [Code Lab 517 staging environment](https://codelab517-staging.herokuapp.com) that is automatically deployed every time changes are promoted to the `master` branch
 * `msu-prod` is the short name for the [MSU Code Lab production environment](https://codelab.cas.msu.edu) that is automatically deployed every time changes are promoted to the `msu-prod` branch
-* `codelab517-prod` is the short name for the [Code Lab 517 production environment](https://codelab517.com) that is automatically deployed every time changes are promoted to the `codelab517-prod` branch
+* `codelab517-prod` is the short name for the [Code Lab 517 production environment](https://www.codelab517.com) that is automatically deployed every time changes are promoted to the `codelab517-prod` branch
 
 When a code change is promoted to the `master` branch, all staging environments (environments that end with `-staging`) will be deployed simultaneously. These environments all run in Heroku using free hobby plans.
 
@@ -129,5 +129,5 @@ Since this bypasses linting, tests, and QA, it is up to you to confirm that your
 
 ## SSL Certificate Renewal
 
-The SSL certificates for [codelab.cas.msu.edu](https://codelab.cas.msu.edu) and [codelab517.com](https://codelab517.com) are automatically managed and renewed by Heroku. More information can be found in the _Domains and Certificates_
+The SSL certificates for [codelab.cas.msu.edu](https://codelab.cas.msu.edu) and [codelab517.com](https://www.codelab517.com) are automatically managed and renewed by Heroku. More information can be found in the _Domains and Certificates_
 section of the respective environment's settings on [heroku.com](https://dashboard.heroku.com/apps).
