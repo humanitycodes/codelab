@@ -1,10 +1,10 @@
-# MSU Codes
+# Code Lab
 
 ## Organization
 
 The codebase is split into several parts:
 
-* `.circleci` - Continuous integration configuration via [CircleCI](https://circleci.com/gh/chrisvfritz/msu.lansing.codes)
+* `.circleci` - Continuous integration configuration via [CircleCI](https://circleci.com/gh/humanitycodes/codelab)
 * `.vscode` - VS Code is the editor of choice for this project and workspace configuration is provided in this directory
 * `backend` - Code for the server-side API, which also hosts the client code in non-dev environments
 * `database` - Anything related specifically to the Postgres database (docs, migration scripts, etc.)

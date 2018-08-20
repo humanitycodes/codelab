@@ -4,7 +4,7 @@
   "license": "UNLICENSED",
   "private": true,
   "author": "Humanity Codes, LLC",
-  "homepage": "https://github.com/chrisvfritz/msu.lansing.codes#readme",
+  "homepage": "https://github.com/humanitycodes/codelab#readme",
   "description": "Learning Management System for Coding Courses",
   "contributors": [
     "Chris Fritz",
@@ -13,10 +13,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chrisvfritz/msu.lansing.codes.git"
+    "url": "git+https://github.com/humanitycodes/codelab.git"
   },
   "bugs": {
-    "url": "https://github.com/chrisvfritz/msu.lansing.codes/issues"
+    "url": "https://github.com/humanitycodes/codelab/issues"
   },
   "scripts": {
     "install:backend": "cd backend && cross-env NODE_ENV=development yarn --pure-lockfile",

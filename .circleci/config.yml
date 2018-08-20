@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/msu.lansing.codes
+    working_directory: ~/codelab
     parallelism: 1
     shell: /bin/bash --login
     # CircleCI 2.0 does not support environment variables that refer to each other
@@ -18,8 +18,8 @@ jobs:
     steps:
     # Setup PATH (can't do in environment section because PATH refers to itself)
     - run:
-        working_directory: ~/msu.lansing.codes
-        command: echo -e "export PATH=${PATH}:~/msu.lansing.codes/.yarn/bin:~/msu.lansing.codes/node_modules/.bin" >> $BASH_ENV
+        working_directory: ~/codelab
+        command: echo -e "export PATH=${PATH}:~/codelab/.yarn/bin:~/codelab/node_modules/.bin" >> $BASH_ENV
     # The following `checkout` command checks out your code to your working directory
     - checkout
     # Restore dependency caches
@@ -119,7 +119,7 @@ jobs:
     - store_test_results:
         path: ./test/dist/e2e-reports
   deploy_msu_staging:
-    working_directory: ~/msu.lansing.codes
+    working_directory: ~/codelab
     docker:
     - image: docker:stable-git
     steps:
@@ -128,7 +128,7 @@ jobs:
         name: Deploy master branch to msu-codes-staging on Heroku
         command: .circleci/deploy-heroku.sh msu-codes-staging
   deploy_codelab517_staging:
-    working_directory: ~/msu.lansing.codes
+    working_directory: ~/codelab
     docker:
     - image: docker:stable-git
     steps:
@@ -137,7 +137,7 @@ jobs:
         name: Deploy master branch to codelab517-staging on Heroku
         command: .circleci/deploy-heroku.sh codelab517-staging
   deploy_msu_production:
-    working_directory: ~/msu.lansing.codes
+    working_directory: ~/codelab
     docker:
     - image: docker:stable-git
     steps:
@@ -146,7 +146,7 @@ jobs:
         name: Deploy production branch to msu-lansing-codes on Heroku
         command: .circleci/deploy-heroku.sh msu-lansing-codes
   deploy_codelab517_production:
-    working_directory: ~/msu.lansing.codes
+    working_directory: ~/codelab
     docker:
     - image: docker:stable-git
     steps:
