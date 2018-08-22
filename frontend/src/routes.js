@@ -6,12 +6,15 @@ import {
 } from '@state/auth/courses'
 import courseByKey from '@helpers/finders/course-by-key'
 import store from '@state/store'
+import env from '@env'
 
-// For routes that only staff are likely to access,
-// require.ensure is used to lazy-load those modules
-// so that students can download a much smaller
-// bundle that only includes the parts of the app
-// that they need to access.
+// For routes that only staff are likely to access, require.ensure is used to
+// lazy-load those modules so that students can download a much smaller bundle
+// that only includes the parts of the app that they need to access.
+//
+// Similarly, each operating mode such as 'msu' and 'codelab517' have their own
+// bundles so that, for example, an MSU user does not download by default the
+// assets intended for Code Lab 517 users.
 
 export default [
   {
@@ -19,21 +22,27 @@ export default [
     meta: {
       isPublic: true
     },
-    redirect: to => {
+    beforeEnter (to, from, next) {
       if (store.state.users.currentUser) {
         const courses = store.getters.courses
-        return canReadAllCourses()
-          ? '/code-reviews'
-          : courses.length === 1
-            ? '/courses/' + courses[0].courseKey
-            : '/courses'
+        if (canReadAllCourses()) {
+          next('/code-reviews')
+        } else if (courses.length === 1) {
+          next('/courses/' + courses[0].courseKey)
+        } else {
+          next('/courses')
+        }
+      } else if (env.mode === 'msu') {
+        next('/msu-sign-in')
+      } else {
+        next()
       }
-      return '/msu-sign-in'
-    }
+    },
+    component: resolve => require.ensure([], () => resolve(require('@pages/home')), 'codelab517')
   },
   {
     path: '/lessons',
-    component: cb => require.ensure([], () => cb(require('@pages/lessons')), 'staff'),
+    component: resolve => require.ensure([], () => resolve(require('@pages/lessons')), 'staff'),
     meta: {
       isAuthorized: canReadAllLessons,
       layout: 'full'
@@ -41,14 +50,14 @@ export default [
   },
   {
     path: '/lessons/new',
-    component: cb => require.ensure([], () => cb(require('@pages/lesson-new')), 'staff'),
+    component: resolve => require.ensure([], () => resolve(require('@pages/lesson-new')), 'staff'),
     meta: {
       isAuthorized: canCreateLesson
     }
   },
   {
     path: '/lessons/:lessonKey/edit',
-    component: cb => require.ensure([], () => cb(require('@pages/lesson-edit')), 'staff'),
+    component: resolve => require.ensure([], () => resolve(require('@pages/lesson-edit')), 'staff'),
     meta: {
       isAuthorized: canUpdateLesson
     }
@@ -59,21 +68,21 @@ export default [
   },
   {
     path: '/courses/new',
-    component: cb => require.ensure([], () => cb(require('@pages/course-new')), 'staff'),
+    component: resolve => require.ensure([], () => resolve(require('@pages/course-new')), 'staff'),
     meta: {
       isAuthorized: canCreateCourse
     }
   },
   {
     path: '/courses/:courseKey/edit',
-    beforeEnter: (to, from, next) => {
+    beforeEnter (to, from, next) {
       const course = courseByKey(to.params.courseKey)
       const currentUserId = store.state.users.currentUser.userId
       return course.instructorIds.some(userId => userId === currentUserId)
         ? next()
         : next({ name: 'course-view', params: to.params })
     },
-    component: cb => require.ensure([], () => cb(require('@pages/course-edit')), 'staff'),
+    component: resolve => require.ensure([], () => resolve(require('@pages/course-edit')), 'staff'),
     meta: {
       isAuthorized: canUpdateCourse
     }
@@ -122,7 +131,7 @@ export default [
   // },
   {
     path: '/msu-sign-in',
-    component: require('@pages/sign-in-msu'),
+    component: resolve => require.ensure([], () => resolve(require('@pages/sign-in-msu')), 'msu'),
     meta: {
       isPublic: true
     }
