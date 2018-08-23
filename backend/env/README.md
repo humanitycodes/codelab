@@ -9,40 +9,46 @@ staging, or production environment, make sure to update the value in that
 environment's KeePass database as well!
 ~~~
 
+### `CODELAB_BRAND`
+
+The name of the brand used in this environment. Choices are: `codelab517` or
+`msu`. The brand influences both the behavior of the application and how it
+looks to users.
+
 ### `CODELAB_DB_HOST`
 
 The hostname or IP address of the application's database server. The default
 database host is `localhost`.
 
-See alo `DATABASE_URL`.
+See also `DATABASE_URL`.
 
 ### `CODELAB_DB_NAME`
 
 The name of the database that the application will attempt to use after
 successfully connecting. The default database name is `codelab`.
 
-See alo `DATABASE_URL`.
+See also `DATABASE_URL`.
 
 ### `CODELAB_DB_PASSWORD`
 
 The password used to authenticate against the application's database server.
 The default database password is `Jenny*^&%#)(`.
 
-See alo `DATABASE_URL`.
+See also `DATABASE_URL`.
 
 ### `CODELAB_DB_PORT`
 
 The port on which the application's database server allows incoming connections.
 The default database port is `5432`.
 
-See alo `DATABASE_URL`.
+See also `DATABASE_URL`.
 
 ### `CODELAB_DB_USERNAME`
 
 The username used to authenticate against the application's database server.
 The default database username is `codelab_app`.
 
-See alo `DATABASE_URL`.
+See also `DATABASE_URL`.
 
 ### `CODELAB_GITHUB_AUTH_CLIENT_SECRET`
 

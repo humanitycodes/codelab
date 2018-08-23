@@ -1,5 +1,5 @@
 export default {
-  mode: 'msu',
+  brand: process.env.CODELAB_BRAND || 'msu',
 
   msuAuthClientId: 'OAuth-MI-MSU-Lansing-Codes-Dev',
   githubAuthClientId: '740ecf728a1bf799961b',

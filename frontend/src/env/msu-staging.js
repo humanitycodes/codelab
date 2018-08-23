@@ -1,5 +1,5 @@
 export default {
-  mode: 'msu',
+  brand: 'msu',
 
   msuAuthClientId: 'OAuth-MI-MSU-Lansing-Codes-Staging',
   githubAuthClientId: '473069becdcae15254ea',

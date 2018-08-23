@@ -1,6 +1,28 @@
 var path = require('path')
 var config = require('../config')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var fs = require('fs')
+
+exports.environmentFile = function () {
+  const env = process.env.NODE_ENV || ''
+  if (
+    env.substr(-5) === '-prod' ||
+    env.substr(-8) === '-staging'
+  ) {
+    return path.resolve(__dirname, `../src/env/${process.env.NODE_ENV}`)
+  } else {
+    try {
+      // Try to use user-specific dev config
+      const username = require('os').userInfo().username
+      const userConfigFile = path.resolve(__dirname, `../src/env/dev-${username}.js`)
+      fs.accessSync(userConfigFile, fs.F_OK)
+      return userConfigFile
+    } catch (e) {
+      // Use default dev config
+      return path.resolve(__dirname, '../src/env/dev')
+    }
+  }
+}
 
 exports.assetsPath = function (_path) {
   var assetsSubDirectory = (process.env.NODE_ENV || '').substr(-5) === '-prod'

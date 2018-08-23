@@ -1,8 +1,6 @@
 import devDefaults from './dev'
 
 export default Object.assign(devDefaults, {
-  mode: 'codelab517',
-
   firebaseConfig: {
     apiKey: 'AIzaSyC-0acvM0VdHRkxwJ_pU0bb4rc7q29BKfI',
     authDomain: 'msulansingcodesdev-egillespie.firebaseapp.com',
