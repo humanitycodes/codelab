@@ -1,0 +1,88 @@
+{
+  "branding": {
+    "default": {
+      "light": "#FFF",
+      "dark": "#EEE"
+    },
+    "primary": {
+      "light": "#07682c",
+      "dark": "#17453A"
+    },
+    "danger": {
+      "light": "#D93946",
+      "dark": "#8F0000"
+    },
+    "warning": {
+      "light": "#A7AE55",
+      "dark": "#747B22"
+    },
+    "success": {
+      "light": "#09883A",
+      "dark": "#17453A"
+    },
+    "note": {
+      "light": "#5a9fd8",
+      "dark": "#2a5375"
+    },
+    "muted": {
+      "light": {
+        "tan": "#FBFCF2",
+        "gray": "#E8EAEA",
+        "yellow": "#F8F7E1",
+        "red": "#ffdee1",
+        "success": "#edfbed",
+        "note": "#d1e8fb"
+      }
+    }
+  },
+  "layout": {
+    "gutterWidth": "20px"
+  },
+  "control": {
+    "height": "38px",
+    "padding": {
+      "vertical": "6px",
+      "horizontal": "10px"
+    },
+    "border": {
+      "color": "#d4dada",
+      "radius": "3px"
+    },
+    "active": {
+      "border": {
+        "color": "#3675BC"
+      }
+    }
+  },
+  "body": {
+    "background": "#f9f9f7",
+    "text": {
+      "color": "#535054"
+    }
+  },
+  "code": {
+    "font": {
+      "family": "'Operator Mono', 'Fira Code', 'Ubuntu Mono', 'Droid Sans Mono', 'Liberation Mono', 'Source Code Pro', Menlo, Consolas, Courier, monospace"
+    },
+    "block": {
+      "background": "#282C34"
+    },
+    "langColors": {
+      "light": {
+        "html": "#ffc5c5",
+        "css": "#d5e2ec",
+        "js": "#f3e9a6"
+      },
+      "dark": {
+        "html": "#bf8f8f",
+        "css": "#8ba0b1",
+        "js": "#b5a53c"
+      }
+    }
+  },
+  "project": {
+    "breadcrumbs": {
+      "breakpoint": "500px"
+    }
+  }
+}

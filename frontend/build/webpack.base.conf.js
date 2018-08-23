@@ -2,28 +2,6 @@ var path = require('path')
 var config = require('../config')
 var utils = require('./utils')
 var projectRoot = path.resolve(__dirname, '../')
-var fs = require('fs')
-
-function chooseEnvironmentFile () {
-  const env = process.env.NODE_ENV || ''
-  if (
-    env.substr(-5) === '-prod' ||
-    env.substr(-8) === '-staging'
-  ) {
-    return path.resolve(__dirname, `../src/env/${process.env.NODE_ENV}`)
-  } else {
-    try {
-      // Try to use user-specific dev config
-      const username = require('os').userInfo().username
-      const userConfigFile = path.resolve(__dirname, `../src/env/dev-${username}.js`)
-      fs.accessSync(userConfigFile, fs.F_OK)
-      return userConfigFile
-    } catch (e) {
-      // Use default dev config
-      return path.resolve(__dirname, '../src/env/dev')
-    }
-  }
-}
 
 module.exports = {
   entry: {
@@ -43,7 +21,7 @@ module.exports = {
       '@components': path.resolve(__dirname, '../src/components'),
       '@config': path.resolve(__dirname, '../config'),
       '@constants': path.resolve(__dirname, '../src/constants'),
-      '@env': chooseEnvironmentFile(),
+      '@env': utils.environmentFile(),
       '@helpers': path.resolve(__dirname, '../src/helpers'),
       '@layouts': path.resolve(__dirname, '../src/layouts'),
       '@pages': path.resolve(__dirname, '../src/pages'),

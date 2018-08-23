@@ -1,1 +1,3 @@
-$design = json('../config/design.json', { hash: true })
+use('../config/design/plugins/design-file.js')
+
+$design = json('../config/design/' + designFile(), { hash: true })

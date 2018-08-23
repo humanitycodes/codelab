@@ -12,9 +12,9 @@ import env from '@env'
 // lazy-load those modules so that students can download a much smaller bundle
 // that only includes the parts of the app that they need to access.
 //
-// Similarly, each operating mode such as 'msu' and 'codelab517' have their own
-// bundles so that, for example, an MSU user does not download by default the
-// assets intended for Code Lab 517 users.
+// Similarly, each brand such as 'msu' and 'codelab517' has its own bundle so
+// that, for example, an MSU user does not automatically download the assets
+// intended for Code Lab 517 users.
 
 export default [
   {
@@ -32,7 +32,7 @@ export default [
         } else {
           next('/courses')
         }
-      } else if (env.mode === 'msu') {
+      } else if (env.brand === 'msu') {
         next('/msu-sign-in')
       } else {
         next()
