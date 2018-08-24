@@ -204,19 +204,13 @@ module.exports = {
 
   fonts: {
     'sans': [
-      'Merriweather',
+      'Lato',
+      'Verdana',
+      'Arial',
       'sans-serif'
     ],
     'serif': [
-      'Constantia',
-      'Lucida Bright',
-      'Lucidabright',
-      'Lucida Serif',
-      'Lucida',
-      'DejaVu Serif',
-      'Bitstream Vera Serif',
-      'Liberation Serif',
-      'Georgia',
+      'Merriweather',
       'serif'
     ],
     'mono': [
@@ -258,7 +252,10 @@ module.exports = {
     '2xl': '1.5rem',
     '3xl': '1.875rem',
     '4xl': '2.25rem',
-    '5xl': '3rem'
+    '5xl': '3rem',
+    '6xl': '3.5rem',
+    '7xl': '4rem',
+    '8xl': '4.5rem',
   },
 
   /*
