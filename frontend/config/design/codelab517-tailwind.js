@@ -44,14 +44,14 @@ View the full documentation at https://tailwindcss.com.
 var colors = {
   'transparent': 'transparent',
 
-  'black': '#22292f',
+  'black': '#535054',
   'grey-darkest': '#3d4852',
   'grey-darker': '#606f7b',
   'grey-dark': '#8795a1',
   'grey': '#b8c2cc',
   'grey-light': '#dae1e7',
   'grey-lighter': '#f1f5f8',
-  'grey-lightest': '#f8fafc',
+  'grey-lightest': '#f9f9f7',
   'white': '#ffffff',
 
   'red-darkest': '#3b0d0c',
@@ -127,7 +127,21 @@ var colors = {
   'pink-lightest': '#ffebef'
 }
 
+// Shortcuts to files are all relative to assets/css
+var files = {
+  'background-image': 'none'
+}
+
+// Put files in `url('')` because config() doesn't work when nested
+Object.keys(files).forEach(function (key) {
+  if (files[key] !== 'none') {
+    files[key] = 'url(\'' + files[key] + '\')'
+  }
+})
+
 module.exports = {
+
+  files: files,
 
   /*
   |-----------------------------------------------------------------------------
@@ -190,17 +204,7 @@ module.exports = {
 
   fonts: {
     'sans': [
-      'system-ui',
-      'BlinkMacSystemFont',
-      '-apple-system',
-      'Segoe UI',
-      'Roboto',
-      'Oxygen',
-      'Ubuntu',
-      'Cantarell',
-      'Fira Sans',
-      'Droid Sans',
-      'Helvetica Neue',
+      'Merriweather',
       'sans-serif'
     ],
     'serif': [

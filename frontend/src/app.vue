@@ -19,7 +19,6 @@ export default {}
   position: absolute
   width: 100%
 .page-transition-enter-active
-  background: url('assets/images/paper-overlay.png') $design.body.background
   transition: opacity .3s cubic-bezier(.01,.98,.71,.84)
   z-index: 30
 .page-transition-leave-active
@@ -31,19 +30,6 @@ export default {}
 
 <style lang="stylus">
 @import './meta'
-
-*, *:before, *:after
-  box-sizing: border-box
-
-html, body
-  background: url('assets/images/paper-overlay.png') $design.body.background
-  font-family: Merriweather
-  font-weight: 300
-  color: $design.body.text.color
-  overflow-x: hidden
-
-body, i.fa
-  line-height: 1.7
 
 h1, h2, h3, h4, h5, h6
   font-family: Lato
