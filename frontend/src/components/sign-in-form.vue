@@ -3,14 +3,14 @@
     <p v-if="credentials.error" class="warning">
       Invalid Credentials
     </p>
-    <div class="flex-row">
-      <div class="flex-col">
+    <div class="stretch-row">
+      <div class="stretch-col">
         <label for="email">Email</label>
         <input v-model="credentials.email" id="email" placeholder="you@domain.com" type="text" @keyup.enter="signIn">
       </div>
     </div>
-    <div class="flex-row">
-      <div class="flex-col">
+    <div class="stretch-row">
+      <div class="stretch-col">
         <label for="password">Password</label>
         <input v-model="credentials.password" id="password" type="password" @keyup.enter="signIn">
       </div>

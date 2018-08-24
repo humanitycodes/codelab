@@ -1,5 +1,5 @@
 <template>
-  <div v-if="projectStatus !== 'unstarted'" class="flex-row project-submission-breadcrumbs">
+  <div v-if="projectStatus !== 'unstarted'" class="stretch-row project-submission-breadcrumbs">
     <Breadcrumb
       :is-active="projectStatus === 'started'"
       :is-complete="projectStatus !== 'started'"
@@ -45,7 +45,7 @@ export default {
 
 .project-submission-breadcrumbs
   margin-bottom: 0
-  > .flex-col
+  > .stretch-col
     &:first-child
       border-top-left-radius: $design.control.border.radius
     &:last-child
@@ -54,7 +54,7 @@ export default {
 @media screen and (max-width: $design.project.breadcrumbs.breakpoint)
   .project-submission-breadcrumbs
     flex-direction: column
-    > .flex-col
+    > .stretch-col
       &:first-child
         border-top-right-radius: $design.control.border.radius
       &:last-child

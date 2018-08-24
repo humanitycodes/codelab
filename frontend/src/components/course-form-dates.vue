@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="flex-row">
-      <div class="flex-col">
+    <div class="stretch-row">
+      <div class="stretch-col">
         <label for="course-start-date">Start Date</label>
         <DatePicker v-model="course.startDate" id="course-start-date" name="course-start-date"/>
       </div>
-      <div class="flex-col">
+      <div class="stretch-col">
         <label for="course-end-date">End Date</label>
         <DatePicker v-model="course.endDate" at-day="end" id="course-end-date" name="course-end-date"/>
       </div>

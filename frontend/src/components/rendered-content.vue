@@ -1,6 +1,6 @@
 <template>
-  <div class="flex-row" v-if="content">
-    <div class="rendered-content-container flex-col">
+  <div class="stretch-row" v-if="content">
+    <div class="rendered-content-container stretch-col">
       <PageNavigation
         v-if="!paginationPlacement || paginationPlacement === 'top'"
         v-model="currentPage"
@@ -48,7 +48,7 @@ export default {
     PageNavigation: {
       render (h) {
         return (
-          <div class='flex-row rendered-content-page-navigation'>
+          <div class='stretch-row rendered-content-page-navigation'>
             <button
               on-click={this.toPrevPage}
               disabled={this.value === 1}

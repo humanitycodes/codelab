@@ -1,6 +1,6 @@
 <template>
-  <div class="flex-row">
-    <div class="flex-col" :disabled="disabled">
+  <div class="stretch-row">
+    <div class="stretch-col" :disabled="disabled">
       <label for="course-instructor-query">Instructors</label>
       <Dropdown
         :results="queryResults"

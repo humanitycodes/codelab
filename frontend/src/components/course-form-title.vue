@@ -1,6 +1,6 @@
 <template>
-  <div class="flex-row">
-    <div class="flex-col">
+  <div class="stretch-row">
+    <div class="stretch-col">
       <label for="course-title">Title</label>
       <input
         v-model="course.title"

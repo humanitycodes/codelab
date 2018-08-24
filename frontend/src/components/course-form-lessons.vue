@@ -1,6 +1,6 @@
 <template>
-  <div class="flex-row">
-    <div class="flex-col">
+  <div class="stretch-row">
+    <div class="stretch-col">
       <label for="course-lesson-query">Lessons</label>
       <Dropdown
         :results="queryResults"

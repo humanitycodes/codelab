@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex-col project-status-breadcrumb"
+    class="stretch-col project-status-breadcrumb"
     :class="{
       active: isActive,
       complete: isComplete
