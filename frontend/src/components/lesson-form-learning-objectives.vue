@@ -10,7 +10,7 @@
         placeholder="What new skills will students acquire?"
       >
       <OrderedEditableList :items="lesson.learningObjectives">
-        <template scope="list">
+        <template slot-scope="list">
           <input
             v-model="list.item.content"
             :id="`learning-objective-${list.item.position}`"

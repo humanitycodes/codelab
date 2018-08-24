@@ -24,7 +24,7 @@
             placeholder="Add project criteria"
           >
           <OrderedEditableList :items="lesson.projectCriteria">
-            <template scope="list">
+            <template slot-scope="list">
               <input
                 v-model="list.item.content"
                 :id="`project-criterion-${list.item.position}`"

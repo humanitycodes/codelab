@@ -10,6 +10,7 @@
     <div class="dropdown-results" v-show="results.length">
       <div
         v-for="(result, index) in results"
+        :key="index"
         @click="resultHandler(result)"
         @mouseenter="focusedResultIndex = index"
         class="dropdown-result"

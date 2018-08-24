@@ -8,6 +8,7 @@ import getUsers from '@api/users/get-users'
 
 const syncCache = {}
 
+/* eslint-env browser */
 export default {
   state: {
     currentUser: null,

@@ -1,6 +1,6 @@
 import postToGitHub from './_helpers/post-to-github'
-import { config } from '../../../env/config'
-import CODELAB_GITHUB_EVENTS_PATH_SECRET from '../../../env/github-events-path-secret'
+import githubEventsPathSecret from '../../../env/github-events-path-secret'
+import serverBaseUrl from '../../../env/server-base-url'
 import githubEventHandlerMap from 'routes/api/github-events/_helpers/github-event-handler-map'
 
 export default async (token, { owner, repo }) =>
@@ -9,7 +9,11 @@ export default async (token, { owner, repo }) =>
     active: true,
     events: Object.keys(githubEventHandlerMap),
     config: {
-      url: `${config.githubEventsBaseURL}/${CODELAB_GITHUB_EVENTS_PATH_SECRET}`,
+      url: [
+        serverBaseUrl,
+        'api/github-events',
+        githubEventsPathSecret
+      ].join('/'),
       content_type: 'json'
     }
   })

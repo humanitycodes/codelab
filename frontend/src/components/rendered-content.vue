@@ -151,14 +151,12 @@ export default {
       })
     },
     validatedCurrentPage () {
-      const validatedCurrentPage = isNaN(this.currentPage)
+      return isNaN(this.currentPage)
         ? 1
         : Math.min(
           this.pages.length,
           Math.max(1, this.currentPage)
         )
-      this.currentPage = validatedCurrentPage
-      return validatedCurrentPage
     }
   },
   mounted () {

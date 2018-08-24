@@ -6,7 +6,7 @@ import {
 } from '@state/auth/courses'
 import courseByKey from '@helpers/finders/course-by-key'
 import store from '@state/store'
-import env from '@env'
+import brand from '@env/brand'
 
 // For routes that only staff are likely to access, require.ensure is used to
 // lazy-load those modules so that students can download a much smaller bundle
@@ -32,17 +32,17 @@ export default [
         } else {
           next('/courses')
         }
-      } else if (env.brand === 'msu') {
+      } else if (brand === 'msu') {
         next('/msu-sign-in')
       } else {
         next()
       }
     },
-    component: resolve => require.ensure([], () => resolve(require('@pages/home')), 'codelab517')
+    component: resolve => require.ensure([], () => resolve(require('@pages/home').default), 'codelab517')
   },
   {
     path: '/lessons',
-    component: resolve => require.ensure([], () => resolve(require('@pages/lessons')), 'staff'),
+    component: resolve => require.ensure([], () => resolve(require('@pages/lessons').default), 'staff'),
     meta: {
       isAuthorized: canReadAllLessons,
       layout: 'full'
@@ -50,25 +50,25 @@ export default [
   },
   {
     path: '/lessons/new',
-    component: resolve => require.ensure([], () => resolve(require('@pages/lesson-new')), 'staff'),
+    component: resolve => require.ensure([], () => resolve(require('@pages/lesson-new').default), 'staff'),
     meta: {
       isAuthorized: canCreateLesson
     }
   },
   {
     path: '/lessons/:lessonKey/edit',
-    component: resolve => require.ensure([], () => resolve(require('@pages/lesson-edit')), 'staff'),
+    component: resolve => require.ensure([], () => resolve(require('@pages/lesson-edit').default), 'staff'),
     meta: {
       isAuthorized: canUpdateLesson
     }
   },
   {
     path: '/courses',
-    component: require('@pages/courses')
+    component: () => import('@pages/courses')
   },
   {
     path: '/courses/new',
-    component: resolve => require.ensure([], () => resolve(require('@pages/course-new')), 'staff'),
+    component: resolve => require.ensure([], () => resolve(require('@pages/course-new').default), 'staff'),
     meta: {
       isAuthorized: canCreateCourse
     }
@@ -82,7 +82,7 @@ export default [
         ? next()
         : next({ name: 'course-view', params: to.params })
     },
-    component: resolve => require.ensure([], () => resolve(require('@pages/course-edit')), 'staff'),
+    component: resolve => require.ensure([], () => resolve(require('@pages/course-edit').default), 'staff'),
     meta: {
       isAuthorized: canUpdateCourse
     }
@@ -90,7 +90,7 @@ export default [
   {
     path: '/courses/:courseKey',
     name: 'course-view',
-    component: require('@pages/course'),
+    component: () => import('@pages/course'),
     meta: {
       isAuthorized: canReadCourse,
       layout: 'full'
@@ -102,14 +102,14 @@ export default [
   },
   {
     path: '/courses/:courseKey/lessons/:lessonKey/:currentPage/:currentView?',
-    component: require('@pages/course-lesson'),
+    component: () => import('@pages/course-lesson'),
     meta: {
       isAuthorized: canReadCourse
     }
   },
   {
     path: '/code-reviews',
-    component: require('@pages/code-reviews'),
+    component: () => import('@pages/code-reviews'),
     meta: {
       isAuthorized: canReadAllCourses,
       layout: 'full'
@@ -117,28 +117,22 @@ export default [
   },
   {
     path: '/student-progress',
-    component: require('@pages/student-progress'),
+    component: () => import('@pages/student-progress'),
     meta: {
       isAuthorized: canReadAllCourses,
       layout: 'full'
     }
   },
-  // We do not need this live for now.
-  // {
-  //   // This is just a place to give us a place to put components.
-  //   path: '/demos',
-  //   component: require('@pages/demos')
-  // },
   {
     path: '/msu-sign-in',
-    component: resolve => require.ensure([], () => resolve(require('@pages/sign-in-msu')), 'msu'),
+    component: resolve => require.ensure([], () => resolve(require('@pages/sign-in-msu').default), 'msu'),
     meta: {
       isPublic: true
     }
   },
   {
     path: '/github-sign-in',
-    component: require('@pages/sign-in-github'),
+    component: () => import('@pages/sign-in-github'),
     meta: {
       isPublic: true
     }
@@ -147,18 +141,18 @@ export default [
     // This path has a required query parameter: ?token={jwt}
     // The periods in the token cause something to break when used as path param
     path: '/sign-in',
-    component: require('@pages/sign-in'),
+    component: () => import('@pages/sign-in'),
     meta: {
       isPublic: true
     }
   },
   {
     path: '/sign-out',
-    component: require('@pages/sign-out')
+    component: () => import('@pages/sign-out')
   },
   {
     path: '*',
     name: 'not-found',
-    component: require('@pages/not-found')
+    component: () => import('@pages/not-found')
   }
 ]

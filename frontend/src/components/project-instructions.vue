@@ -27,12 +27,12 @@ import courseProjectCompletionHostedUrl from '@helpers/computed/course-project-c
 import ProjectStartOverButton from '@components/project-start-over-button'
 
 const statusInstructions = {
-  unstarted: require('./project-instructions-unstarted'),
-  started: require('./project-instructions-started'),
-  startedWithCommit: require('./project-instructions-started-with-commit'),
-  pendingReview: require('./project-instructions-pending-review'),
-  changesRequested: require('./project-instructions-changes-requested'),
-  approved: require('./project-instructions-approved')
+  unstarted: () => import('./project-instructions-unstarted'),
+  started: () => import('./project-instructions-started'),
+  startedWithCommit: () => import('./project-instructions-started-with-commit'),
+  pendingReview: () => import('./project-instructions-pending-review'),
+  changesRequested: () => import('./project-instructions-changes-requested'),
+  approved: () => import('./project-instructions-approved')
 }
 
 export default {
