@@ -12,7 +12,7 @@ html {
 
 body,
 i.fa {
-  line-height: 1.7;
+  @apply .leading-normal;
 }
 
 @tailwind utilities;
