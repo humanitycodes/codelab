@@ -19,7 +19,7 @@ import refreshTokenOnRequest from 'routes/_helpers/refresh-token-on-request'
 import refreshTokenOnResponse from 'routes/_helpers/refresh-token-on-response'
 import stopWorker from './stop-worker'
 
-const isProduction = (process.env.NODE_ENV || '').substr(-5) === '-prod'
+const isProduction = process.env.NODE_ENV === 'production'
 
 // Code to start each worker
 export default async () => {

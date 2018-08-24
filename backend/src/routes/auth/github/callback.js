@@ -1,6 +1,5 @@
 import joi from 'joi'
 import boom from 'boom'
-import { config } from '../../../../env/config'
 import signJsonWebToken from 'helpers/jwt/sign-json-web-token'
 import decodeJsonWebToken from 'helpers/jwt/decode-json-web-token'
 import sequelize from 'db/sequelize'
@@ -12,6 +11,7 @@ import translateUserFromRecord from 'translators/user/from-record'
 import getGitHubAccessToken from 'services/github/get-access-token'
 import getGitHubUserProfile from 'services/github/get-user-profile'
 import getGitHubUserEmails from 'services/github/get-user-emails'
+import serverBaseUrl from '../../../../env/server-base-url'
 
 export default {
   method: 'GET',
@@ -86,7 +86,7 @@ export default {
       // The Base64 JWT can contain + symbols, so encode it because the token
       // is being sent to the client via the URL as a query parameter
       const encodedJwt = encodeURIComponent(jwt)
-      let url = `${config.serverBaseURL}/sign-in?token=${encodedJwt}`
+      let url = `${serverBaseUrl}/sign-in?token=${encodedJwt}`
       if (request.query.state) {
         url += `&returnPath=/${request.params.returnPath}`
       }

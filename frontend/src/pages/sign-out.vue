@@ -9,6 +9,6 @@ export default {
     // components on the previous route, which is unwanted and error-prone.
     next(() => store.dispatch('signOut').then(() => next('/')))
   },
-  render () {}
+  render: () => ''
 }
 </script>

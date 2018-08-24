@@ -209,7 +209,7 @@ export default {
     getHostedUrl (codeReview) {
       return courseProjectCompletionHostedUrl(
         codeReview.course,
-        codeReview.projectCompletion,
+        codeReview.projectCompletion
       )
     },
     getValidatorUrl (codeReview) {
@@ -288,7 +288,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="stylus" scoped>
 @import '../meta'

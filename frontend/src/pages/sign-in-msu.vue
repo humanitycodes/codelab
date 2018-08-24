@@ -4,6 +4,7 @@
     <AuthLink
       provider="msu"
       class="
+        btn-blue
         msu-standalone-signin-button
         button
         primary

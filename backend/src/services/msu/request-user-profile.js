@@ -1,23 +1,26 @@
 import axios from 'axios'
 import querystring from 'querystring'
-import { config } from '../../../env/config'
-import CODELAB_MSU_AUTH_CLIENT_SECRET from '../../../env/msu-auth-client-secret'
+import msuAuthClientId from '../../../env/msu-auth-client-id'
+import msuAuthClientSecret from '../../../env/msu-auth-client-secret'
+import serverBaseUrl from '../../../env/server-base-url'
+
+const msuAuthBaseUrl = 'https://oauth.itservices.msu.edu'
 
 export default async code => {
   const msuProfile = {
     provider: 'msu'
   }
-  return axios.post(`${config.msuAuthBaseURL}/oauth/token`, querystring.stringify({
+  return axios.post(`${msuAuthBaseUrl}/oauth/token`, querystring.stringify({
     code: code,
-    client_id: config.msuAuthClientID,
-    client_secret: CODELAB_MSU_AUTH_CLIENT_SECRET,
+    client_id: msuAuthClientId,
+    client_secret: msuAuthClientSecret,
     grant_type: 'authorization_code',
-    redirect_uri: `${config.serverBaseURL}/auth/msu/callback`
+    redirect_uri: `${serverBaseUrl}/auth/msu/callback`
   }))
   .then(response => {
     msuProfile.type = response.data.token_type
     msuProfile.token = response.data.access_token
-    return axios.get(`${config.msuAuthBaseURL}/oauth/me?access_token=${msuProfile.token}`)
+    return axios.get(`${msuAuthBaseUrl}/oauth/me?access_token=${msuProfile.token}`)
   })
   .then(response => {
     msuProfile.id = response.data.uid

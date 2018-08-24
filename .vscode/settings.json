@@ -13,11 +13,12 @@
     "vue"
   ],
   "eslint.workingDirectories": [
-    "backend",
-    "frontend",
-    "test"
+    "./backend",
+    "./frontend",
+    "./test"
   ],
   "files.associations": {
+    "*.css": "stylus",
     "*.ddl": "sql"
   }
 }

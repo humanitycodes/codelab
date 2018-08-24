@@ -3,7 +3,9 @@
 </template>
 
 <script>
-import env from '@env'
+import serverBaseUrl from '@env/server-base-url'
+import githubAuthClientId from '@env/github-auth-client-id'
+import msuAuthClientId from '@env/msu-auth-client-id'
 import requiredGitHubScopes from '@constants/github-scopes'
 import { userGetters } from '@state/helpers'
 
@@ -27,8 +29,8 @@ export default {
           let url = [
             'https://github.com/login/oauth/authorize',
             `?scope=${githubScopesPath}`,
-            `&client_id=${env.githubAuthClientId}`,
-            `&redirect_uri=${env.githubAuthRedirectURL}${this.$route.fullPath}`
+            `&client_id=${githubAuthClientId}`,
+            `&redirect_uri=${serverBaseUrl}/auth/github/callback${this.$route.fullPath}`
           ].join('')
           if (this.jsonWebToken) {
             url += `&state=${encodeURIComponent(this.jsonWebToken)}`
@@ -38,7 +40,7 @@ export default {
           return [
             'https://oauth.itservices.msu.edu/oauth/authorize',
             '?response_type=code',
-            `&client_id=${env.msuAuthClientId}`
+            `&client_id=${msuAuthClientId}`
           ].join('')
         default:
           return null

@@ -1,15 +1,15 @@
 import axios from 'axios'
-import { config } from '../../../../env/config'
 import retry from 'retry-as-promised'
 
-const MAX_ATTEMPTS = 9
+const githubAuthBaseUrl = 'https://api.github.com'
+const maxAttempts = 9
 
 export default async ({
   method,
   path,
   token,
   body,
-  attempts = MAX_ATTEMPTS
+  attempts = maxAttempts
 }) => {
   const headers = {
     Accept: 'application/vnd.github.v3+json',
@@ -20,15 +20,15 @@ export default async ({
   const params = {
     method,
     headers,
-    url: `${config.githubAuthBaseURL}${path}`
+    url: `${githubAuthBaseUrl}${path}`
   }
   if (body) params.data = body
 
   // Constrain the number of attempts
   if (attempts <= 0) {
     attempts = 1
-  } else if (attempts > MAX_ATTEMPTS) {
-    attempts = MAX_ATTEMPTS
+  } else if (attempts > maxAttempts) {
+    attempts = maxAttempts
   }
 
   // With attempts = 9, backoffBase = 100, backoffExp = 1.1

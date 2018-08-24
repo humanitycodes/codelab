@@ -6,6 +6,14 @@
   </transition>
 </template>
 
+<script>
+import '@assets/css/app.css'
+
+export default {
+  render () { return '' }
+}
+</script>
+
 <style lang="stylus" scoped>
 @import './meta'
 

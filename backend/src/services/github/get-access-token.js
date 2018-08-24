@@ -1,6 +1,7 @@
 import axios from 'axios'
-import { config } from '../../../env/config'
-import CODELAB_GITHUB_AUTH_CLIENT_SECRET from '../../../env/github-auth-client-secret'
+import githubAuthClientId from '../../../env/github-auth-client-id'
+import githubAuthClientSecret from '../../../env/github-auth-client-secret'
+import serverBaseUrl from '../../../env/server-base-url'
 
 export default async code =>
   axios({
@@ -13,9 +14,9 @@ export default async code =>
     },
     params: {
       code: code,
-      client_id: config.githubAuthClientID,
-      client_secret: CODELAB_GITHUB_AUTH_CLIENT_SECRET,
-      redirect_uri: `${config.serverBaseURL}/auth/github/callback`
+      client_id: githubAuthClientId,
+      client_secret: githubAuthClientSecret,
+      redirect_uri: `${serverBaseUrl}/auth/github/callback`
     }
   })
   .then(response => {

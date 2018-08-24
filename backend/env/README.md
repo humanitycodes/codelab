@@ -50,6 +50,12 @@ The default database username is `codelab_app`.
 
 See also `DATABASE_URL`.
 
+### `CODELAB_GITHUB_AUTH_CLIENT_ID`
+
+A unique identifier provided by GitHub self-service that is required to
+successfully authenticate an account using GitHub's OAuth service. The default
+value is `740ecf728a1bf799961b`.
+
 ### `CODELAB_GITHUB_AUTH_CLIENT_SECRET`
 
 A secret key provided by GitHub self-service that is required to successfully
@@ -81,10 +87,22 @@ Set to `true` to log every SQL statement executed against the database. Only
 the statements, including query parameters, will be logged. Query results will
 never be logged.
 
+### `CODELAB_MSU_AUTH_CLIENT_ID`
+
+A unique identifier provided by MSU IT Services that is required to
+successfully authenticate an account using MSU's OAuth service. The default
+value is `OAuth-MI-MSU-Lansing-Codes-Dev`.
+
 ### `CODELAB_MSU_AUTH_CLIENT_SECRET`
 
 A secret key provided by MSU IT Services that is required to successfully
 authenticate an account using MSU's OAuth service.
+
+### `CODELAB_SERVER_BASE_URL`
+
+The URL where this instance of Code Lab can be accessed from a web browser.
+e.g. `https://localhost:8080` or `https://www.codelab517.com`. The default value
+is `https://localhost:8080`.
 
 ### `DATABASE_URL`
 

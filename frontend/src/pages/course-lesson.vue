@@ -74,7 +74,7 @@ import AuthLink from '@components/auth-link'
 import RenderedContent from '@components/rendered-content'
 import ProjectSubmissionFlow from '@components/project-submission-flow'
 import {
-  userGetters, courseGetters, lessonGetters, courseLessonGetters
+  userGetters, courseGetters, lessonGetters
 } from '@state/helpers'
 import courseLessonGradePointsRounded from '@helpers/computed/course-lesson-grade-points-rounded'
 import convertRichContentToInlineHtml from '@helpers/utils/convert-rich-content-to-inline-html'
@@ -110,7 +110,6 @@ export default {
     ...userGetters,
     ...courseGetters,
     ...lessonGetters,
-    ...courseLessonGetters,
     isGitHubConnected () {
       return this.currentUser.githubLogin && !this.hasNewGitHubScopes
     },
