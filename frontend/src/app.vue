@@ -9,9 +9,7 @@
 <script>
 import '@assets/css/app.css'
 
-export default {
-  render () { return '' }
-}
+export default {}
 </script>
 
 <style lang="stylus" scoped>
