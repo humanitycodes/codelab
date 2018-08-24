@@ -389,10 +389,10 @@ fieldset
   padding: 0
   border-width: 0
 
-.flex-row
+.stretch-row
   margin: $design.layout.gutterWidth 0
   display: flex
-  .flex-col
+  .stretch-col
     width: 100%
     margin: 0 $design.layout.gutterWidth * .5
     &:first-child
@@ -420,7 +420,7 @@ fieldset
   opacity: .8
   margin-bottom: 0
   font-family: 'Lato'
-  > .flex-col:last-of-type:not(:only-of-type)
+  > .stretch-col:last-of-type:not(:only-of-type)
     text-align: right
 
 // -----

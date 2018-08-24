@@ -1,25 +1,25 @@
 <template>
   <Layout>
     <EditCurrentLessonButton/>
-    <div class="flex-row heading-basic-data">
-      <div class="flex-col">
+    <div class="stretch-row heading-basic-data">
+      <div class="stretch-col">
         <router-link :to="'/courses/' + currentCourse.courseKey">
           {{ currentCourse.courseKey }}
         </router-link>
       </div>
-      <div class="flex-col">
+      <div class="stretch-col">
         {{ gradePoints }} Grade Points
       </div>
     </div>
     <h1>{{ currentLesson.title }}</h1>
-    <div class="flex-row course-lesson-tabs">
+    <div class="stretch-row course-lesson-tabs">
       <button
-        class="flex-col course-lesson-tab"
+        class="stretch-col course-lesson-tab"
         :class="{ active: currentView === 'content' }"
         @click="currentView = 'content'"
       >Content</button>
       <button
-        class="flex-col course-lesson-tab"
+        class="stretch-col course-lesson-tab"
         :class="{ active: currentView === 'project' }"
         @click="currentView = 'project'"
       >Project</button>

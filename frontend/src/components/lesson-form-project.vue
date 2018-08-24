@@ -1,8 +1,8 @@
 <template>
-  <div class="flex-row">
-    <div class="flex-col">
-      <div class="flex-row">
-        <div class="flex-col">
+  <div class="stretch-row">
+    <div class="stretch-col">
+      <div class="stretch-row">
+        <div class="stretch-col">
           <label for="project-title">Project Title</label>
           <input
             v-model="lesson.projectTitle"
@@ -13,8 +13,8 @@
           >
         </div>
       </div>
-      <div class="flex-row">
-        <div class="flex-col">
+      <div class="stretch-row">
+        <div class="stretch-col">
           <label for="project-new-criterion">Project Criteria</label>
           <input
             v-model="newProjectCriterion"
@@ -35,8 +35,8 @@
           </OrderedEditableList>
         </div>
       </div>
-      <div class="flex-row">
-        <div class="flex-col">
+      <div class="stretch-row">
+        <div class="stretch-col">
           <label for="project-hosting">Project Hosting</label>
           <select
             v-model="lesson.projectHosting"

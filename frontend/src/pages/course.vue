@@ -2,19 +2,19 @@
   <Layout>
     <div v-if="currentCourse">
       <EditCurrentCourseButton/>
-      <div class="flex-row heading-basic-data">
-        <div class="flex-col">
+      <div class="stretch-row heading-basic-data">
+        <div class="stretch-col">
           {{ currentCourse.courseKey }}
           •
           {{ currentCourse.credits || '?' }} Credits
         </div>
-        <div v-if="!currentUserIsStudent" class="flex-col">
+        <div v-if="!currentUserIsStudent" class="stretch-col">
           <label class="with-inline-input">
             <input v-model="studentViewForced" type="checkbox">
             Force student view
           </label>
         </div>
-        <div v-else class="flex-col">
+        <div v-else class="stretch-col">
           <a href="#syllabus">
             Syllabus
             <i class="fas fa-level-down-alt" aria-hidden="true"></i>
@@ -49,13 +49,13 @@
       </div>
       <div
         v-if="shouldShowStudentView"
-        class="flex-row"
+        class="stretch-row"
         :title="
           'Your grade as of ' + formattedCurrentDate + ' is ' + currentGrade +
           ', which will be reported as a ' + currentGradeReported
         "
       >
-        <div class="flex-col">
+        <div class="stretch-col">
           <div class="course-meter">
             <div class="course-meter-text">{{ formattedStartDate }}</div>
             <div
@@ -106,8 +106,8 @@
           </div>
         </div>
       </div>
-      <div v-else class="flex-row">
-        <div class="flex-col">
+      <div v-else class="stretch-row">
+        <div class="stretch-col">
           <div class="course-date">
             <label>Start date</label>
             <span>{{ formattedStartDate }}</span>
@@ -118,8 +118,8 @@
           </div>
         </div>
       </div>
-      <div class="flex-row" v-if="courseLessons.length">
-        <div class="flex-col">
+      <div class="stretch-row" v-if="courseLessons.length">
+        <div class="stretch-col">
           <LessonsMap
             :course="currentCourse"
             :lessons="courseLessons"
@@ -127,8 +127,8 @@
           />
         </div>
       </div>
-      <div class="flex-row">
-        <div class="flex-col">
+      <div class="stretch-row">
+        <div class="stretch-col">
           <a name="syllabus"></a>
           <h2>Syllabus</h2>
           <div

@@ -52,20 +52,20 @@
       >Edit</router-link>
       <h3>{{ node.lesson.title }}</h3>
       <div class="lesson-graph-card-details">
-        <div class="flex-row lesson-graph-card-metadata">
+        <div class="stretch-row lesson-graph-card-metadata">
           <div
             v-html="lessonLangTag(node.lesson)"
-            class="flex-col"
+            class="stretch-col"
           />
-          <div class="flex-col">
+          <div class="stretch-col">
             <span class="far fa-clock-o"/>
             {{ node.lesson.estimatedHours }}
           </div>
-          <div v-if="course" class="flex-col">
+          <div v-if="course" class="stretch-col">
             <span class="fas fa-graduation-cap"/>
             {{ lessonGradePoints(node.lesson) }}
           </div>
-          <div class="flex-col" v-if="node.lesson.categories && node.lesson.categories.length">
+          <div class="stretch-col" v-if="node.lesson.categories && node.lesson.categories.length">
             <ul
               v-for="category in node.lesson.categories"
               :key="category"
@@ -73,7 +73,7 @@
               <li>{{ category.title }}</li>
             </ul>
           </div>
-          <div class="flex-col">
+          <div class="stretch-col">
             <a
               v-if="node.lessonStatus.started"
               class="button inline lessons-map-project-status"
@@ -469,16 +469,16 @@ $lesson-card-approved-bg = lighten($design.branding.muted.light.success, 50%)
     overflow: hidden
 
 .lesson-graph-card-details
-  > .flex-row
+  > .stretch-row
     &:first-child
       margin-top: 0
     &:last-child
       margin-bottom: 0
-    > .flex-col
+    > .stretch-col
       &:last-child
         text-align: right
 
-.lesson-graph-card-metadata > .flex-col
+.lesson-graph-card-metadata > .stretch-col
   position: relative
   overflow: visible
   font-family: Lato
