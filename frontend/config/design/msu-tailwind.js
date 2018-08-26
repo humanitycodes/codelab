@@ -41,6 +41,8 @@ View the full documentation at https://tailwindcss.com.
 |
 */
 
+var url = require('./helpers/url')
+
 var colors = {
   'transparent': 'transparent',
 
@@ -129,15 +131,8 @@ var colors = {
 
 // Shortcuts to files are all relative to assets/css
 var files = {
-  'background-image': '../images/paper-overlay.png'
+  'background-image': url('../images/paper-overlay.png')
 }
-
-// Put files in `url('')` because config() doesn't work when nested
-Object.keys(files).forEach(function (key) {
-  if (files[key] !== 'none') {
-    files[key] = 'url(\'' + files[key] + '\')'
-  }
-})
 
 module.exports = {
 

@@ -38,6 +38,20 @@ i.fa {
   @apply .mb-2;
 }
 
+.landing ol.icon-list,
+.landing ul.icon-list {
+  @apply .flex .flex-wrap .list-reset;
+}
+
+.landing .icon-list > li {
+  @apply .w-1/5 .block .text-center .my-8;
+}
+
+.landing .icon-list > li figcaption {
+  @apply .font-medium .pt-4;
+}
+
+
 @tailwind utilities;
 
 /* Custom utilities, https://tailwindcss.com/docs/adding-new-utilities */

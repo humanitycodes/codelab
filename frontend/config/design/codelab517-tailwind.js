@@ -132,13 +132,6 @@ var files = {
   'background-image': 'none'
 }
 
-// Put files in `url('')` because config() doesn't work when nested
-Object.keys(files).forEach(function (key) {
-  if (files[key] !== 'none') {
-    files[key] = 'url(\'' + files[key] + '\')'
-  }
-})
-
 module.exports = {
 
   files: files,
