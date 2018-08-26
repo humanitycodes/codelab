@@ -15,6 +15,29 @@ i.fa {
   @apply .leading-normal;
 }
 
+/* Landing page styles */
+
+.landing {
+  @apply .font-sans;
+}
+
+.landing > section {
+  @apply .w-full .py-12;
+}
+
+.landing > section > div {
+  @apply .w-3/4 .ml-auto .mr-auto;
+}
+
+.landing ol,
+.landing ul {
+  @apply .text-xl;
+}
+
+.landing li {
+  @apply .mb-2;
+}
+
 @tailwind utilities;
 
 /* Custom utilities, https://tailwindcss.com/docs/adding-new-utilities */

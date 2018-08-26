@@ -1,7 +1,7 @@
 <template>
-  <Layout class="flex flex-wrap font-sans">
-    <section class="w-full bg-blue-lighter py-12 px-8">
-      <div class="w-3/4 ml-auto mr-auto">
+  <Layout class="flex flex-wrap landing">
+    <section class="bg-blue-lighter px-8">
+      <div>
         <p class="text-7xl text-center font-extrabold">
           Three weeks. Full time. Your own path to learn web development.
         </p>
@@ -14,31 +14,31 @@
       </div>
     </section>
 
-    <section class="w-full bg-white py-12">
-      <div class="w-3/4 ml-auto mr-auto">
+    <section class="bg-white">
+      <div>
         <h2 class="text-4xl pb-6">
           How it works
         </h2>
         <ol>
-          <li class="mb-2 lead">
+          <li>
             <strong>Chart your course:</strong>
             Identify which web development topics and skills you want to learn
           </li>
-          <li class="mb-2 lead">
+          <li>
             <strong>Read lessons:</strong>
             Lessons are text-based so you can go at your own pace.
           </li>
-          <li class="mb-2 lead">
+          <li>
             <strong>Do projects:</strong>
             Each lesson culminates in a complete website or application from
             scratch.
           </li>
-          <li class="mb-2 lead">
+          <li>
             <strong>Get reviews:</strong>
             Coaches will provide personalized feedback on your code. Keep making
             changes until it meets requirements - just like real life.
           </li>
-          <li class="mb-2 lead">
+          <li>
             <strong>Network and grow:</strong>
             Work from our lab for maximum networking and assistance. Coaches are
             also available to talk with you about your personal code goals,
@@ -48,10 +48,10 @@
       </div>
     </section>
 
-    <section class="w-full bg-purple-lighter py-12">
-      <div class="w-3/4 ml-auto mr-auto">
+    <section class="bg-purple-lighter">
+      <div>
         <section class="mb-5">
-          <h2 class="mb-3">
+          <h2 class="text-4xl pb-6">
             Details
           </h2>
           <ul>
@@ -63,7 +63,7 @@
         </section>
 
         <section class="mb-5">
-          <h2 class="mb-3">
+          <h2 class="text-4xl pb-6">
             This program might be for you:
           </h2>
 
@@ -84,7 +84,7 @@
         </section>
 
         <section class="col-sm mb-5">
-          <h2 class="mb-3">
+          <h2 class="text-4xl pb-6">
             Topics
           </h2>
           <ul>
@@ -108,8 +108,8 @@
       </div>
     </section>
 
-    <section class="w-full bg-teal-light py-12">
-      <div class="w-1/2 ml-auto mr-auto text-center">
+    <section class="bg-teal-light">
+      <div class="text-center">
         <button class="button btn-primary btn-lg d-block mx-auto">
           Apply today
         </button>
