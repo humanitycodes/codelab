@@ -48,7 +48,7 @@
       </div>
     </section>
 
-    <section class="bg-purple-lighter">
+    <section class="bg-grey-lighter">
       <div>
         <section class="mb-5">
           <h2 class="text-4xl pb-6">
@@ -82,29 +82,106 @@
             </li>
           </ul>
         </section>
+      </div>
+    </section>
 
-        <section class="col-sm mb-5">
-          <h2 class="text-4xl pb-6">
-            Topics
-          </h2>
-          <ul>
-            <li>HTML5</li>
-            <li>CSS3</li>
-            <li>Sass</li>
-            <li>JavaScript</li>
-            <li>NodeJS</li>
-            <li>Express</li>
-            <li>Managing dependencies with NPM</li>
-            <li>SQL</li>
-            <li>Firebase</li>
-            <li>Git and Github</li>
-            <li>working with the command line</li>
-            <li>hosting sites on free platforms</li>
-            <li>SEO basics</li>
-            <li>Usability and accessibility basics</li>
-            <li>Creating apps for iOS and Android</li>
-          </ul>
-        </section>
+    <section class="bg-white">
+      <div>
+        <h2 class="text-4xl pb-6 text-center">
+          Topics covered
+        </h2>
+        <ul class="icon-list">
+          <li>
+            <figure>
+              <i class="fab fa-html5 fa-5x text-orange-dark"></i>
+              <figcaption>HTML5</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <i class="fab fa-css3 fa-5x text-blue-dark"></i>
+              <figcaption>CSS3</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <i class="fab fa-sass fa-5x text-pink-dark"></i>
+              <figcaption>Sass</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <i class="fab fa-js-square fa-5x text-yellow-dark"></i>
+              <figcaption>JavaScript</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <i class="fab fa-node fa-5x text-green-dark"></i>
+              <figcaption>NodeJS</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <i class="fas fa-random fa-5x text-blue-dark"></i>
+              <figcaption>Express</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <i class="fab fa-npm fa-5x text-red-dark"></i>
+              <figcaption>Managing dependencies with NPM</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <i class="fas fa-database fa-5x text-grey-dark"></i>
+              <figcaption>SQL</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <i class="fas fa-fire fa-5x text-orange-dark"></i>
+              <figcaption>Firebase</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <i class="fab fa-git fa-5x text-red"></i>
+              <figcaption>Git and GitHub</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <i class="fas fa-terminal fa-5x text-grey-darkest"></i>
+              <figcaption>Working with the command line</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <i class="fas fa-cloud fa-5x text-grey-light"></i>
+              <figcaption>Hosting sites on free platforms</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <i class="fas fa-search fa-5x text-yellow-darkest"></i>
+              <figcaption>SEO basics</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <i class="fab fa-accessible-icon fa-5x text-yellow-dark"></i>
+              <figcaption>Usability and accessibility basics</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <i class="fas fa-mobile-alt fa-5x"></i>
+              <figcaption>Creating apps for iOS and Android</figcaption>
+            </figure>
+          </li>
+        </ul>
       </div>
     </section>
 
