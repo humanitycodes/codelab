@@ -60,10 +60,16 @@ where name = 'data_directory';
 > `codelab_app` user as well as by the application when connecting to the
 > database.
 
-Run each DDL script in numerical order using `psql`. For example:
+Run each DDL script in numerical order using `psql`. First create the database:
 
 ``` sh
-psql -f 20180605-01-initial-tables.sql
+psql -f 00-db-and-users.ddl
+```
+
+For the rest of the scripts, include the username and database name, like this:
+
+``` sh
+psql -f 20180605-01-initial-tables.sql -U codelab_app -d codelab
 ```
 
 Or for a Heroku Postgres database:
