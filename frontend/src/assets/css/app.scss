@@ -16,78 +16,7 @@ i.fa {
   @apply .leading-normal;
 }
 
-/* Landing page styles */
-
-.landing {
-  @apply .font-sans;
-
-  > section {
-    @apply .w-full .py-12;
-
-    > div {
-      @apply .w-5/6 .ml-auto .mr-auto;
-    }
-  }
-
-  .split {
-    @apply .flex .flex-wrap;
-  }
-
-  .button-apply {
-    @apply .relative .pin-t .h-auto .bg-blue .text-white .text-lg .font-bold;
-    @apply .py-6 .px-8 .border .border-blue-darker .rounded-lg .shadow-md;
-    @apply .trans-ease-all;
-
-    &:active {
-      @apply .relative .pin-t-down .bg-blue-dark .shadow-none .trans-ease-all;
-    }
-  }
-
-  ol, ul {
-    @apply .text-xl;
-
-    li {
-      @apply .mb-2;
-    }
-  }
-
-  > footer {
-    @apply .block .w-full .flex .flex-wrap .bg-black .text-white .px-4;
-
-    ol, ul {
-      @apply .list-reset;
-
-      li {
-        @apply .inline-block .pl-2;
-
-        > a {
-          @apply .text-white;
-        }
-      }
-    }
-  }
-
-  ol.icon-list,
-  ul.icon-list {
-    @apply .flex .flex-wrap .list-reset;
-
-    > li {
-      @apply .w-1/2 .block .text-center .my-8;
-
-      figcaption {
-        @apply .font-medium .pt-4;
-      }
-
-      @screen sm {
-        @apply .w-1/3 .block .text-center .my-8;
-      }
-
-      @screen lg {
-        @apply .w-1/5 .block .text-center .my-8;
-      }
-    }
-  }
-}
+@import "pages/_landing";
 
 @import "tailwind/_utilities";
 
