@@ -7,7 +7,8 @@
 }
 
 html {
-  @apply .bg-image .bg-grey-lightest .text-black .font-light .font-serif .overflow-x-hidden;
+  @apply .bg-image .bg-grey-lightest .text-black .font-light .font-serif;
+  @apply .overflow-x-hidden;
 }
 
 body,
@@ -34,7 +35,9 @@ i.fa {
 }
 
 .landing .button-apply {
-  @apply .relative .pin-t .h-auto .bg-blue .text-white .text-lg .font-bold .py-6 .px-8 .border .border-blue-darker .rounded-lg .shadow-md .trans-ease-all;
+  @apply .relative .pin-t .h-auto .bg-blue .text-white .text-lg .font-bold;
+  @apply .py-6 .px-8 .border .border-blue-darker .rounded-lg .shadow-md;
+  @apply .trans-ease-all;
 }
 
 .landing .button-apply:active {
