@@ -1,5 +1,8 @@
 {
-  "cSpell.enabled": true,
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "stylelint.enable": true,
   "eslint.enable": true,
   "eslint.options": {
     "extensions": [

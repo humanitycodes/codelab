@@ -1,4 +1,4 @@
-@tailwind preflight;
+@import "tailwind/_preflight";
 
 *,
 *:before,
@@ -58,6 +58,10 @@ i.fa {
   @apply .flex .flex-wrap .list-reset;
 }
 
+.landing > footer li {
+  @apply .inline-block .pl-2;
+}
+
 .landing .icon-list > li {
   @apply .w-1/2 .block .text-center .my-8;
 }
@@ -73,10 +77,6 @@ i.fa {
 .landing > footer ol,
 .landing > footer ul {
   @apply .list-reset;
-}
-
-.landing > footer li {
-  @apply .inline-block .pl-2;
 }
 
 .landing > footer li > a {
@@ -95,7 +95,7 @@ i.fa {
   }
 }
 
-@tailwind utilities;
+@import "tailwind/_utilities";
 
 /* Custom utilities, https://tailwindcss.com/docs/adding-new-utilities */
 
