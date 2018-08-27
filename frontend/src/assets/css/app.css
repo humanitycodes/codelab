@@ -34,11 +34,11 @@ i.fa {
 }
 
 .landing .button-apply {
-  @apply .relative .pin-t .h-auto .bg-blue .text-white .text-lg .font-bold .py-6 .px-8 .border .border-blue-darker .rounded-lg .shadow-md .trans-all-ease;
+  @apply .relative .pin-t .h-auto .bg-blue .text-white .text-lg .font-bold .py-6 .px-8 .border .border-blue-darker .rounded-lg .shadow-md .trans-ease-all;
 }
 
 .landing .button-apply:active {
-  @apply .relative .pin-t-down .bg-blue-dark .shadow-none .trans-all-ease;
+  @apply .relative .pin-t-down .bg-blue-dark .shadow-none .trans-ease-all;
 }
 
 .landing ol,
@@ -104,6 +104,6 @@ i.fa {
   top: config('adjust.top-down');
 }
 
-.trans-all-ease {
-  transition: config('trans.all-ease');
+.trans-ease-all {
+  transition: config('trans.ease-all');
 }
