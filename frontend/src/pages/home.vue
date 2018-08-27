@@ -49,8 +49,8 @@
     </section>
 
     <section class="bg-grey-lighter">
-      <div>
-        <section class="mb-5">
+      <div class="split">
+        <section class="mb-5 lg:w-1/3">
           <h2 class="text-4xl pb-6">
             Details
           </h2>
@@ -62,7 +62,7 @@
           </ul>
         </section>
 
-        <section class="mb-5">
+        <section class="mb-5 lg:w-2/3">
           <h2 class="text-4xl pb-6">
             This program might be for you:
           </h2>
@@ -159,7 +159,7 @@
           </li>
           <li>
             <figure>
-              <i class="fas fa-cloud fa-5x text-grey-light"></i>
+              <i class="fas fa-cloud-upload-alt fa-5x text-grey-light"></i>
               <figcaption>Hosting sites on free platforms</figcaption>
             </figure>
           </li>
@@ -185,13 +185,41 @@
       </div>
     </section>
 
-    <section class="bg-teal-light">
+    <section class="bg-black">
       <div class="text-center">
-        <button class="button btn-primary btn-lg d-block mx-auto">
+        <button class="button-apply mx-auto">
           Apply today
         </button>
       </div>
     </section>
+
+    <footer>
+      <div class="w-3/4 text-left">
+        &copy; {{ currentYear }} Humanity Codes, LLC
+      </div>
+      <div class="w-1/4 text-right">
+        <ul>
+          <li>
+            <a
+              class="icon-link"
+              href="https://www.facebook.com/LansingCodeLab/"
+              target="_blank"
+            >
+              <i class="fab fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a
+              class="icon-link"
+              href="https://twitter.com/lansingcodes"
+              target="_blank"
+            >
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </footer>
   </Layout>
 </template>
 
@@ -201,6 +229,11 @@ import Layout from '@layouts/bare'
 export default {
   components: {
     Layout
+  },
+  data () {
+    return {
+      currentYear: new Date().getFullYear()
+    }
   }
 }
 </script>

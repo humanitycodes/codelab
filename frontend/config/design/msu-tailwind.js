@@ -129,14 +129,27 @@ var colors = {
   'pink-lightest': '#ffebef'
 }
 
+// Common position adjustments
+var adjust = {
+  // Pushing a button down
+  'top-down': '2px'
+}
+
 // Shortcuts to files are all relative to assets/css
 var files = {
   'background-image': url('../images/paper-overlay.png')
 }
 
+// Reused transition values
+var trans = {
+  'all-ease': 'all 100ms ease'
+}
+
 module.exports = {
 
+  adjust: adjust,
   files: files,
+  trans: trans,
 
   /*
   |-----------------------------------------------------------------------------
