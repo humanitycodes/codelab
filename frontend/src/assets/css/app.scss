@@ -58,8 +58,20 @@ i.fa {
   @apply .flex .flex-wrap .list-reset;
 }
 
-.landing > footer li {
-  @apply .inline-block .pl-2;
+.landing > footer {
+  @apply .block .w-full .flex .flex-wrap .bg-black .text-white .px-4;
+
+  ol, ul {
+    @apply .list-reset;
+
+    li {
+      @apply .inline-block .pl-2;
+
+      > a {
+        @apply .text-white;
+      }
+    }
+  }
 }
 
 .landing .icon-list > li {
@@ -68,19 +80,6 @@ i.fa {
 
 .landing .icon-list > li figcaption {
   @apply .font-medium .pt-4;
-}
-
-.landing > footer {
-  @apply .block .w-full .flex .flex-wrap .bg-black .text-white .px-4;
-}
-
-.landing > footer ol,
-.landing > footer ul {
-  @apply .list-reset;
-}
-
-.landing > footer li > a {
-  @apply .text-white;
 }
 
 @screen sm {
