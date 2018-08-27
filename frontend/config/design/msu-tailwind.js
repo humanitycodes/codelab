@@ -142,7 +142,7 @@ var files = {
 
 // Reused transition values
 var trans = {
-  'all-ease': 'all 100ms ease'
+  'ease-all': 'all 100ms ease'
 }
 
 module.exports = {
