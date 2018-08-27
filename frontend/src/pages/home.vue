@@ -153,13 +153,13 @@
           </li>
           <li>
             <figure>
-              <i class="fas fa-terminal fa-5x text-grey-darkest"></i>
+              <i class="fas fa-terminal fa-3x text-white bg-grey-darkest p-5 rounded-lg"></i>
               <figcaption>Working with the command line</figcaption>
             </figure>
           </li>
           <li>
             <figure>
-              <i class="fas fa-cloud-upload-alt fa-5x text-grey-light"></i>
+              <i class="fas fa-cloud-upload-alt fa-5x text-blue-light"></i>
               <figcaption>Hosting sites on free platforms</figcaption>
             </figure>
           </li>
