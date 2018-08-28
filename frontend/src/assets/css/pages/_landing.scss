@@ -80,7 +80,7 @@
         rgba(188, 222, 250, .8) 85%,
         rgba(188, 222, 250, .6),
       ),
-      url('../images/ones-zeros.jpg') top left;
+      config('files.landing-banner-image') top left;
     background-size: cover;
   }
 }

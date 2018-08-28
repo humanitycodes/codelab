@@ -41,6 +41,8 @@ View the full documentation at https://tailwindcss.com.
 |
 */
 
+var url = require('./helpers/url')
+
 var colors = {
   'transparent': 'transparent',
 
@@ -135,7 +137,8 @@ var adjust = {
 
 // Shortcuts to files are all relative to assets/css
 var files = {
-  'background-image': 'none'
+  'background-image': 'none',
+  'landing-banner-image': url('../images/ones-zeros.jpg')
 }
 
 // Reused transition values
