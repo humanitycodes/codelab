@@ -31,14 +31,15 @@
     }
   }
 
+  > header,
   > footer {
-    @apply .block .w-full .flex .flex-wrap .bg-black .text-white .px-4;
+    @apply .block .w-full .flex .flex-wrap .text-xl .bg-black .text-white .px-4;
 
     ol, ul {
       @apply .list-reset;
 
       li {
-        @apply .inline-block .pl-2;
+        @apply .inline-block .pl-2 .mb-0;
 
         > a {
           @apply .text-white;
@@ -66,5 +67,20 @@
         @apply .w-1/5 .block .text-center .my-8;
       }
     }
+  }
+
+  .bg-digital {
+    background:
+      linear-gradient(
+        to right,
+        rgba(188, 222, 250, .6) 0,
+        rgba(188, 222, 250, .8) 15%,
+        rgba(188, 222, 250, .92) 25%,
+        rgba(188, 222, 250, .92) 75%,
+        rgba(188, 222, 250, .8) 85%,
+        rgba(188, 222, 250, .6),
+      ),
+      url('../images/ones-zeros.jpg') top left;
+    background-size: cover;
   }
 }
