@@ -1,6 +1,35 @@
 <template>
   <Layout class="flex flex-wrap landing">
-    <section class="bg-blue-lighter px-8">
+    <header>
+      <div class="w-3/4 text-left font-bold">
+        <img class="inline-block mr-1 w-8 align-middle" src="../assets/images/logo-white.png" alt="Code Lab 517 Logo">
+        Code Lab 517
+      </div>
+      <div class="w-1/4 text-right">
+        <ul>
+          <li>
+            <a
+              class="icon-link"
+              href="https://www.facebook.com/LansingCodeLab/"
+              target="_blank"
+            >
+              <i class="fab fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a
+              class="icon-link"
+              href="https://twitter.com/lansingcodes"
+              target="_blank"
+            >
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </header>
+
+    <section class="bg-digital bg-blue-lighter px-8">
       <div>
         <p class="text-7xl text-center font-extrabold">
           Three weeks. Full time. Your own path to learn web development.
@@ -8,7 +37,7 @@
         <h1 class="text-6xl text-center font-medium">
           Code Lab 517
         </h1>
-        <p class="text-xl text-center">
+        <p class="text-xl text-center font-medium">
           Brought to you by LEAP, Lansing Regional SmartZone, and Lansing.Codes
         </p>
       </div>
