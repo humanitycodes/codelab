@@ -72,12 +72,12 @@
             <div
               class="h-auto w-48 flex-none bg-cover rounded-l text-center overflow-hidden"
               style="background-image: url('https://i.imgur.com/GYvIlUH.png')"
-              title="Explore a topic"
+              title="Explore topics"
             ></div>
             <div class="bg-white rounded-r p-4 flex flex-col justify-between leading-normal">
               <div class="mb-8">
                 <div class="text-black font-bold text-xl mb-2">
-                  Explore a topic
+                  Explore topics
                 </div>
                 <p class="text-grey-darker text-base">
                   Each lesson covers a single topic, allowing you to focus your
@@ -157,7 +157,7 @@
           </h2>
           <ul>
             <li>October 15 - November 2, 2018</li>
-            <li>Weekdays 9am - 5pm</li>
+            <li>Weekdays, 9 am - 5 pm</li>
             <li>The Potter's Mill, Lansing</li>
             <li>$1,000 (scholarships available)</li>
           </ul>
