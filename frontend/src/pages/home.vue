@@ -90,7 +90,7 @@
           <div class="max-w-md lg:max-w-sm flex rounded shadow-lg mb-12 mx-auto">
             <div
               class="h-auto w-48 flex-none bg-cover rounded-l text-center overflow-hidden"
-              style="background-image: url('https://i.imgur.com/GQIWbax.png')"
+              style="background-image: url('https://i.imgur.com/s3lKmaX.jpg')"
               title="Do coding projects"
             ></div>
             <div class="bg-white rounded-r p-4 flex flex-col justify-between leading-normal">
