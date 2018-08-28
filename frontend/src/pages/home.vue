@@ -32,10 +32,10 @@
     <section class="bg-digital bg-blue-lighter px-8">
       <div>
         <p class="text-7xl text-center font-extrabold">
-          Three weeks. Full time. Your own path to learn web development.
+          Three weeks. Full time. Learn to code.
         </p>
-        <h1 class="text-6xl text-center font-medium">
-          Code Lab 517
+        <h1 class="text-6xl text-center font-medium font-mono whitespace-no-wrap mx-auto">
+          &gt; {{ typedText }}{{ textCursor }}{{ textPadding }}
         </h1>
         <p class="text-xl text-center font-medium">
           Brought to you by LEAP, Lansing Regional SmartZone, and Lansing.Codes
@@ -261,7 +261,31 @@ export default {
   },
   data () {
     return {
-      currentYear: new Date().getFullYear()
+      currentYear: new Date().getFullYear(),
+      textCursor: '_',
+      textPadding: '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0',
+      title: 'Code Lab 517',
+      typedText: ''
+    }
+  },
+  mounted () {
+    setTimeout(this.updateTypedText, 1000)
+  },
+  methods: {
+    blinkTextCursor () {
+      this.textCursor = this.textCursor === '_' ? '\xa0' : '_'
+      const self = this
+      setTimeout(self.blinkTextCursor, 600)
+    },
+    updateTypedText () {
+      if (this.typedText === this.title) {
+        this.blinkTextCursor()
+        return
+      }
+      this.typedText += this.title[this.typedText.length]
+      this.textPadding = this.textPadding.slice(1)
+      const self = this
+      setTimeout(self.updateTypedText, Math.floor(Math.random() * 80) + 100)
     }
   }
 }
