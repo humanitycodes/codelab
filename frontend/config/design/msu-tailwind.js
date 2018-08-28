@@ -137,7 +137,8 @@ var adjust = {
 
 // Shortcuts to files are all relative to assets/css
 var files = {
-  'background-image': url('../images/paper-overlay.png')
+  'background-image': url('../images/paper-overlay.png'),
+  'landing-banner-image': 'none'
 }
 
 // Reused transition values
