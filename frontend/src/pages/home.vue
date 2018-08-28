@@ -45,35 +45,107 @@
 
     <section class="bg-white">
       <div>
-        <h2 class="text-4xl pb-6">
+        <h2 class="text-center text-4xl pb-6">
           How it works
         </h2>
-        <ol>
-          <li>
-            <strong>Chart your course:</strong>
-            Identify which web development topics and skills you want to learn
-          </li>
-          <li>
-            <strong>Read lessons:</strong>
-            Lessons are text-based so you can go at your own pace.
-          </li>
-          <li>
-            <strong>Do projects:</strong>
-            Each lesson culminates in a complete website or application from
-            scratch.
-          </li>
-          <li>
-            <strong>Get reviews:</strong>
-            Coaches provide personalized feedback on your code. Keep making
-            changes until it meets requirements &mdash; just like real life.
-          </li>
-          <li>
-            <strong>Network and grow:</strong>
-            Work from our lab for maximum networking and assistance. Coaches are
-            also available to talk with you about your personal code goals,
-            business ideas, and career plans.
-          </li>
-        </ol>
+        <div class="w-full flex flex-wrap">
+          <div class="max-w-md lg:max-w-sm flex rounded shadow-lg mb-12 mx-auto">
+            <div
+              class="h-auto w-48 flex-none bg-cover rounded-l text-center overflow-hidden"
+              style="background-image: url('https://i.imgur.com/Rc1OZs2.png')"
+              title="Chart your course"
+            ></div>
+            <div class="bg-white rounded-r p-4 flex flex-col justify-between leading-normal">
+              <div class="mb-8">
+                <div class="text-black font-bold text-xl mb-2">
+                  Chart your course
+                </div>
+                <p class="text-grey-darker text-base">
+                  Identify which coding topics and skills you want to learn. No
+                  previous coding experience is required.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="max-w-md lg:max-w-sm flex rounded shadow-lg mb-12 mx-auto">
+            <div
+              class="h-auto w-48 flex-none bg-cover rounded-l text-center overflow-hidden"
+              style="background-image: url('https://i.imgur.com/GYvIlUH.png')"
+              title="Explore a topic"
+            ></div>
+            <div class="bg-white rounded-r p-4 flex flex-col justify-between leading-normal">
+              <div class="mb-8">
+                <div class="text-black font-bold text-xl mb-2">
+                  Explore a topic
+                </div>
+                <p class="text-grey-darker text-base">
+                  Each lesson covers a single topic, allowing you to focus your
+                  learning. Lessons are text-based so you can go at your own pace.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="max-w-md lg:max-w-sm flex rounded shadow-lg mb-12 mx-auto">
+            <div
+              class="h-auto w-48 flex-none bg-cover rounded-l text-center overflow-hidden"
+              style="background-image: url('https://i.imgur.com/GQIWbax.png')"
+              title="Do coding projects"
+            ></div>
+            <div class="bg-white rounded-r p-4 flex flex-col justify-between leading-normal">
+              <div class="mb-8">
+                <div class="text-black font-bold text-xl mb-2">
+                  Do coding projects
+                </div>
+                <p class="text-grey-darker text-base">
+                  Each lesson culminates with a complete website or application
+                  from scratch. Completed projects unlock new lessons that build
+                  on what you've already learned.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="max-w-md lg:max-w-sm flex rounded shadow-lg mb-12 mx-auto">
+            <div
+              class="h-auto w-48 flex-none bg-cover rounded-l text-center overflow-hidden"
+              style="background-image: url('https://i.imgur.com/n9rn4VR.jpg')"
+              title="Get reviews"
+            ></div>
+            <div class="bg-white rounded-r p-4 flex flex-col justify-between leading-normal">
+              <div class="mb-8">
+                <div class="text-black font-bold text-xl mb-2">
+                  Get reviews
+                </div>
+                <p class="text-grey-darker text-base">
+                  Coaches provide personalized feedback on your code. Keep making
+                  changes until it meets requirements &mdash; just like real life.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="max-w-md lg:max-w-sm flex rounded shadow-lg mb-12 mx-auto">
+            <div
+              class="h-auto w-48 flex-none bg-cover rounded-l text-center overflow-hidden"
+              style="background-image: url('https://i.imgur.com/T9RVkaY.jpg')"
+              title="Network and grow"
+            ></div>
+            <div class="bg-white rounded-r p-4 flex flex-col justify-between leading-normal">
+              <div class="mb-8">
+                <div class="text-black font-bold text-xl mb-2">
+                  Network and grow
+                </div>
+                <p class="text-grey-darker text-base">
+                  Work from our lab for maximum networking and assistance. Coaches
+                  are also available to talk with you about your personal goals,
+                  business ideas, and career plans.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
