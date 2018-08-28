@@ -64,8 +64,8 @@
           </li>
           <li>
             <strong>Get reviews:</strong>
-            Coaches will provide personalized feedback on your code. Keep making
-            changes until it meets requirements - just like real life.
+            Coaches provide personalized feedback on your code. Keep making
+            changes until it meets requirements &mdash; just like real life.
           </li>
           <li>
             <strong>Network and grow:</strong>
