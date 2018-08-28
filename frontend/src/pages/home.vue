@@ -1,12 +1,12 @@
 <template>
   <Layout class="flex flex-wrap landing">
-    <header>
+    <header class="fixed pin-t pin-x z-100">
       <div class="w-3/4 text-left font-bold">
         <img class="inline-block mr-1 w-8 align-middle" src="../assets/images/logo-white.png" alt="Code Lab 517 Logo">
         Code Lab 517
       </div>
       <div class="w-1/4 text-right">
-        <ul>
+        <ul class="nav-list">
           <li>
             <a
               class="icon-link"
@@ -227,7 +227,7 @@
         &copy; {{ currentYear }} Humanity Codes, LLC
       </div>
       <div class="w-1/4 text-right">
-        <ul>
+        <ul class="nav-list">
           <li>
             <a
               class="icon-link"

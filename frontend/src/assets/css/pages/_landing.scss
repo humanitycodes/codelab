@@ -29,13 +29,8 @@
     li {
       @apply .mb-2;
     }
-  }
 
-  > header,
-  > footer {
-    @apply .block .w-full .flex .flex-wrap .text-xl .bg-black .text-white .px-4;
-
-    ol, ul {
+    &.nav-list {
       @apply .list-reset;
 
       li {
@@ -46,6 +41,11 @@
         }
       }
     }
+  }
+
+  > header,
+  > footer {
+    @apply .block .w-full .flex .flex-wrap .text-xl .bg-black .text-white .px-4;
   }
 
   ol.icon-list,
