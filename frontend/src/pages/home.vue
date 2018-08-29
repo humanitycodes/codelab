@@ -2,7 +2,11 @@
   <Layout class="flex flex-wrap landing">
     <header class="fixed pin-t pin-x z-100">
       <div class="w-3/4 text-left font-bold">
-        <img class="inline-block mr-1 w-8 align-middle" src="../assets/images/logo-white.png" alt="Code Lab 517 Logo">
+        <img
+          class="inline-block mr-1 w-8 align-middle"
+          src="../assets/images/logo-white.png"
+          alt="Code Lab 517 Logo"
+        />
         Code Lab 517
       </div>
       <div class="w-1/4 text-right">
@@ -13,7 +17,8 @@
               href="https://www.facebook.com/LansingCodeLab/"
               target="_blank"
             >
-              <i class="fab fa-facebook"></i>
+              <span class="sr-only">Facebook</span>
+              <i class="fab fa-facebook" aria-hidden="true"></i>
             </a>
           </li>
           <li>
@@ -22,7 +27,8 @@
               href="https://twitter.com/lansingcodes"
               target="_blank"
             >
-              <i class="fab fa-twitter"></i>
+              <span class="sr-only">Twitter</span>
+              <i class="fab fa-twitter" aria-hidden="true"></i>
             </a>
           </li>
         </ul>
@@ -45,7 +51,10 @@
           [ Press Enter to apply ]
         </a>
         <p class="text-xl font-medium">
-          Brought to you by LEAP, Lansing Regional SmartZone, and Lansing.Codes
+          Brought to you by
+          <abbr title="Lansing Economic Area Partnership">LEAP</abbr>,
+          Lansing Regional SmartZone,
+          and Lansing.Codes
         </p>
       </div>
     </section>
@@ -163,8 +172,13 @@
             Details
           </h2>
           <ul>
-            <li>October 15 - November 2, 2018</li>
-            <li>Weekdays, 9 am - 5 pm</li>
+            <li>October 15 to November 2, 2018</li>
+            <li>
+              Weekdays,
+              9 <abbr title="in the morning">am</abbr>
+              to
+              5 <abbr title="in the evening">pm</abbr>
+            </li>
             <li>
               <a
                 target="_blank"
@@ -207,13 +221,17 @@
           <li>
             <figure>
               <i class="fab fa-html5 fa-5x text-orange-dark"></i>
-              <figcaption>HTML5</figcaption>
+              <figcaption>
+                <abbr title="Hypertext Markup Language, version 5">HTML5</abbr>
+              </figcaption>
             </figure>
           </li>
           <li>
             <figure>
               <i class="fab fa-css3 fa-5x text-blue-dark"></i>
-              <figcaption>CSS3</figcaption>
+              <figcaption>
+                <abbr title="Cascading Stylesheets, version 3">CSS3</abbr>
+              </figcaption>
             </figure>
           </li>
           <li>
@@ -231,7 +249,9 @@
           <li>
             <figure>
               <i class="fab fa-node fa-5x text-green-dark"></i>
-              <figcaption>NodeJS</figcaption>
+              <figcaption>
+                <acronym title="Node JavaScript">NodeJS</acronym>
+              </figcaption>
             </figure>
           </li>
           <li>
@@ -243,13 +263,18 @@
           <li>
             <figure>
               <i class="fab fa-npm fa-5x text-red-dark"></i>
-              <figcaption>Managing dependencies with NPM</figcaption>
+              <figcaption>
+                Managing dependencies with
+                <abbr title="Node Package Manager">NPM</abbr>
+              </figcaption>
             </figure>
           </li>
           <li>
             <figure>
               <i class="fas fa-database fa-5x text-grey-dark"></i>
-              <figcaption>SQL</figcaption>
+              <figcaption>
+                <abbr title="Structured Query Language">SQL</abbr>
+              </figcaption>
             </figure>
           </li>
           <li>
@@ -279,7 +304,9 @@
           <li>
             <figure>
               <i class="fas fa-search fa-5x text-yellow-darkest"></i>
-              <figcaption>SEO basics</figcaption>
+              <figcaption>
+                <abbr title="Search Engine Optimization">SEO</abbr> basics
+              </figcaption>
             </figure>
           </li>
           <li>
@@ -291,7 +318,11 @@
           <li>
             <figure>
               <i class="fas fa-mobile-alt fa-5x"></i>
-              <figcaption>Creating apps for iOS and Android</figcaption>
+              <figcaption>
+                Creating apps for
+                <abbr title="Apple iPhone Operating System">iOS</abbr>
+                and Android
+                </figcaption>
             </figure>
           </li>
         </ul>
@@ -321,7 +352,8 @@
               href="https://www.facebook.com/LansingCodeLab/"
               target="_blank"
             >
-              <i class="fab fa-facebook"></i>
+              <span class="sr-only">Facebook</span>
+              <i class="fab fa-facebook" aria-hidden="true"></i>
             </a>
           </li>
           <li>
@@ -330,7 +362,8 @@
               href="https://twitter.com/lansingcodes"
               target="_blank"
             >
-              <i class="fab fa-twitter"></i>
+              <span class="sr-only">Twitter</span>
+              <i class="fab fa-twitter" aria-hidden="true"></i>
             </a>
           </li>
         </ul>
