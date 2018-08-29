@@ -44,10 +44,13 @@ View the full documentation at https://tailwindcss.com.
 var url = require('./helpers/url')
 
 var colors = {
-  'primary-dark': '#376aa3',
-  'primary': '#3e79b9',
-  'primary-light': '#5289c5',
-  'primary-lighter': '#5b8fc8',
+  'primary-darkest': '#214164',
+  'primary-darker': '#264a72',
+  'primary-dark': '#2b5481',
+  'primary': '#315f93',
+  'primary-light': '#386ca7',
+  'primary-lighter': '#3b72b0',
+  'primary-lightest': '#4a82c2',
 
   'inherit': 'inherit',
   'transparent': 'transparent',
