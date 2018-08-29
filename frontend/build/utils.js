@@ -12,6 +12,11 @@ exports.assetsPath = function (_path) {
   return path.posix.join(assetsSubDirectory, _path)
 }
 
+exports.brandedIndexTemplate = function () {
+  const brand = process.env.CODELAB_BRAND || 'msu'
+  return 'templates/' + brand + '.html'
+}
+
 exports.cssLoaders = function (options) {
   options = options || {}
 
