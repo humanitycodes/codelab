@@ -14,12 +14,12 @@
   }
 
   .button-apply {
-    @apply .relative .pin-t .h-auto .bg-blue .text-white .text-lg .font-bold;
-    @apply .py-6 .px-8 .border .border-blue-darker .rounded-lg .shadow-md;
+    @apply .relative .pin-t .h-auto .bg-primary-lighter .text-white .text-lg .font-bold;
+    @apply .py-6 .px-8 .border .border-primary .rounded-lg .shadow-md;
     @apply .trans-ease-all;
 
     &:active {
-      @apply .relative .pin-t-down .bg-blue-dark .shadow-none .trans-ease-all;
+      @apply .relative .pin-t-down .bg-primary-light .shadow-none .trans-ease-all;
     }
   }
 
