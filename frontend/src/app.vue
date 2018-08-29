@@ -72,34 +72,6 @@ iframe
   width: 100%
   border: none
 
-a
-  color: lighten($design.branding.primary.light, 5%)
-  text-decoration: none
-  &:hover
-    color: $design.branding.primary.dark
-    text-decoration: underline
-  &[name]
-    color: $design.branding.primary.dark
-    position: relative
-    &:hover:before
-      position: absolute
-      left: -0.8em
-  &.container-link
-    color: inherit
-    &:hover
-      color: inherit
-      text-decoration: none
-  &:not(.button):not(.icon-link)[target=_blank]:not([href$=".jpg"]):not([href$=".jpeg"]):not([href$=".svg"]):not([href$=".png"]):not([href$=".gif"])
-    &:after
-      $external-link-symbol-size = .7em
-      display: inline-block
-      content: ''
-      background-image: url('assets/images/external-link.svg')
-      background-size: $external-link-symbol-size
-      height: $external-link-symbol-size
-      width: $external-link-symbol-size
-      margin-left: 5px
-
 hr
   width: 30%
   border: none

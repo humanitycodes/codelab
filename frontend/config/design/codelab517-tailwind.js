@@ -44,6 +44,12 @@ View the full documentation at https://tailwindcss.com.
 var url = require('./helpers/url')
 
 var colors = {
+  'primary-dark': '#376aa3',
+  'primary': '#3e79b9',
+  'primary-light': '#5289c5',
+  'primary-lighter': '#5b8fc8',
+
+  'inherit': 'inherit',
   'transparent': 'transparent',
 
   'black': '#535054',
@@ -138,6 +144,7 @@ var adjust = {
 // Shortcuts to files are all relative to assets/css
 var files = {
   'background-image': 'none',
+  'external-link-image': url('../images/external-link.svg'),
   'landing-banner-image': url('../images/ones-zeros.jpg')
 }
 

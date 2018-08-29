@@ -165,7 +165,12 @@
           <ul>
             <li>October 15 - November 2, 2018</li>
             <li>Weekdays, 9 am - 5 pm</li>
-            <li>The Potter's Mill, Lansing</li>
+            <li>
+              <a
+                target="_blank"
+                href="http://pottersmill.co/"
+              >Potter's Mill, Lansing</a>
+            </li>
             <li>$1,000 (scholarships available)</li>
           </ul>
         </section>

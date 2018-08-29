@@ -15,6 +15,37 @@ body {
   @apply .leading-normal;
 }
 
+a {
+  @apply .text-primary-lighter .no-underline;
+
+  &:hover {
+    @apply .text-primary-dark .underline;
+  }
+
+  &[name] {
+    @apply .relative .text-primary-dark;
+
+    &:hover:before {
+      @apply .absolute;
+      left: -0.8em;
+    }
+  }
+
+  &.container-link {
+    @apply .text-inherit;
+
+    &:hover {
+      @apply .text-inherit .no-underline;
+    }
+  }
+
+  &:not(.button):not(.icon-link)[target=_blank]:not([href$=".jpg"]):not([href$=".jpeg"]):not([href$=".svg"]):not([href$=".png"]):not([href$=".gif"]) {
+    &:after {
+      @apply .bg-primary .external-link-image;
+    }
+  }
+}
+
 @import "pages/_landing";
 
 @import "tailwind/_utilities";
@@ -23,6 +54,16 @@ body {
 
 .bg-image {
   background-image: config('files.background-image');
+}
+
+.external-link-image {
+  content: '';
+  -webkit-mask-image: config('files.external-link-image');
+  display: inline-block;
+  background-size: .7em;
+  height: .7em;
+  margin-left: 5px;
+  width: .7em;
 }
 
 .pin-t-down {
