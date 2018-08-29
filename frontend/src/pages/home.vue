@@ -30,14 +30,21 @@
     </header>
 
     <section class="bg-digital bg-blue-lighter px-8">
-      <div>
-        <p class="text-7xl text-center font-extrabold">
+      <div class="text-center">
+        <p class="text-7xl font-extrabold">
           Three weeks. Full time. Learn to code.
         </p>
-        <h1 class="text-6xl text-center font-medium font-mono whitespace-no-wrap mx-auto">
+        <h1 class="text-6xl font-medium font-mono whitespace-no-wrap mx-auto">
           &gt; {{ typedText }}{{ textCursor }}{{ textPadding }}
         </h1>
-        <p class="text-xl text-center font-medium">
+        <a
+          class="application-link bg-transparent font-mono font-medium mx-auto"
+          :href="applicationUrl"
+          target="_blank"
+        >
+          [ Press Enter to apply ]
+        </a>
+        <p class="text-xl font-medium">
           Brought to you by LEAP, Lansing Regional SmartZone, and Lansing.Codes
         </p>
       </div>
@@ -288,7 +295,10 @@
 
     <section class="bg-black">
       <div class="text-center">
-        <button class="button-apply mx-auto">
+        <button
+          class="button-apply mx-auto"
+          @click="openApplication"
+        >
           Apply today
         </button>
       </div>
@@ -333,6 +343,7 @@ export default {
   },
   data () {
     return {
+      applicationUrl: 'http://bit.ly/codelab517-apply-2018',
       currentYear: new Date().getFullYear(),
       textCursor: '_',
       textPadding: '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0',
@@ -341,6 +352,13 @@ export default {
     }
   },
   mounted () {
+    document.addEventListener('keyup', event => {
+      if (event.keyCode === 13) {
+        event.preventDefault()
+        this.openApplication()
+      }
+    })
+
     setTimeout(this.updateTypedText, 1000)
   },
   methods: {
@@ -348,6 +366,9 @@ export default {
       this.textCursor = this.textCursor === '_' ? '\xa0' : '_'
       const self = this
       setTimeout(self.blinkTextCursor, 600)
+    },
+    openApplication () {
+      window.open(this.applicationUrl, '_blank')
     },
     updateTypedText () {
       if (this.typedText === this.title) {
