@@ -58,7 +58,7 @@
             <div class="bg-white rounded-r p-4 flex flex-col justify-between leading-normal">
               <div class="mb-8">
                 <div class="text-black font-bold text-xl mb-2">
-                  Chart your course
+                  1. Chart your course
                 </div>
                 <p class="text-grey-darker text-base">
                   Identify which coding topics and skills you want to learn. No
@@ -77,7 +77,7 @@
             <div class="bg-white rounded-r p-4 flex flex-col justify-between leading-normal">
               <div class="mb-8">
                 <div class="text-black font-bold text-xl mb-2">
-                  Explore topics
+                  2. Explore topics
                 </div>
                 <p class="text-grey-darker text-base">
                   Each lesson covers a single topic, allowing you to focus your
@@ -96,7 +96,7 @@
             <div class="bg-white rounded-r p-4 flex flex-col justify-between leading-normal">
               <div class="mb-8">
                 <div class="text-black font-bold text-xl mb-2">
-                  Do coding projects
+                  3. Do coding projects
                 </div>
                 <p class="text-grey-darker text-base">
                   Each lesson culminates with a complete website or application
@@ -116,7 +116,7 @@
             <div class="bg-white rounded-r p-4 flex flex-col justify-between leading-normal">
               <div class="mb-8">
                 <div class="text-black font-bold text-xl mb-2">
-                  Get reviews
+                  4. Get reviews
                 </div>
                 <p class="text-grey-darker text-base">
                   Coaches provide personalized feedback on your code. Keep making
@@ -135,7 +135,7 @@
             <div class="bg-white rounded-r p-4 flex flex-col justify-between leading-normal">
               <div class="mb-8">
                 <div class="text-black font-bold text-xl mb-2">
-                  Network and grow
+                  5. Network and grow
                 </div>
                 <p class="text-grey-darker text-base">
                   Work from our lab for maximum networking and assistance. Coaches
