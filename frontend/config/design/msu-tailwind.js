@@ -233,11 +233,15 @@ module.exports = {
       'serif'
     ],
     'mono': [
-      'Menlo',
-      'Monaco',
-      'Consolas',
+      'Operator Mono',
+      'Fira Code',
+      'Ubuntu Mono',
+      'Droid Sans Mono',
       'Liberation Mono',
-      'Courier New',
+      'Source Code Pro',
+      'Menlo',
+      'Consolas',
+      'Courier',
       'monospace'
     ]
   },
