@@ -23,6 +23,19 @@
     }
   }
 
+  a.application-link {
+    @apply .text-black;
+
+    &:focus,
+    &:hover {
+      @apply .no-underline;
+    }
+
+    &::after {
+      display: none !important;
+    }
+  }
+
   ol, ul {
     @apply .text-xl;
 
