@@ -46,6 +46,13 @@ a {
   }
 }
 
+abbr,
+abbr[title],
+acronym,
+acronym[title] {
+  @apply .no-underline .border-none;
+}
+
 @import "pages/_landing";
 
 @import "tailwind/_utilities";
@@ -68,6 +75,17 @@ a {
 
 .pin-t-down {
   top: config('adjust.top-down');
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
 }
 
 .trans-ease-all {
