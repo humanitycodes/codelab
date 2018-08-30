@@ -14,7 +14,7 @@
           <li>
             <a
               class="icon-link"
-              href="https://www.facebook.com/LansingCodeLab/"
+              href="https://www.facebook.com/LansingCodes/"
               target="_blank"
             >
               <span class="sr-only">Facebook</span>
@@ -349,7 +349,7 @@
           <li>
             <a
               class="icon-link"
-              href="https://www.facebook.com/LansingCodeLab/"
+              href="https://www.facebook.com/LansingCodes/"
               target="_blank"
             >
               <span class="sr-only">Facebook</span>
