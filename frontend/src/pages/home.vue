@@ -65,13 +65,13 @@
           How it works
         </h2>
         <div class="w-full flex flex-wrap">
-          <div class="max-w-md lg:max-w-sm flex rounded shadow-lg mb-12 mx-auto">
+          <div class="max-w-md w-full sm:flex rounded shadow-lg mb-12 mx-auto">
             <div
-              class="h-auto w-48 flex-none bg-cover bg-center rounded-l text-center overflow-hidden"
+              class="h-48 sm:h-auto sm:w-48 flex-none bg-cover bg-center rounded-t sm:rounded-t-none sm:rounded-l text-center overflow-hidden"
               style="background-image: url('https://i.imgur.com/Rc1OZs2.png')"
               title="Chart your course"
             ></div>
-            <div class="bg-white rounded-r p-4 flex flex-col justify-between leading-normal">
+            <div class="bg-white rounded-b sm:rounded-b-none sm:rounded-r p-4 flex flex-col justify-between leading-normal">
               <div class="mb-8">
                 <div class="text-black font-bold text-xl mb-2">
                   1. Chart your course
@@ -84,13 +84,13 @@
             </div>
           </div>
 
-          <div class="max-w-md lg:max-w-sm flex rounded shadow-lg mb-12 mx-auto">
+          <div class="max-w-md w-full sm:flex rounded shadow-lg mb-12 mx-auto">
             <div
-              class="h-auto w-48 flex-none bg-cover bg-center rounded-l text-center overflow-hidden"
+              class="h-48 sm:h-auto sm:w-48 flex-none bg-cover rounded-t sm:rounded-t-none sm:rounded-l text-center overflow-hidden"
               style="background-image: url('https://i.imgur.com/GYvIlUH.png')"
               title="Explore topics"
             ></div>
-            <div class="bg-white rounded-r p-4 flex flex-col justify-between leading-normal">
+            <div class="bg-white rounded-b sm:rounded-b-none sm:rounded-r p-4 flex flex-col justify-between leading-normal">
               <div class="mb-8">
                 <div class="text-black font-bold text-xl mb-2">
                   2. Explore topics
@@ -103,13 +103,13 @@
             </div>
           </div>
 
-          <div class="max-w-md lg:max-w-sm flex rounded shadow-lg mb-12 mx-auto">
+          <div class="max-w-md w-full sm:flex rounded shadow-lg mb-12 mx-auto">
             <div
-              class="h-auto w-48 flex-none bg-cover bg-center rounded-l text-center overflow-hidden"
+              class="h-48 sm:h-auto sm:w-48 flex-none bg-cover bg-center rounded-t sm:rounded-t-none sm:rounded-l text-center overflow-hidden"
               style="background-image: url('https://i.imgur.com/s3lKmaX.jpg')"
               title="Do coding projects"
             ></div>
-            <div class="bg-white rounded-r p-4 flex flex-col justify-between leading-normal">
+            <div class="bg-white rounded-b sm:rounded-b-none sm:rounded-r p-4 flex flex-col justify-between leading-normal">
               <div class="mb-8">
                 <div class="text-black font-bold text-xl mb-2">
                   3. Do coding projects
@@ -123,13 +123,13 @@
             </div>
           </div>
 
-          <div class="max-w-md lg:max-w-sm flex rounded shadow-lg mb-12 mx-auto">
+          <div class="max-w-md w-full sm:flex rounded shadow-lg mb-12 mx-auto">
             <div
-              class="h-auto w-48 flex-none bg-cover bg-center rounded-l text-center overflow-hidden"
+              class="h-48 sm:h-auto sm:w-48 flex-none bg-cover bg-center rounded-t sm:rounded-t-none sm:rounded-l text-center overflow-hidden"
               style="background-image: url('https://i.imgur.com/n9rn4VR.jpg')"
               title="Get reviews"
             ></div>
-            <div class="bg-white rounded-r p-4 flex flex-col justify-between leading-normal">
+            <div class="bg-white rounded-b sm:rounded-b-none sm:rounded-r p-4 flex flex-col justify-between leading-normal">
               <div class="mb-8">
                 <div class="text-black font-bold text-xl mb-2">
                   4. Get reviews
@@ -142,13 +142,13 @@
             </div>
           </div>
 
-          <div class="max-w-md lg:max-w-sm flex rounded shadow-lg mb-12 mx-auto">
+          <div class="max-w-md w-full sm:flex rounded shadow-lg mb-12 mx-auto">
             <div
-              class="h-auto w-48 flex-none bg-cover bg-center rounded-l text-center overflow-hidden"
+              class="h-48 sm:h-auto sm:w-48 flex-none bg-cover rounded-t sm:rounded-t-none sm:rounded-l text-center overflow-hidden"
               style="background-image: url('https://i.imgur.com/T9RVkaY.jpg')"
               title="Network and grow"
             ></div>
-            <div class="bg-white rounded-r p-4 flex flex-col justify-between leading-normal">
+            <div class="bg-white rounded-b sm:rounded-b-none sm:rounded-r p-4 flex flex-col justify-between leading-normal">
               <div class="mb-8">
                 <div class="text-black font-bold text-xl mb-2">
                   5. Network and grow
