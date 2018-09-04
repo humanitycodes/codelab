@@ -65,7 +65,7 @@
           How it works
         </h2>
         <div class="w-full flex flex-wrap">
-          <div class="max-w-md w-full sm:flex rounded shadow-lg mb-12 mx-auto">
+          <div class="max-w-md lg:max-w-sm w-full sm:flex rounded shadow-lg mb-12 mx-auto">
             <div
               class="h-48 sm:h-auto sm:w-48 flex-none bg-cover bg-center rounded-t sm:rounded-t-none sm:rounded-l text-center overflow-hidden"
               style="background-image: url('https://i.imgur.com/Rc1OZs2.png')"
@@ -84,7 +84,7 @@
             </div>
           </div>
 
-          <div class="max-w-md w-full sm:flex rounded shadow-lg mb-12 mx-auto">
+          <div class="max-w-md lg:max-w-sm w-full sm:flex rounded shadow-lg mb-12 mx-auto">
             <div
               class="h-48 sm:h-auto sm:w-48 flex-none bg-cover rounded-t sm:rounded-t-none sm:rounded-l text-center overflow-hidden"
               style="background-image: url('https://i.imgur.com/GYvIlUH.png')"
@@ -103,7 +103,7 @@
             </div>
           </div>
 
-          <div class="max-w-md w-full sm:flex rounded shadow-lg mb-12 mx-auto">
+          <div class="max-w-md lg:max-w-sm w-full sm:flex rounded shadow-lg mb-12 mx-auto">
             <div
               class="h-48 sm:h-auto sm:w-48 flex-none bg-cover bg-center rounded-t sm:rounded-t-none sm:rounded-l text-center overflow-hidden"
               style="background-image: url('https://i.imgur.com/s3lKmaX.jpg')"
@@ -123,7 +123,7 @@
             </div>
           </div>
 
-          <div class="max-w-md w-full sm:flex rounded shadow-lg mb-12 mx-auto">
+          <div class="max-w-md lg:max-w-sm w-full sm:flex rounded shadow-lg mb-12 mx-auto">
             <div
               class="h-48 sm:h-auto sm:w-48 flex-none bg-cover bg-center rounded-t sm:rounded-t-none sm:rounded-l text-center overflow-hidden"
               style="background-image: url('https://i.imgur.com/n9rn4VR.jpg')"
@@ -142,7 +142,7 @@
             </div>
           </div>
 
-          <div class="max-w-md w-full sm:flex rounded shadow-lg mb-12 mx-auto">
+          <div class="max-w-md lg:max-w-sm w-full sm:flex rounded shadow-lg mb-12 mx-auto">
             <div
               class="h-48 sm:h-auto sm:w-48 flex-none bg-cover rounded-t sm:rounded-t-none sm:rounded-l text-center overflow-hidden"
               style="background-image: url('https://i.imgur.com/T9RVkaY.jpg')"
