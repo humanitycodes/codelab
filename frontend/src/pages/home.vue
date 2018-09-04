@@ -35,12 +35,12 @@
       </div>
     </header>
 
-    <section class="bg-digital bg-blue-lighter px-8">
+    <section class="bg-digital bg-blue-lighter md:px-8">
       <div class="text-center">
-        <p class="text-7xl font-extrabold">
+        <p class="text-3xl md:text-7xl font-extrabold">
           Three weeks. Full time. Learn to code.
         </p>
-        <h1 class="text-6xl font-medium font-mono whitespace-no-wrap mx-auto">
+        <h1 class="text-4xl md:text-6xl font-medium font-mono whitespace-no-wrap mx-auto">
           &gt; {{ typedText }}{{ textCursor }}{{ textPadding }}
         </h1>
         <a
@@ -50,7 +50,7 @@
         >
           [ Press Enter to apply ]
         </a>
-        <p class="text-xl font-medium">
+        <p class="md:text-xl font-medium">
           Brought to you by
           <abbr title="Lansing Economic Area Partnership">LEAP</abbr>,
           Lansing Regional SmartZone,
@@ -67,7 +67,7 @@
         <div class="w-full flex flex-wrap">
           <div class="max-w-md lg:max-w-sm flex rounded shadow-lg mb-12 mx-auto">
             <div
-              class="h-auto w-48 flex-none bg-cover rounded-l text-center overflow-hidden"
+              class="h-auto w-48 flex-none bg-cover bg-center rounded-l text-center overflow-hidden"
               style="background-image: url('https://i.imgur.com/Rc1OZs2.png')"
               title="Chart your course"
             ></div>
@@ -86,7 +86,7 @@
 
           <div class="max-w-md lg:max-w-sm flex rounded shadow-lg mb-12 mx-auto">
             <div
-              class="h-auto w-48 flex-none bg-cover rounded-l text-center overflow-hidden"
+              class="h-auto w-48 flex-none bg-cover bg-center rounded-l text-center overflow-hidden"
               style="background-image: url('https://i.imgur.com/GYvIlUH.png')"
               title="Explore topics"
             ></div>
@@ -105,7 +105,7 @@
 
           <div class="max-w-md lg:max-w-sm flex rounded shadow-lg mb-12 mx-auto">
             <div
-              class="h-auto w-48 flex-none bg-cover rounded-l text-center overflow-hidden"
+              class="h-auto w-48 flex-none bg-cover bg-center rounded-l text-center overflow-hidden"
               style="background-image: url('https://i.imgur.com/s3lKmaX.jpg')"
               title="Do coding projects"
             ></div>
@@ -125,7 +125,7 @@
 
           <div class="max-w-md lg:max-w-sm flex rounded shadow-lg mb-12 mx-auto">
             <div
-              class="h-auto w-48 flex-none bg-cover rounded-l text-center overflow-hidden"
+              class="h-auto w-48 flex-none bg-cover bg-center rounded-l text-center overflow-hidden"
               style="background-image: url('https://i.imgur.com/n9rn4VR.jpg')"
               title="Get reviews"
             ></div>
@@ -144,7 +144,7 @@
 
           <div class="max-w-md lg:max-w-sm flex rounded shadow-lg mb-12 mx-auto">
             <div
-              class="h-auto w-48 flex-none bg-cover rounded-l text-center overflow-hidden"
+              class="h-auto w-48 flex-none bg-cover bg-center rounded-l text-center overflow-hidden"
               style="background-image: url('https://i.imgur.com/T9RVkaY.jpg')"
               title="Network and grow"
             ></div>
