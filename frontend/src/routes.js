@@ -24,8 +24,11 @@ export default [
     },
     beforeEnter (to, from, next) {
       if (store.state.users.currentUser) {
+        const { hasMessagingToken } = store.getters.users
         const courses = store.getters.courses
-        if (canReadAllCourses()) {
+        if (!hasMessagingToken) {
+          next('/get-started')
+        } else if (canReadAllCourses()) {
           next('/code-reviews')
         } else if (courses.length === 1) {
           next('/courses/' + courses[0].courseKey)
@@ -39,6 +42,10 @@ export default [
       }
     },
     component: resolve => require.ensure([], () => resolve(require('@pages/home').default), 'codelab517')
+  },
+  {
+    path: '/get-started',
+    component: () => import('@pages/get-started')
   },
   {
     path: '/lessons',

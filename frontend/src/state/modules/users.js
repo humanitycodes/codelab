@@ -24,6 +24,10 @@ export default {
     isUserSignedIn (state) {
       return !!state.currentUser
     },
+    hasMessagingToken (state) {
+      if (!state.currentUser) return false
+      return !!state.currentUser.messagingToken
+    },
     hasNewGitHubScopes (state) {
       if (!state.currentUser) return false
 
