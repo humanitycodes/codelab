@@ -1,0 +1,11 @@
+#container {
+  @apply .max-w-lg .my-0 .mx-auto .py-0 .px-5;
+
+  &.page-layout-wide {
+    @apply .max-w-xl;
+  }
+
+  &.page-layout-full {
+    @apply .max-w-full;
+  }
+}

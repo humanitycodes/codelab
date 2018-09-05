@@ -8,6 +8,7 @@ export const userGetters = {
     'users',
     'currentUser',
     'isUserSignedIn',
+    'hasMessagingToken',
     'hasNewGitHubScopes',
     'jsonWebToken'
   ])

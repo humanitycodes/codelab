@@ -53,6 +53,7 @@ acronym[title] {
   @apply .no-underline .border-none;
 }
 
+@import "layouts/_container";
 @import "pages/_landing";
 
 @import "tailwind/_utilities";

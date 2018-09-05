@@ -1,6 +1,6 @@
 <template>
   <div>
-    <MainNav/>
+    <UserNav/>
     <div id="container" :class="'page-layout-' + $route.meta.layout">
       <slot/>
     </div>
@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import MainNav from '@components/main-nav'
+import UserNav from '@components/user-nav'
 
 export default {
   components: {
-    MainNav
+    UserNav
   }
 }
 </script>
