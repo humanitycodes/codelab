@@ -40,7 +40,7 @@
         <p class="text-3xl md:text-7xl font-extrabold">
           Three weeks. Full time. Learn to code.
         </p>
-        <h1 class="text-4xl md:text-6xl font-medium font-mono whitespace-no-wrap mx-auto">
+        <h1 class="text-3xl md:text-6xl font-medium font-mono whitespace-no-wrap mx-auto">
           &gt; {{ typedText }}{{ textCursor }}{{ textPadding }}
         </h1>
         <a
