@@ -1,1 +1,1 @@
-export default process.env.CODELAB_BRAND || 'msu'
+export default process.env.CODELAB_BRAND

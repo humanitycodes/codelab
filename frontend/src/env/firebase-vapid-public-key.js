@@ -1,0 +1,1 @@
+export default process.env.CODELAB_FIREBASE_VAPID_PUBLIC_KEY

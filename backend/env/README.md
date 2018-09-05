@@ -50,6 +50,40 @@ The default database username is `codelab_app`.
 
 See also `DATABASE_URL`.
 
+### `CODELAB_FIREBASE_CLIENT_CONFIG_JSON`
+
+A stringified version of the Firebase client configuration for a particular
+project. The configuration for a Firebase project can be found by visiting the
+[Firebase console](https://console.firebase.google.com), clicking on the
+project, then clicking on "Add Firebase to your web app" at the bottom of the
+Project Settings page. It will look like this:
+
+``` javascript
+var config = {
+  apiKey: "AIzaSyCOW-u6G6qJ8wj8ubo_r3a6UR77AhutEho",
+  authDomain: "codelab-dev.firebaseapp.com",
+  databaseURL: "https://codelab-dev.firebaseio.com",
+  projectId: "codelab-dev",
+  storageBucket: "codelab-dev.appspot.com",
+  messagingSenderId: "137126158565"
+};
+```
+
+To set this environment variable, run the JavaScript provided by Firebase to
+define the `config` variable (in Chrome devtools, Node, etc.). Then run
+`JSON.stringify(config)` to get the string value of the configuration. Place
+the resulting string inside the `CODELAB_FIREBASE_CLIENT_CONFIG_JSON`
+environment variable.
+
+The default value is the JSON string for the `codelab-dev` project in Firebase.
+
+### `CODELAB_FIREBASE_VAPID_PUBLIC_KEY`
+
+The public VAPID key used by the frontend to authorize push notifications from
+Firebase. This value can be retrieved from the "Web Push certificates" section
+of the Cloud Messaging tab of a Firebase project's Settings page. The default
+value is the public VAPID key for the `codelab-dev` project in Firebase.
+
 ### `CODELAB_GITHUB_AUTH_CLIENT_ID`
 
 A unique identifier provided by GitHub self-service that is required to
