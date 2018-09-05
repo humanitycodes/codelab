@@ -44,6 +44,7 @@ module.exports = {
       '@env': resolve('src/env'),
       '@helpers': resolve('src/helpers'),
       '@layouts': resolve('src/layouts'),
+      '@notifications': resolve('src/notifications'),
       '@pages': resolve('src/pages'),
       '@plugins': resolve('src/plugins'),
       '@src': resolve('src'),
