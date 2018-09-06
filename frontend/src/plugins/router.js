@@ -21,16 +21,30 @@ const router = new VueRouter({
   }
 })
 
-// Check each method for an `isAuthorized` function
-// and run it if one exists. Otherwise, redirect to
-// root.
+// Global route protection and redirection
 router.beforeEach((to, from, next) => {
   const { isAuthorized, isPublic } = to.meta
+
+  // Signed out and visiting a private page, show home page instead
   if (!isPublic && !store.state.users.currentUser) {
     return next('/')
   }
-  return !isAuthorized || isAuthorized(to.params)
-    ? next() : next({ name: 'not-found', params: [to.path] })
+
+  // Signed in and visiting page without permission, show not found page
+  if (isAuthorized && !isAuthorized(to.params)) {
+    return next({ name: 'not-found', params: [to.path] })
+  }
+
+  // Signed in and additional account setup needed, show get started page
+  if (
+    !isPublic &&
+    to.path !== '/get-started' &&
+    store.getters.isUserSetupRequired
+  ) {
+    return next('/get-started')
+  }
+
+  return next()
 })
 
 // Adds a `route` object on `store.state`, which is

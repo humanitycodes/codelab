@@ -24,11 +24,8 @@ export default [
     },
     beforeEnter (to, from, next) {
       if (store.state.users.currentUser) {
-        const { hasMessagingToken } = store.getters.users
         const courses = store.getters.courses
-        if (!hasMessagingToken) {
-          next('/get-started')
-        } else if (canReadAllCourses()) {
+        if (canReadAllCourses()) {
           next('/code-reviews')
         } else if (courses.length === 1) {
           next('/courses/' + courses[0].courseKey)

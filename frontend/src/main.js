@@ -5,7 +5,6 @@ import router from '@plugins/router'
 import LoadingScreen from '@components/loading-screen'
 import camelize from '@helpers/utils/camelize'
 import capitalize from '@helpers/utils/capitalize'
-import initMessaging from '@notifications/init-messaging'
 
 // Show a loading message until we have the data needed
 // to authorize routes in our app
@@ -20,15 +19,12 @@ requireGlobalComponent.keys().forEach(path => {
   Vue.component(componentName, component)
 })
 
-// Once we have the information used to authorize routes and sync data,
-// we can run the main app
+// Once we have the information used to authorize routes, run the main app
 initStore().then(store => {
-  initMessaging().then(() => {
-    new Vue({ // eslint-disable-line no-new
-      el: '#app',
-      store,
-      router,
-      render: h => h(App)
-    })
+  new Vue({ // eslint-disable-line no-new
+    el: '#app',
+    store,
+    router,
+    render: h => h(App)
   })
 })
