@@ -19,7 +19,7 @@
     </p>
     <button
       name="enable-notifications-button"
-      class="primary block"
+      class="primary block max-w-xs mx-auto"
       :disabled="notificationsEnabled || requestingNotifications"
       @click="enableNotifications"
     >
