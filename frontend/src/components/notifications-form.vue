@@ -1,18 +1,11 @@
 <template>
   <div>
     <h2>
-      <span class="fa-stack fa-xs">
-        <i class="far fa-square fa-stack-2x"></i>
-        <i
-          v-show="notificationsEnabled"
-          class="fas fa-check fa-stack-1x text-green-dark"
-          :aria-label="
-            notificationsEnabled
-              ? 'Notifications are enabled'
-              : 'Notifications are not enabled'
-          "
-        ></i>
-      </span>
+      <DoneIndicator
+        :done="notificationsEnabled"
+        done-label="Notifications are on"
+        not-done-label="Notifications are not on"
+      />
       Turn on notifications
     </h2>
     <p>
@@ -44,9 +37,13 @@
 </template>
 
 <script>
+import DoneIndicator from '@components/done-indicator'
 import { userGetters } from '@state/helpers'
 
 export default {
+  components: {
+    DoneIndicator
+  },
   data () {
     return {
       requestingNotifications: false
@@ -55,7 +52,7 @@ export default {
   computed: {
     ...userGetters,
     notificationsEnabled () {
-      return !this.hasMessagingToken
+      return this.hasMessagingToken
     }
   },
   methods: {
