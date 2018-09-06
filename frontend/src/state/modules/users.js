@@ -24,12 +24,15 @@ export default {
     isUserSignedIn (state) {
       return !!state.currentUser
     },
-    hasMessagingToken (state) {
-      if (!state.currentUser) return false
+    isUserSetupRequired (state, getters) {
+      return !getters.hasMessagingToken
+    },
+    hasMessagingToken (state, getters) {
+      if (!getters.isUserSignedIn) return false
       return !!state.currentUser.messagingToken
     },
-    hasNewGitHubScopes (state) {
-      if (!state.currentUser) return false
+    hasNewGitHubScopes (state, getters) {
+      if (!getters.isUserSignedIn) return false
 
       if (state.currentUser.githubScope) {
         const userScopes = state.currentUser.githubScope.split(',')
