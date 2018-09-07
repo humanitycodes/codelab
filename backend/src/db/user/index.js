@@ -56,6 +56,11 @@ const User = sequelize.define('user', {
     field: 'msu_uid',
     type: DataTypes.TEXT,
     allowNull: true
+  },
+  messagingToken: {
+    field: 'messaging_token',
+    type: DataTypes.TEXT,
+    allowNull: true
   }
 }, {
   tableName: 'app_user'

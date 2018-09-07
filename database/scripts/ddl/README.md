@@ -54,22 +54,31 @@ where name = 'data_directory';
 
 > ### When starting from scratch
 >
-> Before running the script `20180605-01-db-and-users.sql`,
+> Before running the script `00-db-and-users.ddl`,
 > make sure that the `CODELAB_DB_PASSWORD` environment variable is set! This
 > environment variable is used by the DDL script to set the password of the
 > `codelab_app` user as well as by the application when connecting to the
 > database.
 
-Run each DDL script in numerical order using `psql`. For example:
+Run each DDL script in numerical order using `psql`. The first script,
+`00-db-and-users.ddl`, should run as a database administrator account (usually
+leaving off any specific database and user will work). All subsequent scripts
+(i.e. all scripts with the `.sql` extension) should connect to the `codelab`
+database using the `codelab_app` user.
+
+For example:
 
 ``` sh
-psql -f 20180605-01-initial-tables.sql
+psql -a -f 00-db-and-users.ddl
+psql -a -w -U codelab_app -d codelab -f 20180605-01-initial-tables.sql
 ```
 
-Or for a Heroku Postgres database:
+Heroku databases use a different, pre-generated user and database. To run
+scripts on a Heroku database, skip the `00-db-and-users.ddl` file and run the
+`.sql` scripts like this, making sure to replace `msu-codes-staging` with the
+appropriate Heroku app name:
 
 ``` sh
-heroku addons -a msu-codes-staging
 cat 20180605-01-initial-tables.sql | heroku pg:psql -a msu-codes-staging
 ```
 

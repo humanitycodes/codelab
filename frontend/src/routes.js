@@ -152,7 +152,10 @@ export default [
   },
   {
     path: '/sign-out',
-    component: () => import('@pages/sign-out')
+    component: () => import('@pages/sign-out'),
+    meta: {
+      isPublic: true
+    }
   },
   {
     path: '*',
