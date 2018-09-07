@@ -1,16 +1,11 @@
 import messaging from './messaging'
+import registerServiceWorker from './_helpers/register-service-worker'
 import requestPermission from './_helpers/request-permission'
 import syncMessagingToken from './_helpers/sync-messaging-token'
 
 export default () => {
-  if ('serviceWorker' in navigator) {
-    return requestPermission()
-      .then(() => syncMessagingToken())
-      .then(() => messaging)
-  } else {
-    throw new Error(
-      'Your browser does not support service workers. ' +
-      'Notifications will not work without this feature.'
-    )
-  }
+  return registerServiceWorker()
+    .then(() => requestPermission())
+    .then(() => syncMessagingToken())
+    .then(() => messaging)
 }
