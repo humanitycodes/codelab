@@ -2,7 +2,7 @@
   <div>
     <h2>
       <DoneIndicator
-        :done="notificationsEnabled"
+        :done="hasMessagingToken"
         done-label="Notifications are on"
         not-done-label="Notifications are not on"
       />
@@ -35,10 +35,10 @@
     <button
       name="enable-notifications-button"
       class="primary block max-w-xs mx-auto"
-      :disabled="notificationsEnabled || requestingNotifications"
+      :disabled="hasMessagingToken || requestingNotifications"
       @click="enableNotifications"
     >
-      <span v-if="notificationsEnabled">
+      <span v-if="hasMessagingToken">
         Notifications are turned on! 🎉
       </span>
       <span v-else-if="requestingNotifications">
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import DoneIndicator from '@components/done-indicator'
+import DoneIndicator from '@components/indicator-done'
 import { userGetters } from '@state/helpers'
 import initMessaging from '@notifications/init-messaging'
 
@@ -67,12 +67,7 @@ export default {
       showErrorMessage: false
     }
   },
-  computed: {
-    ...userGetters,
-    notificationsEnabled () {
-      return this.hasMessagingToken
-    }
-  },
+  computed: userGetters,
   methods: {
     enableNotifications () {
       this.requestingNotifications = true

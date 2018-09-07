@@ -82,6 +82,17 @@ export default async () => {
 
   server.route({
     method: 'GET',
+    path: '/service-worker.js',
+    config: {
+      auth: false
+    },
+    handler: {
+      file: 'service-worker.js'
+    }
+  })
+
+  server.route({
+    method: 'GET',
     path: '/{route*}',
     config: {
       auth: false

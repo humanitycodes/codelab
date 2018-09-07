@@ -31,7 +31,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         }
       ]
     },
-    hot: true,
+    // HMR references `window` in its code, causing service workers to fail
+    hot: false,
     contentBase: false, // since we use CopyWebpackPlugin.
     compress: true,
     host: HOST || config.dev.host,
@@ -51,7 +52,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
     }),
-    new webpack.HotModuleReplacementPlugin(),
+    // HMR doesn't have a way to ignore chunks/files, disabling for now
+    // new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
     new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin

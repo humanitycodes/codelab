@@ -25,7 +25,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     path: config.build.assetsRoot,
     filename: chunkData => {
       return chunkData.chunk.name === 'service-worker'
-        ? utils.assetsPath('js/[name].js')
+        ? '[name].js'
         : utils.assetsPath('js/[name].[chunkhash].js')
     },
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')

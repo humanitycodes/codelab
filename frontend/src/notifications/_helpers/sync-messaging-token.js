@@ -6,10 +6,14 @@ export default () => {
     .then(messagingToken => {
       if (messagingToken) {
         // todo: sendTokenToServer(messagingToken)
-        store.state.currentUser.messagingToken = messagingToken
+        const { currentUser } = store.state.users
+        const updatedUser = Object.assign({}, currentUser, { messagingToken })
+        store.commit('SET_CURRENT_USER', updatedUser)
       } else {
         // todo: sendTokenToServer(null)
-        store.state.currentUser.messagingToken = null
+        const { currentUser } = store.state.users
+        const updatedUser = Object.assign({}, currentUser, { messagingToken: null })
+        store.commit('SET_CURRENT_USER', updatedUser)
         throw new Error(
           'Unable to retrieve a messaging token. ' +
           'This usually happens because permission to allow push ' +
