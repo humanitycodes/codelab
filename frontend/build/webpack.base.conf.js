@@ -3,6 +3,8 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const webpack = require('webpack')
+
 const isProduction = process.env.NODE_ENV === 'production'
 
 function resolve (dir) {
@@ -23,7 +25,8 @@ const createLintingRule = () => ({
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: './src/main.js'
+    'app': './src/main.js',
+    'service-worker': './src/service-worker.js'
   },
   output: {
     path: config.build.assetsRoot,

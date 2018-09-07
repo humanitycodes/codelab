@@ -23,7 +23,11 @@ const webpackConfig = merge(baseWebpackConfig, {
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
     path: config.build.assetsRoot,
-    filename: utils.assetsPath('js/[name].[chunkhash].js'),
+    filename: chunkData => {
+      return chunkData.chunk.name === 'service-worker'
+        ? utils.assetsPath('js/[name].js')
+        : utils.assetsPath('js/[name].[chunkhash].js')
+    },
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   plugins: [
@@ -64,6 +68,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       filename: config.build.index,
       template: utils.brandedIndexTemplate(),
       inject: true,
+      excludeChunks: ['service-worker'],
       minify: {
         removeComments: true,
         collapseWhitespace: true,

@@ -58,7 +58,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: utils.brandedIndexTemplate(),
-      inject: true
+      inject: true,
+      excludeChunks: ['service-worker'],
     }),
     // copy custom static assets
     new CopyWebpackPlugin([
