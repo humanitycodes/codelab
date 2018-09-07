@@ -2,7 +2,7 @@ import messaging from '../messaging'
 
 export default () => {
   if ('serviceWorker' in navigator) {
-    return navigator.serviceWorker.register('./static/js/service-worker.js')
+    return navigator.serviceWorker.register('./service-worker.js')
       .then(registration => {
         messaging.useServiceWorker(registration)
       })
