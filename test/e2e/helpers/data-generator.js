@@ -5,7 +5,8 @@ export default {
   user () {
     return {
       email: `${randomatic('a', 10)}@somewhere.com`,
-      fullName: 'Test User'
+      fullName: 'Test User',
+      messagingToken: 'e2e-messaging-token'
     }
   },
 
