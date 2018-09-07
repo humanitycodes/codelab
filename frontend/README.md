@@ -1,27 +1,40 @@
 # frontend
 
-> A Vue.js project
+The pretty, interactive side of Code Lab.
 
 ## Build Setup
 
 ``` bash
 # install dependencies
-npm install
+yarn install
 
-# serve with hot reload at localhost:8080
-npm run dev
+# serve content at localhost:8080 (may not work without the backend running)
+yarn dev
 
-# build for production with minification
-npm run build
+# build for higher environments with minification
+yarn build
 
 # run unit tests
-npm run unit
+yarn unit
 
-# run e2e tests
-npm run e2e
+# run unit tests and re-run if any of them change
+yarn unit:watch
 
 # run all tests
-npm test
+yarn test
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+For detailed explanation on how things work, checkout the
+[guide](http://vuejs-templates.github.io/webpack/) and
+[docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+## Testing
+
+### Notifications
+
+In order to test real-time notifications (turning them on and receiving them),
+the web browser must be configured to trust the certificate for
+`https://localhost`.
+
+[Follow these instructions](https://stackoverflow.com/a/46116098/1696044)
+for the browser of choice before testing.
