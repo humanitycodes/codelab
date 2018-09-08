@@ -10,8 +10,8 @@ import store from '@state/store'
 let usingPublicVapidKey = false
 
 export default () => {
-  if (!store.getters.hasMessagingToken) {
-    return Promise.resolve(messaging)
+  if (!messaging || !store.getters.hasMessagingToken) {
+    return Promise.resolve()
   }
 
   if (!usingPublicVapidKey) {
@@ -24,5 +24,5 @@ export default () => {
     .then(() => syncMessagingToken())
     .then(() => handleTokenRefresh())
     .then(() => handleMessages())
-    .then(() => messaging)
+    .then(() => Promise.resolve())
 }

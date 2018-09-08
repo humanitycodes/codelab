@@ -1,7 +1,14 @@
-import firebase from 'firebase/app'
-import 'firebase/messaging'
-import firebaseClientConfig from '@env/firebase-client-config'
+import clientSupportsNotifications from './_helpers/client-supports-notifications'
 
-firebase.initializeApp(firebaseClientConfig)
+let messaging = null
 
-export default firebase.messaging()
+if (clientSupportsNotifications) {
+  const firebase = require('firebase/app')
+  require('firebase/messaging')
+  const firebaseClientConfig = require('@env/firebase-client-config').default
+
+  firebase.initializeApp(firebaseClientConfig)
+  messaging = firebase.messaging()
+}
+
+export default messaging
