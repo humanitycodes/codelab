@@ -1,4 +1,4 @@
-import messaging from './messaging'
+import messaging from '../messaging'
 
 if (messaging) {
   messaging.setBackgroundMessageHandler(payload => {

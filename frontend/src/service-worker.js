@@ -1,1 +1,1 @@
-import '@notifications/service-worker'
+import '@notifications/_helpers/handle-background-messages'
