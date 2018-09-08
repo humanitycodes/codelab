@@ -5,6 +5,7 @@ import requiredGitHubScopes from '@constants/github-scopes'
 import setAuthToken from './_helpers/set-auth-token'
 import refreshTokenFromResponse from './_helpers/refresh-token-from-response'
 import getUsers from '@api/users/get-users'
+import initMessaging from '@notifications/init-messaging'
 
 const syncCache = {}
 
@@ -68,6 +69,7 @@ export default {
 
       // Sync any data the user may have access to
       return Promise.all([
+        initMessaging(),
         dispatch('syncAllCourses'),
         dispatch('syncAllLessons'),
         dispatch('syncAllUsers'),
