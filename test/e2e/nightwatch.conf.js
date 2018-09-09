@@ -41,7 +41,10 @@ module.exports = {
 
     chrome: {
       desiredCapabilities: {
-        browserName: 'chrome'
+        browserName: 'chrome',
+        chromeOptions: {
+          args: ['--disable-notifications']
+        }
       }
     },
 
