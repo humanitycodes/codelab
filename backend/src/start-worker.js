@@ -7,9 +7,9 @@ import 'app-module-path/register'
 
 import hapi from 'hapi'
 import boom from 'boom'
-import CODELAB_JWT_SECRET from '../env/jwt-secret'
-import CODELAB_LOG_HTTP_REQUESTS from '../env/log-http-requests'
-import PORT from '../env/port'
+import jwtSecret from '../env/jwt-secret'
+import logHttpRequests from '../env/log-http-requests'
+import port from '../env/port'
 import frontendDir from 'constants/frontend-dir'
 import enableHttpRequestLogger from 'enable-http-request-logger'
 import sequelize from 'db/sequelize'
@@ -35,7 +35,7 @@ export default async () => {
 
   const server = hapi.server({
     host: '0.0.0.0',
-    port: PORT,
+    port,
     routes: {
       files: {
         // All files will be served from the built frontend directory
@@ -118,7 +118,7 @@ export default async () => {
   await server.register(require('hapi-auth-jwt2'))
 
   server.auth.strategy('jwt', 'jwt', {
-    key: CODELAB_JWT_SECRET,
+    key: jwtSecret,
     validate: validateJsonWebToken,
     verifyOptions: {
       ignoreExpiration: true
@@ -147,7 +147,7 @@ export default async () => {
   })
 
   // Log all requests
-  if (CODELAB_LOG_HTTP_REQUESTS) {
+  if (logHttpRequests) {
     enableHttpRequestLogger()
   }
 
