@@ -12,6 +12,8 @@ import syncInstructors from './_helpers/sync-instructors'
 import syncLessons from './_helpers/sync-lessons'
 import syncStudents from './_helpers/sync-students'
 import syncPendingStudents from './_helpers/sync-pending-students'
+import broadcastCourseUpdated from 'notifications/courses/broadcast-updated'
+import readAllUserRecordsWithCourseAccess from 'db/user/read-all-with-course-access'
 
 export default {
   method: 'PUT',
@@ -102,6 +104,11 @@ export default {
         authUser, courseRecord, transaction
       })
       await transaction.commit()
+
+      // Notify all affected users of the change
+      const recipientUserRecords =
+        await readAllUserRecordsWithCourseAccess(courseRecord.courseId)
+      await broadcastCourseUpdated({ courseRecord, recipientUserRecords })
 
       return course
     } catch (error) {

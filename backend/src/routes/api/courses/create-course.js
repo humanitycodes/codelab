@@ -8,6 +8,8 @@ import refreshCourseRecord from 'db/course/refresh'
 import readUserRecordById from 'db/user/read-by-id'
 import translateCourseFromRecord from 'translators/course/from-record'
 import translateCourseFromPayload from 'translators/course/from-payload'
+import broadcastCourseCreated from 'notifications/courses/broadcast-created'
+import readAllUserRecordsWithCourseAccess from 'db/user/read-all-with-course-access'
 
 export default {
   method: 'POST',
@@ -67,6 +69,11 @@ export default {
         authUser, courseRecord, transaction
       })
       await transaction.commit()
+
+      // Notify all affected users of the change
+      const recipientUserRecords =
+        await readAllUserRecordsWithCourseAccess(courseRecord.courseId)
+      await broadcastCourseCreated({ courseRecord, recipientUserRecords })
 
       return course
     } catch (error) {

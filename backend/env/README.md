@@ -50,36 +50,6 @@ The default database username is `codelab_app`.
 
 See also `DATABASE_URL`.
 
-### `CODELAB_FIREBASE_ADMIN_PRIVATE_KEY_JSON`
-
-A stringified version of the Firebase service account's private key. The value
-is usd by the backend to connect to Firebase and send messages to frontend
-users. The private key can be generated in a Firebase project by navigating to
-the Project Settings, clicking on the Service Accounts tab, and then pressing
-the "Generate new private key" button at the bottom of the page.
-
-To set this environment variable, assign the private key JSON to a variable name
-in Chrome Devtools or Node, then call `JSON.stringify` on the variable:
-
-``` javascript
-var key = {
-  "type": "service_account",
-  "project_id": "codelab-dev",
-  "private_key_id": "...",
-  "private_key": "-----BEGIN PRIVATE KEY-----\...\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-sgfaw@codelab-dev.iam.gserviceaccount.com",
-  "client_id": "...",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "..."
-}
-
-JSON.stringify(key)
-```
-
-The default value is the JSON string for the `codelab-dev` project in Firebase.
-
 ### `CODELAB_FIREBASE_CLIENT_CONFIG_JSON`
 
 A stringified version of the Firebase client configuration for a particular
@@ -107,11 +77,13 @@ environment variable.
 
 The default value is the JSON string for the `codelab-dev` project in Firebase.
 
-### `CODELAB_FIREBASE_PROJECT_ID`
+### `CODELAB_FIREBASE_MESSAGING_SERVER_KEY`
 
-The unique identifier for the Firebase project to be used for this environment.
-The value can be found on the General tab of the Project Settings page in the
-Firebase console. The default value is `codelab-dev`.
+The private authorization key used to send messages to the Firebase Cloud
+Messaging service. The value is provided by Firebase on the Cloud Messaging
+tab of the Project Settings page and is labeled "Server key".
+
+The default value is the server key for the `codelab-dev` project in Firebase.
 
 ### `CODELAB_FIREBASE_VAPID_PUBLIC_KEY`
 
