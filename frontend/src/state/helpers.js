@@ -9,9 +9,9 @@ export const userGetters = {
     'currentUser',
     'isUserSignedIn',
     'isUserSetupRequired',
-    'hasMessagingToken',
     'hasNewGitHubScopes',
-    'jsonWebToken'
+    'jsonWebToken',
+    'messagingToken'
   ])
 }
 export { userPermissionMethods }
