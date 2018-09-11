@@ -1,27 +1,25 @@
-import axios from 'axios'
-import retry from 'retry-as-promised'
-import firebaseMessagingServerKey from '../../env/firebase-messaging-server-key'
+import messaging from 'notifications/messaging'
+import isString from './_helpers/is-string'
 
-const maxAttempts = 9
-
-export default async (message) => {
-  const params = {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `key=${firebaseMessagingServerKey}`
-    },
-    url: 'https://fcm.googleapis.com/fcm/send',
-    data: message
+export default async ({ token, data, notification }) => {
+  const message = { token }
+  if (data) {
+    message.data = {}
+    Object.keys(data).forEach(key => {
+      // All data values must be strings
+      const value = data[key]
+      message.data[key] = isString(value)
+        ? value
+        : JSON.stringify(value)
+    })
+  }
+  if (notification) {
+    message.notification = notification
   }
 
-  console.log('sending message:', message)
-
-  // With maxAttempts = 9, backoffBase = 100, backoffExp = 1.1
-  // the max duration of a request including all retries is 34,253 ms
-  return retry(() => axios(params), maxAttempts)
-    .then(response => response.data)
-    .catch(error => {
-      throw new Error('Unable to send message. Reason:', error)
-    })
+  // No 'await' here so messages don't hold up requests
+  messaging.send(message)
+  .catch(error => {
+    console.warn('Failed to send message. Reason:', error)
+  })
 }

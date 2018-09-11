@@ -1,2 +1,0 @@
-module.exports = process.env.CODELAB_FIREBASE_MESSAGING_SERVER_KEY ||
-  'AAAAH-1bIOU:APA91bFA3T9hLZlv-UPu1-rDahjGI-ucmXcWo_jHsqJmhvfFHekCHJZqoeUOon6UlbvY84xLviVdyBqw4F4P1R0R_9dgohkNM3fDSCiWClFXsqasix7kgH3yx7jNQFWYUfhS4GOgjb8O'
