@@ -154,6 +154,9 @@ export default async () => {
   // Do cleanup for this server
   server.events.on('stop', stopWorker({ exit: false }))
 
+  // Initialize messaging
+  require('notifications/messaging')
+
   // Start serving
   try {
     return server.start().then(() => {

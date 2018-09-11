@@ -3,7 +3,6 @@ import translateCourseFromRecord from 'translators/course/from-record'
 import filterUsersWithMessagingToken from 'notifications/_helpers/filter-users-with-messaging-token'
 
 export default async ({ action, courseRecord, recipientUserRecords }) => {
-  console.error('HEY GFD', recipientUserRecords.length)
   return Promise.all(
     filterUsersWithMessagingToken(recipientUserRecords)
     .map(async recipientUserRecord => {
@@ -12,7 +11,7 @@ export default async ({ action, courseRecord, recipientUserRecords }) => {
         courseRecord
       })
       const message = {
-        to: recipientUserRecord.messagingToken,
+        token: recipientUserRecord.messagingToken,
         data: {
           action,
           resourceType: 'course',
