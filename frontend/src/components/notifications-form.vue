@@ -2,7 +2,7 @@
   <div>
     <h2>
       <DoneIndicator
-        :done="hasMessagingToken"
+        :done="messagingToken"
         done-label="Notifications are on"
         not-done-label="Notifications are not on"
       />
@@ -35,10 +35,10 @@
     <button
       name="enable-notifications-button"
       class="primary block max-w-xs mx-auto"
-      :disabled="hasMessagingToken || requestingNotifications"
+      :disabled="messagingToken || requestingNotifications"
       @click="enableNotifications"
     >
-      <span v-if="hasMessagingToken">
+      <span v-if="messagingToken">
         Notifications are turned on! 🎉
       </span>
       <span v-else-if="requestingNotifications">

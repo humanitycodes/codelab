@@ -4,14 +4,14 @@ import isString from './_helpers/is-string'
 export default async ({ token, data, notification }) => {
   const message = { token }
   if (data) {
-    message.data = {}
-    Object.keys(data).forEach(key => {
-      // All data values must be strings
-      const value = data[key]
-      message.data[key] = isString(value)
-        ? value
-        : JSON.stringify(value)
-    })
+    // All values must be strings, convert resource if necessary
+    message.data = {
+      action: data.action,
+      resourceType: data.resourceType,
+      resource: isString(data.resource)
+        ? data.resource
+        : JSON.stringify(data.resource)
+    }
   }
   if (notification) {
     message.notification = notification
