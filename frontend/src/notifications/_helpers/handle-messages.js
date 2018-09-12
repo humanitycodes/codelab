@@ -16,6 +16,12 @@ export default () => {
         } else if (action === 'deleted') {
           store.dispatch('removeCourses', [resource.courseId])
         }
+      } else if (resourceType === 'lesson') {
+        if (action === 'created' || action === 'updated') {
+          store.dispatch('mergeLessons', [resource])
+        } else if (action === 'deleted') {
+          store.dispatch('removeLessons', [resource.lessonId])
+        }
       }
     })
   )

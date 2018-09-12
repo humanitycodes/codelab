@@ -10,6 +10,8 @@ import translateLessonFromPayload from 'translators/lesson/from-payload'
 import syncLearningObjectives from './_helpers/sync-learning-objectives'
 import syncProjectCriteria from './_helpers/sync-project-criteria'
 import syncPrerequisiteLessons from './_helpers/sync-prerequisite-lessons'
+import broadcastLessonUpdated from 'notifications/lessons/broadcast-updated'
+import readAllUserRecordsWithLessonAccess from 'db/user/read-all-with-lesson-access'
 
 export default {
   method: 'PUT',
@@ -110,6 +112,11 @@ export default {
         lessonRecord, transaction
       })
       await transaction.commit()
+
+      // Notify all affected users of the change
+      const recipientUserRecords =
+        await readAllUserRecordsWithLessonAccess(lessonRecord.lessonId)
+      broadcastLessonUpdated({ lessonRecord, recipientUserRecords })
 
       return lesson
     } catch (error) {
