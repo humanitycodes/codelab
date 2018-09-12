@@ -1,10 +1,10 @@
 import messaging from '../messaging'
 import store from '@state/store'
 
-export default () => {
-  return messaging.getToken()
-    .then(messagingToken => store.dispatch('assignMessagingToken'))
-    .then(messagingToken => {
+export default () => messaging.getToken()
+  .then(messagingToken =>
+    store.dispatch('assignMessagingToken', { messagingToken })
+    .then(() => {
       if (!messagingToken) {
         throw new Error(
           'Unable to assign a messaging token. ' +
@@ -13,4 +13,4 @@ export default () => {
         )
       }
     })
-}
+  )

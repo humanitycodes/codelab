@@ -9,11 +9,17 @@ import store from '@state/store'
 
 let usingPublicVapidKey = false
 
-export default () => {
+export default ({ requestMessagingToken = false } = {}) => {
   // Do not initialize messaging if:
   //  1. Messaging is not available
-  //  2. User has not accepted a messaging token
-  if (!messaging || !store.getters.messagingToken) {
+  //  2. The user does not have a token and this function shouldn't request one
+  if (
+    !messaging ||
+    (
+      !store.getters.messagingToken &&
+      !requestMessagingToken
+    )
+  ) {
     return Promise.resolve()
   }
 
