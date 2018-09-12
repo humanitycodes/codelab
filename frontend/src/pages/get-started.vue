@@ -32,7 +32,7 @@ export default {
   computed: {
     ...userGetters,
     allTasksDone () {
-      return !!this.messagingToken
+      return !!this.userMessagingToken
     }
   },
   methods: {

@@ -16,7 +16,7 @@ export default ({ requestMessagingToken = false } = {}) => {
   if (
     !messaging ||
     (
-      !store.getters.messagingToken &&
+      !store.getters.userMessagingToken &&
       !requestMessagingToken
     )
   ) {

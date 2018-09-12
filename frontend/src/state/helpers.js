@@ -11,7 +11,7 @@ export const userGetters = {
     'isUserSetupRequired',
     'hasNewGitHubScopes',
     'jsonWebToken',
-    'messagingToken'
+    'userMessagingToken'
   ])
 }
 export { userPermissionMethods }
