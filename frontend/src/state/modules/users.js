@@ -6,6 +6,8 @@ import setAuthToken from './_helpers/set-auth-token'
 import refreshTokenFromResponse from './_helpers/refresh-token-from-response'
 import getUsers from '@api/users/get-users'
 import initMessaging from '@notifications/init-messaging'
+import createUserMessagingToken from '@api/users/messaging-tokens/create-user-messaging-token'
+import deleteUserMessagingToken from '@api/users/messaging-tokens/delete-user-messaging-token'
 
 const syncCache = {}
 
@@ -14,7 +16,7 @@ export default {
   state: {
     currentUser: null,
     all: [],
-    messagingToken: null
+    userMessagingToken: null
   },
   getters: {
     users (state) {
@@ -27,7 +29,7 @@ export default {
       return !!state.currentUser
     },
     isUserSetupRequired (state) {
-      return !state.messagingToken
+      return !state.userMessagingToken
     },
     hasNewGitHubScopes (state, getters) {
       if (!getters.isUserSignedIn) return false
@@ -43,19 +45,55 @@ export default {
         ? localStorage.getItem('auth_token')
         : null
     },
-    messagingToken (state) {
-      return state.messagingToken
+    userMessagingToken (state) {
+      return state.userMessagingToken
     }
   },
   actions: {
-    assignMessagingToken ({ commit }, { messagingToken }) {
-      // todo delete old token from server
-      if (messagingToken) {
-        localStorage.setItem('messaging_token', messagingToken)
-      } else {
-        localStorage.removeItem('messaging_token')
+    assignMessagingToken ({ state, commit }, { messagingToken }) {
+      const currentUserMessagingToken = state.userMessagingToken
+
+      // Do nothing if the token has not changed
+      if (
+        ( // Current and new tokens are both null
+          !currentUserMessagingToken &&
+          !messagingToken
+        ) ||
+        ( // Current and new tokens are equal
+          currentUserMessagingToken &&
+          currentUserMessagingToken.messagingToken === messagingToken
+        )
+      ) {
+        return
       }
-      commit('SET_MESSAGING_TOKEN', messagingToken)
+
+      const userId = state.currentUser.userId
+      if (messagingToken) {
+        // Create the new messaging token
+        createUserMessagingToken({ userId, messagingToken })
+        .then(userMessagingToken => {
+          // Delete the old messaging token if it exists
+          if (currentUserMessagingToken) {
+            const { userMessagingTokenId } = currentUserMessagingToken
+            return deleteUserMessagingToken({ userId, userMessagingTokenId })
+              .then(() => userMessagingToken)
+          } else {
+            return userMessagingToken
+          }
+        })
+        .then(userMessagingToken => {
+          // Save the new messaging token
+          commit('SET_USER_MESSAGING_TOKEN', userMessagingToken)
+        })
+      } else {
+        // Delete the old messaging token
+        const { userMessagingTokenId } = currentUserMessagingToken
+        return deleteUserMessagingToken({ userId, userMessagingTokenId })
+          .then(() => {
+            // Clear the stored messaging token
+            commit('SET_USER_MESSAGING_TOKEN', null)
+          })
+      }
     },
     attemptAutoSignIn ({ dispatch }) {
       const token = localStorage.getItem('auth_token')
@@ -77,8 +115,7 @@ export default {
       }
 
       // Restore messaging token
-      const messagingToken = localStorage.getItem('messaging_token')
-      commit('SET_MESSAGING_TOKEN', messagingToken)
+      commit('RESTORE_USER_MESSAGING_TOKEN')
 
       // Sync any data the user may have access to
       return Promise.all([
@@ -114,8 +151,22 @@ export default {
     SET_CURRENT_USER (state, user) {
       state.currentUser = user
     },
-    SET_MESSAGING_TOKEN (state, messagingToken) {
-      state.messagingToken = messagingToken
+    RESTORE_USER_MESSAGING_TOKEN (state) {
+      const userMessagingToken = JSON.parse(
+        localStorage.getItem('user_messaging_token')
+      )
+      state.userMessagingToken = userMessagingToken
+    },
+    SET_USER_MESSAGING_TOKEN (state, userMessagingToken) {
+      if (userMessagingToken) {
+        localStorage.setItem(
+          'user_messaging_token',
+          JSON.stringify(userMessagingToken)
+        )
+      } else {
+        localStorage.removeItem('user_messaging_token')
+      }
+      state.userMessagingToken = userMessagingToken
     }
   }
 }
