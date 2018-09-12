@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize'
-import sequelize from '../sequelize'
+import sequelize from 'db/sequelize'
 
 // For table definition, see 20180907-01-user-messaging-tokens.sql
 const UserMessagingToken = sequelize.define('userMessagingToken', {
