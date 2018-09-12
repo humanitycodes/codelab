@@ -5,10 +5,12 @@ import readAllUserMessagingTokenRecordsForUserId from 'db/user/messaging-token/r
 export default async ({ action, courseRecord, recipientUserRecords }) =>
   Promise.all(
     recipientUserRecords.map(async userRecord => {
-      const course = await translateCourseFromRecord({
-        authUser: userRecord,
-        courseRecord
-      })
+      const course = action === 'deleted'
+        ? courseRecord
+        : await translateCourseFromRecord({
+          authUser: userRecord,
+          courseRecord
+        })
 
       const userMessagingTokenRecords =
         await readAllUserMessagingTokenRecordsForUserId(userRecord.userId)

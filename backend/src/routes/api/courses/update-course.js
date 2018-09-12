@@ -108,7 +108,7 @@ export default {
       // Notify all affected users of the change
       const recipientUserRecords =
         await readAllUserRecordsWithCourseAccess(courseRecord.courseId)
-      await broadcastCourseUpdated({ courseRecord, recipientUserRecords })
+      broadcastCourseUpdated({ courseRecord, recipientUserRecords })
 
       return course
     } catch (error) {
