@@ -6,6 +6,8 @@ import canDeleteCourse from 'helpers/permission/can-delete-course'
 import readCourseRecordById from 'db/course/read-by-id'
 import deleteCourseRecord from 'db/course/delete'
 import isCourseInstructor from './_helpers/is-course-instructor'
+import broadcastCourseDeleted from 'notifications/courses/broadcast-deleted'
+import readAllUserRecordsWithCourseAccess from 'db/user/read-all-with-course-access'
 
 export default {
   method: 'DELETE',
@@ -40,8 +42,22 @@ export default {
         throw boom.unauthorized('course.update.instructor.unauthorized')
       }
 
+      // Capture data affected by this change to broadcast later
+      const recipientUserRecords =
+        await readAllUserRecordsWithCourseAccess(courseRecord.courseId)
+      const deletedCourse = courseRecord.get()
+
       await deleteCourseRecord(courseRecord, { transaction })
       await transaction.commit()
+
+      // Notify all affected users of the change
+      broadcastCourseDeleted({
+        courseRecord: {
+          courseId: deletedCourse.courseId,
+          version: deletedCourse.version
+        },
+        recipientUserRecords
+      })
 
       return h.response().code(HttpStatus.NO_CONTENT)
     } catch (error) {
