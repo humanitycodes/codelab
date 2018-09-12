@@ -1,6 +1,5 @@
-import sendMessage from 'notifications/send-message'
 import translateCourseFromRecord from 'translators/course/from-record'
-import readAllUserMessagingTokenRecordsForUserId from 'db/user/messaging-token/read-all-for-user-id'
+import broadcastDataToUser from 'notifications/_helpers/broadcast-data-to-user'
 
 export default async ({ action, courseRecord, recipientUserRecords }) =>
   Promise.all(
@@ -12,21 +11,13 @@ export default async ({ action, courseRecord, recipientUserRecords }) =>
           courseRecord
         })
 
-      const userMessagingTokenRecords =
-        await readAllUserMessagingTokenRecordsForUserId(userRecord.userId)
-
-      return Promise.all(
-        userMessagingTokenRecords.map(async userMessagingTokenRecord => {
-          const message = {
-            token: userMessagingTokenRecord.messagingToken,
-            data: {
-              action,
-              resourceType: 'course',
-              resource: course
-            }
-          }
-          await sendMessage(message)
-        })
-      )
+      return broadcastDataToUser({
+        userId: userRecord.userId,
+        data: {
+          action,
+          resourceType: 'course',
+          resource: course
+        }
+      })
     })
   )

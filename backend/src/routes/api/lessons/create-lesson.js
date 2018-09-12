@@ -7,6 +7,8 @@ import readLessonRecordByKey from 'db/lesson/read-by-key'
 import refreshLessonRecord from 'db/lesson/refresh'
 import translateLessonFromRecord from 'translators/lesson/from-record'
 import translateLessonFromPayload from 'translators/lesson/from-payload'
+import broadcastLessonCreated from 'notifications/lessons/broadcast-created'
+import readAllUserRecordsWithLessonAccess from 'db/user/read-all-with-lesson-access'
 
 export default {
   method: 'POST',
@@ -46,6 +48,11 @@ export default {
         lessonRecord, transaction
       })
       await transaction.commit()
+
+      // Notify all affected users of the change
+      const recipientUserRecords =
+        await readAllUserRecordsWithLessonAccess(lessonRecord.lessonId)
+      broadcastLessonCreated({ lessonRecord, recipientUserRecords })
 
       return lesson
     } catch (error) {
