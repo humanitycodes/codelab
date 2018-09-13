@@ -1,5 +1,6 @@
-import findIndex from 'lodash/findIndex'
 import getProjectCompletions from '@api/project-completions/get-project-completions'
+import mergeByIdAndVersion from './_helpers/merge-by-id-and-version'
+import removeById from './_helpers/remove-by-id'
 
 export default {
   state: {
@@ -32,28 +33,24 @@ export default {
           throw error
         })
     },
-    addProjectCompletion ({ commit }, { projectCompletion }) {
-      commit('ADD_PROJECT_COMPLETION', projectCompletion)
+    mergeProjectCompletions ({ commit, state }, projectCompletions) {
+      // Add or replace some project completions in the local state
+      if (!projectCompletions || !projectCompletions.length) return
+      const mergedProjectCompletions = mergeByIdAndVersion(
+        'projectCompletionId', state.all, projectCompletions
+      )
+      commit('SET_ALL_PROJECT_COMPLETIONS', mergedProjectCompletions)
     },
-    removeProjectCompletion ({ commit }, { projectCompletion }) {
-      commit('REMOVE_PROJECT_COMPLETION', projectCompletion)
+    removeProjectCompletions ({ commit, state }, projectCompletionIds) {
+      // Remove some project completions from the local state
+      if (!projectCompletionIds || !projectCompletionIds.length) return
+      const projectCompletions = removeById(
+        'projectCompletionId', state.all, projectCompletionIds
+      )
+      commit('SET_ALL_PROJECT_COMPLETIONS', projectCompletions)
     }
   },
   mutations: {
-    ADD_PROJECT_COMPLETION (state, projectCompletion) {
-      state.all.push(projectCompletion)
-    },
-    REMOVE_PROJECT_COMPLETION (state, projectCompletion) {
-      if (!projectCompletion) return
-      const projectCompletionId = projectCompletion.projectCompletionId
-      const index = findIndex(
-        state.all,
-        item => item.projectCompletionId === projectCompletionId
-      )
-      if (index >= 0) {
-        state.all.splice(index, 1)
-      }
-    },
     SET_ALL_PROJECT_COMPLETIONS (state, projectCompletions) {
       state.all = projectCompletions
     }

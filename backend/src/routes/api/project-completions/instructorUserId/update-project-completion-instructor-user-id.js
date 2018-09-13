@@ -6,6 +6,8 @@ import canReviewProjects from 'helpers/permission/can-review-projects'
 import readProjectCompletionRecordById from 'db/project-completion/read-by-id'
 import readCourseRecordById from 'db/course/read-by-id'
 import updateProjectCompletionRecord from 'db/project-completion/update'
+import broadcastProjectCompletionUpdated from 'notifications/project-completion/broadcast-updated'
+import readAllUserRecordsWithProjectCompletionAccess from 'db/user/read-all-with-project-completion-access'
 
 export default {
   method: 'PUT',
@@ -62,6 +64,16 @@ export default {
         projectCompletionRecord, { transaction }
       )
       await transaction.commit()
+
+      // Notify all affected users of the change
+      const recipientUserRecords =
+        await readAllUserRecordsWithProjectCompletionAccess(
+          projectCompletionRecord.projectCompletionId
+        )
+      broadcastProjectCompletionUpdated({
+        projectCompletionRecord,
+        recipientUserRecords
+      })
 
       return h.response().code(HttpStatus.NO_CONTENT)
     } catch (error) {

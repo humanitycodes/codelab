@@ -22,6 +22,15 @@ export default () => {
         } else if (action === 'deleted') {
           store.dispatch('removeLessons', [resource.lessonId])
         }
+      } else if (resourceType === 'project-completion') {
+        if (action === 'created' || action === 'updated') {
+          store.dispatch('mergeProjectCompletions', [resource])
+        } else if (action === 'deleted') {
+          store.dispatch(
+            'removeProjectCompletions',
+            [resource.projectCompletionId]
+          )
+        }
       }
     })
   )
