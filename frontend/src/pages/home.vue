@@ -339,7 +339,7 @@
       </div>
     </section>
 
-    <section class="bg-black">
+    <section class="bg-grey-lighter">
       <div class="text-center">
         <button
           class="button-apply mx-auto"
@@ -347,6 +347,24 @@
         >
           Apply today
         </button>
+      </div>
+    </section>
+
+    <section class="bg-white">
+      <div class="text-center">
+        <h2 class="text-4xl pb-6 text-center">
+          Have questions?
+        </h2>
+        <p class="text-2xl font-medium mt-0">
+          <a
+            class="icon-link"
+            href="mailto:lansingcodes@gmail.com?subject=Question%20about%20Code%20Lab%20517"
+            target="_blank"
+          >
+            Contact us!
+            <i class="far fa-envelope" aria-hidden="true"></i>
+          </a>
+        </p>
       </div>
     </section>
 
