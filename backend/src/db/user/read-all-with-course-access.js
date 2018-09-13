@@ -11,7 +11,7 @@ export default async (courseId, options) => sequelize.query(
     from
       app_user
     where
-    app_user.role_instructor = true
+      app_user.role_instructor = true
       or exists (
         select
           1

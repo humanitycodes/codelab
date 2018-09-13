@@ -3,6 +3,8 @@ import readProjectCompletionRecordForFullRepoName from '../read-project-completi
 import readCourseRecordById from 'db/course/read-by-id'
 import updateProjectCompletionRecord from 'db/project-completion/update'
 import randomElement from 'helpers/utils/random-element'
+import broadcastProjectCompletionUpdated from 'notifications/project-completion/broadcast-updated'
+import readAllUserRecordsWithProjectCompletionAccess from 'db/user/read-all-with-project-completion-access'
 
 export default async issuesEvent => {
   if (issuesEvent.action !== 'opened') return
@@ -42,6 +44,16 @@ export default async issuesEvent => {
     )
 
     await transaction.commit()
+
+    // Notify all affected users of the change
+    const recipientUserRecords =
+      await readAllUserRecordsWithProjectCompletionAccess(
+        projectCompletionRecord.projectCompletionId
+      )
+    broadcastProjectCompletionUpdated({
+      projectCompletionRecord,
+      recipientUserRecords
+    })
   } catch (error) {
     await transaction.rollback()
     throw error

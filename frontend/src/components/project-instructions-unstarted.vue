@@ -79,7 +79,7 @@ export default {
       })
       .then(projectCompletion => {
         this.error = ''
-        store.dispatch('addProjectCompletion', { projectCompletion })
+        store.dispatch('mergeProjectCompletions', [projectCompletion])
       })
       .catch(() => {
         this.starting = false

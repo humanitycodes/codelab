@@ -87,9 +87,10 @@ export default {
       deleteProjectCompletion(this.projectCompletion.projectCompletionId)
       .then(() => {
         this.resetting = false
-        store.dispatch('removeProjectCompletion', {
-          projectCompletion: this.projectCompletion
-        })
+        store.dispatch(
+          'removeProjectCompletions',
+          [this.projectCompletion.projectCompletionId]
+        )
       })
       .catch(error => {
         this.resetting = false

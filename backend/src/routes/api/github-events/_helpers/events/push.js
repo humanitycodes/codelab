@@ -1,6 +1,8 @@
 import sequelize from 'db/sequelize'
 import readProjectCompletionRecordForFullRepoName from '../read-project-completion-record-for-full-repo-name'
 import updateProjectCompletionRecord from 'db/project-completion/update'
+import broadcastProjectCompletionUpdated from 'notifications/project-completion/broadcast-updated'
+import readAllUserRecordsWithProjectCompletionAccess from 'db/user/read-all-with-project-completion-access'
 
 // SAMPLE REQUEST:
 // {
@@ -42,6 +44,16 @@ export default async pushEvent => {
     }
 
     await transaction.commit()
+
+    // Notify all affected users of the change
+    const recipientUserRecords =
+      await readAllUserRecordsWithProjectCompletionAccess(
+        projectCompletionRecord.projectCompletionId
+      )
+    broadcastProjectCompletionUpdated({
+      projectCompletionRecord,
+      recipientUserRecords
+    })
   } catch (error) {
     await transaction.rollback()
     throw error

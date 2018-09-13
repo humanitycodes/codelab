@@ -8,6 +8,8 @@ import readCourseRecordById from 'db/course/read-by-id'
 import readLessonRecordById from 'db/lesson/read-by-id'
 import githubRepoName from 'helpers/github/repo-name'
 import deleteGitHubRepository from 'services/github/delete-repository'
+import broadcastProjectCompletionDeleted from 'notifications/project-completions/broadcast-deleted'
+import readAllUserRecordsWithProjectCompletionAccess from 'db/user/read-all-with-project-completion-access'
 
 export default {
   method: 'DELETE',
@@ -44,6 +46,13 @@ export default {
         throw boom.notFound()
       }
 
+      // Capture data affected by this change to broadcast later
+      const recipientUserRecords =
+        await readAllUserRecordsWithProjectCompletionAccess(
+          projectCompletionRecord.projectCompletionId
+        )
+      const deletedProjectCompletion = projectCompletionRecord.get()
+
       // Remove the project from GitHub
       const [courseRecord, lessonRecord] = await Promise.all([
         readCourseRecordById(projectCompletionRecord.courseId, { transaction }),
@@ -70,6 +79,12 @@ export default {
         projectCompletionRecord, { transaction }
       )
       await transaction.commit()
+
+      // Notify all affected users of the change
+      broadcastProjectCompletionDeleted({
+        projectCompletionRecord: deletedProjectCompletion,
+        recipientUserRecords
+      })
 
       return h.response().code(HttpStatus.NO_CONTENT)
     } catch (error) {

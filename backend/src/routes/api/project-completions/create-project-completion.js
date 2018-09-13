@@ -10,6 +10,8 @@ import getOrCreateGitHubRepository from 'services/github/get-or-create-repositor
 import assignGitHubCollaborators from 'services/github/assign-collaborators'
 import createGitHubWebhooks from 'services/github/create-webhooks'
 import repoName from 'helpers/github/repo-name'
+import broadcastProjectCompletionCreated from 'notifications/project-completions/broadcast-created'
+import readAllUserRecordsWithProjectCompletionAccess from 'db/user/read-all-with-project-completion-access'
 
 export default {
   method: 'POST',
@@ -90,6 +92,16 @@ export default {
         projectCompletionRecord
       })
       await transaction.commit()
+
+      // Notify all affected users of the change
+      const recipientUserRecords =
+        await readAllUserRecordsWithProjectCompletionAccess(
+          projectCompletionRecord.projectCompletionId
+        )
+      broadcastProjectCompletionCreated({
+        projectCompletionRecord,
+        recipientUserRecords
+      })
 
       return projectCompletion
     } catch (error) {

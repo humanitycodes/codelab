@@ -24,7 +24,6 @@ export default {
       if (eventName === 'ping') {
         return h.response()
       } else if (githubEventHandlerMap[eventName]) {
-        console.info(`Received GitHub ${eventName} event ${eventId}`)
         await githubEventHandlerMap[eventName](request.payload)
         return h.response()
       } else {
