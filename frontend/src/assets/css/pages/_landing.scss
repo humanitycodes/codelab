@@ -14,8 +14,8 @@
   }
 
   .button-apply {
-    @apply .relative .pin-t .h-auto .bg-primary-lighter .text-white .text-lg .font-bold;
-    @apply .py-6 .px-8 .border .border-primary .rounded-lg .shadow-md;
+    @apply .relative .pin-t .h-auto .bg-primary-lighter .text-white .font-bold;
+    @apply .py-6 .px-8 .border .border-primary .rounded-lg .shadow-md .text-2xl;
     @apply .trans-ease-all;
 
     &:active {
