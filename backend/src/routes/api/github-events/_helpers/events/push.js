@@ -1,7 +1,7 @@
 import sequelize from 'db/sequelize'
 import readProjectCompletionRecordForFullRepoName from '../read-project-completion-record-for-full-repo-name'
 import updateProjectCompletionRecord from 'db/project-completion/update'
-import broadcastProjectCompletionUpdated from 'notifications/project-completion/broadcast-updated'
+import broadcastProjectCompletionUpdated from 'notifications/project-completions/broadcast-updated'
 import readAllUserRecordsWithProjectCompletionAccess from 'db/user/read-all-with-project-completion-access'
 
 // SAMPLE REQUEST:

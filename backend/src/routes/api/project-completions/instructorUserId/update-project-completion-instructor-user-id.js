@@ -6,7 +6,7 @@ import canReviewProjects from 'helpers/permission/can-review-projects'
 import readProjectCompletionRecordById from 'db/project-completion/read-by-id'
 import readCourseRecordById from 'db/course/read-by-id'
 import updateProjectCompletionRecord from 'db/project-completion/update'
-import broadcastProjectCompletionUpdated from 'notifications/project-completion/broadcast-updated'
+import broadcastProjectCompletionUpdated from 'notifications/project-completions/broadcast-updated'
 import readAllUserRecordsWithProjectCompletionAccess from 'db/user/read-all-with-project-completion-access'
 
 export default {
