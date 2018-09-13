@@ -40,9 +40,15 @@
         <p class="text-3xl md:text-7xl font-extrabold">
           Three weeks. Full time. Learn to code.
         </p>
-        <h1 class="text-3xl md:text-6xl font-medium font-mono whitespace-no-wrap mx-auto">
-          &gt; {{ typedText }}{{ textCursor }}{{ textPadding }}
-        </h1>
+        <a
+          class="application-link"
+          :href="applicationUrl"
+          target="_blank"
+        >
+          <h1 class="text-3xl md:text-6xl font-medium font-mono whitespace-no-wrap mx-auto">
+            &gt; {{ typedText }}{{ textCursor }}{{ textPadding }}
+          </h1>
+        </a>
         <a
           class="application-link bg-transparent font-mono font-medium mx-auto"
           :href="applicationUrl"
