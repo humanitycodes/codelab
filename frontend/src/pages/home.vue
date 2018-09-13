@@ -1,7 +1,7 @@
 <template>
   <Layout class="flex flex-wrap landing">
     <header class="fixed pin-t pin-x z-100">
-      <div class="w-3/4 text-left font-bold">
+      <div class="w-2/3 text-left font-bold">
         <img
           class="inline-block mr-1 w-8 align-middle"
           src="../assets/images/logo-white.png"
@@ -9,7 +9,7 @@
         />
         Code Lab 517
       </div>
-      <div class="w-1/4 text-right">
+      <div class="w-1/3 text-right">
         <ul class="nav-list">
           <li>
             <a
@@ -29,6 +29,16 @@
             >
               <span class="sr-only">Twitter</span>
               <i class="fab fa-twitter" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a
+              class="icon-link"
+              href="mailto:lansingcodes@gmail.com?subject=Question%20about%20Code%20Lab%20517"
+              target="_blank"
+            >
+              <span class="sr-only">Email us</span>
+              <i class="fas fa-envelope" aria-hidden="true"></i>
             </a>
           </li>
         </ul>
@@ -341,10 +351,10 @@
     </section>
 
     <footer>
-      <div class="w-3/4 text-left">
+      <div class="w-2/3 text-left">
         &copy; {{ currentYear }} Humanity Codes, LLC
       </div>
-      <div class="w-1/4 text-right">
+      <div class="w-1/3 text-right">
         <ul class="nav-list">
           <li>
             <a
@@ -364,6 +374,16 @@
             >
               <span class="sr-only">Twitter</span>
               <i class="fab fa-twitter" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a
+              class="icon-link"
+              href="mailto:lansingcodes@gmail.com?subject=Question%20about%20Code%20Lab%20517"
+              target="_blank"
+            >
+              <span class="sr-only">Email us</span>
+              <i class="fas fa-envelope" aria-hidden="true"></i>
             </a>
           </li>
         </ul>
