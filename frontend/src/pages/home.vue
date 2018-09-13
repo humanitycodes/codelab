@@ -174,12 +174,6 @@
           <ul>
             <li>October 15 to November 2, 2018</li>
             <li>
-              Weekdays,
-              9 <abbr title="in the morning">am</abbr>
-              to
-              5 <abbr title="in the evening">pm</abbr>
-            </li>
-            <li>
               <a
                 target="_blank"
                 href="http://pottersmill.co/"
