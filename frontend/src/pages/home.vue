@@ -48,7 +48,7 @@
     <section class="bg-digital bg-blue-lighter md:px-8">
       <div class="text-center">
         <p class="text-3xl md:text-7xl font-extrabold">
-          Three weeks. Full time. Learn to code.
+          Three weeks. Learn to code.
         </p>
         <a
           class="application-link"
@@ -323,16 +323,6 @@
             <figure>
               <i class="fab fa-accessible-icon fa-5x text-yellow-dark"></i>
               <figcaption>Usability and accessibility basics</figcaption>
-            </figure>
-          </li>
-          <li>
-            <figure>
-              <i class="fas fa-mobile-alt fa-5x"></i>
-              <figcaption>
-                Creating apps for
-                <abbr title="Apple iPhone Operating System">iOS</abbr>
-                and Android
-                </figcaption>
             </figure>
           </li>
         </ul>
