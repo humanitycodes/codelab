@@ -21,7 +21,8 @@ export default async ({ token, data, notification }) => {
   // No 'await' here so messages don't hold up requests
   messaging.send(message)
   .catch(error => {
-    if (error.errorInfo.code === 'messaging/registration-token-not-registered') {
+    const errorInfo = error.errorInfo || {}
+    if (errorInfo.code === 'messaging/registration-token-not-registered') {
       deleteUnregisteredMessagingToken(message.token)
     } else {
       console.warn('Failed to send message. Reason:', error)
