@@ -1,3 +1,4 @@
+import getLesson from '@api/lessons/get-lesson'
 import getLessons from '@api/lessons/get-lessons'
 import mergeByIdAndVersion from './_helpers/merge-by-id-and-version'
 import removeById from './_helpers/remove-by-id'
@@ -26,6 +27,11 @@ export default {
     }
   },
   actions: {
+    syncLesson ({ dispatch }, lessonId) {
+      // Get a specific lesson from the API and merge it with the others
+      return getLesson(lessonId)
+        .then(lesson => dispatch('mergeLessons', [lesson]))
+    },
     syncAllLessons ({ commit }) {
       // Get all available lessons from API and save them in the local state
       return getLessons()
