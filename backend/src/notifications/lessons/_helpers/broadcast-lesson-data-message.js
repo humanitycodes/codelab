@@ -1,5 +1,6 @@
 import translateLessonFromRecord from 'translators/lesson/from-record'
 import broadcastDataToUser from 'notifications/_helpers/broadcast-data-to-user'
+import isObjectTooBigToBroadcast from 'notifications/_helpers/is-object-too-big-to-broadcast'
 
 export default async ({ action, lessonRecord, recipientUserRecords }) =>
   Promise.all(
@@ -11,13 +12,16 @@ export default async ({ action, lessonRecord, recipientUserRecords }) =>
           lessonRecord
         })
 
+      const data = { action, resourceType: 'lesson' }
+      if (isObjectTooBigToBroadcast(lesson)) {
+        data.resourceId = lesson.lessonId
+      } else {
+        data.resource = lesson
+      }
+
       return broadcastDataToUser({
         userId: userRecord.userId,
-        data: {
-          action,
-          resourceType: 'lesson',
-          resource: lesson
-        }
+        data
       })
     })
   )
