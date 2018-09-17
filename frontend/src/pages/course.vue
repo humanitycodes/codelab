@@ -147,6 +147,7 @@
 </template>
 
 <script>
+import store from '@state/store'
 import moment from 'moment'
 import Layout from '@layouts/main'
 import CourseNotFound from '@components/course-not-found'
@@ -166,8 +167,13 @@ import maxGrade from '@constants/grade-max'
 import gradeMilestones from '@constants/grade-milestones'
 import courseLessonUserStatus from '@helpers/computed/course-lesson-user-status'
 import getGradeReported from '@helpers/utils/get-grade-reported'
+import courseByKey from '@helpers/finders/course-by-key'
 
 export default {
+  beforeRouteEnter (to, from, next) {
+    const course = courseByKey(to.params.courseKey)
+    store.dispatch('syncCourse', course.courseId).then(() => next())
+  },
   components: {
     Layout,
     CourseNotFound,

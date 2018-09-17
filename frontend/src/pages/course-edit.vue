@@ -42,8 +42,13 @@ import ModalConfirm from '@components/modal-confirm'
 import deleteCourse from '@api/courses/delete-course'
 import updateCourse from '@api/courses/update-course'
 import goBackOrFallback from '@helpers/utils/go-back-or-fallback'
+import courseByKey from '@helpers/finders/course-by-key'
 
 export default {
+  beforeRouteEnter (to, from, next) {
+    const course = courseByKey(to.params.courseKey)
+    store.dispatch('syncCourse', course.courseId).then(() => next())
+  },
   components: {
     Layout, CourseForm, DoneButton, ModalConfirm
   },

@@ -1,3 +1,4 @@
+import getCourse from '@api/courses/get-course'
 import getCourses from '@api/courses/get-courses'
 import mergeByIdAndVersion from './_helpers/merge-by-id-and-version'
 import removeById from './_helpers/remove-by-id'
@@ -26,6 +27,11 @@ export default {
     }
   },
   actions: {
+    syncCourse ({ dispatch }, courseId) {
+      // Get a specific course from the API and merge it with the others
+      return getCourse(courseId)
+        .then(course => dispatch('mergeCourses', [course]))
+    },
     syncAllCourses ({ commit }) {
       return getCourses()
         .then(courses => commit('SET_ALL_COURSES', courses))
