@@ -40,8 +40,13 @@ import ModalConfirm from '@components/modal-confirm'
 import deleteLesson from '@api/lessons/delete-lesson'
 import updateLesson from '@api/lessons/update-lesson'
 import goBackOrFallback from '@helpers/utils/go-back-or-fallback'
+import lessonByKey from '@helpers/finders/lesson-by-key'
 
 export default {
+  beforeRouteEnter (to, from, next) {
+    const lesson = lessonByKey(to.params.lessonKey)
+    store.dispatch('syncLesson', lesson.lessonId).then(() => next())
+  },
   components: {
     Layout, LessonForm, LessonNotFound, DoneButton, ModalConfirm
   },

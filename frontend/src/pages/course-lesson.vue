@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import store from '@state/store'
 import Layout from '@layouts/main'
 import AuthLink from '@components/auth-link'
 import RenderedContent from '@components/rendered-content'
@@ -79,8 +80,13 @@ import {
 import courseLessonGradePointsRounded from '@helpers/computed/course-lesson-grade-points-rounded'
 import convertRichContentToInlineHtml from '@helpers/utils/convert-rich-content-to-inline-html'
 import getScrollTop from '@helpers/utils/dom/get-scroll-top'
+import lessonByKey from '@helpers/finders/lesson-by-key'
 
 export default {
+  beforeRouteEnter (to, from, next) {
+    const lesson = lessonByKey(to.params.lessonKey)
+    store.dispatch('syncLesson', lesson.lessonId).then(() => next())
+  },
   components: {
     Layout,
     AuthLink,
