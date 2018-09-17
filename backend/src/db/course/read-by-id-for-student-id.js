@@ -1,11 +1,10 @@
 import Course from './index'
 import User from '../user'
-import largeCourseFields from './large-fields'
 
-export default (userId, options) => Course.findAll({
+export default ({ courseId, userId }, options) => Course.findOne({
   ...options,
-  attributes: {
-    exclude: largeCourseFields
+  where: {
+    courseId
   },
   include: [
     {
