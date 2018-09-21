@@ -55,7 +55,7 @@ export default {
         )
         if (!userRecord) {
           // Lookup primary email and register new user
-          const fullName = githubProfile.name
+          const fullName = githubProfile.name || githubProfile.login
           const githubEmails = await getGitHubUserEmails(githubToken)
           const email = githubEmails.find(
             githubEmail => githubEmail.primary
