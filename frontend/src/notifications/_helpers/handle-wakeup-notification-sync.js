@@ -1,4 +1,4 @@
 import ifvisible from 'ifvisible'
-import syncStoredResources from './sync-stored-resources'
+import syncDirtyResources from './sync-dirty-resources'
 
-export default () => ifvisible.wakeup(syncStoredResources)
+export default () => ifvisible.wakeup(syncDirtyResources)
