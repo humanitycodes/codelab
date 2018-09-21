@@ -1,3 +1,4 @@
+import getProjectCompletion from '@api/project-completions/get-project-completion'
 import getProjectCompletions from '@api/project-completions/get-project-completions'
 import mergeByIdAndVersion from './_helpers/merge-by-id-and-version'
 import removeById from './_helpers/remove-by-id'
@@ -23,6 +24,13 @@ export default {
     }
   },
   actions: {
+    syncProjectCompletion ({ dispatch }, projectCompletionId) {
+      // Get a specific project completion from the API and merge it
+      return getProjectCompletion(projectCompletionId)
+        .then(projectCompletion =>
+          dispatch('mergeProjectCompletions', [projectCompletion])
+        )
+    },
     syncAllProjectCompletions ({ commit }) {
       return getProjectCompletions()
         .then(projectCompletions => {

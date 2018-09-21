@@ -2,7 +2,8 @@ import { keys, get } from 'idb-keyval'
 
 const syncActionName = {
   'course': 'syncCourse',
-  'lesson': 'syncLesson'
+  'lesson': 'syncLesson',
+  'project-completion': 'syncProjectCompletion'
 }
 
 export default {
