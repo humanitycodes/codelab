@@ -7,6 +7,8 @@ export default (instructorUserId, options) => ProjectCompletion.findAll({
   include: [
     {
       model: Course,
+      // The completion must have an instructor with the provided ID
+      required: true,
       include: [
         {
           model: User,
@@ -14,6 +16,7 @@ export default (instructorUserId, options) => ProjectCompletion.findAll({
           where: {
             userId: instructorUserId
           },
+          required: true,
           // Don't select user fields, we only want the completion
           attributes: []
         }
