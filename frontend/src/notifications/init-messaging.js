@@ -5,6 +5,7 @@ import requestPermission from './_helpers/request-permission'
 import syncMessagingToken from './_helpers/sync-messaging-token'
 import handleTokenRefresh from './_helpers/handle-token-refresh'
 import handleMessages from './_helpers/handle-messages'
+import handleWakeupNotificationSync from './_helpers/handle-wakeup-notification-sync'
 import store from '@state/store'
 
 let usingPublicVapidKey = false
@@ -33,5 +34,6 @@ export default ({ requestMessagingToken = false } = {}) => {
     .then(() => syncMessagingToken())
     .then(() => handleTokenRefresh())
     .then(() => handleMessages())
+    .then(() => handleWakeupNotificationSync())
     .then(() => Promise.resolve())
 }
