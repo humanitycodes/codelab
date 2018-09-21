@@ -8,6 +8,7 @@ export default new Vuex.Store({
     courses: require('./modules/courses').default,
     lessons: require('./modules/lessons').default,
     projectCompletions: require('./modules/project-completions').default,
+    resourceJournal: require('./modules/resource-journal').default,
     users: require('./modules/users').default
   }
 })
