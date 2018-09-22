@@ -12,7 +12,7 @@ pg.defaults.parseInt8 = true
 pg.types.setTypeParser(1114, dateString => {
   if (!dateString || !dateString.length) return null
   const [datePart, timePart] = dateString.split(' ')
-  return new Date(new Date(`${datePart}T${timePart}Z`))
+  return new Date(`${datePart}T${timePart}Z`)
 })
 
 import Sequelize from 'sequelize'
