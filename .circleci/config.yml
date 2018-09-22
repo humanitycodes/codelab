@@ -8,7 +8,7 @@ jobs:
     environment:
       # Sensitive data (like passwords) are set in the CircleCI web interface
       NODE_ENV: testing
-      TZ: /usr/share/zoneinfo/America/Detroit
+      TZ: America/Detroit
       YARN_VERSION: 1.9.4
     # Pre-built images list: https://circleci.com/docs/2.0/circleci-images/
     docker:
