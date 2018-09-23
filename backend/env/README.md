@@ -53,7 +53,7 @@ See also `DATABASE_URL`.
 ### `CODELAB_FIREBASE_ADMIN_PRIVATE_KEY_JSON`
 
 A stringified version of the Firebase service account's private key. The value
-is usd by the backend to connect to Firebase and send messages to frontend
+is used by the backend to connect to Firebase and send messages to frontend
 users. The private key can be generated in a Firebase project by navigating to
 the Project Settings, clicking on the Service Accounts tab, and then pressing
 the "Generate new private key" button at the bottom of the page.
