@@ -85,7 +85,14 @@ import lessonByKey from '@helpers/finders/lesson-by-key'
 export default {
   beforeRouteEnter (to, from, next) {
     const lesson = lessonByKey(to.params.lessonKey)
-    store.dispatch('syncLesson', lesson.lessonId).then(() => next())
+    store.dispatch('syncLesson', lesson.lessonId)
+    .then(() => {
+      if (!lessonByKey(to.params.lessonKey)) {
+        next({ name: 'not-found', params: [to.path] })
+      } else {
+        next()
+      }
+    })
   },
   components: {
     Layout,

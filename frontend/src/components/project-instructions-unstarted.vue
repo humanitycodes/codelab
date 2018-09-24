@@ -98,13 +98,22 @@ export default {
         this.error = ''
         this.userPrivileges = privileges
       })
-      .catch(() => {
-        this.error = `
-          There was a problem looking up your GitHub plan. Make sure you're
-          connected to the Internet. If you've confirmed you are, tell your
-          instructor about this and we'll work to resolve it as soon as
-          possible.
-        `
+      .catch(error => {
+        if (error.response && error.response.status === 404) {
+          this.error = `
+            There was a problem looking up your GitHub plan. Sign out and sign
+            in before trying again. If you still can't start the project, tell
+            your instructor about this and we'll work to resolve it as soon as
+            possible.
+          `
+        } else {
+          this.error = `
+            There was a problem looking up your GitHub plan. Make sure you're
+            connected to the Internet. If you've confirmed you are, tell your
+            instructor about this and we'll work to resolve it as soon as
+            possible.
+          `
+        }
       })
     }
   }

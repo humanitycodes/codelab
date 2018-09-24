@@ -28,6 +28,16 @@
       </p>
       <aside>This action cannot be undone.</aside>
     </ModalConfirm>
+    <ModalNotice
+      :show="showModalCourseNoLongerExists"
+      @close="onCloseCourseNoLongerExistsModal"
+    >
+      <p>
+        The course you are changing was removed. If you think this was a
+        mistake, make a backup of your changes before navigating away from
+        this page.
+      </p>
+    </ModalNotice>
   </Layout>
 </template>
 
@@ -39,6 +49,7 @@ import Layout from '@layouts/main'
 import CourseForm from '@components/course-form'
 import DoneButton from '@components/done-button'
 import ModalConfirm from '@components/modal-confirm'
+import ModalNotice from '@components/modal-notice'
 import deleteCourse from '@api/courses/delete-course'
 import updateCourse from '@api/courses/update-course'
 import goBackOrFallback from '@helpers/utils/go-back-or-fallback'
@@ -47,16 +58,24 @@ import courseByKey from '@helpers/finders/course-by-key'
 export default {
   beforeRouteEnter (to, from, next) {
     const course = courseByKey(to.params.courseKey)
-    store.dispatch('syncCourse', course.courseId).then(() => next())
+    store.dispatch('syncCourse', course.courseId)
+    .then(() => {
+      if (!courseByKey(to.params.courseKey)) {
+        next({ name: 'not-found', params: [to.path] })
+      } else {
+        next()
+      }
+    })
   },
   components: {
-    Layout, CourseForm, DoneButton, ModalConfirm
+    Layout, CourseForm, DoneButton, ModalConfirm, ModalNotice
   },
   data () {
     return {
       // Copy the current course so changes can be canceled
       course: deepCopy(store.getters.currentCourse),
-      showModalConfirmRemoveCourse: false
+      showModalConfirmRemoveCourse: false,
+      showModalCourseNoLongerExists: false
     }
   },
   computed: courseGetters,
@@ -72,9 +91,19 @@ export default {
         .then(() => this.$router.replace('/courses'))
       }
     },
+    onCloseCourseNoLongerExistsModal () {
+      this.showModalCourseNoLongerExists = false
+      store.dispatch('removeCourses', [this.course.courseId])
+    },
     saveCourse () {
       updateCourse(this.course)
       .then(updatedCourse => store.dispatch('mergeCourses', [updatedCourse]))
+      .catch(error => {
+        if (error.response && error.response.status === 404) {
+          this.showModalCourseNoLongerExists = true
+        }
+        throw error
+      })
       .then(() => goBackOrFallback())
     }
   }

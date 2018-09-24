@@ -31,6 +31,12 @@ export default {
       // Get a specific lesson from the API and merge it with the others
       return getLesson(lessonId)
         .then(lesson => dispatch('mergeLessons', [lesson]))
+        .catch(error => {
+          if (error.response && error.response.status === 404) {
+            return dispatch('removeLessons', [lessonId])
+          }
+          throw error
+        })
     },
     syncAllLessons ({ commit }) {
       // Get all available lessons from API and save them in the local state

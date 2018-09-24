@@ -30,6 +30,12 @@ export default {
         .then(projectCompletion =>
           dispatch('mergeProjectCompletions', [projectCompletion])
         )
+        .catch(error => {
+          if (error.response && error.response.status === 404) {
+            return dispatch('removeProjectCompletions', [projectCompletionId])
+          }
+          throw error
+        })
     },
     syncAllProjectCompletions ({ commit }) {
       return getProjectCompletions()
