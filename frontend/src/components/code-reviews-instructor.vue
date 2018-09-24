@@ -150,6 +150,7 @@
 </template>
 
 <script>
+import store from '@state/store'
 import OrderByIndicator from '@components/indicator-order-by'
 import courseProjectCompletionRepoName from '@helpers/computed/course-project-completion-repo-name'
 import courseProjectCompletionHostedUrl from '@helpers/computed/course-project-completion-hosted-url'
@@ -278,7 +279,7 @@ export default {
         projectCompletionId, instructorUserId
       })
       .then(() => {
-        projectCompletion.instructorUserId = instructorUserId
+        return store.dispatch('syncProjectCompletion', projectCompletionId)
       })
       .catch(() => {
         const ref = this.$refs[this.reassignmentRef(projectCompletion)][0]
