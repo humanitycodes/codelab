@@ -3,7 +3,8 @@ import firebaseAdminPrivateKeyJson from '../../env/firebase-admin-private-key-js
 import firebaseProjectId from '../../env/firebase-project-id'
 
 const firebaseCredential = JSON.parse(firebaseAdminPrivateKeyJson)
-firebaseCredential.private_key = firebaseCredential.replace(/\\n/g, '\n')
+const privateKey = firebaseCredential.private_key
+firebaseCredential.private_key = privateKey.replace(/\\n/g, '\n')
 console.error('Firebase Credential:', firebaseCredential)
 
 firebaseAdmin.initializeApp({
