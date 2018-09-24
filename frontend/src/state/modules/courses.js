@@ -31,6 +31,12 @@ export default {
       // Get a specific course from the API and merge it with the others
       return getCourse(courseId)
         .then(course => dispatch('mergeCourses', [course]))
+        .catch(error => {
+          if (error.response && error.response.status === 404) {
+            return dispatch('removeCourses', [courseId])
+          }
+          throw error
+        })
     },
     syncAllCourses ({ commit }) {
       return getCourses()

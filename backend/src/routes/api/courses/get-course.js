@@ -30,6 +30,10 @@ export default {
         })
       }
 
+      if (!courseRecord) {
+        return boom.notFound()
+      }
+
       const course = await translateCourseFromRecord({ authUser, courseRecord })
       return course
     } catch (error) {
