@@ -17,7 +17,8 @@ export default {
   state: {
     currentUser: null,
     all: [],
-    isMessagingAllowedByUser: messagingAllowedByUser()
+    isMessagingAllowedByUser: messagingAllowedByUser(),
+    isUserSetupComplete: false
   },
   getters: {
     users (state) {
@@ -28,6 +29,9 @@ export default {
     },
     isUserSignedIn (state) {
       return !!state.currentUser
+    },
+    isUserSetupComplete (state) {
+      return state.isUserSetupComplete
     },
     isUserSetupRequired (state) {
       return !state.isMessagingAllowedByUser
@@ -54,6 +58,9 @@ export default {
     }
   },
   actions: {
+    completeUserSetup ({ commit }) {
+      commit('SET_USER_SETUP_COMPLETE', true)
+    },
     assignMessagingToken ({ state, commit }, { messagingToken }) {
       if (!messagingToken) return
 
@@ -114,6 +121,9 @@ export default {
     },
     SET_CURRENT_USER (state, user) {
       state.currentUser = user
+    },
+    SET_USER_SETUP_COMPLETE (state, complete) {
+      state.isUserSetupComplete = complete
     },
     REFRESH_MESSAGING_ALLOWED_BY_USER (state) {
       state.isMessagingAllowedByUser = messagingAllowedByUser()
