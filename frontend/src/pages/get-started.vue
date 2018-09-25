@@ -9,7 +9,7 @@
       <DoneButton
         :disabled="!allTasksDone"
         title="Press this button after completing all of the tasks."
-        @click="$router.replace('/courses')"
+        @click="$router.replace('/')"
       />
     </header>
     <Box>
@@ -31,7 +31,13 @@ export default {
   computed: {
     ...userGetters,
     allTasksDone () {
-      return !!this.userMessagingToken
+      return this.notificationsDone
+    },
+    notificationsDone () {
+      return (
+        !this.isMessagingSupportedByBrowser ||
+        this.isMessagingAllowedByUser
+      )
     }
   }
 }
