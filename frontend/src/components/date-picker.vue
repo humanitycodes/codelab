@@ -23,13 +23,16 @@ export default {
   methods: {
     onInput (event) {
       const { value } = event.target
-      if (!value) return
-      const dateNumber = (
-        this.atDay === 'start'
-          ? moment(value, 'YYYY-MM-DD').startOf('day')
-          : moment(value, 'YYYY-MM-DD').endOf('day')
-      )
-      this.$emit('input', dateNumber.valueOf())
+      if (!value) {
+        this.$emit('input', null)
+      } else {
+        const dateNumber = (
+          this.atDay === 'start'
+            ? moment(value, 'YYYY-MM-DD').startOf('day')
+            : moment(value, 'YYYY-MM-DD').endOf('day')
+        )
+        this.$emit('input', dateNumber.valueOf())
+      }
     }
   }
 }
