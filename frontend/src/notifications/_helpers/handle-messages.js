@@ -54,11 +54,15 @@ export default () => {
         }
       } else if (resourceType === 'project-completion') {
         if (action === 'created' || action === 'updated') {
-          store.dispatch('mergeProjectCompletions', [resource])
+          if (resourceId) {
+            store.dispatch('syncProjectCompletion', resourceId)
+          } else {
+            store.dispatch('mergeProjectCompletions', [resource])
+          }
         } else if (action === 'deleted') {
           store.dispatch(
             'removeProjectCompletions',
-            [resource.projectCompletionId]
+            [resourceId || resource.projectCompletionId]
           )
         }
       }
