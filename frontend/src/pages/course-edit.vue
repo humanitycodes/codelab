@@ -5,9 +5,25 @@
         It's not recommended to continue editing this course. If you want to use
         the same curriculum for a new semester, you should clone it.
       </p>
-      <DoneButton @click="saveCourse"/>
+      <div class="flex mb-4 -mx-2">
+        <div class="w-1/2 px-2">
+          <DoneButton @click="saveCourse" :disabled="!dataChanged"
+            :saveBtn="true"/>
+        </div>
+        <div class="w-1/2 px-2">
+          <CancelButton @click="cancelEdit"/>
+        </div>
+      </div>
       <CourseForm :course="course"/>
-      <DoneButton @click="saveCourse"/>
+      <div class="flex mb-4 -mx-2">
+        <div class="w-1/2 px-2">
+          <DoneButton @click="saveCourse" :disabled="!dataChanged"
+            :saveBtn="true"/>
+        </div>
+        <div class="w-1/2 px-2">
+          <CancelButton @click="cancelEdit"/>
+        </div>
+      </div>
       <button
         v-if="canDestroyCurrentCourse"
         @click="showRemoveCourseModal"
@@ -16,6 +32,20 @@
         Delete
       </button>
     </div>
+    <ModalConfirm
+      :show="showModalConfirmLeaveUnsaved.confirm"
+      confirmClass="danger"
+      confirmLabel="Leave"
+      @close="onCloseUnsavedModal"
+    >
+      <p>
+        The changes you made will be lost if you navigate away from
+        this page without saving.
+      </p>
+      <p>
+        Are you sure you want to leave this page?
+      </p>
+    </ModalConfirm>
     <ModalConfirm
       :show="showModalConfirmRemoveCourse"
       confirmClass="danger"
@@ -48,6 +78,7 @@ import deepCopy from '@helpers/utils/deep-copy'
 import Layout from '@layouts/main'
 import CourseForm from '@components/course-form'
 import DoneButton from '@components/done-button'
+import CancelButton from '@components/cancel-button'
 import ModalConfirm from '@components/modal-confirm'
 import ModalNotice from '@components/modal-notice'
 import deleteCourse from '@api/courses/delete-course'
@@ -67,18 +98,42 @@ export default {
       }
     })
   },
+  beforeRouteLeave (to, from, next) {
+    // Check if changes have been made and make sure modal not open
+    if (this.dataChanged &&
+        this.showModalConfirmLeaveUnsaved.confirm === false &&
+        !this.processingSave) {
+      this.showModalConfirmLeaveUnsaved.routeTo = to
+      this.showModalConfirmLeaveUnsaved.confirm = true
+      next(false)
+    } else {
+      next()
+    }
+  },
   components: {
-    Layout, CourseForm, DoneButton, ModalConfirm, ModalNotice
+    Layout, CourseForm, DoneButton, CancelButton, ModalConfirm, ModalNotice
   },
   data () {
     return {
       // Copy the current course so changes can be canceled
       course: deepCopy(store.getters.currentCourse),
       showModalConfirmRemoveCourse: false,
-      showModalCourseNoLongerExists: false
+      showModalCourseNoLongerExists: false,
+      showModalConfirmLeaveUnsaved: {
+        confirm: false,
+        routeTo: null
+      },
+      processingSave: false
     }
   },
-  computed: courseGetters,
+  computed: {
+    ...courseGetters,
+    dataChanged () {
+      // Detects changes between course objects to see if changed
+      return (JSON.stringify(this.course) !==
+       JSON.stringify(deepCopy(store.getters.currentCourse)))
+    }
+  },
   methods: {
     showRemoveCourseModal () {
       this.showModalConfirmRemoveCourse = true
@@ -91,11 +146,19 @@ export default {
         .then(() => this.$router.replace('/courses'))
       }
     },
+    onCloseUnsavedModal (confirmed) {
+      if (confirmed) {
+        this.$router.push(this.showModalConfirmLeaveUnsaved.routeTo)
+      } else {
+        this.showModalConfirmLeaveUnsaved.confirm = false
+      }
+    },
     onCloseCourseNoLongerExistsModal () {
       this.showModalCourseNoLongerExists = false
       store.dispatch('removeCourses', [this.course.courseId])
     },
     saveCourse () {
+      this.processingSave = true
       updateCourse(this.course)
       .then(updatedCourse => store.dispatch('mergeCourses', [updatedCourse]))
       .catch(error => {
@@ -105,6 +168,9 @@ export default {
         throw error
       })
       .then(() => goBackOrFallback())
+    },
+    cancelEdit () {
+      this.$router.push('/courses')
     }
   }
 }

@@ -1,9 +1,25 @@
 <template>
   <Layout>
     <div v-if="lesson">
-      <DoneButton @click="saveLesson"/>
+      <div class="flex mb-4 -mx-2">
+        <div class="w-1/2 px-2">
+          <DoneButton @click="saveLesson" :disabled="!dataChanged"
+            :saveBtn="true"/>
+        </div>
+        <div class="w-1/2 px-2">
+          <CancelButton @click="cancelEdit"/>
+        </div>
+      </div>
       <LessonForm :lesson="lesson"/>
-      <DoneButton @click="saveLesson"/>
+      <div class="flex mb-4 -mx-2">
+        <div class="w-1/2 px-2">
+          <DoneButton @click="saveLesson" :disabled="!dataChanged"
+            :saveBtn="true"/>
+        </div>
+        <div class="w-1/2 px-2">
+          <CancelButton @click="cancelEdit"/>
+        </div>
+      </div>
       <button
         v-if="canDestroyCurrentLesson"
         @click="showRemoveLessonModal"
@@ -13,6 +29,20 @@
       </button>
     </div>
     <LessonNotFound v-else/>
+    <ModalConfirm
+      :show="showModalConfirmLeaveUnsaved.confirm"
+      confirmClass="danger"
+      confirmLabel="Leave"
+      @close="onCloseUnsavedModal"
+    >
+      <p>
+        The changes you made will be lost if you navigate away from
+        this page without saving.
+      </p>
+      <p>
+        Are you sure you want to leave this page?
+      </p>
+    </ModalConfirm>
     <ModalConfirm
       :show="showModalConfirmRemoveLesson"
       confirmClass="danger"
@@ -46,6 +76,7 @@ import Layout from '@layouts/main'
 import LessonForm from '@components/lesson-form'
 import LessonNotFound from '@components/lesson-not-found'
 import DoneButton from '@components/done-button'
+import CancelButton from '@components/cancel-button'
 import ModalConfirm from '@components/modal-confirm'
 import ModalNotice from '@components/modal-notice'
 import deleteLesson from '@api/lessons/delete-lesson'
@@ -65,21 +96,52 @@ export default {
       }
     })
   },
+  beforeRouteLeave (to, from, next) {
+    // Check if changes have been made and make sure modal not open
+    if (this.dataChanged &&
+        this.showModalConfirmLeaveUnsaved.confirm === false &&
+        !this.processingSave) {
+      this.showModalConfirmLeaveUnsaved.routeTo = to
+      this.showModalConfirmLeaveUnsaved.confirm = true
+      next(false)
+    } else {
+      next()
+    }
+  },
   components: {
-    Layout, LessonForm, LessonNotFound, DoneButton, ModalConfirm, ModalNotice
+    Layout, LessonForm, LessonNotFound, DoneButton, CancelButton, ModalConfirm, ModalNotice
   },
   data () {
     return {
       // Copy the current lesson so changes can be canceled
       lesson: deepCopy(store.getters.currentLesson),
       showModalConfirmRemoveLesson: false,
-      showModalLessonNoLongerExists: false
+      showModalLessonNoLongerExists: false,
+      showModalConfirmLeaveUnsaved: {
+        confirm: false,
+        routeTo: null
+      },
+      processingSave: false
     }
   },
-  computed: lessonGetters,
+  computed: {
+    ...lessonGetters,
+    dataChanged () {
+      // Detects changes between lesson objects to see if changed
+      return (JSON.stringify(this.lesson) !==
+       JSON.stringify(deepCopy(store.getters.currentLesson)))
+    }
+  },
   methods: {
     showRemoveLessonModal () {
       this.showModalConfirmRemoveLesson = true
+    },
+    onCloseUnsavedModal (confirmed) {
+      if (confirmed) {
+        this.$router.push(this.showModalConfirmLeaveUnsaved.routeTo)
+      } else {
+        this.showModalConfirmLeaveUnsaved.confirm = false
+      }
     },
     onCloseRemoveLessonModal (confirmed) {
       this.showModalConfirmRemoveLesson = false
@@ -94,6 +156,7 @@ export default {
       store.dispatch('removeLessons', [this.lesson.lessonId])
     },
     saveLesson () {
+      this.processingSave = true
       updateLesson(this.lesson)
       .then(updatedLesson => store.dispatch('mergeLessons', [updatedLesson]))
       .catch(error => {
@@ -103,6 +166,9 @@ export default {
         throw error
       })
       .then(() => goBackOrFallback())
+    },
+    cancelEdit () {
+      this.$router.push('/lessons')
     }
   }
 }
