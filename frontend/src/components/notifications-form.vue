@@ -2,9 +2,11 @@
   <div>
     <h2>
       <DoneIndicator
-        :done="!!userMessagingToken"
+        :done="isMessagingAllowedByUser"
         done-label="Notifications are on"
         not-done-label="Notifications are not on"
+        error-label="Notifications are not supported in your browser"
+        :error="!isMessagingSupportedByBrowser"
       />
       Turn on notifications
     </h2>
@@ -17,6 +19,19 @@
       you notifications. Choose "Allow" when this happens. If you press
       "Block" or the popup does't appear, notify an instructor.
     </p>
+    <div v-if="!isMessagingSupportedByBrowser" class="danger">
+      <h3>
+        Your browser does not fully support this feature
+      </h3>
+      <p>
+        Notifications allow you to receive updates without refreshing the
+        page. If you would like to use this feature, download and use the
+        newest version of
+        <a href="https://www.google.com/chrome/">Chrome</a>
+        or
+        <a href="https://www.mozilla.org/firefox/download/">Firefox</a>.
+      </p>
+    </div>
     <div v-if="showErrorMessage" class="error">
       <h3>
         Something went wrong while turning on notifications.
@@ -33,12 +48,13 @@
       </p>
     </div>
     <button
+      v-if="isMessagingSupportedByBrowser"
       name="enable-notifications-button"
       class="primary block max-w-xs mx-auto"
-      :disabled="!!userMessagingToken || requestingNotifications"
+      :disabled="isMessagingAllowedByUser || requestingNotifications"
       @click="enableNotifications"
     >
-      <span v-if="!!userMessagingToken">
+      <span v-if="isMessagingAllowedByUser">
         Notifications are turned on! 🎉
       </span>
       <span v-else-if="requestingNotifications">
