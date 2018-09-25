@@ -39,7 +39,8 @@ router.beforeEach((to, from, next) => {
   if (
     !isPublic &&
     to.path !== '/get-started' &&
-    store.getters.isUserSetupRequired
+    store.getters.isUserSetupRequired &&
+    !store.getters.isUserSetupComplete
   ) {
     return next('/get-started')
   }

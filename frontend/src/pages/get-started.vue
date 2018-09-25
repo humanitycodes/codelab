@@ -9,7 +9,7 @@
       <DoneButton
         :disabled="!allTasksDone"
         title="Press this button after completing all of the tasks."
-        @click="$router.replace('/')"
+        @click="completeUserSetup()"
       />
     </header>
     <Box>
@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import store from '@state/store'
 import Layout from '@layouts/restricted'
 import DoneButton from '@components/done-button'
 import NotificationsForm from '@components/notifications-form'
@@ -38,6 +39,12 @@ export default {
         !this.isMessagingSupportedByBrowser ||
         this.isMessagingAllowedByUser
       )
+    }
+  },
+  methods: {
+    completeUserSetup () {
+      store.dispatch('completeUserSetup')
+      .then(() => this.$router.replace('/'))
     }
   }
 }
