@@ -30,11 +30,11 @@ export default ({ requestMessagingToken = false } = {}) => {
     usingPublicVapidKey = true
   }
 
-  return registerServiceWorker()
+  return Promise.resolve()
+    .then(() => registerServiceWorker())
     .then(() => requestPermission())
     .then(() => syncMessagingToken())
     .then(() => handleTokenRefresh())
     .then(() => handleMessages())
     .then(() => handleWakeupNotificationSync())
-    .then(() => Promise.resolve())
 }
