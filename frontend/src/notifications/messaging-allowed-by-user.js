@@ -1,1 +1,4 @@
-export default () => Notification.permission === 'granted'
+export default () => (
+  window.Notification &&
+  window.Notification.permission === 'granted'
+)
