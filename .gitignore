@@ -6,3 +6,4 @@ reports/
 *.log
 *.log.*
 .env*
+package-lock.json

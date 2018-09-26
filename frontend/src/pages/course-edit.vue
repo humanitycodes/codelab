@@ -7,8 +7,11 @@
       </p>
       <div class="flex mb-4 -mx-2">
         <div class="w-1/2 px-2">
-          <DoneButton @click="saveCourse" :disabled="!dataChanged"
-            :saveBtn="true"/>
+          <DoneButton
+            @click="saveCourse"
+            :disabled="!dataChanged"
+            :saveButton="true"
+          />
         </div>
         <div class="w-1/2 px-2">
           <CancelButton @click="cancelEdit"/>
@@ -17,8 +20,11 @@
       <CourseForm :course="course"/>
       <div class="flex mb-4 -mx-2">
         <div class="w-1/2 px-2">
-          <DoneButton @click="saveCourse" :disabled="!dataChanged"
-            :saveBtn="true"/>
+          <DoneButton
+            @click="saveCourse"
+            :disabled="!dataChanged"
+            :saveButton="true"
+          />
         </div>
         <div class="w-1/2 px-2">
           <CancelButton @click="cancelEdit"/>
@@ -39,12 +45,12 @@
       @close="onCloseUnsavedModal"
     >
       <p>
-        The changes you made will be lost if you navigate away from
+        The changes you made will be lost if you leave
         this page without saving.
       </p>
-      <p>
+      <aside>
         Are you sure you want to leave this page?
-      </p>
+      </aside>
     </ModalConfirm>
     <ModalConfirm
       :show="showModalConfirmRemoveCourse"
@@ -100,9 +106,11 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
     // Check if changes have been made and make sure modal not open
-    if (this.dataChanged &&
-        this.showModalConfirmLeaveUnsaved.confirm === false &&
-        !this.processingSave) {
+    if (
+      this.dataChanged &&
+      this.showModalConfirmLeaveUnsaved.confirm === false &&
+      !this.processingSave
+    ) {
       this.showModalConfirmLeaveUnsaved.routeTo = to
       this.showModalConfirmLeaveUnsaved.confirm = true
       next(false)
@@ -130,8 +138,9 @@ export default {
     ...courseGetters,
     dataChanged () {
       // Detects changes between course objects to see if changed
-      return (JSON.stringify(this.course) !==
-       JSON.stringify(deepCopy(store.getters.currentCourse)))
+      const updatedCourseJson = JSON.stringify(this.course)
+      const currentCourseJson = JSON.stringify(this.currentCourse)
+      return updatedCourseJson !== currentCourseJson
     }
   },
   methods: {
@@ -148,7 +157,7 @@ export default {
     },
     onCloseUnsavedModal (confirmed) {
       if (confirmed) {
-        this.$router.push(this.showModalConfirmLeaveUnsaved.routeTo)
+        this.$router.replace(this.showModalConfirmLeaveUnsaved.routeTo)
       } else {
         this.showModalConfirmLeaveUnsaved.confirm = false
       }
@@ -170,7 +179,7 @@ export default {
       .then(() => goBackOrFallback())
     },
     cancelEdit () {
-      this.$router.push('/courses')
+      this.$router.replace('/courses')
     }
   }
 }

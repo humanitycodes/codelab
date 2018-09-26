@@ -4,20 +4,15 @@
     class="primary block"
     @click="$emit('click')"
   >
-    <span v-if="!useSaveText">My work here is done</span>
+    <span v-if="!saveButton">My work here is done</span>
     <span v-else>Save</span>
   </button>
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-      useSaveText: this.saveBtn
-    }
-  },
   props: {
-    saveBtn: {
+    saveButton: {
       type: Boolean,
       default: false
     }

@@ -3,8 +3,11 @@
     <div v-if="lesson">
       <div class="flex mb-4 -mx-2">
         <div class="w-1/2 px-2">
-          <DoneButton @click="saveLesson" :disabled="!dataChanged"
-            :saveBtn="true"/>
+          <DoneButton
+            @click="saveLesson"
+            :disabled="!dataChanged"
+            :saveButton="true"
+          />
         </div>
         <div class="w-1/2 px-2">
           <CancelButton @click="cancelEdit"/>
@@ -13,8 +16,11 @@
       <LessonForm :lesson="lesson"/>
       <div class="flex mb-4 -mx-2">
         <div class="w-1/2 px-2">
-          <DoneButton @click="saveLesson" :disabled="!dataChanged"
-            :saveBtn="true"/>
+          <DoneButton
+            @click="saveLesson"
+            :disabled="!dataChanged"
+            :saveButton="true"
+          />
         </div>
         <div class="w-1/2 px-2">
           <CancelButton @click="cancelEdit"/>
@@ -36,12 +42,12 @@
       @close="onCloseUnsavedModal"
     >
       <p>
-        The changes you made will be lost if you navigate away from
+        The changes you made will be lost if you leave
         this page without saving.
       </p>
-      <p>
+      <aside>
         Are you sure you want to leave this page?
-      </p>
+      </aside>
     </ModalConfirm>
     <ModalConfirm
       :show="showModalConfirmRemoveLesson"
@@ -98,9 +104,11 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
     // Check if changes have been made and make sure modal not open
-    if (this.dataChanged &&
-        this.showModalConfirmLeaveUnsaved.confirm === false &&
-        !this.processingSave) {
+    if (
+      this.dataChanged &&
+      this.showModalConfirmLeaveUnsaved.confirm === false &&
+      !this.processingSave
+    ) {
       this.showModalConfirmLeaveUnsaved.routeTo = to
       this.showModalConfirmLeaveUnsaved.confirm = true
       next(false)
@@ -128,8 +136,9 @@ export default {
     ...lessonGetters,
     dataChanged () {
       // Detects changes between lesson objects to see if changed
-      return (JSON.stringify(this.lesson) !==
-       JSON.stringify(deepCopy(store.getters.currentLesson)))
+      const updatedLessonJson = JSON.stringify(this.lesson)
+      const currentLessonJson = JSON.stringify(this.currentLesson)
+      return updatedLessonJson !== currentLessonJson
     }
   },
   methods: {
@@ -138,7 +147,7 @@ export default {
     },
     onCloseUnsavedModal (confirmed) {
       if (confirmed) {
-        this.$router.push(this.showModalConfirmLeaveUnsaved.routeTo)
+        this.$router.replace(this.showModalConfirmLeaveUnsaved.routeTo)
       } else {
         this.showModalConfirmLeaveUnsaved.confirm = false
       }
@@ -168,7 +177,7 @@ export default {
       .then(() => goBackOrFallback())
     },
     cancelEdit () {
-      this.$router.push('/lessons')
+      this.$router.replace('/lessons')
     }
   }
 }
