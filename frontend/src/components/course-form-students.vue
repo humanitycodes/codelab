@@ -153,8 +153,6 @@ export default {
     },
     findStudentByEmail (email) {
       return this.users.find(user => (
-        // User is not current user
-        this.currentUser.userId !== user.userId &&
         // User is not already a student
         !this.course.studentIds.includes(user.userId) &&
         // Email address matches user's email
