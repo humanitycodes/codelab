@@ -12,8 +12,6 @@ export default async messagingToken => {
       messagingToken, { transaction }
     )
     await transaction.commit()
-
-    console.log('Removed unused messaging token:', messagingToken)
   } catch (error) {
     await transaction.rollback()
     console.warn('Error deleting unused messaging token:', error)
