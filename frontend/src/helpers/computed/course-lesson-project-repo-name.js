@@ -1,14 +1,24 @@
 // Returns the GitHub repository name for a given course and lesson.
 //
-// - If the lesson contains a project key, then the old style of name:
-//   `{courseKey}-{lessonKey}-{last6of(projectKey)}` will be used.
-// - If there is no project key, then the new style of name:
-//   `{dept(courseKey)}-{courseNum(courseKey)}-{lessonKey}` will be used.
+// - The old, long repo name is formatted like this:
+//   `{courseKey}-{lessonKey}-{last6of(projectKey)}`
 //
-// These two formats are used to support old classes (mid-2018 and earlier)
-// and classes held after mid-2018.
+// - The new, short repo name is formatted like this:
+//   `{dept(courseKey)}-{courseNum(courseKey)}-{lessonKey}`
+//
+const newRepoStartDate = Date.parse('2018-10-01')
+
 export default (course, lesson) => {
-  if (lesson.projectKey && lesson.projectKey.length) {
+  // Use the old, long repo name if...
+  const useLongRepoName = (
+    // ...the lesson has a project key
+    lesson.projectKey &&
+    lesson.projectKey.length &&
+    // ...the course started before October 1, 2018
+    course.startDate < newRepoStartDate
+  )
+
+  if (useLongRepoName) {
     const courseKey = course.courseKey
     const lessonKey = lesson.lessonKey
     const projectKey = lesson.projectKey
