@@ -3,27 +3,27 @@
     <div v-if="lesson">
       <div class="flex mb-4 -mx-2">
         <div class="w-1/2 px-2">
+          <CancelButton @click="cancelEdit"/>
+        </div>
+        <div class="w-1/2 px-2">
           <DoneButton
             @click="saveLesson"
             :disabled="!dataChanged"
             :saveButton="true"
           />
-        </div>
-        <div class="w-1/2 px-2">
-          <CancelButton @click="cancelEdit"/>
         </div>
       </div>
       <LessonForm :lesson="lesson"/>
       <div class="flex mb-4 -mx-2">
         <div class="w-1/2 px-2">
+          <CancelButton @click="cancelEdit"/>
+        </div>
+        <div class="w-1/2 px-2">
           <DoneButton
             @click="saveLesson"
             :disabled="!dataChanged"
             :saveButton="true"
           />
-        </div>
-        <div class="w-1/2 px-2">
-          <CancelButton @click="cancelEdit"/>
         </div>
       </div>
       <button
