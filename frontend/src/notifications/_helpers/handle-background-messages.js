@@ -9,12 +9,13 @@ if (messaging) {
     const { resourceType } = payload.data
     let resourceId = getResourceIdFromPayload(payload)
     if (isNaN(resourceId)) {
+      const { resource } = payload.data
       if (resourceType === 'course') {
-        resourceId = payload.resource.courseId
+        resourceId = resource.courseId
       } else if (resourceType === 'lesson') {
-        resourceId = payload.resource.lessonId
+        resourceId = resource.lessonId
       } else if (resourceType === 'project-completion') {
-        resourceId = payload.resource.projectCompletionId
+        resourceId = resource.projectCompletionId
       } else {
         console.warn('Unrecognized resource type:', resourceType)
         return
