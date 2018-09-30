@@ -5,15 +5,16 @@ export default payload => {
   if (resourceId) {
     return resourceId
   } else {
+    const resourceValue = JSON.parse(resource)
     switch (resourceType) {
       case 'course':
-        return resource.courseId
+        return resourceValue.courseId
       case 'lesson':
-        return resource.lessonId
+        return resourceValue.lessonId
       case 'project-completion':
-        return resource.projectCompletionId
+        return resourceValue.projectCompletionId
       case 'user':
-        return resource.userId
+        return resourceValue.userId
     }
   }
 }
