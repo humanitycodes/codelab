@@ -25,6 +25,7 @@ if (messaging) {
     // Save the timestamp that this resource changed so the app can
     // re-sync data when it becomes active
     const timestamp = Date.now()
+    console.log('Setting', resourceId.toString(), 'to', { resourceType, timestamp })
     set(resourceId.toString(), { resourceType, timestamp })
   })
 }
