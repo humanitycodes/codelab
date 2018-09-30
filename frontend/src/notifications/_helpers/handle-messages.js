@@ -26,6 +26,8 @@ import store from '@state/store'
 export default () => {
   return Promise.resolve(
     messaging.onMessage(payload => {
+      console.log('Got message:', payload)
+
       // Firebase handles notification-only messages
       if (!payload.data) return
 
