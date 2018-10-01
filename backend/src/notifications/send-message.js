@@ -3,7 +3,6 @@ import deleteUnregisteredMessagingToken from './_helpers/delete-unregistered-mes
 
 export default async message => {
   // No 'await' here so messages don't hold up requests
-  console.log('Sending message:', message)
   messaging.send(message)
   .catch(error => {
     const errorInfo = error.errorInfo || {}

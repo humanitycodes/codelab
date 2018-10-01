@@ -4,8 +4,6 @@ import getResourceIdFromPayload from './get-resource-id-from-payload'
 
 if (messaging) {
   messaging.setBackgroundMessageHandler(payload => {
-    console.log('Got background message:', payload)
-
     const resourceId = getResourceIdFromPayload(payload)
     if (isNaN(resourceId)) return
 
