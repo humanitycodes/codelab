@@ -1,4 +1,4 @@
-import { keys, get } from 'idb-keyval'
+import { keys, get, del } from 'idb-keyval'
 
 const syncActionName = {
   'course': 'syncCourse',
@@ -38,6 +38,10 @@ export default {
       const action = syncActionName[resourceType]
       if (!action) return
       return dispatch(action, resourceId)
+        .then(resource => {
+          // If the action resolved null, remove the resource from the journal
+          if (!resource) return del(resourceId)
+        })
     }
   },
   mutations: {

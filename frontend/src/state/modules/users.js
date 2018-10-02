@@ -108,7 +108,10 @@ export default {
     },
     syncAllUsers ({ commit }) {
       return getUsers()
-        .then(users => commit('SET_ALL_USERS', users))
+        .then(users => {
+          commit('SET_ALL_USERS', users)
+          return users
+        })
         .catch(error => {
           commit('SET_ALL_USERS', [])
           throw error

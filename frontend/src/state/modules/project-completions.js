@@ -29,10 +29,13 @@ export default {
       return getProjectCompletion(projectCompletionId)
         .then(projectCompletion =>
           dispatch('mergeProjectCompletions', [projectCompletion])
+          .then(() => projectCompletion)
         )
         .catch(error => {
           if (error.response && error.response.status === 404) {
+            // Resolve null to indicate project completion was removed
             return dispatch('removeProjectCompletions', [projectCompletionId])
+              .then(() => null)
           }
           throw error
         })
@@ -41,6 +44,7 @@ export default {
       return getProjectCompletions()
         .then(projectCompletions => {
           commit('SET_ALL_PROJECT_COMPLETIONS', projectCompletions)
+          return projectCompletions
         })
         .catch(error => {
           commit('SET_ALL_PROJECT_COMPLETIONS', [])

@@ -30,17 +30,25 @@ export default {
     syncCourse ({ dispatch }, courseId) {
       // Get a specific course from the API and merge it with the others
       return getCourse(courseId)
-        .then(course => dispatch('mergeCourses', [course]))
+        .then(course =>
+          dispatch('mergeCourses', [course])
+          .then(() => course)
+        )
         .catch(error => {
           if (error.response && error.response.status === 404) {
+            // Resolve null to indicate course was removed
             return dispatch('removeCourses', [courseId])
+              .then(() => null)
           }
           throw error
         })
     },
     syncAllCourses ({ commit }) {
       return getCourses()
-        .then(courses => commit('SET_ALL_COURSES', courses))
+        .then(courses => {
+          commit('SET_ALL_COURSES', courses)
+          return courses
+        })
         .catch(error => {
           commit('SET_ALL_COURSES', [])
           throw error
