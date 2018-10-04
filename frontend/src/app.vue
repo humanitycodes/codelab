@@ -155,6 +155,10 @@ pre:not(.CodeMirror-line)
     content: 'JSON'
   &.ejs > code:after
     content: 'EJS'
+  &.ddl > code:after
+    content: 'DDL'
+  &.sql > code:after
+    content: 'SQL'
   &.txt > code:after
     content: 'TEXT'
   &.notepad
