@@ -71,12 +71,14 @@
       "light": {
         "html": "#ffc5c5",
         "css": "#d5e2ec",
-        "js": "#f3e9a6"
+        "js": "#f3e9a6",
+        "sql": "#caf0c4"
       },
       "dark": {
         "html": "#bf8f8f",
         "css": "#8ba0b1",
-        "js": "#b5a53c"
+        "js": "#b5a53c",
+        "sql": "#c4eebd"
       }
     }
   },

@@ -142,7 +142,8 @@ export default {
       const categoryOrder = [
         'css',
         'html',
-        'js'
+        'js',
+        'sql'
       ]
       // Presort lessons, so that nodes with more postreqs are
       // calculated first, followed by general groupings by language,
