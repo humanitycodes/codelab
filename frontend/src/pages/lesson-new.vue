@@ -50,7 +50,7 @@ export default {
   },
   data () {
     const lessonCategories = [
-      'html', 'css', 'js'
+      'html', 'css', 'js', 'sql'
     ]
     return {
       key: '',
