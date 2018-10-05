@@ -126,6 +126,7 @@ export default {
       this.isExpanded = true
       document.documentElement.style.overflowY = 'hidden'
       window.addEventListener('keydown', this.collapseEditorIfEscapeKey)
+      window.addEventListener('popstate', this.collapseEditor)
       this.$nextTick(() => {
         this.editor.refresh()
       })
@@ -135,6 +136,7 @@ export default {
       this.isExpanded = false
       document.documentElement.style.overflowY = 'auto'
       window.removeEventListener('keydown', this.collapseEditorIfEscapeKey)
+      window.removeEventListener('popstate', this.collapseEditor)
       this.editor.getInputField().blur()
     },
     collapseEditorIfEscapeKey (event) {
