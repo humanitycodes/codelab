@@ -7,6 +7,7 @@
           <input
             v-model="lesson.projectTitle"
             placeholder="Project title"
+            @input="onInput"
             id="project-title"
             name="project-title"
             class="lesson-project-title-input"
@@ -93,6 +94,11 @@ export default {
         position: this.lesson.projectCriteria.length
       })
       this.newProjectCriterion = ''
+    },
+    onInput () {
+      if (this.lesson.projectTitle === '') {
+        this.lesson.projectTitle = null
+      }
     }
   }
 }

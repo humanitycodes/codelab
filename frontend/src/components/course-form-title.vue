@@ -5,6 +5,7 @@
       <input
         v-model="course.title"
         id="course-title"
+        @input="onInput"
         name="course-title"
         placeholder="A short description of the course in the infinitive form"
       >
@@ -21,6 +22,13 @@ export default {
     course: {
       type: Object,
       required: true
+    }
+  },
+  methods: {
+    onInput () {
+      if (this.course.title === '') {
+        this.course.title = null
+      }
     }
   }
 }
