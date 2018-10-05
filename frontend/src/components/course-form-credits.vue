@@ -31,6 +31,8 @@ export default {
         const newCreditsNumber = Number(newCredits)
         if (!isNaN(newCreditsNumber) && newCreditsNumber > 0) {
           this.course.credits = newCreditsNumber
+        } else {
+          this.course.credits = null
         }
       } else {
         this.$refs.input.value = this.course.credits

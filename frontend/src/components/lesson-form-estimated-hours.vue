@@ -35,6 +35,8 @@ export default {
         const newHoursNumber = parseInt(newHours)
         if (!isNaN(newHoursNumber) && newHoursNumber > 0) {
           this.lesson.estimatedHours = newHoursNumber
+        } else {
+          this.lesson.estimatedHours = null
         }
       } else {
         this.$refs.input.value = this.lesson.estimatedHours
