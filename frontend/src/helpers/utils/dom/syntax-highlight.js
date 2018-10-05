@@ -4,7 +4,7 @@ import bash from 'highlight.js/lib/languages/bash'
 import xml from 'highlight.js/lib/languages/xml'
 import javascript from 'highlight.js/lib/languages/javascript'
 import scss from 'highlight.js/lib/languages/scss'
-import sql from 'highlight.js/lib/languages/sql'
+import pgsql from './highlight-pgsql'
 
 export const codeLangs = {
   css: scss,
@@ -15,8 +15,8 @@ export const codeLangs = {
   ejs: xml,
   html: xml,
   sh: bash,
-  sql: sql,
-  ddl: sql
+  sql: pgsql,
+  ddl: pgsql
 }
 
 export const codeExtensions = Object.keys(codeLangs)
