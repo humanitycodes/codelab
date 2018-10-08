@@ -1,7 +1,7 @@
 <template>
   <nav class="main-nav">
     <img
-      src="../assets/images/logo.png"
+      :src="getLogo()"
       alt="Go Home"
       class="main-nav-logo"
       @click="$router.push('/')"
@@ -52,7 +52,16 @@ export default {
   methods: {
     ...userPermissionMethods,
     ...lessonPermissionMethods,
-    ...coursePermissionMethods
+    ...coursePermissionMethods,
+    getLogo () {
+      // Used this format to add other brands as else if in future
+      const brand = process.env.CODELAB_BRAND || 'msu'
+      if (brand === 'codelab517') {
+        return require('../assets/images/logo-blue.png')
+      } else {
+        return require('../assets/images/logo.png')
+      }
+    }
   }
 }
 </script>
