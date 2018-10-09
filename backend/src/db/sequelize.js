@@ -16,15 +16,15 @@ pg.types.setTypeParser(1114, dateString => {
 })
 
 import Sequelize from 'sequelize'
-import DATABASE_URL from '../../env/database-url'
-import CODELAB_LOG_SQL_STATEMENTS from '../../env/log-sql-statements'
+import databaseUrl from '../../env/database-url'
+import logSqlStatements from '../../env/log-sql-statements'
 
 export default new Sequelize(
-  DATABASE_URL,
+  databaseUrl,
   {
     dialect: 'postgres',
     timezone: 'UTC',
-    logging: CODELAB_LOG_SQL_STATEMENTS ? console.log : false,
+    logging: logSqlStatements ? console.log : false,
     benchmark: true,
     pool: {
       max: 18
