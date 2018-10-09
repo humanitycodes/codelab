@@ -17,6 +17,7 @@ pg.types.setTypeParser(1114, dateString => {
 
 import Sequelize from 'sequelize'
 import databaseUrl from '../../env/database-url'
+import dbConnPoolSize from '../../env/db-conn-pool-size'
 import logSqlStatements from '../../env/log-sql-statements'
 
 export default new Sequelize(
@@ -27,7 +28,7 @@ export default new Sequelize(
     logging: logSqlStatements ? console.log : false,
     benchmark: true,
     pool: {
-      max: 18
+      max: dbConnPoolSize
     },
     operatorsAliases: false,
     define: {

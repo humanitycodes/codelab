@@ -15,6 +15,13 @@ The name of the brand used in this environment. Choices are: `codelab517` or
 `msu`. The brand influences both the behavior of the application and how it
 looks to users.
 
+### `CODELAB_DB_CONN_POOL_SIZE`
+
+The number of database connections to allocate for the pool. These connections
+will be shared by all worker threads. Choose a value smaller than the number
+of connections allowed by the database so direct connections can be made for
+troubleshooting, data fixes, reports, etc. The default value is `10`.
+
 ### `CODELAB_DB_HOST`
 
 The hostname or IP address of the application's database server. The default
