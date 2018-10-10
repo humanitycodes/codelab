@@ -6,10 +6,9 @@
 </template>
 
 <script>
-import store from '@state/store'
 import Layout from '@layouts/main'
 import CoursesCodeReviews from '@components/code-reviews-courses'
-import { courseGetters } from '@state/helpers'
+import { courseGetters, userGetters } from '@state/helpers'
 
 export default {
   components: {
@@ -17,8 +16,9 @@ export default {
   },
   computed: {
     ...courseGetters,
+    ...userGetters,
     availableCourses () {
-      const currentUserId = store.state.users.currentUser.userId
+      const currentUserId = this.currentUser.userId
       return this.courses.filter(
         course => course.instructorIds.some(userId => userId === currentUserId)
       )

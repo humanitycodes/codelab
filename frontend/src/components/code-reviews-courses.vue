@@ -21,7 +21,6 @@
 import InstructorCodeReviews from '@components/code-reviews-instructor'
 import { projectCompletionGetters } from '@state/helpers'
 import courseUserGradeCurrentRounded from '@helpers/computed/course-user-grade-current-rounded'
-import courseById from '@helpers/finders/course-by-id'
 import lessonById from '@helpers/finders/lesson-by-id'
 import userById from '@helpers/finders/user-by-id'
 import orderBy from 'lodash/orderBy'
@@ -54,7 +53,13 @@ export default {
           instructorCodeReviews[projectCompletion.instructorUserId] = []
         }
 
-        const course = courseById(projectCompletion.courseId)
+        // Find the course in the ones provided to this component to make sure
+        // the current user has permission to do code reviews for the course
+        const course = this.courses.find(
+          course => course.courseId === projectCompletion.courseId
+        )
+        if (!course) return
+
         const lesson = lessonById(projectCompletion.lessonId)
         const student = userById(projectCompletion.studentUserId)
         const grade = courseUserGradeCurrentRounded(course, student)
