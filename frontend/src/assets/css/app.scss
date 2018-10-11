@@ -53,6 +53,61 @@ acronym[title] {
   @apply .no-underline .border-none;
 }
 
+.button, button, input[type="submit"], input[type="reset"], input[type="button"] {
+  @apply .inline-block .h-control-height;
+  @apply .py-0 .px-control-x .text-grey .text-center;
+  @apply .text-control-font-size .font-semibold .leading-control-line-height;
+  letter-spacing: .1rem;
+  @apply .uppercase .no-underline .whitespace-no-wrap;
+  @apply .bg-default-light .rounded-control-radius;
+  @apply .border .border-solid .border-border-color;
+  @apply .cursor-pointer;
+  &:hover, &:focus {
+    @apply .text-grey-dark .outline-none .no-underline;
+    border-color: darken(get('colors.border-color'), 30%);
+  }
+  &[disabled] {
+    @apply .opacity-disabled .cursor-not-allowed;
+  }
+  &.block {
+    @apply .block .w-full .my-gutter-width;
+  }
+  &.inline { 
+    @apply .h-auto .align-middle;
+    margin-top: -2px;
+    line-height: 1.7;
+    $paddingVertical: get('padding.control-vertical');
+    padding: 2px calc(#{$paddingVertical} - 1px) 0 #{$paddingVertical};
+  }
+  &.primary {
+    @apply .text-default-light .bg-primary-light .border-primary-dark;
+    &:hover, &:focus {
+      background-color: darken(get('colors.primary-light'), 10%);
+    }
+  }
+  &.danger {
+    @apply .text-default-light .bg-danger-light .border-danger-dark;
+    &:hover, &:focus {
+      background-color: darken(get('colors.danger-light'), 10%);
+    }
+  }
+  &.warning {
+    @apply .text-default-light .bg-warning-light .border-warning-dark;
+    &:hover, &:focus {
+      background-color: darken(get('colors.warning-light'), 10%);
+    }
+  }
+  &.extra-large {
+    $controlHeight: get('height.control-height');
+    $button-extra-large-height: calc(#{$controlHeight} * 3);
+    height: $button-extra-large-height;
+    line-height: $button-extra-large-height;
+    font-size: calc(#{$button-extra-large-height} * .3);
+    padding: 0 calc(#{$button-extra-large-height} * .4);
+  }
+
+}
+
 @import "layouts/_container";
 @import "pages/_landing";
 
