@@ -1,6 +1,10 @@
 <template>
   <div class="github-standalone-signin-container">
-    <h1>This app is restricted to MSU instructors and students</h1>
+    <h1>
+      This app is restricted to
+      {{ brand === 'codelab517' ? 'Code Lab 517' : 'MSU' }}
+      instructors and students
+    </h1>
     <AuthLink
       provider="github"
       class="
@@ -20,10 +24,16 @@
 <script>
 import Layout from '@layouts/main'
 import AuthLink from '@components/auth-link'
+import brand from '@env/brand'
 
 export default {
   components: {
     Layout, AuthLink
+  },
+  data () {
+    return {
+      brand
+    }
   }
 }
 </script>
