@@ -30,7 +30,7 @@ export default {
             'https://github.com/login/oauth/authorize',
             `?scope=${githubScopesPath}`,
             `&client_id=${githubAuthClientId}`,
-            `&redirect_uri=${serverBaseUrl}/auth/github/callback${this.$route.fullPath}`
+            `&redirect_uri=${serverBaseUrl}/auth/github/callback`
           ].join('')
           if (this.jsonWebToken) {
             url += `&state=${encodeURIComponent(this.jsonWebToken)}`
