@@ -52,6 +52,11 @@ var colors = {
   'primary-lighter': '#3b72b0',
   'primary-lightest': '#4a82c2',
 
+  'danger-light': '#D93946',
+  'danger-dark': '#8F0000',
+  'warning-light': '#A7AE55',
+  'warning-dark': '#747B22',
+
   'inherit': 'inherit',
   'transparent': 'transparent',
 
@@ -135,7 +140,11 @@ var colors = {
   'pink': '#f66d9b',
   'pink-light': '#fa7ea8',
   'pink-lighter': '#ffbbca',
-  'pink-lightest': '#ffebef'
+  'pink-lightest': '#ffebef',
+
+  'default-light': '#FFF',
+  'default-dark': '#EEE',
+  'border-color': '#d4dada'
 }
 
 // Common position adjustments
@@ -278,7 +287,7 @@ module.exports = {
     '5xl': '3rem',
     '6xl': '3.5rem',
     '7xl': '4rem',
-    '8xl': '4.5rem',
+    '8xl': '4.5rem'
   },
 
   /*
@@ -454,7 +463,8 @@ module.exports = {
     'sm': '.125rem',
     default: '.25rem',
     'lg': '.5rem',
-    'full': '9999px'
+    'full': '9999px',
+    'control-radius': '3px'
   },
 
   /*
@@ -542,7 +552,8 @@ module.exports = {
     '48': '12rem',
     '64': '16rem',
     'full': '100%',
-    'screen': '100vh'
+    'screen': '100vh',
+    'control-height': '38px'
   },
 
   /*
@@ -661,7 +672,9 @@ module.exports = {
     '16': '4rem',
     '20': '5rem',
     '24': '6rem',
-    '32': '8rem'
+    '32': '8rem',
+    'control-vertical': '6px',
+    'control-horizontal': '10px'
   },
 
   /*
@@ -695,7 +708,8 @@ module.exports = {
     '16': '4rem',
     '20': '5rem',
     '24': '6rem',
-    '32': '8rem'
+    '32': '8rem',
+    'gutter-width': '20px'
   },
 
   /*
@@ -797,7 +811,8 @@ module.exports = {
     '25': '.25',
     '50': '.5',
     '75': '.75',
-    '100': '1'
+    '100': '1',
+    'disabled': '.6'
   },
 
   /*
@@ -931,6 +946,26 @@ module.exports = {
     //   // center: true,
     //   // padding: '1rem',
     // })
+    
+    function({addUtilities, config}) {
+      let controlHeight = parseInt(config('height.control-height').split('p')[0])
+      const newUtilities = {
+        '.text-control-font-size': {
+          fontSize: controlHeight * .3 + 'px',
+        },
+        '.leading-control-line-height': {
+          lineHeight: controlHeight + 'px'
+        },
+        '.px-control-x': {
+          'paddingLeft': controlHeight * .4 + 'px',
+          'paddingRight': controlHeight * .4 + 'px'
+        }
+      }
+      addUtilities(newUtilities, {
+        respectPrefix: false,
+        respectImportant: false,  
+      })
+    }
   ],
 
   /*
