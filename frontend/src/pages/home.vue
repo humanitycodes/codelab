@@ -12,6 +12,14 @@
       <div class="w-1/3 text-right">
         <ul class="nav-list">
           <li>
+            <router-link
+              to="/github-sign-in"
+              class="pl-4 font-medium text-base"
+            >
+              Sign In
+            </router-link>
+          </li>
+          <li>
             <a
               class="icon-link"
               href="https://www.facebook.com/LansingCodes/"
