@@ -41,6 +41,7 @@ View the full documentation at https://tailwindcss.com.
 |
 */
 
+const twPlugins = require('./plugins/tailwind-plugins')
 var url = require('./helpers/url')
 
 var colors = {
@@ -959,25 +960,7 @@ module.exports = {
     //   // padding: '1rem',
     // })
 
-    function({addUtilities, config}) {
-      let controlHeight = parseInt(config('height.control-height').split('p')[0])
-      const newUtilities = {
-        '.text-control-font-size': {
-          fontSize: controlHeight * .3 + 'px',
-        },
-        '.leading-control-line-height': {
-          lineHeight: controlHeight + 'px'
-        },
-        '.px-control-x': {
-          'paddingLeft': controlHeight * .4 + 'px',
-          'paddingRight': controlHeight * .4 + 'px'
-        }
-      }
-      addUtilities(newUtilities, {
-        respectPrefix: false,
-        respectImportant: false,  
-      })
-    }
+    ...twPlugins
   ],
 
   /*

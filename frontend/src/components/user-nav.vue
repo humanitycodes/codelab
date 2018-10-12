@@ -37,6 +37,7 @@ import {
   userGetters, userPermissionMethods, lessonPermissionMethods, coursePermissionMethods
 } from '@state/helpers'
 import AuthLink from '@components/auth-link'
+import brand from '@env/brand'
 
 export default {
   components: {
@@ -55,10 +56,10 @@ export default {
     ...coursePermissionMethods,
     getLogo () {
       // Used this format to add other brands as else if in future
-      const brand = process.env.CODELAB_BRAND || 'msu'
-      if (brand !== 'msu') {
+      if (brand) {
+        let brandName = brand
         try {
-          return require('../assets/images/' + brand + '-logo.png')
+          return require('../assets/images/' + brandName + '-logo.png')
         } catch (error) {
           return require('../assets/images/logo.png')
         }
