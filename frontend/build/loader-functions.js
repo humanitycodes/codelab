@@ -7,7 +7,6 @@ module.exports = {
     // Takes in tailwind key and returns the value in loader
     "get($keys)": function(keys) {
         keys = keys.getValue().split(".");
-        console.log(keys)
         let result = tw;
         for (let i = 0; i < keys.length; i++) {
           result = result[keys[i]];
