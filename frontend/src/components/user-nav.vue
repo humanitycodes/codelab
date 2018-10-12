@@ -56,8 +56,8 @@ export default {
     getLogo () {
       // Used this format to add other brands as else if in future
       const brand = process.env.CODELAB_BRAND || 'msu'
-      if (brand === 'codelab517') {
-        return require('../assets/images/logo-blue.png')
+      if (brand !== 'msu') {
+        return require('../assets/images/' + brand + '-logo.png')
       } else {
         return require('../assets/images/logo.png')
       }
