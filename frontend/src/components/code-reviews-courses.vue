@@ -49,10 +49,6 @@ export default {
           !projectCompletion.instructorUserId
         ) return
 
-        if (!instructorCodeReviews[projectCompletion.instructorUserId]) {
-          instructorCodeReviews[projectCompletion.instructorUserId] = []
-        }
-
         // Find the course in the ones provided to this component to make sure
         // the current user has permission to do code reviews for the course
         const course = this.courses.find(
@@ -64,6 +60,12 @@ export default {
         const student = userById(projectCompletion.studentUserId)
         const grade = courseUserGradeCurrentRounded(course, student)
         const studentGradePoints = grade > 0 ? parseFloat(grade).toFixed(2) : 0
+
+        // Make sure there's an array to hold the instructor's reviews
+        if (!instructorCodeReviews[projectCompletion.instructorUserId]) {
+          instructorCodeReviews[projectCompletion.instructorUserId] = []
+        }
+
         instructorCodeReviews[projectCompletion.instructorUserId].push({
           course, projectCompletion, student, lesson, studentGradePoints
         })
