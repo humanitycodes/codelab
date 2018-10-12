@@ -6,8 +6,8 @@ const hexToRGB = require('../config/design/helpers/hex-to-rgb')
 module.exports = {
     // Takes in tailwind key and returns the value in loader
     "get($keys)": function(keys) {
-        keys = keys.getValue().split(".");
-        let result = tw;
+        keys = keys.getValue().split(".")
+        let result = tw
         for (let i = 0; i < keys.length; i++) {
           result = result[keys[i]];
         }
