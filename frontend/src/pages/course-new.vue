@@ -74,13 +74,14 @@ import Layout from '@layouts/main'
 import store from '@state/store'
 import { userGetters, courseGetters } from '@state/helpers'
 import createCourse from '@api/courses/create-course'
+import brand from '@env/brand'
 
 export default {
   components: {
     Layout
   },
   data () {
-    const prefixOptions = ['MI']
+    const prefixOptions = brand === 'msu' ? ['MI'] : ['LAB']
     const semesterOptions = {
       Spring: 'SS',
       Summer: 'US',
