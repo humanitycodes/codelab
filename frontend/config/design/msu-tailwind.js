@@ -56,6 +56,8 @@ var colors = {
   'danger-dark': '#8F0000',
   'warning-light': '#A7AE55',
   'warning-dark': '#747B22',
+  'note-light': '#5a9fd8',
+  'note-dark': '#2a5375',
 
   'inherit': 'inherit',
   'transparent': 'transparent',
@@ -144,7 +146,17 @@ var colors = {
 
   'default-light': '#FFF',
   'default-dark': '#EEE',
-  'border-color': '#d4dada'
+  'border-color': '#d4dada',
+  'text-color': '#535054',
+
+  'muted-light-success': '#edfbed',
+  'muted-light-tan': '#FBFCF2',
+  'muted-light-red': '#ffdee1',
+  'muted-light-gray': '#E8EAEA',
+  'muted-light-yellow': '#F8F7E1',
+  'muted-light-note': '#d1e8fb',
+
+  'code-background': '#282C34'
 }
 
 // Common position adjustments
