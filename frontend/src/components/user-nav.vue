@@ -57,7 +57,11 @@ export default {
       // Used this format to add other brands as else if in future
       const brand = process.env.CODELAB_BRAND || 'msu'
       if (brand !== 'msu') {
-        return require('../assets/images/' + brand + '-logo.png')
+        try {
+          return require('../assets/images/' + brand + '-logo.png')
+        } catch (error) {
+          return require('../assets/images/logo.png')
+        }
       } else {
         return require('../assets/images/logo.png')
       }
