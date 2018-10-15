@@ -90,9 +90,8 @@ acronym[title] {
   &.block {
     @apply .block .w-full .my-gutter-width;
   }
-  &.inline { 
+  &.inline {
     @apply .h-auto .align-middle;
-    margin-top: -2px;
     line-height: 1.7;
     $paddingVertical: get('padding.control-vertical');
     padding: 2px calc(#{$paddingVertical} - 1px) 0 #{$paddingVertical};
@@ -746,7 +745,7 @@ $lesson-card-approved-bg: lighten($muted-light-success, 50%);
 
 .rendered-content {
   flex-grow: 1;
-  @apply .border .border-solid .border-muted-light-gray; 
+  @apply .border .border-solid .border-muted-light-gray;
   @apply .bg-default-light .rounded-control-radius;
   padding: $gutterWidth;
   img {
