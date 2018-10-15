@@ -31,7 +31,10 @@ export default {
       // Get a specific course from the API and merge it with the others
       return getCourse(courseId)
         .then(course =>
+          // Merge the course and sync the lessons in case the course
+          // includes lessons previously not accessible to the user
           dispatch('mergeCourses', [course])
+          .then(() => dispatch('syncAllLessons'))
           .then(() => course)
         )
         .catch(error => {
