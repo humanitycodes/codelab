@@ -8,6 +8,6 @@ export default grade => {
   // Return 0 if the first milestone is not reached
   if (grade < gradeMilestones[0]) return 0
   // Otherwise, return the max milestone reached
-  return sortBy(gradeMilestones, milestone => -1 * milestone)
+  return sortBy(gradeMilestones, [milestone => -1 * milestone])
     .find(milestone => grade >= milestone)
 }
