@@ -2,6 +2,7 @@ import getLesson from '@api/lessons/get-lesson'
 import getLessons from '@api/lessons/get-lessons'
 import mergeByIdAndVersion from './_helpers/merge-by-id-and-version'
 import removeById from './_helpers/remove-by-id'
+import lessonFullyLoaded from './_helpers/lesson-fully-loaded'
 
 export default {
   state: {
@@ -43,12 +44,29 @@ export default {
           throw error
         })
     },
-    syncAllLessons ({ commit }) {
+    syncAllLessons ({ commit, state }) {
       // Get all available lessons from API and save them in the local state
       return getLessons()
         .then(lessons => {
-          commit('SET_ALL_LESSONS', lessons)
-          return lessons
+          // Get the complete lesson again if it was previously retrieved
+          const loadedLessonIds = state.all.filter(lesson => {
+            const lessonExists = lessons.some(
+              existingLesson => existingLesson.lessonId === lesson.lessonId
+            )
+            const fullyLoaded = lessonFullyLoaded(lesson)
+            return lessonExists && fullyLoaded
+          })
+          // Re-download the loaded lessons and merge them with everything else
+          return Promise.all(loadedLessonIds.map(
+            lessonId => getLesson(lessonId)
+          ))
+          .then(loadedLessons => {
+            const mergedLessons = mergeByIdAndVersion(
+              'lessonId', lessons, loadedLessons
+            )
+            commit('SET_ALL_LESSONS', mergedLessons)
+            return mergedLessons
+          })
         })
     },
     mergeLessons ({ commit, state }, lessons) {
