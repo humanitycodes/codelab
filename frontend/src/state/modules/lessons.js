@@ -50,10 +50,6 @@ export default {
           commit('SET_ALL_LESSONS', lessons)
           return lessons
         })
-        .catch(error => {
-          commit('SET_ALL_LESSONS', [])
-          throw error
-        })
     },
     mergeLessons ({ commit, state }, lessons) {
       // Add or replace some lessons in the local state
