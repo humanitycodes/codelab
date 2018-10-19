@@ -12,6 +12,7 @@ export const codeLangs = {
   js: javascript,
   json: javascript,
   javascript: javascript,
+  jsx: javascript,
   ejs: xml,
   html: xml,
   sh: bash,
