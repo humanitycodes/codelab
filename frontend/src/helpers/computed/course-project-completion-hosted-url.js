@@ -13,7 +13,7 @@ export default (course, projectCompletion) => {
     const user = userById(projectCompletion.studentUserId)
     const githubUsername = user.githubLogin
     const repoName = courseProjectCompletionRepoName(course, projectCompletion)
-    return `https://${githubUsername}.github.io/${repoName}/`
+    return `https://${githubUsername}.github.io/${repoName}/index.html`
   }
 
   const subdomain = courseProjectCompletionHostedSubdomain(projectCompletion)
