@@ -71,6 +71,8 @@ describe('@helpers/computed/course-project-completion-hosted-url.js', () => {
   it('returns correct GitHub Pages URL', () => {
     const completion = completionForLesson(ghpagesLesson)
     const url = courseProjectCompletionHostedUrl(course, completion)
-    expect(url).to.equal('https://hjsimpson.github.io/MI-449-css-intro/')
+    expect(url).to.equal(
+      'https://hjsimpson.github.io/MI-449-css-intro/index.html'
+    )
   })
 })
