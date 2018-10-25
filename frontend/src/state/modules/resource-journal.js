@@ -23,7 +23,7 @@ export default {
             return get(resourceId).then(journal => {
               // Look for journal entries that were changed since the last sync
               const { resourceType, timestamp } = journal
-              if (timestamp < state.lastSyncTimestamp) return
+              if (timestamp <= state.lastSyncTimestamp) return
               return dispatch('syncResource', {
                 resourceType, resourceId, syncTimestamp
               })
