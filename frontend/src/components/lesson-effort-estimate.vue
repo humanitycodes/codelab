@@ -9,7 +9,7 @@
           ' amount of time to complete.'
         "
       >
-        <span class="fas fa-tshirt"/>
+        <span class="fas fa-hourglass-half"/>
         {{ estimatedEffort.abbreviation }}
       </div>
     </div>
@@ -32,7 +32,7 @@ import brand from '@env/brand'
 const estimateMap = {
   1: {
     abbreviation: 'S',
-    full: 'small'
+    full: 'short'
   },
   2: {
     abbreviation: 'M',
@@ -40,7 +40,7 @@ const estimateMap = {
   },
   3: {
     abbreviation: 'L',
-    full: 'large'
+    full: 'long'
   }
 }
 
