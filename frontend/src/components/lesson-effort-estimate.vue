@@ -30,14 +30,14 @@ const estimateMap = {
 
 export default {
   props: {
-    effort: {
-      type: Number,
+    lesson: {
+      type: Object,
       required: true
     }
   },
   computed: {
     estimatedEffort () {
-      return estimateMap[this.effort]
+      return estimateMap[this.lesson.estimatedHours]
     }
   }
 }

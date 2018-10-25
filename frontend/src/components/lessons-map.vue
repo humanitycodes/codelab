@@ -58,7 +58,7 @@
             class="stretch-col"
           />
           <div class="stretch-col">
-            <LessonEffortEstimate :effort="node.lesson.estimatedHours"/>
+            <LessonEffortEstimate :lesson="node.lesson"/>
           </div>
           <div v-if="course" class="stretch-col">
             <span class="fas fa-graduation-cap"/>
