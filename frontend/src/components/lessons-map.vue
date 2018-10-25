@@ -58,11 +58,7 @@
             class="stretch-col"
           />
           <div class="stretch-col">
-            <LessonEffortEstimate :lesson="node.lesson"/>
-          </div>
-          <div v-if="course" class="stretch-col">
-            <span class="fas fa-graduation-cap"/>
-            {{ lessonGradePoints(node.lesson) }}
+            <LessonEffortEstimate :course="course" :lesson="node.lesson"/>
           </div>
           <div class="stretch-col" v-if="node.lesson.categories && node.lesson.categories.length">
             <ul
@@ -110,7 +106,6 @@ import sortBy from 'lodash/sortBy'
 import { canUpdateLesson } from '@state/auth/lessons'
 import { userGetters } from '@state/helpers'
 import design from '@config/design'
-import courseLessonGradePointsRounded from '@helpers/computed/course-lesson-grade-points-rounded'
 import courseLessonUserStatus from '@helpers/computed/course-lesson-user-status'
 import courseLessonUserProjectCompletion from '@helpers/finders/course-lesson-user-project-completion'
 import userCourseLessonProjectRepoUrl from '@helpers/computed/user-course-lesson-project-repo-url'
@@ -339,9 +334,6 @@ export default {
           ${lang.toUpperCase()}
         </span>
       `
-    },
-    lessonGradePoints (lesson) {
-      return courseLessonGradePointsRounded(this.course, lesson)
     },
     getProjectCompletion (lesson) {
       return courseLessonUserProjectCompletion(this.course, lesson, this.currentUser)
