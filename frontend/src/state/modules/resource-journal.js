@@ -1,4 +1,4 @@
-import { keys, get, del } from 'idb-keyval'
+import { keys, get, del, set } from 'idb-keyval'
 
 const syncActionName = {
   'course': 'syncCourse',
@@ -24,7 +24,9 @@ export default {
               // Look for journal entries that were changed since the last sync
               const { resourceType, timestamp } = journal
               if (timestamp < state.lastSyncTimestamp) return
-              return dispatch('syncResource', { resourceType, resourceId })
+              return dispatch('syncResource', {
+                resourceType, resourceId, syncTimestamp
+              })
             })
           })
         )
@@ -34,13 +36,19 @@ export default {
         commit('SET_LAST_SYNC_TIMESTAMP', syncTimestamp)
       })
     },
-    syncResource ({ dispatch }, { resourceType, resourceId }) {
+    syncResource ({ dispatch }, { resourceType, resourceId, syncTimestamp }) {
       const action = syncActionName[resourceType]
       if (!action) return
       return dispatch(action, resourceId)
         .then(resource => {
-          // If the action resolved null, remove the resource from the journal
-          if (!resource) return del(resourceId)
+          if (resource) {
+            // Set the timestamp to avoid re-fetching when there aren't changes
+            const timestamp = syncTimestamp || Date.now()
+            return set(resourceId.toString(), { resourceType, timestamp })
+          } else {
+            // If the action resolved null, remove the resource from the journal
+            return del(resourceId)
+          }
         })
     }
   },
