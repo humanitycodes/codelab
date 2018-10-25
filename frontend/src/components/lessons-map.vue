@@ -58,8 +58,7 @@
             class="stretch-col"
           />
           <div class="stretch-col">
-            <span class="far fa-clock-o"/>
-            {{ node.lesson.estimatedHours }}
+            <LessonEffortEstimate :effort="node.lesson.estimatedHours"/>
           </div>
           <div v-if="course" class="stretch-col">
             <span class="fas fa-graduation-cap"/>
@@ -115,9 +114,14 @@ import courseLessonGradePointsRounded from '@helpers/computed/course-lesson-grad
 import courseLessonUserStatus from '@helpers/computed/course-lesson-user-status'
 import courseLessonUserProjectCompletion from '@helpers/finders/course-lesson-user-project-completion'
 import userCourseLessonProjectRepoUrl from '@helpers/computed/user-course-lesson-project-repo-url'
+import LessonEffortEstimate from '@components/lesson-effort-estimate'
+
 const gutterWidth = parseInt(design.layout.gutterWidth)
 
 export default {
+  components: {
+    LessonEffortEstimate
+  },
   props: {
     lessons: {
       type: Array,
