@@ -78,6 +78,13 @@ export default [
     }
   },
   {
+    path: '/courses/new/duplicate',
+    component: resolve => require.ensure([], () => resolve(require('@pages/course-new').default), 'staff'),
+    meta: {
+      isAuthorized: canCreateCourse
+    }
+  },
+  {
     path: '/courses/:courseKey/edit',
     beforeEnter (to, from, next) {
       const course = courseByKey(to.params.courseKey)
