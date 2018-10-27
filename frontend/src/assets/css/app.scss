@@ -17,6 +17,8 @@ $brand-primary-light: get('colors.primary-light');
 $brand-primary-dark: get('colors.primary-dark');
 $control-border-color: get('colors.border-color');
 $control-border-radius: get('borderRadius.control-radius');
+$paddingVertical: get('padding.control-vertical');
+$paddingHorizontal: get('padding.control-horizontal');
 
 *,
 *:before,
@@ -919,4 +921,39 @@ table.dashboard-info {
 }
 .page-transition-enter, .page-transition-leave-active {
   opacity: 0;
+}
+
+// -----------
+// DROPDOWN
+// -----------
+
+.dropdown-wrapper {
+  position: relative;
+  &.expanded input {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-color: lighten(get('colors.primary-light'), 80%);
+  }
+}
+
+.dropdown-results {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: calc(100% + #{$paddingVertical});
+  background-color: get('colors.muted-light-tan');
+  border: 1px solid #{$brand-primary-light};
+  border-top: none;
+  border-bottom-left-radius: $control-border-radius;
+  border-bottom-right-radius: $control-border-radius;
+  z-index: 1;
+}
+
+.dropdown-result {
+  padding: #{$paddingVertical} #{$paddingHorizontal};
+  cursor: pointer;
+  &.focused {
+    background-color: $brand-primary-light;
+    color: white;
+  }
 }
