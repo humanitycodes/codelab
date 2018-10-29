@@ -5,19 +5,19 @@
       <p class="danger" v-if="duplicateKeyInvalid">
         You have provided an invalid course key.
       </p>
-        <Dropdown
-          :results="queryResults"
-          :resultHandler="addCourse"
-          :resultContent="courseKey"
+      <Dropdown
+        :results="queryResults"
+        :resultHandler="addCourse"
+        :resultContent="courseKey"
+      >
+        <input
+          ref="queryInput"
+          v-model="courseQuery"
+          id="course-duplicate-query"
+          name="course-duplicate-query"
+          placeholder="Course Key"
         >
-          <input
-            ref="queryInput"
-            v-model="courseQuery"
-            id="course-duplicate-query"
-            name="course-duplicate-query"
-            placeholder="Course Key"
-          >
-        </Dropdown>
+      </Dropdown>
     </div>
     <h1>Unique Course Key</h1>
     <p class="warning">
@@ -143,9 +143,7 @@ export default {
           courseKey: course.courseKey
         }) &&
         // Course matches the query string
-        (
-          queryRegex.test(course.courseKey)
-        )
+        (queryRegex.test(course.courseKey))
       ))
     },
     key () {
