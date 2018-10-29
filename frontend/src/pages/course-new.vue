@@ -79,7 +79,8 @@
       >
     </div>
     <button
-      :disabled="!keyIsValid || !this.courseKeyFormatted(this.courseQuery)"
+      :disabled="!createDuplicate ? !keyIsValid :
+       !keyIsValid || !this.courseKeyFormatted(this.courseQuery)"
       @click="tryToCreateCourse"
       class="primary block"
     >
