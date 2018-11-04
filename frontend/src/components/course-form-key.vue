@@ -118,7 +118,21 @@ export default {
       if (!/^\d{0,3}$/.test(newSection)) {
         this.section = oldSection
       }
+    },
+    keyIsValid (key) {
+      this.$emit('changeKeyValidity', key)
+      this.$emit('changeKey', this.key)
     }
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+.key-field
+  display: flex
+  input
+    flex-grow: 1
+  > span
+    line-height: 36px
+    margin: 0 3px
+</style>

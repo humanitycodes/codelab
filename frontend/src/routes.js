@@ -78,8 +78,8 @@ export default [
     }
   },
   {
-    path: '/courses/new/duplicate',
-    component: resolve => require.ensure([], () => resolve(require('@pages/course-new').default), 'staff'),
+    path: '/courses/copy',
+    component: resolve => require.ensure([], () => resolve(require('@pages/course-copy').default), 'staff'),
     meta: {
       isAuthorized: canCreateCourse
     }
