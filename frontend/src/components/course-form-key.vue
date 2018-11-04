@@ -119,8 +119,8 @@ export default {
         this.section = oldSection
       }
     },
-    keyIsValid (key) {
-      this.$emit('changeKeyValidity', key)
+    keyIsValid (keyValidity) {
+      this.$emit('changeKeyValidity', keyValidity)
       this.$emit('changeKey', this.key)
     }
   }
