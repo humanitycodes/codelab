@@ -93,20 +93,23 @@ export default {
         } else {
           this.duplicateKeyInvalid = false
           // Get course by key
-          const duplicateCourse = courseByKey(this.courseQuery)
-          createCourse({
-            courseKey,
-            instructors: [{ userId: this.currentUser.userId }]
+          var duplicateCourse = courseByKey(this.courseQuery)
+          store.dispatch('syncCourse', duplicateCourse.courseId).then(() => {
+            duplicateCourse = (courseByKey(this.courseQuery))
+            createCourse({
+              courseKey,
+              instructors: [{ userId: this.currentUser.userId }]
+            })
+            .then(newCourse => updateCourse({
+              ...newCourse,
+              title: duplicateCourse.title || null,
+              credits: duplicateCourse.credits || null,
+              syllabus: duplicateCourse.syllabus || null,
+              lessonIds: duplicateCourse.lessonIds || null
+            }))
+            .then(newCourse => store.dispatch('mergeCourses', [newCourse]))
+            .then(() => this.$router.replace(`/courses/${courseKey}/edit`))
           })
-          .then(newCourse => updateCourse({
-            ...newCourse,
-            title: duplicateCourse.title || null,
-            credits: duplicateCourse.credits || null,
-            syllabus: duplicateCourse.syllabus || null,
-            lessonIds: duplicateCourse.lessonIds || null
-          }))
-          .then(newCourse => store.dispatch('mergeCourses', [newCourse]))
-          .then(() => this.$router.replace(`/courses/${courseKey}/edit`))
         }
       }
     },
