@@ -32,7 +32,7 @@
       (check each box to confirm):
     </p>
     <label
-      v-for="criterion in lesson.projectCriteria"
+      v-for="criterion in sortedProjectCriteria"
       :key="criterion.lessonProjectCriterionId"
       class="with-inline-input"
     >
@@ -61,6 +61,7 @@ import ProjectCompletionLinks from './project-completion-links'
 import convertRichContentToInlineHtml from '@helpers/utils/convert-rich-content-to-inline-html'
 import userById from '@helpers/finders/user-by-id'
 import randomElement from '@helpers/utils/random-element'
+import orderBy from 'lodash/orderBy'
 
 export default {
   components: {
@@ -123,6 +124,12 @@ export default {
     allCriteriaMet () {
       return this.chosenInstructor &&
         Object.keys(this.metCriteria).every(id => this.metCriteria[id])
+    },
+    sortedProjectCriteria () {
+      return orderBy(
+        this.lesson.projectCriteria,
+        [criterion => criterion.position]
+      )
     }
   },
   methods: {

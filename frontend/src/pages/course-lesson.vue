@@ -45,7 +45,7 @@
       </h2>
       <ol v-if="currentLesson.projectCriteria.length">
         <li
-          v-for="criterion in currentLesson.projectCriteria"
+          v-for="criterion in sortedProjectCriteria"
           :key="criterion.lessonProjectCriterionId"
           v-html="convertRichContentToInlineHtml(criterion.content)"
         />
@@ -81,6 +81,7 @@ import courseLessonGradePointsRounded from '@helpers/computed/course-lesson-grad
 import convertRichContentToInlineHtml from '@helpers/utils/convert-rich-content-to-inline-html'
 import getScrollTop from '@helpers/utils/dom/get-scroll-top'
 import lessonByKey from '@helpers/finders/lesson-by-key'
+import orderBy from 'lodash/orderBy'
 
 export default {
   beforeRouteEnter (to, from, next) {
@@ -130,6 +131,12 @@ export default {
       return courseLessonGradePointsRounded(
         this.currentCourse,
         this.currentLesson
+      )
+    },
+    sortedProjectCriteria () {
+      return orderBy(
+        this.currentLesson.projectCriteria,
+        [criterion => criterion.position]
       )
     }
   },

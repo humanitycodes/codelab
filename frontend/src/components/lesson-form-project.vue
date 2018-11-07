@@ -24,7 +24,7 @@
             name="project-new-criterion"
             placeholder="Add project criteria"
           >
-          <OrderedEditableList :items="lesson.projectCriteria">
+          <OrderedEditableList :items="sortedProjectCriteria">
             <template slot-scope="list">
               <input
                 v-model="list.item.content"
@@ -66,6 +66,7 @@
 
 <script>
 import OrderedEditableList from './ordered-editable-list'
+import orderBy from 'lodash/orderBy'
 
 export default {
   components: {
@@ -85,6 +86,14 @@ export default {
         'Surge',
         'Heroku'
       ]
+    }
+  },
+  computed: {
+    sortedProjectCriteria () {
+      return orderBy(
+        this.lesson.projectCriteria,
+        [criterion => criterion.position]
+      )
     }
   },
   methods: {
