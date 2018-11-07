@@ -66,7 +66,7 @@
 
 <script>
 import OrderedEditableList from './ordered-editable-list'
-import orderBy from 'lodash/orderBy'
+import sortByPosition from '@helpers/utils/sort-by-position'
 
 export default {
   components: {
@@ -90,10 +90,7 @@ export default {
   },
   computed: {
     sortedProjectCriteria () {
-      return orderBy(
-        this.lesson.projectCriteria,
-        [criterion => criterion.position]
-      )
+      return sortByPosition(this.lesson.projectCriteria)
     }
   },
   methods: {

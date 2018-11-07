@@ -61,7 +61,7 @@ import ProjectCompletionLinks from './project-completion-links'
 import convertRichContentToInlineHtml from '@helpers/utils/convert-rich-content-to-inline-html'
 import userById from '@helpers/finders/user-by-id'
 import randomElement from '@helpers/utils/random-element'
-import orderBy from 'lodash/orderBy'
+import sortByPosition from '@helpers/utils/sort-by-position'
 
 export default {
   components: {
@@ -126,10 +126,7 @@ export default {
         Object.keys(this.metCriteria).every(id => this.metCriteria[id])
     },
     sortedProjectCriteria () {
-      return orderBy(
-        this.lesson.projectCriteria,
-        [criterion => criterion.position]
-      )
+      return sortByPosition(this.lesson.projectCriteria)
     }
   },
   methods: {
