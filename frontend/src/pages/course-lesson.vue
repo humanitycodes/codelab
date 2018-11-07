@@ -81,7 +81,7 @@ import courseLessonGradePointsRounded from '@helpers/computed/course-lesson-grad
 import convertRichContentToInlineHtml from '@helpers/utils/convert-rich-content-to-inline-html'
 import getScrollTop from '@helpers/utils/dom/get-scroll-top'
 import lessonByKey from '@helpers/finders/lesson-by-key'
-import orderBy from 'lodash/orderBy'
+import sortByPosition from '@helpers/utils/sort-by-position'
 
 export default {
   beforeRouteEnter (to, from, next) {
@@ -134,10 +134,7 @@ export default {
       )
     },
     sortedProjectCriteria () {
-      return orderBy(
-        this.currentLesson.projectCriteria,
-        [criterion => criterion.position]
-      )
+      return sortByPosition(this.currentLesson.projectCriteria)
     }
   },
   watch: {
