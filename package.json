@@ -52,7 +52,7 @@
     "cross-env": "^5.2.0"
   },
   "engines": {
-    "node": ">=8.11.1",
+    "node": ">=8.11.1 <9.0.0",
     "yarn": "<1.11"
   },
   "cacheDirectories": [
