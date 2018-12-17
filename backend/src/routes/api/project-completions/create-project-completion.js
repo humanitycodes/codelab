@@ -65,7 +65,12 @@ export default {
         lessonKey: lessonRecord.lessonKey
       })
       const owner = authUser.githubLogin
-      const collaborators = await courseRecord.getInstructors({ transaction })
+      const instructors = await courseRecord.getInstructors({ transaction })
+      const collaborators = instructors.filter(instructor =>
+        // 1. An instructor must be connected to GitHub to collaborate
+        // 2. A student cannot collaborate on their own project
+        instructor.githubLogin && instructor.githubLogin !== owner
+      )
       const repository = await getOrCreateGitHubRepository(
         authUser.githubToken, { owner, repo }
       )
