@@ -132,7 +132,7 @@ export default {
   methods: {
     convertRichContentToInlineHtml,
     submitForReview () {
-      const criteria = this.lesson.projectCriteria.map(
+      const criteria = this.sortedProjectCriteria.map(
         criterion => criterion.content
       )
 
