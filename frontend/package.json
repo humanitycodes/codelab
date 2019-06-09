@@ -4,7 +4,9 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --https --config build/webpack.dev.conf.js",
+    "cert:gen:mac": "openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes -keyout ./.cert/localhost.key -out ./.cert/localhost.crt -extensions san -config <(echo \"[req]\"; echo distinguished_name=req; echo \"[san]\"; echo subjectAltName=DNS:localhost,IP:127.0.0.1) -subj /CN=localhost",
+    "cert:trust:mac": "sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ./.cert/localhost.crt",
+    "dev": "webpack-dev-server --inline --progress --https --key ./.cert/localhost.key --cert ./.cert/localhost.crt --config build/webpack.dev.conf.js",
     "build": "node build/build.js",
     "unit": "cross-env BABEL_ENV=testing karma start test/unit/karma.conf.js --single-run",
     "unit:watch": "cross-env NODE_ENV=testing karma start test/unit/karma.conf.js --auto-watch",
