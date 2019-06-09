@@ -9,12 +9,12 @@ jobs:
       # Sensitive data (like passwords) are set in the CircleCI web interface
       NODE_ENV: testing
       TZ: America/Detroit
-      YARN_VERSION: 1.10.1
+      YARN_VERSION: 1.16.0
     # Pre-built images list: https://circleci.com/docs/2.0/circleci-images/
     docker:
-    - image: circleci/node:8.12.0-browsers
+    - image: circleci/node:8.16.0-jessie
       command: /sbin/init
-    - image: circleci/postgres:10.4-alpine-ram
+    - image: circleci/postgres:10.8-alpine
     steps:
     # Setup PATH (can't do in environment section because PATH refers to itself)
     - run:
