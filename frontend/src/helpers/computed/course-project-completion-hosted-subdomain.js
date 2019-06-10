@@ -24,6 +24,8 @@ export default projectCompletion => {
 
   const subdomain = `${username}-${domainSuffix}`
     .toLowerCase()
+    // add 'u' to front if the subdomain begins with a number
+    .replace(/^([0-9].*)/, 'u$1')
     // ensure the string does not exceed the max length
     .slice(0, maxChars)
     // remove special characters from the end

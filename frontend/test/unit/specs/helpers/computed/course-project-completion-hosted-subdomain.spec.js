@@ -64,6 +64,13 @@ describe('@helpers/computed/course-project-completion-hosted-subdomain.js', () =
     expect(domain).to.equal('eriklgillespie-css-frameworks')
   })
 
+  it('prevents subdomains from beginning with a number', () => {
+    user.githubLogin = '80egillespie'
+    lesson.lessonKey = 'html-intro-to-semantic-elements'
+    const domain = courseProjectCompletionHostedSubdomain(completion)
+    expect(domain).to.equal('u80egillespie-html-intro-to-se')
+  })
+
   it('produces non-cryptic subdomains for real users and projects', () => {
     user.githubLogin = 'erik.gillespie'
     lesson.lessonKey = 'html-terminal-and-git'
