@@ -17,5 +17,10 @@ export default projectCompletion => {
     .replace(/^-+/g, '')
     .replace(/-+$/g, '')
 
-  return `${username}-${domainSuffix}`.toLowerCase().slice(0, maxChars)
+  const subdomain = `${username}-${domainSuffix}`
+    .toLowerCase()
+    .slice(0, maxChars)
+    .replace(/[^a-z0-9]+$/gi, '')
+
+  return subdomain
 }
