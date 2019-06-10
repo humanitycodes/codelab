@@ -37,7 +37,7 @@ describe('@helpers/computed/course-project-completion-hosted-subdomain.js', () =
     store.commit('SET_CURRENT_USER', null)
   })
 
-  it('removes special characters from email', () => {
+  it('removes special characters from GitHub login', () => {
     user.githubLogin = 'homer.j.simpson'
     const domain = courseProjectCompletionHostedSubdomain(completion)
     expect(domain).to.equal('homerjsimpson-html-intro')
@@ -55,6 +55,13 @@ describe('@helpers/computed/course-project-completion-hosted-subdomain.js', () =
     lesson.lessonKey = '-_/\\ABCabc123-_/\\'
     const domain = courseProjectCompletionHostedSubdomain(completion)
     expect(domain).to.equal('homersimpson11-abcabc123')
+  })
+
+  it('does not allow trailing special characters', () => {
+    user.githubLogin = 'erik.l.gillespie'
+    lesson.lessonKey = 'css-frameworks-bootstrap'
+    const domain = courseProjectCompletionHostedSubdomain(completion)
+    expect(domain).to.equal('eriklgillespie-css-frameworks')
   })
 
   it('produces non-cryptic subdomains for real users and projects', () => {
