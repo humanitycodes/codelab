@@ -37,8 +37,7 @@ export default async ({
     .then(response => response.data)
     .catch(error => {
       throw new Error(
-        `${method.toUpperCase()} ${path} failed.`,
-        'Reason:', error
+        `${method.toUpperCase()} ${path} failed. Reason:\n${error}`
       )
     })
 }
