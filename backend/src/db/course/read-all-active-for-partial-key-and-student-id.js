@@ -9,6 +9,8 @@ export default ({ partialCourseKey, studentUserId }, options) => sequelize.query
       course
     where
       course.course_key like :partialCourseKeyQuery
+      and (course.start_date is null or course.start_date <= now())
+      and (course.end_date is null or course.end_date >= now())
       and exists (
         select
           1

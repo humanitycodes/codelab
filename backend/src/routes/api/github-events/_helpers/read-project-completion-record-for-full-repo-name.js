@@ -1,7 +1,7 @@
 import boom from 'boom'
 import parseIdentifiersFromFullRepoName from 'helpers/github/parse-identifiers-from-full-repo-name'
 import readUserRecordByGitHubLogin from 'db/user/read-by-github-login'
-import readCourseRecordsForPartialKeyAndStudentId from 'db/course/read-all-for-partial-key-and-student-id'
+import readActiveCourseRecordsForPartialKeyAndStudentId from 'db/course/read-all-active-for-partial-key-and-student-id'
 import readLessonRecordByKey from 'db/lesson/read-by-key'
 import readProjectCompletionRecordByCourseLessonStudentIds from 'db/project-completion/read-by-course-lesson-student-ids'
 
@@ -24,7 +24,7 @@ export default async (fullRepoName, { transaction }) => {
   }
 
   // Get the associated course
-  const courseRecords = await readCourseRecordsForPartialKeyAndStudentId(
+  const courseRecords = await readActiveCourseRecordsForPartialKeyAndStudentId(
     { partialCourseKey, studentUserId: userRecord.userId }, { transaction }
   )
   if (!courseRecords || !courseRecords.length) {
