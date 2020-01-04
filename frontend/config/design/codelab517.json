@@ -72,13 +72,15 @@
         "html": "#ffc5c5",
         "css": "#d5e2ec",
         "js": "#f3e9a6",
-        "sql": "#caf0c4"
+        "sql": "#caf0c4",
+        "misc": "#f2f3f3"
       },
       "dark": {
         "html": "#bf8f8f",
         "css": "#8ba0b1",
         "js": "#b5a53c",
-        "sql": "#c4eebd"
+        "sql": "#c4eebd",
+        "misc": "#737173"
       }
     }
   },
