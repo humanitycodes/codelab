@@ -5,6 +5,7 @@ import xml from 'highlight.js/lib/languages/xml'
 import javascript from 'highlight.js/lib/languages/javascript'
 import scss from 'highlight.js/lib/languages/scss'
 import pgsql from './highlight-pgsql'
+import markdown from 'highlight.js/lib/languages/markdown'
 
 export const codeLangs = {
   css: scss,
@@ -17,7 +18,9 @@ export const codeLangs = {
   html: xml,
   sh: bash,
   sql: pgsql,
-  ddl: pgsql
+  ddl: pgsql,
+  md: markdown,
+  markdown: markdown
 }
 
 export const codeExtensions = Object.keys(codeLangs)
