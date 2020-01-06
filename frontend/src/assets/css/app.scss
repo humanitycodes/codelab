@@ -290,6 +290,9 @@ pre:not(.CodeMirror-line) {
   &.sql > code:after {
     content: 'SQL';
   }
+  &.md > code:after {
+    content: 'MARKDOWN'
+  }
   &.txt > code:after {
     content: 'TEXT';
   }
