@@ -14,7 +14,7 @@
       git commit -m "a short message describing your changes"
 
       # 4) Upload all commits to your GitHub repository
-      git push origin master
+      git push origin main
     </CodeBlock>
 
     <p>
@@ -40,7 +40,7 @@
       cd PATH/TO/{{ projectName }}
 
       # 3) Push your committed code to Heroku
-      git push heroku master
+      git push heroku main
     </CodeBlock>
     <CodeBlock v-else-if="lesson.projectHosting === 'Heroku'" lang="sh">
       # 1) Navigate to your project directory (unless you're already there)
@@ -50,11 +50,11 @@
       heroku create {{ projectHostedSubdomain }}
 
       # 3) Push your committed code to Heroku
-      git push heroku master
+      git push heroku main
     </CodeBlock>
     <CodeBlock v-else lang="sh">
       # Push your committed code to GitHub Pages
-      git push origin master:gh-pages
+      git push origin main:gh-pages
     </CodeBlock>
 
     <h4>Double check your work</h4>

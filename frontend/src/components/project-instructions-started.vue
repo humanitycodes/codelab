@@ -30,7 +30,7 @@
       git commit -m "a short message describing your changes"
 
       # 4) Upload your commits to your GitHub repository
-      git push origin master
+      git push origin main
     </CodeBlock>
   </div>
 </template>

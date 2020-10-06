@@ -25,7 +25,7 @@
       git commit -m "a short message describing your changes"
 
       # 4) Upload all commits to your GitHub repository
-      git push origin master
+      git push origin main
     </CodeBlock>
 
     <p>Update the live result with your changes:</p>
@@ -41,11 +41,11 @@
       cd PATH/TO/{{ projectName }}
 
       # 3) Push your committed code to Heroku
-      git push heroku master
+      git push heroku main
     </CodeBlock>
     <CodeBlock v-else lang="sh">
       # Push your committed code to GitHub Pages
-      git push origin master:gh-pages
+      git push origin main:gh-pages
     </CodeBlock>
   </div>
 </template>
