@@ -84,7 +84,7 @@ export default {
       // Save the form
       .click('button[name=done-button]:first-child')
 
-      // Make sure the lesson is in the master list
+      // Make sure the lesson is in the list of available lessons
       .waitForElementVisible(`a[href$='/lessons/new']`, waitTime)
       .assert.visible(`a[href$='/lessons/${lesson.lessonKey}/edit']`)
 
@@ -147,7 +147,7 @@ export default {
       // Save the form
       .click('button[name=done-button]:first-child')
 
-      // Make sure the course is in the master list
+      // Make sure the course is in the list of available courses
       .waitForElementVisible(`a[href$='/courses/new']`, waitTime)
       .assert.visible(`a[href$='/courses/${course.courseKey}/edit']`)
 
