@@ -4,7 +4,7 @@
 
     <h4>Before you start coding</h4>
 
-    <p>Clone the GitHub repository to your computer, so that you have a place to work:</p>
+    <p>Clone the GitHub repository to your computer so you have a place to work:</p>
     <CodeBlock lang="sh">
       # 1) Navigate to the folder where you keep your projects
       cd PATH/TO/YOUR/PROJECTS
@@ -14,6 +14,9 @@
 
       # 3) Change into your project directory and begin working
       cd {{ projectName }}
+
+      # 4) Create your "main" branch for making changes
+      git checkout -b main
     </CodeBlock>
 
     <h4>As you code the project</h4>
