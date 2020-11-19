@@ -1,7 +1,7 @@
 const lodash = require('lodash')
 const brand = process.env.CODELAB_BRAND || 'msu'
 const tw = require('../config/design/' + brand + '-tailwind')
-const sass = require('node-sass')
+const sass = require('sass')
 const hexToRGB = require('../config/design/helpers/hex-to-rgb')
 
 module.exports = {

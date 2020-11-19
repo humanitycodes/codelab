@@ -321,7 +321,7 @@ pre:not(.CodeMirror-line) {
     }
   }
   + .result, + .output {
-    margin-top: "calc(-1em - %s)" % #{$control-border-radius};
+    margin-top: calc(-1em - #{$control-border-radius});
     border-top: #{$control-border-radius} solid #{$code-background};
     border-top-left-radius: 0;
     border-top-right-radius: 0;
