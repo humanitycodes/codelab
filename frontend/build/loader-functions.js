@@ -7,25 +7,21 @@ const hexToRGB = require('../config/design/helpers/hex-to-rgb')
 module.exports = {
   // Takes in tailwind key and returns the value in loader
   'get($keys)' : function (keys) {
-    keys = keys.getValue().split('.')
-    let result = lodash.get(tw, keys)
+    const keyArray = keys.getValue().split('.')
+    const result = lodash.get(tw, keyArray)
     if (typeof result === 'string') {
       if (result.includes('#')) {
-        var rgb = hexToRGB(result)
+        const rgb = hexToRGB(result)
         if (rgb) {
-          var output = new sass.types.Color(rgb[0], rgb[1], rgb[2])
-          return output
+          return new sass.types.Color(rgb[0], rgb[1], rgb[2])
         } else {
-          var output = new sass.types.Null()
-          return output
+          return new sass.types.Null()
         }
       } else {
-        var output = new sass.types.String(result)
-        return output
+        return new sass.types.String(result)
       }
     } else {
-      var output = new sass.types.Null()
-      return output
+      return new sass.types.Null()
     }
   }
 }

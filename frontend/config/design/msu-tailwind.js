@@ -948,20 +948,7 @@ module.exports = {
   |
   */
 
-  plugins: [
-    // ------------------------------------------------------------------------
-    // The container plugin cannot be used because it is published as an ES6
-    // package and all versions of UglifyJS that are compatible with Webpack 1
-    // do not support ES6 minification. Upgrading to Webpack 2 or higher will
-    // bring in support for UglifyES and the container plugin can be re-enabled
-    // ------------------------------------------------------------------------
-    // require('tailwindcss/plugins/container')({
-    //   // center: true,
-    //   // padding: '1rem',
-    // })
-
-    ...twPlugins
-  ],
+  plugins: twPlugins,
 
   /*
   |-----------------------------------------------------------------------------

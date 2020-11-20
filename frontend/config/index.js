@@ -1,18 +1,17 @@
-'use strict'
-// Template version: 1.3.1
-// see http://vuejs-templates.github.io/webpack for documentation.
-
 const path = require('path')
 
-let buildEnvFile = './test.env'
-let buildIndexFile = path.resolve(__dirname, '../dist/index.html')
-
 const env = process.env.NODE_ENV || ''
-if (['production', 'staging'].includes(env)) {
-  buildEnvFile = `./${env}.env`
-} else if (env === 'testing') {
-  buildIndexFile = 'index.html'
-}
+const isProduction = env === 'production'
+const isStaging = env === 'staging'
+const isTesting = env === 'testing'
+
+const buildEnvFile = (isProduction || isStaging)
+  ? `./${env}.env`
+  : './test.env'
+
+const buildIndexFile = isTesting
+  ? 'index.html'
+  : path.resolve(__dirname, '../dist/index.html')
 
 module.exports = {
   dev: {
@@ -61,11 +60,6 @@ module.exports = {
     // https://webpack.js.org/configuration/devtool/#development
     devtool: 'cheap-module-eval-source-map',
 
-    // If you have problems debugging vue-files in devtools,
-    // set this to false - it *may* help
-    // https://vue-loader.vuejs.org/en/options.html#cachebusting
-    cacheBusting: true,
-
     cssSourceMap: true
   },
 
@@ -79,13 +73,14 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
+
     /**
      * Source Maps
      */
 
     productionSourceMap: true,
     // https://webpack.js.org/configuration/devtool/#production
-    devtool: '#source-map',
+    devtool: 'source-map',
 
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
