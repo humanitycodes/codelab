@@ -130,13 +130,7 @@ if (config.build.bundleAnalyzerReport) {
   webpackConfig.plugins.push(new BundleAnalyzerPlugin({
     analyzerMode: 'static',
     reportFilename: '../reports/webpack-size-report.html',
-    openAnalyzer: false,
-    excludeAssets: [
-      /\\.zip$/
-    ],
-    statsOptions: {
-      exclude: /\\.zip$/
-    }
+    openAnalyzer: false
   }))
 }
 

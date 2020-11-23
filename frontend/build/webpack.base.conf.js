@@ -52,6 +52,16 @@ module.exports = {
       '@state': resolve('src/state')
     }
   },
+  performance: {
+    assetFilter (filename) {
+      return [
+        // Exclude files in the /audio directory from the performance report
+        filename.includes('/audio/'),
+        // Exclude source maps
+        filename.endsWith('.map')
+      ].every(result => !result)
+    }
+  },
   plugins: [
     new VueLoaderPlugin()
   ],
