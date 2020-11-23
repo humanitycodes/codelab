@@ -25,6 +25,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   output: {
     path: config.build.assetsRoot,
     filename: chunkData => {
+      // The service worker filename must always be service-worker.js
       return chunkData.chunk.name === 'service-worker'
         ? '[name].js'
         : utils.assetsPath('js/[name].[chunkhash].js')
@@ -35,6 +36,10 @@ const webpackConfig = merge(baseWebpackConfig, {
     minimize: true,
     minimizer: [new TerserPlugin()],
     splitChunks: {
+      chunks (chunk) {
+        // Optimize everything except the service-worker
+        return chunk.name !== 'service-worker'
+      },
       cacheGroups: {
         // Split vendor js into its own file
         vendor: {
