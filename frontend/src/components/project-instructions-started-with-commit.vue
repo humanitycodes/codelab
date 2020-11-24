@@ -146,11 +146,11 @@ export default {
           title: 'Project Feedback',
           body:
             `## ${this.lesson.projectTitle}\n\n@${this.chosenInstructor} ` +
-            `Can you take a look at this? ` +
+            'Can you take a look at this? ' +
             `It's [hosted here](${this.projectHostedUrl}) ` +
-            `and meets the following criteria:\n\n` +
+            'and meets the following criteria:\n\n' +
             `- [x] ${criteria.join('\n- [x] ')}\n\n` +
-            `<!-- ADD YOUR OWN NOTES, IF ANY, BELOW THIS LINE -->`
+            '<!-- ADD YOUR OWN NOTES, IF ANY, BELOW THIS LINE -->'
         })
       ].join('')
 

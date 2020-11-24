@@ -237,7 +237,8 @@ export default {
         const endNodeY = (
           startNode.y === endNode.y ||
           endNode.lesson.prerequisiteLessonIds.length === 1
-        ) ? endNode.y
+        )
+          ? endNode.y
           : startNode.y > endNode.y
             ? endNode.y + yPull
             : endNode.y - yPull

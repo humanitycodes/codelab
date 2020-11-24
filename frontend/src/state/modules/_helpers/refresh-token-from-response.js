@@ -9,7 +9,7 @@ export default result => {
   if (
     response &&
     response.headers &&
-    response.headers.hasOwnProperty('x-token-refresh')
+    Object.prototype.hasOwnProperty.call(response.headers, 'x-token-refresh')
   ) {
     setAuthToken(response.headers['x-token-refresh'])
     return store.dispatch('attemptAutoSignIn').then(() => response)

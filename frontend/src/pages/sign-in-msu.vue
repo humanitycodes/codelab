@@ -1,25 +1,27 @@
 <template>
-  <div class="msu-standalone-signin-container">
-    <h1>This app is restricted to MSU instructors and students</h1>
-    <AuthLink
-      provider="msu"
-      class="
-        btn-blue
-        msu-standalone-signin-button
-        button
-        primary
-        block
-        extra-large
-      "
-    >
-      <img src="../assets/images/logo-white.png" alt="Site logo">
-      Sign in
-    </AuthLink>
-  </div>
+  <Layout>
+    <div class="msu-standalone-signin-container">
+      <h1>This app is restricted to MSU instructors and students</h1>
+      <AuthLink
+        provider="msu"
+        class="
+          btn-blue
+          msu-standalone-signin-button
+          button
+          primary
+          block
+          extra-large
+        "
+      >
+        <img src="../assets/images/logo-white.png" alt="Site logo">
+        Sign in
+      </AuthLink>
+    </div>
+  </Layout>
 </template>
 
 <script>
-import Layout from '@layouts/main'
+import Layout from '@layouts/bare'
 import AuthLink from '@components/auth-link'
 
 export default {

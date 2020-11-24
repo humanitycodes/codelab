@@ -1,6 +1,7 @@
+/* eslint-disable no-empty */
 // Levenshtein Distance
 export default (a, b) => {
-  var m = []
+  const m = []
   if (!(a && b)) return (b || a).length
   for (let i = 0; i <= b.length; m[i] = [i++]) {}
   for (let j = 0; j <= a.length; m[0][j] = j++) {}

@@ -61,7 +61,7 @@ export default {
                 class={{
                   'rendered-content-page-breadcrumb': true,
                   'label-placement-top': this.labelPlacement === 'top',
-                  active: this.value === index + 1
+                  'active': this.value === index + 1
                 }}
               >
                 <div
@@ -140,7 +140,7 @@ export default {
     },
     pages () {
       return chunk(compact(this.contentHtml.split(/<h2>(.+?)<\/h2>/)), 2).map(page => {
-        const [ title, content ] = page
+        const [title, content] = page
         return {
           title: this.decodeHtml(title),
           contentPartitions: `<h2>${title}</h2>${content}`
@@ -173,7 +173,7 @@ export default {
   },
   methods: {
     decodeHtml (text) {
-      var el = document.createElement('textarea')
+      const el = document.createElement('textarea')
       el.innerHTML = text
       return el.value
     },

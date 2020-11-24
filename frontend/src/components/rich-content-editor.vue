@@ -87,7 +87,7 @@ export default {
         keyMap: 'sublime',
         extraKeys: {
           Tab: editor => {
-            var spaces = Array(editor.getOption('indentUnit') + 1).join(' ')
+            const spaces = Array(editor.getOption('indentUnit') + 1).join(' ')
             editor.replaceSelection(spaces)
           },
           Esc: editor => {

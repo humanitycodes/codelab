@@ -57,9 +57,8 @@ export default {
     getLogo () {
       // Used this format to add other brands as else if in future
       if (brand) {
-        let brandName = brand
         try {
-          return require('../assets/images/' + brandName + '-logo.png')
+          return require(`../assets/images/${brand}-logo.png`)
         } catch (error) {
           return require('../assets/images/logo.png')
         }

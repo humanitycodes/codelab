@@ -93,13 +93,11 @@
 </template>
 
 <script>
-import Dropdown from './dropdown'
 import ModalConfirm from './modal-confirm'
 import { userGetters, projectCompletionGetters } from '@state/helpers'
 
 export default {
   components: {
-    Dropdown,
     ModalConfirm
   },
   props: {

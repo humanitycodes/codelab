@@ -25,7 +25,7 @@ export default {
     ...userGetters,
     url: function () {
       switch (this.provider) {
-        case 'github':
+        case 'github': {
           let url = [
             'https://github.com/login/oauth/authorize',
             `?scope=${githubScopesPath}`,
@@ -36,14 +36,17 @@ export default {
             url += `&state=${encodeURIComponent(this.jsonWebToken)}`
           }
           return url
-        case 'msu':
+        }
+        case 'msu': {
           return [
             'https://oauth.itservices.msu.edu/oauth/authorize',
             '?response_type=code',
             `&client_id=${msuAuthClientId}`
           ].join('')
-        default:
+        }
+        default: {
           return null
+        }
       }
     }
   }

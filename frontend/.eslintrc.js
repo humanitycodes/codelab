@@ -32,6 +32,7 @@ module.exports = {
         SwitchCase: 1
       }],
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'quote-props': ['error', 'consistent-as-needed']
   }
 }

@@ -12,7 +12,7 @@ export default async ({ courseId, lessonId }) => {
     })
     .catch(error => {
       console.log(
-        `Error creating project completion`,
+        'Error creating project completion',
         `for course ${courseId}`,
         `and lesson ${lessonId}`,
         'Reason:', error
