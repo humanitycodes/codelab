@@ -24,7 +24,7 @@ describe('date-picker.vue', () => {
 
     describe('when the input value is changed to "2000-01-09"', () => {
       beforeEach(done => {
-        vm.$refs.datePicker.onInput({target: {value: '2000-01-09'}})
+        vm.$refs.datePicker.onInput({ target: { value: '2000-01-09' } })
         vm.$nextTick(done)
       })
 

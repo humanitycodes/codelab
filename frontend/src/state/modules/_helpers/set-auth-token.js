@@ -4,9 +4,9 @@ import axios from 'axios'
 export default token => {
   if (token) {
     localStorage.setItem('auth_token', token)
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`
   } else {
     localStorage.removeItem('auth_token')
-    axios.defaults.headers.common['Authorization'] = null
+    axios.defaults.headers.common.Authorization = null
   }
 }

@@ -80,7 +80,7 @@ export default {
       return course.courseKey
     },
     courseKeyFormatted (key) {
-      let pattern = new RegExp('[A-Z]{2,3}-[0-9]{3}-[A-Z]{2}[0-9]{2}-[0-9]{3}')
+      const pattern = /[A-Z]{2,3}-[0-9]{3}-[A-Z]{2}[0-9]{2}-[0-9]{3}/
       return pattern.test(key)
     },
     tryToCreateCourse () {
@@ -93,7 +93,7 @@ export default {
         } else {
           this.duplicateKeyInvalid = false
           // Get course by key
-          var duplicateCourse = courseByKey(this.courseQuery)
+          let duplicateCourse = courseByKey(this.courseQuery)
           store.dispatch('syncCourse', duplicateCourse.courseId).then(() => {
             duplicateCourse = (courseByKey(this.courseQuery))
             createCourse({

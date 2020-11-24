@@ -1,28 +1,30 @@
 <template>
-  <div class="github-standalone-signin-container">
-    <h1>
-      This app is restricted to
-      {{ brand === 'codelab517' ? 'Code Lab 517' : 'MSU' }}
-      instructors and students
-    </h1>
-    <AuthLink
-      provider="github"
-      class="
-        github-standalone-signin-button
-        button
-        primary
-        block
-        extra-large
-      "
-    >
-      <img src="../assets/images/logo-white.png" alt="Site logo">
-      Sign in with GitHub
-    </AuthLink>
-  </div>
+  <Layout>
+    <div class="github-standalone-signin-container">
+      <h1>
+        This app is restricted to
+        {{ brand === 'codelab517' ? 'Code Lab 517' : 'MSU' }}
+        instructors and students
+      </h1>
+      <AuthLink
+        provider="github"
+        class="
+          github-standalone-signin-button
+          button
+          primary
+          block
+          extra-large
+        "
+      >
+        <img src="../assets/images/logo-white.png" alt="Site logo">
+        Sign in with GitHub
+      </AuthLink>
+    </div>
+  </Layout>
 </template>
 
 <script>
-import Layout from '@layouts/main'
+import Layout from '@layouts/bare'
 import AuthLink from '@components/auth-link'
 import brand from '@env/brand'
 

@@ -3,7 +3,7 @@ export default () => {
     return (
       !/headless/i.test(navigator.userAgent) &&
       ServiceWorkerRegistration &&
-      ServiceWorkerRegistration.prototype.hasOwnProperty('showNotification')
+      Object.prototype.hasOwnProperty.call(ServiceWorkerRegistration.prototype, 'showNotification')
     )
   } catch (ignore) {
     return false

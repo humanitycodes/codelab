@@ -210,7 +210,8 @@ export default {
         },
         titleForCourseEditButton () {
           return this.isInstructorInCourse
-            ? '' : 'Only instructors assigned to this course can edit it'
+            ? ''
+            : 'Only instructors assigned to this course can edit it'
         }
       }
     }

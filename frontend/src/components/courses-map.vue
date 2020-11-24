@@ -4,7 +4,6 @@
       <li
         v-for="course in orderedCourses"
         :key="course.courseKey"
-        v-if="canReadCourse({ courseKey: course.courseKey })"
       >
         <router-link v-if="canUpdateCourse({ courseKey: course.courseKey })"
           :to="'/courses/' + course.courseKey + '/edit'"
@@ -53,7 +52,8 @@ export default {
     },
     titleForCourseEditButton (course) {
       return this.isInstructorInCourse(course)
-        ? '' : 'Only instructors assigned to this course can edit it'
+        ? ''
+        : 'Only instructors assigned to this course can edit it'
     }
   }
 }

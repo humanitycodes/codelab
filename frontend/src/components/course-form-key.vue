@@ -120,8 +120,8 @@ export default {
       }
     },
     keyIsValid (keyValidity) {
-      this.$emit('changeKeyValidity', keyValidity)
-      this.$emit('changeKey', this.key)
+      this.$emit('change-key-validity', keyValidity)
+      this.$emit('change-key', this.key)
     }
   }
 }

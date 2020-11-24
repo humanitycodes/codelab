@@ -13,7 +13,8 @@ export const roleToPropertyName = role => {
 export const userHasRole = (user, role) => {
   if (!user) return false
   const roleProperty = roleToPropertyName(role)
-  return user.hasOwnProperty(roleProperty) && user[roleProperty]
+  return Object.prototype.hasOwnProperty.call(user, roleProperty) &&
+    user[roleProperty]
 }
 
 // Check if the current user has one specific role
