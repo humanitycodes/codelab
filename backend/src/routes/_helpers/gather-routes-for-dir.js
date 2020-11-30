@@ -3,7 +3,7 @@ import path from 'path'
 
 export default routeDir => {
   const cwd = path.join(__dirname, `../${routeDir}/**/*.js`)
-  let routes = []
+  const routes = []
 
   glob.sync(cwd, {
     // Ignore files in directories that begin with _ (e.g. _helpers)

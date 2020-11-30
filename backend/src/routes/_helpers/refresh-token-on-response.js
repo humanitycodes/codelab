@@ -6,7 +6,7 @@ export default {
   method (request, h) {
     if (
       request.headers &&
-      request.headers.hasOwnProperty('x-token-refresh') &&
+      Object.prototype.hasOwnProperty.call(request.headers, 'x-token-refresh') &&
       request.response &&
       request.response.headers
     ) {

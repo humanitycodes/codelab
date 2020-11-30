@@ -1,6 +1,6 @@
-/* eslint-disable import/first */
-// Polyfill features that are not yet natively supported in node
-if (!global._babelPolyfill) require('babel-polyfill')
+// Babel polyfills
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
 
 import WEB_CONCURRENCY from '../env/web-concurrency'
 import startWorker from './start-worker'

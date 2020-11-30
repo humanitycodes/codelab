@@ -26,7 +26,7 @@ export default {
       return courses
     } catch (error) {
       console.error(
-        `Unable to get courses`,
+        'Unable to get courses',
         `for user ${authUser.userId} (${authUser.fullName}).`,
         'Reason:', error
       )

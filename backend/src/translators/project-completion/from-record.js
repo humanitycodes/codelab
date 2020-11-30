@@ -2,7 +2,7 @@ import dateToTimestamp from '../_helpers/date-to-timestamp'
 
 export default ({ projectCompletionRecord }) => {
   // Whitelist of fields that are available to clients
-  let projectCompletion = {
+  const projectCompletion = {
     projectCompletionId: projectCompletionRecord.projectCompletionId,
     courseId: projectCompletionRecord.courseId,
     lessonId: projectCompletionRecord.lessonId,
