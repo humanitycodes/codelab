@@ -1,4 +1,3 @@
-'use strict'
 const path = require('path')
 const config = require('../config')
 const packageConfig = require('../package.json')
@@ -36,8 +35,22 @@ exports.cssLoaders = function (options) {
 
   // generate loader string to be used with extract text plugin
   function generateLoaders (loader, loaderOptions) {
-    const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
+    const loaders = []
 
+    // Loader to extract CSS to separate files before other loaders
+    if (options.extract) {
+      loaders.push(MiniCssExtractPlugin.loader)
+    }
+
+    // Always use the CSS loader
+    loaders.push(cssLoader)
+
+    // Use PostCSS if configured
+    if (options.usePostCSS) {
+      loaders.push(postcssLoader)
+    }
+
+    // Add more specific loader (if available) last
     if (loader) {
       loaders.push({
         loader: loader + '-loader',
@@ -47,13 +60,7 @@ exports.cssLoaders = function (options) {
       })
     }
 
-    // Extract CSS when that option is specified
-    // (which is the case during production build)
-    if (options.extract) {
-      return [MiniCssExtractPlugin.loader].concat(loaders)
-    } else {
-      return ['vue-style-loader'].concat(loaders)
-    }
+    return loaders
   }
 
   // https://vue-loader.vuejs.org/en/configurations/extract-css.html
