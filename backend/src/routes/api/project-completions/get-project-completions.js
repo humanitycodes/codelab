@@ -40,7 +40,7 @@ export default {
       )
     } catch (error) {
       console.error(
-        `Unable to get project completions`,
+        'Unable to get project completions',
         `for user ${authUser.userId} (${authUser.fullName}).`,
         'Reason:', error
       )

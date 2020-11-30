@@ -20,7 +20,7 @@ const isUserVersionDifferent = (oldUser, newUser) => {
 export default {
   type: 'onPostAuth',
   method (request, h) {
-    let jwt = request.auth.credentials
+    const jwt = request.auth.credentials
     if (jwt && jwt.user) {
       return readUserById(jwt.user.userId)
         .then(userRecord => {

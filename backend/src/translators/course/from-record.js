@@ -2,7 +2,7 @@ import dateToTimestamp from '../_helpers/date-to-timestamp'
 
 export default async ({ authUser, courseRecord, transaction }) => {
   // Whitelist of fields that are available to clients
-  let course = {
+  const course = {
     courseId: courseRecord.courseId,
     courseKey: courseRecord.courseKey,
     credits: courseRecord.credits,

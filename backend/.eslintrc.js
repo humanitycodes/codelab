@@ -1,6 +1,5 @@
 module.exports = {
   root: true,
-  extends: 'standard',
   parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 2017,
@@ -9,6 +8,10 @@ module.exports = {
   env: {
     node: true
   },
+  extends: [
+    // https://github.com/standard/standard/blob/master/docs/RULES-en.md
+    'standard'
+  ],
   // add your custom rules here
   rules: {
     // allow paren-less arrow functions
@@ -23,6 +26,7 @@ module.exports = {
         SwitchCase: 1
       }],
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'quote-props': ['error', 'consistent-as-needed']
   }
 }

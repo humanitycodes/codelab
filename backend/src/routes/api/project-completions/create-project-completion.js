@@ -111,7 +111,7 @@ export default {
       return projectCompletion
     } catch (error) {
       console.error(
-        `Unable to create project completion`,
+        'Unable to create project completion',
         `for course ${courseId}, lesson ${lessonId},`,
         `and user ${authUser.userId} (${authUser.fullName}).`,
         'Reason:', error

@@ -4,7 +4,7 @@ import canReadAllLessons from 'helpers/permission/can-read-all-lessons'
 
 export default async ({ authUser, lessonRecord, transaction }) => {
   // Whitelist of fields that are available to clients
-  let lesson = {
+  const lesson = {
     lessonId: lessonRecord.lessonId,
     lessonKey: lessonRecord.lessonKey,
     title: lessonRecord.title,
