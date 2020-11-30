@@ -1,4 +1,4 @@
-import boom from 'boom'
+import boom from '@hapi/boom'
 import joi from 'joi'
 import readProjectCompletionRecordById from 'db/project-completion/read-by-id'
 import readAllUserRecordsWithProjectCompletionAccess from 'db/user/read-all-with-project-completion-access'

@@ -1,5 +1,5 @@
 import joi from 'joi'
-import boom from 'boom'
+import boom from '@hapi/boom'
 import signJsonWebToken from 'helpers/jwt/sign-json-web-token'
 import sequelize from 'db/sequelize'
 import registerNewUser from '../_helpers/register-new-user'

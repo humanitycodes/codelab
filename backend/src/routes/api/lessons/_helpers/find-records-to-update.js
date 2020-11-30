@@ -1,4 +1,4 @@
-import boom from 'boom'
+import boom from '@hapi/boom'
 
 // Return updated records that have a new position or content value
 export default ({ existingRecords, updatedObjects, key }) =>

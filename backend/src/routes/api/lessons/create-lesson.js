@@ -1,4 +1,4 @@
-import boom from 'boom'
+import boom from '@hapi/boom'
 import joi from 'joi'
 import sequelize from 'db/sequelize'
 import canCreateLesson from 'helpers/permission/can-create-lesson'
