@@ -24,7 +24,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
     path: config.build.assetsRoot,
-    filename: chunkData => {
+    filename (chunkData) {
       // The service worker filename must always be service-worker.js
       return chunkData.chunk.name === 'service-worker'
         ? '[name].js'
@@ -39,31 +39,6 @@ const webpackConfig = merge(baseWebpackConfig, {
       chunks (chunk) {
         // Optimize everything except the service-worker
         return chunk.name !== 'service-worker'
-      },
-      cacheGroups: {
-        // Split vendor js into its own file
-        vendor: {
-          name: 'vendor',
-          chunks (chunk) {
-            return chunk.name === 'app'
-          },
-          test: /[\\/]node_modules[\\/]/
-        },
-        // extract webpack runtime and module manifest to its own file to
-        // prevent vendor hash from being updated when app bundle is updated
-        manifest: {
-          name: 'manifest',
-          chunks (chunk) {
-            return chunk.name === 'app'
-          },
-          minChunks: Infinity
-        },
-        // If 3 or more chunks share a module, split and load it asynchronously
-        'vendor-async': {
-          name: 'vendor-async',
-          chunks: 'async',
-          minChunks: 3
-        }
       }
     }
   },
