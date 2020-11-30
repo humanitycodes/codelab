@@ -31,7 +31,6 @@
     "moment": "^2.22.2",
     "node-rsa": "^0.4.2",
     "pg": "^7.4.3",
-    "pg-hstore": "^2.3.2",
     "retry-as-promised": "^2.3.2",
     "sequelize": "=4.32.6",
     "throng": "^4.0.0"
