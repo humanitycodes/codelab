@@ -11,6 +11,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 const webpackConfig = merge(baseWebpackConfig, {
   mode: 'production',
@@ -78,40 +80,20 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.HashedModuleIdsPlugin(),
     // copy custom static assets
     new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: path.resolve(__dirname, '../static'),
-          to: config.build.assetsSubDirectory,
-          globOptions: {
-            dot: false
-          }
-        }
-      ]
+      patterns: [{
+        from: path.resolve(__dirname, '../static'),
+        to: config.build.assetsSubDirectory
+      }]
+    }),
+    new CompressionWebpackPlugin({
+      test: /\.(js|css)$/
+    }),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      reportFilename: '../reports/webpack-size-report.html',
+      openAnalyzer: false
     })
   ]
 })
-
-if (config.build.productionGzip) {
-  const CompressionWebpackPlugin = require('compression-webpack-plugin')
-
-  webpackConfig.plugins.push(
-    new CompressionWebpackPlugin({
-      test: new RegExp(
-        '\\.(' +
-        config.build.productionGzipExtensions.join('|') +
-        ')$'
-      )
-    })
-  )
-}
-
-if (config.build.bundleAnalyzerReport) {
-  const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-  webpackConfig.plugins.push(new BundleAnalyzerPlugin({
-    analyzerMode: 'static',
-    reportFilename: '../reports/webpack-size-report.html',
-    openAnalyzer: false
-  }))
-}
 
 module.exports = webpackConfig
