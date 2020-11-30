@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const utils = require('./utils')
 const config = require('../config')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
@@ -57,7 +58,9 @@ module.exports = {
     new ESLintPlugin({
       extensions: ['js', 'vue'],
       formatter: require('eslint-friendly-formatter')
-    })
+    }),
+    // Leave out all of Moment's locales to reduce its chunk size
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
   ],
   module: {
     rules: [
