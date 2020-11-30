@@ -19,20 +19,6 @@ exports.brandedIndexTemplate = function () {
 exports.cssLoaders = function (options) {
   options = options || {}
 
-  const cssLoader = {
-    loader: 'css-loader',
-    options: {
-      sourceMap: options.sourceMap
-    }
-  }
-
-  const postcssLoader = {
-    loader: 'postcss-loader',
-    options: {
-      sourceMap: options.sourceMap
-    }
-  }
-
   // generate loader string to be used with extract text plugin
   function generateLoaders (loader, loaderOptions) {
     const loaders = []
@@ -43,11 +29,21 @@ exports.cssLoaders = function (options) {
     }
 
     // Always use the CSS loader
-    loaders.push(cssLoader)
+    loaders.push({
+      loader: 'css-loader',
+      options: {
+        sourceMap: options.sourceMap
+      }
+    })
 
     // Use PostCSS if configured
     if (options.usePostCSS) {
-      loaders.push(postcssLoader)
+      loaders.push({
+        loader: 'postcss-loader',
+        options: {
+          sourceMap: options.sourceMap
+        }
+      })
     }
 
     // Add more specific loader (if available) last
