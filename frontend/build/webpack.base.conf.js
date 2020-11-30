@@ -1,9 +1,9 @@
 const path = require('path')
-const webpack = require('webpack')
 const utils = require('./utils')
 const config = require('../config')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
+const { IgnorePlugin } = require('webpack')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -60,7 +60,7 @@ module.exports = {
       formatter: require('eslint-friendly-formatter')
     }),
     // Leave out all of Moment's locales to reduce its chunk size
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    new IgnorePlugin(/^\.\/locale$/, /moment$/)
   ],
   module: {
     rules: [
