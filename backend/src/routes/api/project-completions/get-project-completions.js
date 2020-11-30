@@ -1,4 +1,4 @@
-import boom from 'boom'
+import boom from '@hapi/boom'
 import unionBy from 'lodash/unionBy'
 import canReviewProjects from 'helpers/permission/can-review-projects'
 import readAllProjectCompletionRecordsForStudentId from 'db/project-completion/read-all-for-student-id'

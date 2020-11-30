@@ -1,4 +1,4 @@
-import boom from 'boom'
+import boom from '@hapi/boom'
 import parseIdentifiersFromFullRepoName from 'helpers/github/parse-identifiers-from-full-repo-name'
 import readUserRecordByGitHubLogin from 'db/user/read-by-github-login'
 import readActiveCourseRecordsForPartialKeyAndStudentId from 'db/course/read-all-active-for-partial-key-and-student-id'

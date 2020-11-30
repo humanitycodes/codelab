@@ -1,4 +1,4 @@
-import boom from 'boom'
+import boom from '@hapi/boom'
 import unionBy from 'lodash/unionBy'
 import canReadAllUsers from 'helpers/permission/can-read-all-users'
 import readUserRecordById from 'db/user/read-by-id'

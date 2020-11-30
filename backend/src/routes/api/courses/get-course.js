@@ -1,4 +1,4 @@
-import boom from 'boom'
+import boom from '@hapi/boom'
 import joi from 'joi'
 import canReadAllCourses from 'helpers/permission/can-read-all-courses'
 import readCourseRecordById from 'db/course/read-by-id'

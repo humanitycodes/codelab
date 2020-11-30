@@ -1,5 +1,5 @@
 import joi from 'joi'
-import boom from 'boom'
+import boom from '@hapi/boom'
 
 import CODELAB_GITHUB_EVENTS_PATH_SECRET from '../../../../env/github-events-path-secret'
 import githubEventHandlerMap from './_helpers/github-event-handler-map'

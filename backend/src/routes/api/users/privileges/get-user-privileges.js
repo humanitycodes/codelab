@@ -1,4 +1,4 @@
-import boom from 'boom'
+import boom from '@hapi/boom'
 import joi from 'joi'
 import getGitHubUserProfile from 'services/github/get-user-profile'
 
