@@ -5,8 +5,8 @@ import 'regenerator-runtime/runtime'
 // Add ./ (src) to Node search path for imports to avoid lots of ../../..
 import 'app-module-path/register'
 
-import hapi from 'hapi'
-import boom from 'boom'
+import hapi from '@hapi/hapi'
+import boom from '@hapi/boom'
 import jwtSecret from '../env/jwt-secret'
 import logHttpRequests from '../env/log-http-requests'
 import port from '../env/port'
@@ -65,7 +65,7 @@ export default async () => {
   }
 
   // Serve static files using inert
-  await server.register(require('inert'))
+  await server.register(require('@hapi/inert'))
 
   server.route({
     method: 'GET',
