@@ -59,6 +59,9 @@ export default async () => {
     }
   })
 
+  // Use Joi to validate HTTP requests
+  server.validator(require('joi'))
+
   // Enforce HTTPS in production
   if (isProduction) {
     await server.register(require('hapi-require-https'))
