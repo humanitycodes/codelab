@@ -3,7 +3,7 @@ import browserSupportsMessaging from '@notifications/messaging-supported-by-brow
 let messaging = null
 
 if (browserSupportsMessaging()) {
-  const firebase = require('firebase/app')
+  const firebase = require('firebase/app').default
   require('firebase/messaging')
   const firebaseClientConfig = require('@env/firebase-client-config').default
 
