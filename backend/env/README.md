@@ -102,7 +102,8 @@ var config = {
   databaseURL: "https://codelab-dev.firebaseio.com",
   projectId: "codelab-dev",
   storageBucket: "codelab-dev.appspot.com",
-  messagingSenderId: "137126158565"
+  messagingSenderId: "137126158565",
+  appId: "1:137126158565:web:14cfa00129f6f21401340c"
 };
 ```
 
@@ -113,6 +114,10 @@ the resulting string inside the `CODELAB_FIREBASE_CLIENT_CONFIG_JSON`
 environment variable.
 
 The default value is the JSON string for the `codelab-dev` project in Firebase.
+
+> ⚠️ In order to connect to Firebase from a browser client, the
+> [FCM Registration API](https://console.cloud.google.com/apis/library/fcmregistrations.googleapis.com)
+> must be enabled.
 
 ### `CODELAB_FIREBASE_PROJECT_ID`
 

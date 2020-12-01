@@ -18,7 +18,8 @@ module.exports = {
         databaseURL: 'https://codelab-dev.firebaseio.com',
         projectId: 'codelab-dev',
         storageBucket: 'codelab-dev.appspot.com',
-        messagingSenderId: '137126158565'
+        messagingSenderId: '137126158565',
+        appId: '1:137126158565:web:14cfa00129f6f21401340c'
       })
     ) + '\'',
   CODELAB_FIREBASE_VAPID_PUBLIC_KEY:
