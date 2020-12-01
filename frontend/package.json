@@ -103,6 +103,7 @@
     "shelljs": "^0.7.6",
     "sinon": "^2.4.1",
     "sinon-chai": "^2.9.0",
+    "style-loader": "^2.0.0",
     "stylelint": "^9.5.0",
     "stylelint-config-recommended": "^2.1.0",
     "stylus": "^0.54.8",
