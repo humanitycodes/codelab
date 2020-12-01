@@ -28,6 +28,9 @@ exports.cssLoaders = function (options) {
       loaders.push(MiniCssExtractPlugin.loader)
     }
 
+    // Always use the dynamic style loader
+    loaders.push('style-loader')
+
     // Always use the CSS loader
     loaders.push({
       loader: 'css-loader',
@@ -63,7 +66,6 @@ exports.cssLoaders = function (options) {
   return {
     css: generateLoaders(),
     postcss: generateLoaders(),
-    less: generateLoaders('less'),
     sass: generateLoaders('sass', { indentedSyntax: true }),
     scss: generateLoaders('sass', {
       sassOptions: {
