@@ -77,14 +77,14 @@ module.exports = {
 
       // No courses should be listed
       .waitForElementVisible('h1', waitTime)
-      .assert.elementNotPresent(`a[href$='/courses/${course.courseKey}']`)
+      .assert.not.elementPresent(`a[href$='/courses/${course.courseKey}']`)
 
       // Try to navigate to course anyway
       .url(`${browser.launchUrl}/courses/${course.courseKey}`)
       .waitForElementVisible('.main-nav', waitTime)
 
       // Should not see course content
-      .assert.elementNotPresent('.rendered-content')
+      .assert.not.elementPresent('.rendered-content')
 
       // Close the browser and end the test
       .end()
@@ -101,22 +101,22 @@ module.exports = {
       .waitForElementVisible(`a[href$='/courses/${course.courseKey}']:first-child`, waitTime)
 
       // New and Edit links should not be present
-      .assert.elementNotPresent('a[href$=\'/courses/new\']')
-      .assert.elementNotPresent(`a[href$='/courses/${course.courseKey}/edit']`)
+      .assert.not.elementPresent('a[href$=\'/courses/new\']')
+      .assert.not.elementPresent(`a[href$='/courses/${course.courseKey}/edit']`)
 
       // Try to create a new course via URL
       .url(`${browser.launchUrl}/courses/new`)
       .waitForElementVisible('.main-nav', waitTime)
 
       // Should not see new course form
-      .assert.elementNotPresent('.key-field')
+      .assert.not.elementPresent('.key-field')
 
       // Try to edit a course via URL
       .url(`${browser.launchUrl}/courses/${course.courseKey}`)
       .waitForElementVisible('.main-nav', waitTime)
 
       // Should not see editable course fields
-      .assert.elementNotPresent('input')
+      .assert.not.elementPresent('input')
 
       // Close the browser and end the test
       .end()
