@@ -30,7 +30,7 @@ const course = dgen.course({ courseKey })
 
 let instructorRecord
 
-export default {
+module.exports = {
   async before (browser, done) {
     await db.init()
     instructorRecord = await db.createInstructor(instructor)

@@ -1,7 +1,7 @@
 <template>
   <Layout>
-    <CourseKeyForm @changeKeyValidity="keyIsValid = $event"
-      @changeKey="key = $event"
+    <CourseKeyForm @change-key-validity="keyIsValid = $event"
+      @change-key="key = $event"
     />
     <button
       :disabled="!keyIsValid"
