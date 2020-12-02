@@ -7,21 +7,15 @@ module.exports = {
   custom_assertions_path: ['dist/custom-assertions'],
   custom_commands_path: 'dist/custom-commands',
 
-  selenium: {
+  webdriver: {
     start_process: true,
-    server_path: 'node_modules/selenium-server/lib/runner/selenium-server-standalone-3.8.1.jar',
-    host: '127.0.0.1',
-    port: 4444,
-    cli_args: {
-      'webdriver.chrome.driver': require('chromedriver').path
-    }
+    server_path: 'node_modules/.bin/chromedriver',
+    port: 9515
   },
 
   test_settings: {
     default: {
       launch_url: `http://localhost:${backendServerPort}`,
-      selenium_port: 4444,
-      selenium_host: 'localhost',
       silent: true,
       screenshots: {
         enabled: true,
@@ -45,12 +39,6 @@ module.exports = {
         chromeOptions: {
           args: ['--disable-notifications']
         }
-      }
-    },
-
-    firefox: {
-      desiredCapabilities: {
-        browserName: 'firefox'
       }
     }
   }
