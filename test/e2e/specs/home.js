@@ -7,7 +7,7 @@ export default {
   'default e2e tests': browser => {
     browser
       .url(browser.launchUrl)
-      .waitForElementVisible('.msu-standalone-signin-container', waitTime)
+      .waitForElementVisible('.msu-standalone-signin-containerX', waitTime)
       .assert.elementPresent('h1')
       .assert.elementPresent('.msu-standalone-signin-button')
       .end()
