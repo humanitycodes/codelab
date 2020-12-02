@@ -5,9 +5,12 @@ import db from '../helpers/db'
 import dgen from '../helpers/data-generator'
 import waitTime from '../const/wait-time'
 
+let userRecord
+
 module.exports = {
   async before (browser, done) {
     await db.init()
+    userRecord = await db.createStudent(dgen.user())
     done()
   },
 
@@ -24,9 +27,7 @@ module.exports = {
       .end()
   },
 
-  'Sign In with token shows dashboard': async browser => {
-    const userRecord = await db.createStudent(dgen.user())
-
+  'Sign In with token shows dashboard': browser => {
     browser
       .signInUser(userRecord.get())
       .assert.containsText('.main-nav-user-name', userRecord.fullName)
