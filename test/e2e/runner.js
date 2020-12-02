@@ -1,5 +1,6 @@
-// Polyfill features that are not yet natively supported in node
-import 'babel-polyfill'
+// Babel polyfills
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
 
 process.env.NODE_ENV = 'testing'
 

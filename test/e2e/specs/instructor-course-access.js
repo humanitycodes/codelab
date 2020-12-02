@@ -54,12 +54,12 @@ export default {
       .signInUser(instructorRecord.get())
 
       // Navigate to lesson list
-      .assert.visible(`.main-nav a[href$='/lessons']`)
-      .click(`.main-nav a[href$='/lessons']`)
-      .waitForElementVisible(`a[href$='/lessons/new']`, waitTime)
+      .assert.visible('.main-nav a[href$=\'/lessons\']')
+      .click('.main-nav a[href$=\'/lessons\']')
+      .waitForElementVisible('a[href$=\'/lessons/new\']', waitTime)
 
       // Create new lesson
-      .click(`a[href$='/lessons/new']`)
+      .click('a[href$=\'/lessons/new\']')
       .waitForElementVisible('input[name=lesson-key]', waitTime)
       .setValue('select[name=lesson-category]', lessonKeyPrefix)
       .setValue('input[name=lesson-key]', lessonKeySuffix)
@@ -68,15 +68,15 @@ export default {
       .assert.urlContains(`/lessons/${lesson.lessonKey}/edit`)
 
       // Edit lesson fields
-      .setValue(`input[name=lesson-title]`, lesson.title)
-      .setValue(`input[name=lesson-estimated-hours]`, lesson.estimatedHours)
+      .setValue('input[name=lesson-title]', lesson.title)
+      .setValue('input[name=lesson-estimated-hours]', lesson.estimatedHours)
 
-      .setValue(`input[name=lesson-new-learning-objective]`, [
+      .setValue('input[name=lesson-new-learning-objective]', [
         learningObjectiveText,
         browser.Keys.ENTER
       ])
 
-      .setValue(`input[name=lesson-prereq-query]`, prereqLesson.title)
+      .setValue('input[name=lesson-prereq-query]', prereqLesson.title)
       .waitForElementVisible('input[name=lesson-prereq-query] + .dropdown-results > .dropdown-result', waitTime)
       .click('input[name=lesson-prereq-query] + .dropdown-results > .dropdown-result')
       .waitForElementVisible('button[name=lesson-remove-prereq]', waitTime)
@@ -85,16 +85,16 @@ export default {
       .click('button[name=done-button]:first-child')
 
       // Make sure the lesson is in the list of available lessons
-      .waitForElementVisible(`a[href$='/lessons/new']`, waitTime)
+      .waitForElementVisible('a[href$=\'/lessons/new\']', waitTime)
       .assert.visible(`a[href$='/lessons/${lesson.lessonKey}/edit']`)
 
       // View the recently edited lesson
       .click(`a[href$='/lessons/${lesson.lessonKey}/edit']`)
       .waitForElementVisible('input[name=lesson-title]', waitTime)
-      .assert.value(`input[name=lesson-title]`, lesson.title)
-      .assert.value(`input[name=lesson-estimated-hours]`, lesson.estimatedHours.toString())
-      .assert.value(`input[name=lesson-new-learning-objective] + ol input`, learningObjectiveText)
-      .assert.visible(`button[name=lesson-remove-prereq]`)
+      .assert.value('input[name=lesson-title]', lesson.title)
+      .assert.value('input[name=lesson-estimated-hours]', lesson.estimatedHours.toString())
+      .assert.value('input[name=lesson-new-learning-objective] + ol input', learningObjectiveText)
+      .assert.visible('button[name=lesson-remove-prereq]')
 
       // Close the browser and end the test
       .end()
@@ -106,12 +106,12 @@ export default {
       .signInUser(instructorRecord.get())
 
       // Navigate to course list
-      .assert.visible(`.main-nav a[href$='/courses']`)
-      .click(`.main-nav a[href$='/courses']`)
-      .waitForElementVisible(`a[href$='/courses/new']`, waitTime)
+      .assert.visible('.main-nav a[href$=\'/courses\']')
+      .click('.main-nav a[href$=\'/courses\']')
+      .waitForElementVisible('a[href$=\'/courses/new\']', waitTime)
 
       // Create new course
-      .click(`a[href$='/courses/new']`)
+      .click('a[href$=\'/courses/new\']')
       .waitForElementVisible('input[name=course-number]', waitTime)
       .setValue('select[name=course-prefix]', courseKeyDep)
       .setValue('input[name=course-number]', courseKeyNum)
@@ -124,21 +124,21 @@ export default {
       .assert.urlContains(`/courses/${course.courseKey}/edit`)
 
       // Edit course fields
-      .setValue(`input[name=course-title]`, course.title)
-      .setValue(`input[name=course-credits]`, course.credits)
+      .setValue('input[name=course-title]', course.title)
+      .setValue('input[name=course-credits]', course.credits)
 
       // setValue sends keystrokes, so format the dates in the order you would type a date
-      .setValue(`input[name=course-start-date]`, moment(course.startDate).format('MMDDYYYY'))
-      .setValue(`input[name=course-end-date]`, moment(course.endDate).format('MMDDYYYY'))
+      .setValue('input[name=course-start-date]', moment(course.startDate).format('MMDDYYYY'))
+      .setValue('input[name=course-end-date]', moment(course.endDate).format('MMDDYYYY'))
 
       // Add a lesson to the course
-      .setValue(`input[name=course-lesson-query]`, lesson.title)
+      .setValue('input[name=course-lesson-query]', lesson.title)
       .waitForElementVisible('input[name=course-lesson-query] + .dropdown-results > .dropdown-result:first-child', waitTime)
       .click('input[name=course-lesson-query] + .dropdown-results > .dropdown-result:first-child')
       .waitForElementVisible('button[name=course-remove-lesson]', waitTime)
 
       // Type student email and press Enter to enroll
-      .setValue(`input[name=course-student-email]`, [
+      .setValue('input[name=course-student-email]', [
         student.email,
         browser.Keys.ENTER
       ])
@@ -148,18 +148,18 @@ export default {
       .click('button[name=done-button]:first-child')
 
       // Make sure the course is in the list of available courses
-      .waitForElementVisible(`a[href$='/courses/new']`, waitTime)
+      .waitForElementVisible('a[href$=\'/courses/new\']', waitTime)
       .assert.visible(`a[href$='/courses/${course.courseKey}/edit']`)
 
       // View the recently edited course
       .click(`a[href$='/courses/${course.courseKey}/edit']`)
       .waitForElementVisible('input[name=course-title]', waitTime)
-      .assert.value(`input[name=course-title]`, course.title)
-      .assert.value(`input[name=course-credits]`, course.credits.toString())
-      .assert.value(`input[name=course-start-date]`, moment(course.startDate).format('YYYY-MM-DD'))
-      .assert.value(`input[name=course-end-date]`, moment(course.endDate).format('YYYY-MM-DD'))
-      .assert.visible(`button[name=course-remove-student]`)
-      .assert.visible(`button[name=course-remove-lesson]`)
+      .assert.value('input[name=course-title]', course.title)
+      .assert.value('input[name=course-credits]', course.credits.toString())
+      .assert.value('input[name=course-start-date]', moment(course.startDate).format('YYYY-MM-DD'))
+      .assert.value('input[name=course-end-date]', moment(course.endDate).format('YYYY-MM-DD'))
+      .assert.visible('button[name=course-remove-student]')
+      .assert.visible('button[name=course-remove-lesson]')
 
       // Close the browser and end the test
       .end()
