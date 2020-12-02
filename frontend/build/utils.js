@@ -23,13 +23,12 @@ exports.cssLoaders = function (options) {
   function generateLoaders (loader, loaderOptions) {
     const loaders = []
 
-    // Loader to extract CSS to separate files before other loaders
+    // If extracting, move the CSS to its own file, otherwise load it inline
     if (options.extract) {
       loaders.push(MiniCssExtractPlugin.loader)
+    } else {
+      loaders.push('style-loader')
     }
-
-    // Always use the dynamic style loader
-    loaders.push('style-loader')
 
     // Always use the CSS loader
     loaders.push({
