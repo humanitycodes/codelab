@@ -5,7 +5,7 @@ import db from '../helpers/db'
 import dgen from '../helpers/data-generator'
 import waitTime from '../const/wait-time'
 
-export default {
+module.exports = {
   async before (browser, done) {
     await db.init()
     done()

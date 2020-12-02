@@ -3,11 +3,11 @@ import 'source-map-support/register'
 
 import waitTime from '../const/wait-time'
 
-export default {
+module.exports = {
   'default e2e tests': browser => {
     browser
       .url(browser.launchUrl)
-      .waitForElementVisible('.msu-standalone-signin-containerX', waitTime)
+      .waitForElementVisible('.msu-standalone-signin-container', waitTime)
       .assert.elementPresent('h1')
       .assert.elementPresent('.msu-standalone-signin-button')
       .end()
