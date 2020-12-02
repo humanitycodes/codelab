@@ -42,8 +42,8 @@ module.exports = {
       .signInUser(enrolledStudentRecord.get())
 
       // Navigate to course list
-      .assert.visible(`.main-nav a[href$='/courses']`)
-      .click(`.main-nav a[href$='/courses']`)
+      .assert.visible('.main-nav a[href$=\'/courses\']')
+      .click('.main-nav a[href$=\'/courses\']')
 
       // Navigate to the course
       .waitForElementVisible(`a[href$='/courses/${course.courseKey}']:first-child`, waitTime)
@@ -72,8 +72,8 @@ module.exports = {
       .signInUser(hackerStudentRecord.get())
 
       // Navigate to course list
-      .assert.visible(`.main-nav a[href$='/courses']`)
-      .click(`.main-nav a[href$='/courses']`)
+      .assert.visible('.main-nav a[href$=\'/courses\']')
+      .click('.main-nav a[href$=\'/courses\']')
 
       // No courses should be listed
       .waitForElementVisible('h1', waitTime)
@@ -81,7 +81,7 @@ module.exports = {
 
       // Try to navigate to course anyway
       .url(`${browser.launchUrl}/courses/${course.courseKey}`)
-      .waitForElementVisible(`.main-nav`, waitTime)
+      .waitForElementVisible('.main-nav', waitTime)
 
       // Should not see course content
       .assert.elementNotPresent('.rendered-content')
@@ -96,24 +96,24 @@ module.exports = {
       .signInUser(enrolledStudentRecord.get())
 
       // Navigate to course list
-      .waitForElementVisible(`.main-nav a[href$='/courses']`, waitTime)
-      .click(`.main-nav a[href$='/courses']`)
+      .waitForElementVisible('.main-nav a[href$=\'/courses\']', waitTime)
+      .click('.main-nav a[href$=\'/courses\']')
       .waitForElementVisible(`a[href$='/courses/${course.courseKey}']:first-child`, waitTime)
 
       // New and Edit links should not be present
-      .assert.elementNotPresent(`a[href$='/courses/new']`)
+      .assert.elementNotPresent('a[href$=\'/courses/new\']')
       .assert.elementNotPresent(`a[href$='/courses/${course.courseKey}/edit']`)
 
       // Try to create a new course via URL
       .url(`${browser.launchUrl}/courses/new`)
-      .waitForElementVisible(`.main-nav`, waitTime)
+      .waitForElementVisible('.main-nav', waitTime)
 
       // Should not see new course form
       .assert.elementNotPresent('.key-field')
 
       // Try to edit a course via URL
       .url(`${browser.launchUrl}/courses/${course.courseKey}`)
-      .waitForElementVisible(`.main-nav`, waitTime)
+      .waitForElementVisible('.main-nav', waitTime)
 
       // Should not see editable course fields
       .assert.elementNotPresent('input')

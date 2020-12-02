@@ -7,7 +7,7 @@ exports.command = function (user) {
     .waitForElementVisible('.msu-standalone-signin-container', waitTime)
     .setLocalStorage('auth_token', signJsonWebToken({ user }))
     .url(`${this.launchUrl}/get-started`)
-    .waitForElementVisible(`button[name='done-button']`, waitTime)
-    .click(`button[name='done-button']`)
-    .waitForElementVisible(`.main-nav a[href$='/courses']`, waitTime)
+    .waitForElementVisible('button[name=\'done-button\']', waitTime)
+    .click('button[name=\'done-button\']')
+    .waitForElementVisible('.main-nav a[href$=\'/courses\']', waitTime)
 }
