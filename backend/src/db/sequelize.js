@@ -30,7 +30,6 @@ export default new Sequelize(
     pool: {
       max: dbConnPoolSize
     },
-    operatorsAliases: false,
     define: {
       freezeTableName: true,
       timestamps: false,

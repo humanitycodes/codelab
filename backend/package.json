@@ -30,9 +30,9 @@
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "node-rsa": "^0.4.2",
-    "pg": "^7.4.3",
+    "pg": "^8.5.1",
     "retry-as-promised": "^2.3.2",
-    "sequelize": "=4.32.6",
+    "sequelize": "=6.3.5",
     "throng": "^4.0.0"
   },
   "devDependencies": {

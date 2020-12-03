@@ -5,7 +5,7 @@ describe('@helpers/computed/course-user-percent-to-max-grade.js', () => {
   let sandbox, courseUserGradeCurrentRealStub
 
   before(() => {
-    sandbox = sinon.sandbox.create()
+    sandbox = sinon.createSandbox()
     courseUserGradeCurrentRealStub = sandbox.stub(courseUserGradeCurrentReal, 'default')
   })
 
