@@ -3,7 +3,7 @@ import Lesson from '../lesson'
 import User from '../user'
 import CourseStudentPending from './student-pending'
 
-export default (courseId, options) => Course.findById(courseId, {
+export default (courseId, options) => Course.findByPk(courseId, {
   ...options,
   include: [
     {

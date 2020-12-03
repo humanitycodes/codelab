@@ -1,3 +1,3 @@
 import Lesson from './index'
 
-export default (lessonId, options) => Lesson.findById(lessonId, options)
+export default (lessonId, options) => Lesson.findByPk(lessonId, options)
