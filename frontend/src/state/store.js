@@ -1,14 +1,20 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import courses from './modules/courses'
+import lessons from './modules/lessons'
+import projectCompletions from './modules/project-completions'
+import resourceJournal from './modules/resource-journal'
+import users from './modules/users'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    courses: require('./modules/courses').default,
-    lessons: require('./modules/lessons').default,
-    projectCompletions: require('./modules/project-completions').default,
-    resourceJournal: require('./modules/resource-journal').default,
-    users: require('./modules/users').default
+    courses,
+    lessons,
+    projectCompletions,
+    resourceJournal,
+    users
   }
 })
