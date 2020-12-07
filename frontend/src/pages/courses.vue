@@ -17,6 +17,8 @@ export default {
     Layout, CoursesMap
   },
   computed: courseGetters,
-  methods: coursePermissionMethods
+  methods: {
+    ...coursePermissionMethods
+  }
 }
 </script>
