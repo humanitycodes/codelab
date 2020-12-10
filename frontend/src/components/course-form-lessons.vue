@@ -79,7 +79,7 @@ export default {
     },
     lessonIds: {
       type: Array,
-      required: true
+      default: () => []
     }
   },
   data () {

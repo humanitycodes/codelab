@@ -62,7 +62,7 @@ export default {
     },
     instructorIds: {
       type: Array,
-      required: true
+      default: () => []
     }
   },
   data () {

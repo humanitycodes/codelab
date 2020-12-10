@@ -5,9 +5,9 @@
         <div class="stretch-col">
           <label for="project-title">Project Title</label>
           <input
-            v-model="lesson.projectTitle"
+            :value="projectTitle"
             placeholder="Project title"
-            @input="onInput"
+            @input="onProjectTitleInput"
             id="project-title"
             name="project-title"
             class="lesson-project-title-input"
@@ -19,15 +19,21 @@
           <label for="project-new-criterion">Project Criteria</label>
           <input
             v-model="newProjectCriterion"
-            @keydown.enter="addCriterion"
+            @keydown.enter="addProjectCriterion"
             id="project-new-criterion"
             name="project-new-criterion"
             placeholder="Add project criteria"
           >
-          <OrderedEditableList :items="sortedProjectCriteria">
+          <OrderedEditableList
+            :items="sortedProjectCriteria"
+            @update:items="$emit('update:projectCriteria', $event)"
+          >
             <template slot-scope="list">
               <input
-                v-model="list.item.content"
+                :value="list.item.content"
+                @input="updateProjectCriterion(
+                  list.item.position, $event.target.value
+                )"
                 :id="`project-criterion-${list.item.position}`"
                 :name="`project-criterion-${list.item.position}`"
                 :aria-label="`Project criterion ${list.item.position}`"
@@ -40,7 +46,8 @@
         <div class="stretch-col">
           <label for="project-hosting">Project Hosting</label>
           <select
-            v-model="lesson.projectHosting"
+            :value="projectHosting"
+            @change="onProjectHostingChange"
             id="project-hosting"
             name="project-hosting"
           >
@@ -50,13 +57,13 @@
               :value="hostingOption"
             >{{ hostingOption }}</option>
           </select>
-          <p v-if="!lesson.projectTitle" class="warning">
+          <p v-if="!projectTitle" class="warning">
             This lesson's project needs a title so that people will understand
             the general idea of what they'll be building.
           </p>
         </div>
       </div>
-      <p v-if="!lesson.projectCriteria.length" class="warning">
+      <p v-if="!projectCriteria.length" class="warning">
         If the project doesn't have any criteria, students won't have clear
         expectations on when they'll have finished the project.
       </p>
@@ -67,15 +74,18 @@
 <script>
 import OrderedEditableList from './ordered-editable-list'
 import sortByPosition from '@helpers/utils/sort-by-position'
+import deepCopy from '@helpers/utils/deep-copy'
 
 export default {
   components: {
     OrderedEditableList
   },
   props: {
-    lesson: {
-      type: Object,
-      required: true
+    projectTitle: String,
+    projectHosting: String,
+    projectCriteria: {
+      type: Array,
+      default: () => []
     }
   },
   data () {
@@ -90,20 +100,38 @@ export default {
   },
   computed: {
     sortedProjectCriteria () {
-      return sortByPosition(this.lesson.projectCriteria)
+      return sortByPosition(this.projectCriteria)
     }
   },
   methods: {
-    addCriterion () {
-      this.lesson.projectCriteria.push({
+    addProjectCriterion () {
+      if (!this.newProjectCriterion.trim().length) return
+      const modifiedProjectCriteria = this.projectCriteria.concat({
         content: this.newProjectCriterion,
-        position: this.lesson.projectCriteria.length
+        position: this.projectCriteria.length
       })
+      this.$emit('update:projectCriteria', modifiedProjectCriteria)
       this.newProjectCriterion = ''
     },
-    onInput () {
-      if (this.lesson.projectTitle === '') {
-        this.lesson.projectTitle = null
+    updateProjectCriterion (position, content) {
+      const modifiedProjectCriteria = deepCopy(this.projectCriteria)
+      const foundProjectCriterion = modifiedProjectCriteria.find(
+        objective => objective.position === position
+      )
+      if (foundProjectCriterion) {
+        foundProjectCriterion.content = content
+        this.$emit('update:projectCriteria', modifiedProjectCriteria)
+      }
+    },
+    onProjectTitleInput (event) {
+      this.$emit('update:projectTitle', event.target.value || null)
+    },
+    onProjectHostingChange (event) {
+      const hostingValue = event.target.value
+      if (this.hostingOptions.includes(hostingValue)) {
+        return this.$emit('update:projectHosting', hostingValue)
+      } else {
+        return this.$emit('update:projectHosting', null)
       }
     }
   }

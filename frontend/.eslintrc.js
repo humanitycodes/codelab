@@ -20,8 +20,6 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
-    // TODO: use Vuex to manage course prop and turn this back on
-    'vue/no-mutating-props': 'off',
     // allow paren-less arrow functions
     'arrow-parens': 'off',
     // allow async-await

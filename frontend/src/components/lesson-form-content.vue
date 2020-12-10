@@ -3,11 +3,12 @@
     <div class="stretch-col">
       <label for="lesson-content">Content</label>
       <RichContentEditor
-        v-model="lesson.content"
+        :value="content"
+        @input="$emit('update:content', $event)"
         id="lesson-content"
         name="lesson-content"
       />
-      <p v-if="!lesson.content" class="warning">
+      <p v-if="!content" class="warning">
         A lesson must have content before being added to a course.
       </p>
     </div>
@@ -23,10 +24,7 @@ export default {
     RichContentEditor
   },
   props: {
-    lesson: {
-      type: Object,
-      required: true
-    }
+    content: String
   }
 }
 </script>

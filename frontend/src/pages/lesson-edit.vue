@@ -13,7 +13,7 @@
           />
         </div>
       </div>
-      <LessonForm :lesson="lesson"/>
+      <LessonForm v-bind.sync="lesson"/>
       <div class="flex mb-4 -mx-2">
         <div class="w-1/2 px-2">
           <CancelButton @click="cancelEdit"/>

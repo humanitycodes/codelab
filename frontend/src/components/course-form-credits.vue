@@ -20,10 +20,7 @@
 <script>
 export default {
   props: {
-    credits: {
-      type: Number,
-      required: true
-    }
+    credits: Number
   },
   methods: {
     updateCredits (newCredits) {
