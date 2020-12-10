@@ -1,16 +1,13 @@
 <template>
   <div class="stretch-row">
-    <div class="stretch-col" :disabled="disabled">
+    <div class="stretch-col">
       <label for="course-instructor-query">Instructors</label>
       <Dropdown
         :results="queryResults"
         :resultHandler="addInstructor"
-        :resultContent="function (user) {
-          return user.fullName + ' (' + user.email + ')'
-        }"
+        :resultContent="fullNameAndEmail"
       >
         <input
-          :disabled="disabled"
           ref="queryInput"
           v-model="instructorQuery"
           id="course-instructor-query"
@@ -32,7 +29,7 @@
             :disabled="instructorHasProjectCompletions(instructor)"
             :title="
               instructorHasProjectCompletions(instructor)
-                ? 'Instructors cannot be removed once they are assigned code reviews in the course'
+                ? 'This instructor has been assigned code reviews and cannot be removed'
                 : 'Remove the instructor from this course'
             "
             @click="removeInstructor(instructor)"
@@ -51,6 +48,7 @@
 
 <script>
 import Dropdown from './dropdown'
+import removeArrayValue from '@helpers/utils/remove-array-value'
 import { userGetters, projectCompletionGetters } from '@state/helpers'
 
 export default {
@@ -58,13 +56,13 @@ export default {
     Dropdown
   },
   props: {
-    course: {
-      type: Object,
+    courseId: {
+      type: Number,
       required: true
     },
-    disabled: {
-      type: Boolean,
-      default: false
+    instructorIds: {
+      type: Array,
+      required: true
     }
   },
   data () {
@@ -81,9 +79,9 @@ export default {
       return this.users.filter(user => (
         // User has instructor role
         user.isInstructor &&
-        // User is not already a instructor
-        !this.course.instructorIds.includes(user.userId) &&
-        // Course matches the query string
+        // User is not already an instructor
+        !this.instructorIds.includes(user.userId) &&
+        // User matches the query string
         (
           queryRegex.test(user.email) ||
           queryRegex.test(user.fullName)
@@ -91,24 +89,31 @@ export default {
       ))
     },
     instructors () {
-      return this.course.instructorIds.map(
+      return this.instructorIds.map(
         instructorId => this.users.find(user => user.userId === instructorId)
       )
     }
   },
   methods: {
+    fullNameAndEmail (instructor) {
+      return instructor.fullName + ' (' + instructor.email + ')'
+    },
     addInstructor (instructor) {
-      this.course.instructorIds.push(instructor.userId)
+      const modifiedInstructorIds = this.instructorIds.concat(instructor.userId)
+      this.$emit('update:instructorIds', modifiedInstructorIds)
       this.instructorQuery = ''
       this.$refs.queryInput.focus()
     },
     removeInstructor (instructor) {
-      const index = this.course.instructorIds.indexOf(instructor.userId)
-      this.course.instructorIds.splice(index, 1)
+      const modifiedInstructorIds = removeArrayValue(
+        this.instructorIds,
+        instructor.userId
+      )
+      this.$emit('update:instructorIds', modifiedInstructorIds)
     },
     instructorHasProjectCompletions (instructor) {
       return this.projectCompletions.some(completion =>
-        completion.courseId === this.course.courseId &&
+        completion.courseId === this.courseId &&
         completion.instructorUserId === instructor.userId
       )
     }

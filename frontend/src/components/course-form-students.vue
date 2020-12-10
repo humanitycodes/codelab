@@ -95,14 +95,23 @@
 <script>
 import ModalConfirm from './modal-confirm'
 import { userGetters, projectCompletionGetters } from '@state/helpers'
+import removeArrayValue from '@helpers/utils/remove-array-value'
 
 export default {
   components: {
     ModalConfirm
   },
   props: {
-    course: {
-      type: Object,
+    courseId: {
+      type: Number,
+      required: true
+    },
+    studentIds: {
+      type: Array,
+      required: true
+    },
+    pendingStudentEmails: {
+      type: Array,
       required: true
     },
     disabled: {
@@ -123,28 +132,28 @@ export default {
     ...userGetters,
     ...projectCompletionGetters,
     students () {
-      return this.users.filter(
-        user => this.course.studentIds.includes(user.userId)
-      )
+      return this.users.filter(user => this.studentIds.includes(user.userId))
     },
     preenrollments () {
-      return this.course.pendingStudentEmails
+      return this.pendingStudentEmails
     }
   },
   methods: {
     addStudent () {
       if (!this.studentEmail) return
-      const cleanStudentEmail = this.studentEmail.trim().toLowerCase()
+      const cleanEmail = this.studentEmail.trim().toLowerCase()
       // Student must be added by email address
-      if (!/^[\w.]+@[\w.]+\.[\w.]+/.test(cleanStudentEmail)) return
+      if (!/^[\w.]+@[\w.]+\.[\w.]+/.test(cleanEmail)) return
 
-      const student = this.findStudentByEmail(cleanStudentEmail)
+      const student = this.findStudentByEmail(cleanEmail)
       if (student) {
         // Enroll existing student
-        this.course.studentIds.push(student.userId)
+        const modifiedStudentIds = this.studentIds.concat(student.userId)
+        this.$emit('update:studentIds', modifiedStudentIds)
       } else {
         // Pre-enroll student that hasn't signed in yet
-        this.course.pendingStudentEmails.push(cleanStudentEmail)
+        const modifiedEmails = this.pendingStudentEmails.concat(cleanEmail)
+        this.$emit('update:pendingStudentEmails', modifiedEmails)
       }
       this.studentEmail = ''
       this.$refs.studentEmailInput.focus()
@@ -152,7 +161,7 @@ export default {
     findStudentByEmail (email) {
       return this.users.find(user => (
         // User is not already a student
-        !this.course.studentIds.includes(user.userId) &&
+        !this.studentIds.includes(user.userId) &&
         // Email address matches user's email
         user.email === email
       ))
@@ -165,8 +174,8 @@ export default {
       this.showModalConfirmRemoveStudent = false
       if (confirmed) {
         const userId = this.studentPendingRemoval.userId
-        const index = this.course.studentIds.indexOf(userId)
-        this.course.studentIds.splice(index, 1)
+        const modifiedStudentIds = removeArrayValue(this.studentIds, userId)
+        this.$emit('update:studentIds', modifiedStudentIds)
       }
     },
     showRemovePreenrollmentModal (email) {
@@ -176,14 +185,16 @@ export default {
     onCloseRemovePreenrollmentModal (confirmed) {
       this.showModalConfirmRemovePreenrollment = false
       if (confirmed) {
-        const email = this.preenrollmentPendingRemoval
-        const index = this.course.pendingStudentEmails.indexOf(email)
-        this.course.pendingStudentEmails.splice(index, 1)
+        const modifiedEmails = removeArrayValue(
+          this.pendingStudentEmails,
+          this.preenrollmentPendingRemoval
+        )
+        this.$emit('update:pendingStudentEmails', modifiedEmails)
       }
     },
     studentHasProjectCompletions (student) {
       return this.projectCompletions.some(completion =>
-        completion.courseId === this.course.courseId &&
+        completion.courseId === this.courseId &&
         completion.studentUserId === student.userId
       )
     }

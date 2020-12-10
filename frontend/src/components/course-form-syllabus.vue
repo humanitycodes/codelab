@@ -3,11 +3,12 @@
     <div class="stretch-col">
       <label for="course-syllabus">Syllabus</label>
       <RichContentEditor
-        v-model="course.syllabus"
+        :value="syllabus"
+        @input="$emit('update:syllabus', $event)"
         id="course-syllabus"
         name="course-syllabus"
       />
-      <p v-if="!course.syllabus" class="warning">
+      <p v-if="!syllabus" class="warning">
         A syllabus must be defined before students can be enrolled in a course.
       </p>
     </div>
@@ -22,8 +23,8 @@ export default {
     RichContentEditor
   },
   props: {
-    course: {
-      type: Object,
+    syllabus: {
+      type: String,
       required: true
     }
   }

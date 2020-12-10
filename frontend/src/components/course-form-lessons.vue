@@ -20,7 +20,7 @@
           v-for="lesson in courseLessons"
           :key="lesson.lessonId"
         >
-          <LessonsMapLesson :lesson="lesson" :course="course"/>
+          <LessonsMapLesson :lesson="lesson" :course-key="courseKey"/>
           <button
             :disabled="lessonHasProjectCompletions(lesson)"
             :title="
@@ -57,17 +57,28 @@
 <script>
 import { lessonGetters, projectCompletionGetters } from '@state/helpers'
 import { lessonCanBeAddedToCourse } from '@state/auth/courses'
+import removeArrayValue from '@helpers/utils/remove-array-value'
 import Dropdown from './dropdown'
 import ModalConfirm from './modal-confirm'
 import LessonsMapLesson from './lessons-map-lesson'
 
 export default {
   components: {
-    Dropdown, LessonsMapLesson, ModalConfirm
+    Dropdown,
+    LessonsMapLesson,
+    ModalConfirm
   },
   props: {
-    course: {
-      type: Object,
+    courseId: {
+      type: Number,
+      required: true
+    },
+    courseKey: {
+      type: String,
+      required: true
+    },
+    lessonIds: {
+      type: Array,
       required: true
     }
   },
@@ -86,7 +97,7 @@ export default {
       const queryRegex = new RegExp(this.lessonQuery, 'i')
       return this.lessons.filter(lesson => (
         lessonCanBeAddedToCourse({
-          courseKey: this.course.courseKey,
+          courseKey: this.courseKey,
           lessonKey: lesson.lessonKey
         }) &&
         // Lesson matches the query string
@@ -98,7 +109,7 @@ export default {
     },
     courseLessons () {
       return this.lessons.filter(
-        lesson => this.course.lessonIds.includes(lesson.lessonId)
+        lesson => this.lessonIds.includes(lesson.lessonId)
       )
     }
   },
@@ -107,13 +118,14 @@ export default {
       return lesson.title || lesson.lessonKey
     },
     addCourseLesson (lesson) {
-      this.course.lessonIds.push(lesson.lessonId)
+      const modifiedLessonIds = this.lessonIds.concat(lesson.lessonId)
+      this.$emit('update:lessonIds', modifiedLessonIds)
       this.lessonQuery = ''
       this.$refs.queryInput.focus()
     },
     lessonHasProjectCompletions (lesson) {
       return this.projectCompletions.some(completion =>
-        completion.courseId === this.course.courseId &&
+        completion.courseId === this.courseId &&
         completion.lessonId === lesson.lessonId
       )
     },
@@ -125,8 +137,8 @@ export default {
       this.showModalConfirmRemoveLesson = false
       if (confirmed) {
         const lessonId = this.lessonPendingRemoval.lessonId
-        const index = this.course.lessonIds.indexOf(lessonId)
-        this.course.lessonIds.splice(index, 1)
+        const modifiedLessonIds = removeArrayValue(this.lessonIds, lessonId)
+        this.$emit('update:lessonIds', modifiedLessonIds)
       }
     }
   }

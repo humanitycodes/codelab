@@ -1,12 +1,27 @@
 <template>
-  <div v-if="course">
-    <CourseTitle :course="course"/>
-    <CourseCredits :course="course"/>
-    <CourseDates :course="course"/>
-    <CourseSyllabus :course="course"/>
-    <CourseLessons :course="course"/>
-    <CourseInstructors :course="course"/>
-    <CourseStudents :course="course" :disabled="!isReadyForStudents"/>
+  <div>
+    <CourseTitle v-on="$listeners" :title="title"/>
+    <CourseCredits v-on="$listeners" :credits="credits"/>
+    <CourseDates v-on="$listeners" :start-date="startDate" :end-date="endDate"/>
+    <CourseSyllabus v-on="$listeners" :syllabus="syllabus"/>
+    <CourseLessons
+      v-on="$listeners"
+      :course-id="courseId"
+      :course-key="courseKey"
+      :lesson-ids="lessonIds"
+    />
+    <CourseInstructors
+      v-on="$listeners"
+      :course-id="courseId"
+      :instructor-ids="instructorIds"
+    />
+    <CourseStudents
+      v-on="$listeners"
+      :course-id="courseId"
+      :student-ids="studentIds"
+      :pending-student-emails="pendingStudentEmails"
+      :disabled="!isReadyForStudents"
+    />
   </div>
 </template>
 
@@ -21,26 +36,39 @@ import CourseStudents from './course-form-students'
 
 export default {
   components: {
-    CourseTitle, CourseDates, CourseCredits, CourseSyllabus, CourseLessons, CourseInstructors, CourseStudents
+    CourseTitle,
+    CourseDates,
+    CourseCredits,
+    CourseSyllabus,
+    CourseLessons,
+    CourseInstructors,
+    CourseStudents
   },
   props: {
-    course: {
-      type: Object,
-      required: true
-    }
+    courseId: Number,
+    courseKey: String,
+    title: String,
+    credits: Number,
+    startDate: Number,
+    endDate: Number,
+    syllabus: String,
+    lessonIds: Array,
+    instructorIds: Array,
+    studentIds: Array,
+    pendingStudentEmails: Array
   },
   computed: {
     isReadyForStudents () {
       return (
-        this.course.studentIds.length ||
-        this.course.pendingStudentEmails.length
+        this.studentIds.length ||
+        this.pendingStudentEmails.length
       ) || (
-        this.course.title &&
-        this.course.credits && this.course.credits > 0 &&
-        this.course.startDate &&
-        this.course.endDate &&
-        this.course.startDate < this.course.endDate &&
-        this.course.lessonIds.length
+        this.title &&
+        this.credits && this.credits > 0 &&
+        this.startDate &&
+        this.endDate &&
+        this.startDate < this.endDate &&
+        this.lessonIds.length
       )
     }
   }
