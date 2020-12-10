@@ -23,10 +23,7 @@ export default {
     RichContentEditor
   },
   props: {
-    syllabus: {
-      type: String,
-      required: true
-    }
+    syllabus: String
   }
 }
 </script>

@@ -9,10 +9,14 @@
         name="lesson-new-learning-objective"
         placeholder="What new skills will students acquire?"
       >
-      <OrderedEditableList :items="lesson.learningObjectives">
+      <OrderedEditableList
+        :items="sortedLearningObjectives"
+        @update:items="$emit('update:learningObjectives', $event)"
+      >
         <template slot-scope="list">
           <input
-            v-model="list.item.content"
+            :value="list.item.content"
+            @input="updateContent(list.item.position, $event.target.value)"
             :id="`learning-objective-${list.item.position}`"
             :name="`learning-objective-${list.item.position}`"
             :aria-label="`Learning objective ${list.item.position}`"
@@ -25,15 +29,17 @@
 
 <script>
 import OrderedEditableList from './ordered-editable-list'
+import deepCopy from '@helpers/utils/deep-copy'
+import sortByPosition from '@helpers/utils/sort-by-position'
 
 export default {
   components: {
     OrderedEditableList
   },
   props: {
-    lesson: {
-      type: Object,
-      required: true
+    learningObjectives: {
+      type: Array,
+      default: () => []
     }
   },
   data () {
@@ -41,13 +47,30 @@ export default {
       newLearningObjective: ''
     }
   },
+  computed: {
+    sortedLearningObjectives () {
+      return sortByPosition(this.learningObjectives)
+    }
+  },
   methods: {
-    addObjective (content) {
-      this.lesson.learningObjectives.push({
+    addObjective () {
+      if (!this.newLearningObjective.trim().length) return
+      const modifiedLearningObjectives = this.learningObjectives.concat({
         content: this.newLearningObjective,
-        position: this.lesson.learningObjectives.length
+        position: this.learningObjectives.length
       })
+      this.$emit('update:learningObjectives', modifiedLearningObjectives)
       this.newLearningObjective = ''
+    },
+    updateContent (position, content) {
+      const modifiedLearningObjectives = deepCopy(this.learningObjectives)
+      const foundLearningObjective = modifiedLearningObjectives.find(
+        objective => objective.position === position
+      )
+      if (foundLearningObjective) {
+        foundLearningObjective.content = content
+        this.$emit('update:learningObjectives', modifiedLearningObjectives)
+      }
     }
   }
 }

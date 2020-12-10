@@ -1,6 +1,6 @@
 <template>
   <ol v-if="items.length">
-    <Draggable :list="orderedItems" @end="updatePositions">
+    <Draggable :list="orderedItems" @end="updatePositions(orderedItems)">
       <li v-for="item in orderedItems" :key="item.position">
         <div :class="inputWrapperClass">
           <div class="ordered-editable-list-input-group">
@@ -16,6 +16,8 @@
 <script>
 import Draggable from 'vuedraggable'
 import orderBy from 'lodash/orderBy'
+import deepCopy from '@helpers/utils/deep-copy'
+import removeArrayIndex from '@helpers/utils/remove-array-index'
 
 export default {
   components: {
@@ -43,13 +45,15 @@ export default {
   methods: {
     removeItem (position) {
       const index = this.items.findIndex(item => item.position === position)
-      this.items.splice(index, 1)
-      this.updatePositions()
+      const modifiedItems = removeArrayIndex(this.items, index)
+      this.updatePositions(modifiedItems)
     },
-    updatePositions () {
-      this.orderedItems.forEach((item, index) => {
+    updatePositions (modifiedItems) {
+      const items = deepCopy(modifiedItems)
+      items.forEach((item, index) => {
         item.position = index
       })
+      this.$emit('update:items', items)
     }
   }
 }

@@ -108,11 +108,11 @@ export default {
     },
     studentIds: {
       type: Array,
-      required: true
+      default: () => []
     },
     pendingStudentEmails: {
       type: Array,
-      required: true
+      default: () => []
     },
     disabled: {
       type: Boolean,

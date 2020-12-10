@@ -1,5 +1,5 @@
 <template>
-  <div v-if="lesson">
+  <div>
     <p v-if="isLessonInActiveCourse" class="warning">
       This lesson is part of an active course. Please check with other instructors before making changes.
     </p>
@@ -7,13 +7,25 @@
       This lesson may be part of another active or archived course. Please be mindful when editing.
     </p>
 
-    <LessonTitle :lesson="lesson"/>
-    <LessonLearningObjectives :lesson="lesson"/>
-    <LessonEstimatedHours :lesson="lesson"/>
-    <LessonContent :lesson="lesson"/>
-    <LessonProject :lesson="lesson"/>
-    <LessonPrereqs :lesson="lesson"/>
-    <LessonNotes :lesson ="lesson"/>
+    <LessonTitle v-on="$listeners" :title="title"/>
+    <LessonLearningObjectives
+      v-on="$listeners"
+      :learning-objectives="learningObjectives"
+    />
+    <LessonEstimatedHours v-on="$listeners" :estimated-hours="estimatedHours"/>
+    <LessonContent v-on="$listeners" :content="content"/>
+    <LessonProject
+      v-on="$listeners"
+      :project-hosting="projectHosting"
+      :project-title="projectTitle"
+      :project-criteria="projectCriteria"
+    />
+    <LessonPrereqs
+      v-on="$listeners"
+      :lesson-id="lessonId"
+      :prerequisite-lesson-ids="prerequisiteLessonIds"
+    />
+    <LessonNotes v-on="$listeners" :notes="notes"/>
   </div>
 </template>
 
@@ -29,13 +41,26 @@ import LessonNotes from './lesson-form-notes'
 
 export default {
   components: {
-    LessonTitle, LessonLearningObjectives, LessonEstimatedHours, LessonContent, LessonProject, LessonPrereqs, LessonNotes
+    LessonTitle,
+    LessonLearningObjectives,
+    LessonEstimatedHours,
+    LessonContent,
+    LessonProject,
+    LessonPrereqs,
+    LessonNotes
   },
   props: {
-    lesson: {
-      type: Object,
-      required: true
-    }
+    lessonId: Number,
+    lessonKey: String,
+    content: String,
+    estimatedHours: Number,
+    learningObjectives: Array,
+    notes: String,
+    prerequisiteLessonIds: Array,
+    projectHosting: String,
+    projectTitle: String,
+    projectCriteria: Array,
+    title: String
   },
   computed: {
     ...courseGetters,
@@ -44,7 +69,7 @@ export default {
       return this.courses.some(course => {
         if (!course.startDate || !course.endDate) return false
         return (
-          course.lessonIds.includes(this.lesson.lessonId) &&
+          course.lessonIds.includes(this.lessonId) &&
           course.startDate < now &&
           course.endDate > now
         )
@@ -52,7 +77,7 @@ export default {
     },
     isLessonInCourse () {
       return this.courses.some(
-        course => course.lessonIds.includes(this.lesson.lessonId)
+        course => course.lessonIds.includes(this.lessonId)
       )
     }
   }

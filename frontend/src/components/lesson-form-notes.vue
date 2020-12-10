@@ -3,7 +3,7 @@
     <div class="stretch-col">
       <label for="lesson-notes">Notes</label>
       <textarea
-        v-model="lesson.notes"
+        :value="notes"
         @input="onInput"
         id="lesson-notes"
         name="lesson-notes"
@@ -16,16 +16,11 @@
 <script>
 export default {
   props: {
-    lesson: {
-      type: Object,
-      required: true
-    }
+    notes: String
   },
   methods: {
-    onInput () {
-      if (this.lesson.notes === '') {
-        this.lesson.notes = null
-      }
+    onInput (event) {
+      this.$emit('update:notes', event.target.value || null)
     }
   }
 }

@@ -35,14 +35,8 @@ export default {
     DatePicker
   },
   props: {
-    startDate: {
-      type: Number,
-      required: true
-    },
-    endDate: {
-      type: Number,
-      required: true
-    }
+    startDate: Number,
+    endDate: Number
   },
   computed: {
     warning () {

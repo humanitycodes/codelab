@@ -5,7 +5,7 @@
       <Dropdown
         :results="queryResults"
         :resultHandler="addPrereq"
-        :resultContent="lesson => lesson.title || lesson.lessonKey"
+        :resultContent="lessonTitleOrKey"
       >
         <input
           ref="queryInput"
@@ -36,15 +36,20 @@
 <script>
 import Dropdown from './dropdown'
 import { lessonGetters } from '@state/helpers'
+import removeArrayValue from '@helpers/utils/remove-array-value'
 
 export default {
   components: {
     Dropdown
   },
   props: {
-    lesson: {
-      type: Object,
+    lessonId: {
+      type: Number,
       required: true
+    },
+    prerequisiteLessonIds: {
+      type: Array,
+      default: () => []
     }
   },
   data () {
@@ -60,9 +65,9 @@ export default {
       try {
         const results = this.lessons.filter(lesson => (
           // Lesson is not self
-          this.lesson.lessonId !== lesson.lessonId &&
+          this.lessonId !== lesson.lessonId &&
           // Lesson is not already a prereq
-          !this.lesson.prerequisiteLessonIds.includes(lesson.lessonId) &&
+          !this.prerequisiteLessonIds.includes(lesson.lessonId) &&
           // Lesson would not cause cyclical dependency (catch 22)
           this.prereqWouldBeAcyclic(lesson) &&
           // Lesson matches the query string
@@ -77,26 +82,33 @@ export default {
       }
     },
     prereqs () {
-      if (!this.lessons.length || !this.lesson.prerequisiteLessonIds) {
+      if (!this.prerequisiteLessonIds) {
         return []
       }
       return this.lessons.filter(lesson =>
-        this.lesson.prerequisiteLessonIds.includes(lesson.lessonId)
+        this.prerequisiteLessonIds.includes(lesson.lessonId)
       )
     }
   },
   methods: {
+    lessonTitleOrKey (lesson) {
+      return lesson.title || lesson.lessonKey
+    },
     addPrereq (prereq) {
-      this.lesson.prerequisiteLessonIds.push(prereq.lessonId)
+      const modifiedPrereqs = this.prerequisiteLessonIds.concat(prereq.lessonId)
+      this.$emit('update:prerequisiteLessonIds', modifiedPrereqs)
       this.prereqQuery = ''
       this.$refs.queryInput.focus()
     },
     removePrereq (prereq) {
-      const index = this.lesson.prerequisiteLessonIds.indexOf(prereq.lessonId)
-      this.lesson.prerequisiteLessonIds.splice(index, 1)
+      const modifiedPrereqs = removeArrayValue(
+        this.prerequisiteLessonIds,
+        prereq.lessonId
+      )
+      this.$emit('update:prerequisiteLessonIds', modifiedPrereqs)
     },
     prereqWouldBeAcyclic (prereq) {
-      const currentLessonId = this.lesson.lessonId
+      const currentLessonId = this.lessonId
       const doesNotDependOnSelf = potentialPrereq => {
         if (potentialPrereq.prerequisiteLessonIds) {
           const prereqLessonIds = potentialPrereq.prerequisiteLessonIds
