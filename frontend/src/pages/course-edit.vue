@@ -17,7 +17,7 @@
           />
         </div>
       </div>
-      <CourseForm :course="course"/>
+      <CourseForm v-bind.sync="course"/>
       <div class="flex mb-4 -mx-2">
         <div class="w-1/2 px-2">
           <CancelButton @click="cancelEdit"/>
@@ -144,6 +144,10 @@ export default {
     }
   },
   methods: {
+    onUpdateTitle (event) {
+      alert(event)
+      this.course.title = event
+    },
     showRemoveCourseModal () {
       this.showModalConfirmRemoveCourse = true
     },

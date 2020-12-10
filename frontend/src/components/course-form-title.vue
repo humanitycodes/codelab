@@ -3,13 +3,13 @@
     <div class="stretch-col">
       <label for="course-title">Title</label>
       <input
-        v-model="course.title"
+        :value="title"
         id="course-title"
         @input="onInput"
         name="course-title"
         placeholder="A short description of the course in the infinitive form"
       >
-      <p v-if="!course.title" class="warning">
+      <p v-if="!title" class="warning">
         A title must be defined before students can be enrolled in a course.
       </p>
     </div>
@@ -19,16 +19,14 @@
 <script>
 export default {
   props: {
-    course: {
-      type: Object,
+    title: {
+      type: String,
       required: true
     }
   },
   methods: {
-    onInput () {
-      if (this.course.title === '') {
-        this.course.title = null
-      }
+    onInput (event) {
+      this.$emit('update:title', event.target.value || null)
     }
   }
 }

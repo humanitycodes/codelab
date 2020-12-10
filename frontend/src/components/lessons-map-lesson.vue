@@ -1,11 +1,11 @@
 <template>
-  <span v-if="course">
+  <span v-if="courseKey">
     <router-link
-      v-if="canUpdateCourse({ courseKey: course.courseKey })"
+      v-if="canUpdateCourse({ courseKey })"
       :to="'/lessons/' + lesson.lessonKey + '/edit'"
     ><button class="inline">Edit</button></router-link>
     <router-link
-      :to="'/courses/' + course.courseKey + '/lessons/' + lesson.lessonKey"
+      :to="'/courses/' + courseKey + '/lessons/' + lesson.lessonKey"
     >{{ lesson.title || lesson.lessonKey }}</router-link>
   </span>
   <span v-else>
@@ -24,7 +24,7 @@ export default {
       type: Object,
       required: true
     },
-    course: Object
+    courseKey: String
   },
   methods: {
     canUpdateCourse
