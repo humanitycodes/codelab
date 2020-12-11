@@ -10,12 +10,8 @@ describe('lesson-form-prereqs.vue', () => {
     const vm = new Vue({
       ...LessonFormPrereqs,
       propsData: {
-        lesson: {
-          lessonId: 1,
-          title: 'foo',
-          lessonKey: 'js-foo',
-          prerequisiteLessonIds: []
-        }
+        lessonId: 1,
+        prerequisiteLessonIds: []
       }
     }).$mount()
     vm.prereqQuery = 'js'
@@ -34,12 +30,8 @@ describe('lesson-form-prereqs.vue', () => {
     const vm = new Vue({
       ...LessonFormPrereqs,
       propsData: {
-        lesson: {
-          lessonId: 1,
-          lessonKey: 'js-foo',
-          title: 'foo',
-          prerequisiteLessonIds: [2]
-        }
+        lessonId: 1,
+        prerequisiteLessonIds: [2]
       }
     }).$mount()
     vm.prereqQuery = 'js'
@@ -63,12 +55,8 @@ describe('lesson-form-prereqs.vue', () => {
     const vm = new Vue({
       ...LessonFormPrereqs,
       propsData: {
-        lesson: {
-          lessonId: 1,
-          lessonKey: 'js-foo',
-          title: 'foo',
-          prerequisiteLessonIds: []
-        }
+        lessonId: 1,
+        prerequisiteLessonIds: []
       }
     }).$mount()
     vm.prereqQuery = 'js'
@@ -87,12 +75,8 @@ describe('lesson-form-prereqs.vue', () => {
     const vm = new Vue({
       ...LessonFormPrereqs,
       propsData: {
-        lesson: {
-          lessonId: 1,
-          lessonKey: 'js-foo',
-          title: 'foo',
-          prerequisiteLessonIds: []
-        }
+        lessonId: 1,
+        prerequisiteLessonIds: []
       }
     }).$mount()
     vm.prereqQuery = 'az'
