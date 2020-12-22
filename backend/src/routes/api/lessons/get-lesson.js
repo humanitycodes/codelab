@@ -42,7 +42,7 @@ export default {
         `for user ${authUser.userId} (${authUser.fullName}).`,
         'Reason:', error
       )
-      return boom.wrap(error)
+      return boom.boomify(error)
     }
   }
 }
