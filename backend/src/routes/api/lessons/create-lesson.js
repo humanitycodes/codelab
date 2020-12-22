@@ -62,7 +62,7 @@ export default {
         'Reason:', error
       )
       await transaction.rollback()
-      return boom.wrap(error)
+      return boom.boomify(error)
     }
   }
 }

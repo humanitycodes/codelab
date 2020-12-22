@@ -43,7 +43,7 @@ export default {
         `Unable to get users for user ${authUser.userId} (${authUser.fullName}).`,
         'Reason:', error
       )
-      return boom.wrap(error)
+      return boom.boomify(error)
     }
   }
 }

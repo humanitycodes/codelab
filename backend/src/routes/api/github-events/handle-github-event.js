@@ -34,7 +34,7 @@ export default {
         `Unable to process GitHub ${eventName} event ${eventId}.`,
         'Reason:', error
       )
-      return boom.wrap(error)
+      return boom.boomify(error)
     }
   }
 }
