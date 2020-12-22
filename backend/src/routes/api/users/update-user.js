@@ -69,15 +69,14 @@ export default {
       const user = await translateUserFromRecord({ authUser, userRecord })
       await transaction.commit()
 
-      const response = h.response(user)
-
-      // Send updated JWT to client
       if (changed) {
-        const jwt = signJsonWebToken({ user })
-        response.header('x-token-refresh', jwt)
+        // Set x-token-refresh on the _request_ so the refresh-token-on-response
+        // interceptor will send the latest version of the token instead of the
+        // token used to authenticate this request.
+        request.headers['x-token-refresh'] = signJsonWebToken({ user })
       }
 
-      return response
+      return user
     } catch (error) {
       console.error(
         `Unable to update user ${userId}`,
