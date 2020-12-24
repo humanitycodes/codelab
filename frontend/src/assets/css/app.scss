@@ -12,6 +12,8 @@ $brand-danger-light: get('colors.danger-light');
 $brand-danger-dark: get('colors.danger-dark');
 $brand-note-dark: get('colors.note-dark');
 $brand-note-light: get('colors.note-light');
+$brand-success-dark: get('colors.success-dark');
+$brand-success-light: get('colors.success-light');
 $brand-default-light: get('colors.default-light');
 $brand-primary-light: get('colors.primary-light');
 $brand-primary-dark: get('colors.primary-dark');
@@ -360,7 +362,7 @@ p:empty {
 }
 
 p, div {
-  &.warning, &.danger, &.error, &.note, &.muted, &.result {
+  &.warning, &.danger, &.error, &.note, &.muted, &.result, &.success {
     position: relative;
     border-radius: $control-border-radius;
     margin: #{$gutterWidth} 0;
@@ -415,6 +417,12 @@ p, div {
       content: 'NOTE';
       background-color: #{$brand-note-dark};
     }
+  }
+  &.success {
+    padding: $gutterWidth;
+    background: #{$muted-light-success};
+    border: 1px solid #{$brand-success-light};
+    border-radius: $control-border-radius;
   }
   &.result {
     padding: $gutterWidth;

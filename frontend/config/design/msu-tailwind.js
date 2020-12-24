@@ -59,6 +59,8 @@ var colors = {
   'warning-dark': '#747B22',
   'note-light': '#5a9fd8',
   'note-dark': '#2a5375',
+  'success-light': '#1f9d55',
+  'success-dark': '#1a4731',
 
   'inherit': 'inherit',
   'transparent': 'transparent',
