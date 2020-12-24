@@ -135,6 +135,10 @@ export default [
     }
   },
   {
+    path: '/profile',
+    component: () => import('@pages/user-edit')
+  },
+  {
     path: '/msu-sign-in',
     component: resolve => require.ensure([], () => resolve(require('@pages/sign-in-msu').default), 'msu'),
     meta: {
