@@ -42,6 +42,7 @@
       :show="showModalConfirmLeaveUnsaved.confirm"
       confirmClass="danger"
       confirmLabel="Leave"
+      cancelLabel="Stay"
       @close="onCloseUnsavedModal"
     >
       <p>

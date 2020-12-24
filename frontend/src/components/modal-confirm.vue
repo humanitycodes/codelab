@@ -16,7 +16,7 @@
         name="cancel-button"
         @click="() => { close(false) }"
       >
-        Cancel
+        {{ cancelLabel }}
       </button>
     </footer>
   </Modal>
@@ -33,6 +33,10 @@ export default {
     show: {
       type: Boolean,
       required: true
+    },
+    cancelLabel: {
+      type: String,
+      default: 'Cancel'
     },
     confirmClass: {
       type: String,
