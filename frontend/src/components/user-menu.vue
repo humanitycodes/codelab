@@ -1,8 +1,8 @@
 <template>
-  <nav aria-label="User Menu">
+  <nav id="user-menu" aria-label="User Menu">
     <header aria-haspopup="true">
       <a ref="collapsed-header" @click="toggleMenu" href="javascript:void(0)">
-        <span v-html="currentUser.fullName"></span><span
+        <span>{{ currentUser.fullName }}</span><span
           class="ml-1 fas fa-caret-down"
           role="img"
         ></span>
