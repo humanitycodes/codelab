@@ -1,6 +1,6 @@
 <template>
   <div class="stretch-row">
-    <div class="stretch-col" :disabled="disabled">
+    <div class="stretch-col">
       <label for="course-student-email">Enrolled Students</label>
       <input
         :disabled="disabled"
@@ -11,6 +11,9 @@
         placeholder="Add students to the course"
         @keyup.enter="addStudent"
       >
+      <p v-if="disabled" class="warning">
+        Students cannot be added until all other fields are provided.
+      </p>
       <ul v-if="students.length">
         <li
           v-for="student in students"
