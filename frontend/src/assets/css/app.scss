@@ -130,7 +130,7 @@ acronym[title] {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: Lato;
+  font-family: Lato, Verdana, Arial, sans-serif;
   line-height: 1.3;
 }
 
@@ -147,24 +147,10 @@ h4 {
   margin-top: calc(#{$gutterWidth} * 1.5);
   margin-bottom: $gutterWidth;
   text-transform: uppercase;
-  code {
-    text-transform: none;
-  }
 }
 
 p {
   margin: #{$gutterWidth} 0;
-}
-
-:not(pre) > code {
-  padding-top: 0.2em;
-  padding-bottom: 0.2em;
-  @apply .bg-muted-light-gray .rounded-control-radius;
-  vertical-align: baseline;
-  &:before, &:after {
-    content: '\00a0';
-    letter-spacing: -0.2em;
-  }
 }
 
 img {
@@ -206,6 +192,101 @@ summary {
   }
 }
 
+// ----------------
+// RENDERED CONTENT
+// ----------------
+
+.rendered-content-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.rendered-content {
+  flex-grow: 1;
+  @apply .border .border-solid .border-muted-light-gray;
+  @apply .bg-default-light .rounded-control-radius;
+  padding: $gutterWidth;
+  img {
+    display: block;
+    margin: 0 auto;
+    padding: $gutterWidth;
+  }
+  > :first-child {
+    margin-top: 0;
+  }
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+.rendered-content-page-navigation {
+  align-items: stretch;
+  justify-content: space-between;
+  position: relative;
+  min-height: config('height.control-height');
+}
+
+.rendered-content-page-breadcrumb-preview-title {
+  display: none;
+}
+
+.rendered-content-page-breadcrumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 100%;
+  circle {
+    fill: lighten(desaturate($brand-primary-light, 40%), 40%);
+  }
+  &.active {
+    cursor: default;
+    circle {
+      fill: $brand-primary-dark;
+      stroke-width: 1px;
+      stroke: $brand-primary-dark;
+    }
+  }
+  &:not(.active):hover {
+    .rendered-content-page-breadcrumb-preview-title {
+      display: block;
+      position: absolute;
+      top: calc(#{$gutterWidth} * 1.5);
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-weight: 600;
+      color: $brand-primary-light;
+      z-index: 3;
+      background-color: transparent;
+      pointer-events: none;
+    }
+    circle {
+      fill: lighten(desaturate($brand-primary-light, 10%), 5%);
+    }
+    &.label-placement-top {
+      .rendered-content-page-breadcrumb-preview-title {
+        top: auto;
+        bottom: calc(#{$gutterWidth} * 1.5);
+      }
+    }
+  }
+  svg {
+    max-width: 10px;
+    max-height: 10px;
+  }
+}
+
+.rendered-content-loading-image {
+  max-width: 50px;
+  display: block;
+  margin: 0 auto;
+}
+
+.rendered-content-no-content > .note {
+  margin-top: 0;
+}
+
 // -----------
 // CODE BLOCKS
 // -----------
@@ -216,6 +297,21 @@ $code-background: get('colors.code-background');
 
 code {
   @apply .font-mono;
+}
+
+h4 code {
+  text-transform: none;
+}
+
+:not(pre) > code {
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  @apply .bg-muted-light-gray .rounded-control-radius;
+  vertical-align: baseline;
+  &:before, &:after {
+    content: '\00a0';
+    letter-spacing: -0.2em;
+  }
 }
 
 pre:not(.CodeMirror-line) {
@@ -246,7 +342,7 @@ pre:not(.CodeMirror-line) {
       position: absolute;
       top: 0;
       right: 0;
-      font-family: Lato;
+      font-family: Lato, Verdana, Arial, sans-serif;
       font-size: $code-tag-font-size;
       letter-spacing: 1px;
       padding: $code-tag-padding-vertical 7px;
@@ -357,10 +453,6 @@ div.result {
 // NOTES
 // -----
 
-p:empty {
-  display: none;
-}
-
 p, div {
   &.warning, &.danger, &.error, &.note, &.muted, &.result, &.success {
     position: relative;
@@ -370,7 +462,7 @@ p, div {
       position: absolute;
       top: 0;
       right: 0;
-      font-family: Lato;
+      font-family: Lato, Verdana, Arial, sans-serif;
       font-size: $code-tag-font-size;
       letter-spacing: 1px;
       padding: #{$code-tag-padding-vertical} 7px;
@@ -448,9 +540,22 @@ p, div {
   }
 }
 
+p:empty {
+  display: none;
+}
+
 // -----
 // FORMS
 // -----
+
+textarea {
+  min-height: 100px;
+  @apply .resize-y;
+}
+
+input:not([type]), input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="date"], input[type="url"], input[type="password"], textarea {
+  @apply .appearance-none .w-full;
+}
 
 input:not([type]), input[type="email"], input[type="number"], input[type="search"], input[type="text"]:not(.CodeMirror-search-field), input[type="tel"], input[type="date"], input[type="url"], input[type="password"], textarea, select {
   @apply .h-control-height .px-control-horizontal .py-control-vertical;
@@ -465,23 +570,14 @@ input:not([type]), input[type="email"], input[type="number"], input[type="search
   }
 }
 
-input:not([type]), input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="date"], input[type="url"], input[type="password"], textarea {
-  @apply .appearance-none .w-full;
-}
-
 input[type="checkbox"], input[type="radio"] {
   @apply .inline;
-}
-
-textarea {
-  min-height: 100px;
-  @apply .resize-y;
 }
 
 label, legend {
   @apply .block .text-text-color .font-semibold;
   $gutterWidth: get('margin.gutter-width');
-  font-family: Lato;
+  font-family: Lato, Verdana, Arial, sans-serif;
   font-size: 1.1em;
   margin-bottom: calc(#{$gutterWidth} * .2);
 }
@@ -547,7 +643,7 @@ fieldset {
 .heading-basic-data {
   opacity: .8;
   margin-bottom: 0;
-  font-family: 'Lato';
+  font-family: Lato, Verdana, Arial, sans-serif;
   > .stretch-col:last-of-type:not(:only-of-type) {
     text-align: right;
   }
@@ -615,9 +711,9 @@ $lesson-card-approved-bg: lighten($muted-light-success, 50%);
 
 .lesson-graph-container {
   position: relative;
+  padding: $gutterWidth;
   padding-bottom: 16px;
   overflow-x: auto;
-  padding: $gutterWidth;
 }
 
 .lesson-graph-card {
@@ -627,6 +723,12 @@ $lesson-card-approved-bg: lighten($muted-light-success, 50%);
   padding: $gutterWidth;
   opacity: $lesson-card-default-opacity;
   transition: border-color $lesson-card-transition-duration;
+  > h3 {
+    margin-top: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
   &.recommended {
     opacity: 1 !important;
     box-shadow: 0 0 20px 5px rgba($brand-primary-light, .2);
@@ -654,12 +756,6 @@ $lesson-card-approved-bg: lighten($muted-light-success, 50%);
     filter: blur($lesson-card-other-is-selected-blur);
     opacity: $lesson-card-other-is-selected-opacity;
   }
-  > h3 {
-    margin-top: 0;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
 }
 
 .lesson-graph-card-details {
@@ -681,7 +777,7 @@ $lesson-card-approved-bg: lighten($muted-light-success, 50%);
 .lesson-graph-card-metadata > .stretch-col {
   position: relative;
   overflow: visible;
-  font-family: Lato;
+  font-family: Lato, Verdana, Arial, sans-serif;
   white-space: nowrap;
   margin-left: 0;
   flex-shrink: 999;
@@ -747,101 +843,6 @@ $lesson-card-approved-bg: lighten($muted-light-success, 50%);
   }
 }
 
-// ----------------
-// RENDERED CONTENT
-// ----------------
-
-.rendered-content-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.rendered-content {
-  flex-grow: 1;
-  @apply .border .border-solid .border-muted-light-gray;
-  @apply .bg-default-light .rounded-control-radius;
-  padding: $gutterWidth;
-  img {
-    display: block;
-    margin: 0 auto;
-    padding: $gutterWidth;
-  }
-  > :first-child {
-    margin-top: 0;
-  }
-  > :last-child {
-    margin-bottom: 0;
-  }
-}
-
-.rendered-content-page-navigation {
-  align-items: stretch;
-  justify-content: space-between;
-  position: relative;
-  min-height: config('height.control-height');
-}
-
-.rendered-content-page-breadcrumb-preview-title {
-  display: none;
-}
-
-.rendered-content-page-breadcrumb {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  width: 100%;
-  &:not(.active):hover {
-    .rendered-content-page-breadcrumb-preview-title {
-      display: block;
-      position: absolute;
-      top: calc(#{$gutterWidth} * 1.5);
-      left: 0;
-      width: 100%;
-      text-align: center;
-      font-weight: 600;
-      color: $brand-primary-light;
-      z-index: 3;
-      background-color: transparent;
-      pointer-events: none;
-    }
-    circle {
-      fill: lighten(desaturate($brand-primary-light, 10%), 5%);
-    }
-    &.label-placement-top {
-      .rendered-content-page-breadcrumb-preview-title {
-        top: auto;
-        bottom: calc(#{$gutterWidth} * 1.5);
-      }
-    }
-  }
-  svg {
-    max-width: 10px;
-    max-height: 10px;
-  }
-  circle {
-    fill: lighten(desaturate($brand-primary-light, 40%), 40%);
-  }
-  &.active {
-    cursor: default;
-    circle {
-      fill: $brand-primary-dark;
-      stroke-width: 1px;
-      stroke: $brand-primary-dark;
-    }
-  }
-}
-
-.rendered-content-loading-image {
-  max-width: 50px;
-  display: block;
-  margin: 0 auto;
-}
-
-.rendered-content-no-content > .note {
-  margin-top: 0;
-}
-
 // ------
 // TABLES
 // ------
@@ -895,7 +896,7 @@ table.dashboard-info {
 
 .result.headings-example {
   .h2 {
-    font-family: Lato;
+    font-family: Lato, Verdana, Arial, sans-serif;
     font-size: 1.5em;
     font-weight: bold;
     line-height: 1.3;
@@ -904,7 +905,7 @@ table.dashboard-info {
     margin: #{$gutterWidth} 0;
   }
   h1 {
-    margin-top: 0p;
+    margin-top: 0;
   }
   h3 {
     text-transform: none;
