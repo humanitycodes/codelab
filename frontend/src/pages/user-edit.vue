@@ -1,6 +1,9 @@
 <template>
   <Layout>
     <h1>User Profile</h1>
+    <p v-if="saveSuccessful" class="success" role="alert">
+      Your profile has been updated.
+    </p>
     <UserForm v-bind.sync="user"/>
     <div class="flex mb-4 -mx-2">
       <div class="w-1/2 px-2">
@@ -64,13 +67,14 @@ export default {
       user: deepCopy(store.getters.currentUser),
       showModalErrorDuringSave: false,
       showModalConfirmLeaveUnsaved: false,
-      processingSave: false
+      processingSave: false,
+      saveSuccessful: false
     }
   },
   computed: {
     ...userGetters,
     canSave () {
-      return this.isValid && this.isChanged
+      return !this.processingSave && this.isValid && this.isChanged
     },
     isChanged () {
       return this.currentUser.fullName !== this.user.fullName
@@ -93,7 +97,10 @@ export default {
           this.showModalErrorDuringSave = true
           throw error
         })
-        .then(() => goBackOrFallback())
+        .then(() => {
+          this.saveSuccessful = true
+          this.processingSave = false
+        })
     },
     onCloseUnsavedModal (confirmed) {
       if (confirmed) {
