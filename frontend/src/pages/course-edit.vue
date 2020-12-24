@@ -144,10 +144,6 @@ export default {
     }
   },
   methods: {
-    onUpdateTitle (event) {
-      alert(event)
-      this.course.title = event
-    },
     showRemoveCourseModal () {
       this.showModalConfirmRemoveCourse = true
     },
