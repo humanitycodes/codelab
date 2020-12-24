@@ -30,7 +30,7 @@ module.exports = {
   'Sign In with token shows dashboard': browser => {
     browser
       .signInUser(userRecord.get())
-      .assert.containsText('.main-nav-user-name', userRecord.fullName)
+      .assert.containsText('#user-menu > header', userRecord.fullName)
       .end()
   }
 }
