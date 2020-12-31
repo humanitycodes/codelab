@@ -7,15 +7,10 @@
         :pages="pages"
       />
       <div
+        v-html="currentPageContent"
         ref="renderedContent"
         class="rendered-content"
-      >
-        <span
-          v-for="(content, index) in currentPageContentPartitions"
-          v-html="content"
-          :key="index"
-        />
-      </div>
+      />
       <PageNavigation
         v-if="!paginationPlacement || paginationPlacement === 'bottom'"
         v-model="currentPage"
@@ -135,18 +130,15 @@ export default {
     contentHtml () {
       return convertRichContentToHtml(this.content)
     },
-    currentPageContentPartitions () {
-      return this.pages[this.validatedCurrentPage - 1].contentPartitions
+    currentPageContent () {
+      return this.pages[this.validatedCurrentPage - 1].content
     },
     pages () {
       return chunk(compact(this.contentHtml.split(/<h2>(.+?)<\/h2>/)), 2).map(page => {
         const [title, content] = page
         return {
           title: this.decodeHtml(title),
-          contentPartitions: `<h2>${title}</h2>${content}`
-            .replace(/<iframe\s/ig, '__IFRAME_SPLIT__$&')
-            .replace(/<\/iframe>/ig, '$&__IFRAME_SPLIT__')
-            .split('__IFRAME_SPLIT__')
+          content: `<h2>${title}</h2>${content}`
         }
       })
     },
