@@ -157,8 +157,19 @@ img {
   max-width: 100%;
 }
 
-video, audio {
+audio {
   width: 100%;
+  border-radius: 1.7rem;
+  &:focus {
+    @apply .border .border-solid .border-primary-light .outline-none;
+  }
+}
+
+video {
+  width: 100%;
+  &:focus {
+    @apply .border .border-solid .border-primary-light .outline-none;
+  }
 }
 
 iframe {
