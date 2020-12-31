@@ -2,7 +2,6 @@
   <div class="stretch-row" v-if="content">
     <div class="rendered-content-container stretch-col">
       <PageNavigation
-        v-if="!paginationPlacement || paginationPlacement === 'top'"
         v-model="currentPage"
         :pages="pages"
       />
@@ -12,7 +11,6 @@
         class="rendered-content"
       />
       <PageNavigation
-        v-if="!paginationPlacement || paginationPlacement === 'bottom'"
         v-model="currentPage"
         :pages="pages"
         label-placement="top"
@@ -118,7 +116,6 @@ export default {
       default: 1
     },
     content: String,
-    paginationPlacement: String,
     noContentMessage: String
   },
   data () {
