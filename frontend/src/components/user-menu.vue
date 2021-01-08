@@ -91,17 +91,18 @@ nav
   padding-left: $design.layout.gutterWidth
   section
     display: none
-  section[aria-expanded='true']
-    display: block
-    position: absolute
-    top: 0
-    left: $halfGutterWidth
-    margin-top: -($halfGutterWidth)
-    border-radius: $design.control.border.radius
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .33)
-    background-color: $design.branding.default.light
-    border: 1px solid $design.control.border.color
-    padding: $halfGutterWidth
+    &[aria-expanded='true']
+      display: block
+      position: absolute
+      top: 0
+      left: $halfGutterWidth
+      margin-top: -($halfGutterWidth)
+      border-radius: $design.control.border.radius
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .33)
+      background-color: $design.branding.default.light
+      border: 1px solid $design.control.border.color
+      padding: $halfGutterWidth
+      z-index: 20
   ol
     list-style-type: none
     border-top: 1px solid $design.control.border.color
