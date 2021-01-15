@@ -7,6 +7,7 @@
     <CoursesList
       title="Other Courses"
       :courses="otherCourses"
+      :expanded="false"
     />
   </div>
 </template>
