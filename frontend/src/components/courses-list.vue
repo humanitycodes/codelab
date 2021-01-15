@@ -12,34 +12,36 @@
       ></span>
       {{ title }}
     </h2>
-    <div v-show="showList" :aria-expanded="showList || 'false'">
-      <p v-if="!orderedCourses.length" class="pl-5 italic">
-        This course list is empty.
-      </p>
-      <ul v-else>
-        <li
-          v-for="course in orderedCourses"
-          :key="course.courseKey"
-        >
-          <router-link
-            v-if="canUpdateCourse({ courseKey: course.courseKey })"
-            :to="'/courses/' + course.courseKey + '/edit'"
+    <transition name="fade">
+      <div v-show="showList" :aria-expanded="showList || 'false'">
+        <p v-if="!orderedCourses.length" class="pl-5 italic">
+          This course list is empty.
+        </p>
+        <ul v-else>
+          <li
+            v-for="course in orderedCourses"
+            :key="course.courseKey"
           >
-            <button
-              class="inline"
-              :disabled="!isInstructorInCourse(course)"
-              :title="titleForCourseEditButton(course)"
-            >Edit</button>
-          </router-link>
-          <router-link :to="'/courses/' + course.courseKey">
-            {{ course.courseKey }}
-            <span v-if="course.title">
-              ({{ course.title }})
-            </span>
-          </router-link>
-        </li>
-      </ul>
-    </div>
+            <router-link
+              v-if="canUpdateCourse({ courseKey: course.courseKey })"
+              :to="'/courses/' + course.courseKey + '/edit'"
+            >
+              <button
+                class="inline"
+                :disabled="!isInstructorInCourse(course)"
+                :title="titleForCourseEditButton(course)"
+              >Edit</button>
+            </router-link>
+            <router-link :to="'/courses/' + course.courseKey">
+              {{ course.courseKey }}
+              <span v-if="course.title">
+                ({{ course.title }})
+              </span>
+            </router-link>
+          </li>
+        </ul>
+      </div>
+    </transition>
   </section>
 </template>
 
