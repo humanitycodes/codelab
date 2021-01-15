@@ -8,25 +8,27 @@
         ></span>
       </a>
     </header>
-    <section :aria-expanded="showMenu || 'false'">
-      <ol>
-        <li>
-          <router-link to="/profile">
-            Profile
-          </router-link>
-        </li>
-        <li v-if="hasNewGitHubScopes">
-          <AuthLink provider="github">
-            Connect GitHub
-          </AuthLink>
-        </li>
-        <li>
-          <router-link to="/sign-out">
-            Sign out
-          </router-link>
-        </li>
-      </ol>
-    </section>
+    <transition name="fade">
+      <section v-show="showMenu" :aria-expanded="showMenu || 'false'">
+        <ol>
+          <li>
+            <router-link to="/profile">
+              Profile
+            </router-link>
+          </li>
+          <li v-if="hasNewGitHubScopes">
+            <AuthLink provider="github">
+              Connect GitHub
+            </AuthLink>
+          </li>
+          <li>
+            <router-link to="/sign-out">
+              Sign out
+            </router-link>
+          </li>
+        </ol>
+      </section>
+    </transition>
   </nav>
 </template>
 
@@ -81,18 +83,15 @@ nav
   .menu-indicator
     margin-left: $menuIndicatorOffset
   section
-    display: none
-    &[aria-expanded='true']
-      display: block
-      position: absolute
-      top: 30px
-      right: $menuOffset
-      border-radius: $design.control.border.radius
-      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, .33))
-      background-color: $design.branding.default.light
-      border: 1px solid $design.control.border.color
-      padding: $halfGutterWidth
-      z-index: 20
+    position: absolute
+    top: 30px
+    right: $menuOffset
+    border-radius: $design.control.border.radius
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, .33))
+    background-color: $design.branding.default.light
+    border: 1px solid $design.control.border.color
+    padding: $halfGutterWidth
+    z-index: 20
     > ol
       list-style-type: none
       padding: $halfGutterWidth
