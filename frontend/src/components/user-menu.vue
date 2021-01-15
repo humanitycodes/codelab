@@ -1,6 +1,6 @@
 <template>
   <nav id="user-menu" aria-label="User Menu">
-    <header aria-haspopup="true">
+    <header aria-haspopup="menu">
       <a @click="toggleMenu" href="javascript:void(0)">
         <span>{{ currentUser.fullName }}</span><span
           class="menu-indicator fas fa-caret-down"
