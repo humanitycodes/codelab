@@ -1,38 +1,24 @@
 <template>
   <div>
-    <ul>
-      <li
-        v-for="course in orderedCourses"
-        :key="course.courseKey"
-      >
-        <router-link v-if="canUpdateCourse({ courseKey: course.courseKey })"
-          :to="'/courses/' + course.courseKey + '/edit'"
-        >
-          <button
-            class="inline"
-            :disabled="!isInstructorInCourse(course)"
-            :title="titleForCourseEditButton(course)"
-          >Edit</button>
-        </router-link>
-        <router-link
-          :to="'/courses/' + course.courseKey"
-        >
-          {{ course.courseKey }}
-          <span v-if="course.title">
-            ({{ course.title }})
-          </span>
-        </router-link>
-      </li>
-    </ul>
+    <CoursesList
+      title="Your Active Courses"
+      :courses="instructorActiveCourses"
+    />
+    <CoursesList
+      title="Other Courses"
+      :courses="otherCourses"
+    />
   </div>
 </template>
 
 <script>
-import store from '@state/store'
-import { coursePermissionMethods } from '@state/helpers'
-import orderBy from 'lodash/orderBy'
+import { userGetters } from '@state/helpers'
+import CoursesList from '@components/courses-list'
 
 export default {
+  components: {
+    CoursesList
+  },
   props: {
     courses: {
       type: Array,
@@ -40,20 +26,24 @@ export default {
     }
   },
   computed: {
-    orderedCourses () {
-      return orderBy(this.courses, [course => course.courseKey])
+    ...userGetters,
+    instructorActiveCourses () {
+      return this.courses.filter(course =>
+        this.isInstructorInCourse(course) && this.isActiveCourse(course)
+      )
+    },
+    otherCourses () {
+      return this.courses.filter(course =>
+        !this.isInstructorInCourse(course) || !this.isActiveCourse(course)
+      )
     }
   },
   methods: {
-    ...coursePermissionMethods,
-    isInstructorInCourse (course) {
-      const currentUserId = store.state.users.currentUser.userId
-      return course.instructorIds.some(userId => userId === currentUserId)
+    isActiveCourse (course) {
+      return !course.endDate || Date.now() < course.endDate
     },
-    titleForCourseEditButton (course) {
-      return this.isInstructorInCourse(course)
-        ? ''
-        : 'Only instructors assigned to this course can edit it'
+    isInstructorInCourse (course) {
+      return course.instructorIds.includes(this.currentUser.userId)
     }
   }
 }
