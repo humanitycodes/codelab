@@ -2,7 +2,7 @@
   <div>
     <CoursesList
       title="Your Active Courses"
-      :courses="instructorActiveCourses"
+      :courses="activeCourses"
     />
     <CoursesList
       title="Other Courses"
@@ -28,14 +28,14 @@ export default {
   },
   computed: {
     ...userGetters,
-    instructorActiveCourses () {
+    activeCourses () {
       return this.courses.filter(course =>
-        this.isInstructorInCourse(course) && this.isActiveCourse(course)
+        this.isCurrentUserInCourse(course) && this.isActiveCourse(course)
       )
     },
     otherCourses () {
       return this.courses.filter(course =>
-        !this.isInstructorInCourse(course) || !this.isActiveCourse(course)
+        !this.isCurrentUserInCourse(course) || !this.isActiveCourse(course)
       )
     }
   },
@@ -43,8 +43,9 @@ export default {
     isActiveCourse (course) {
       return !course.endDate || Date.now() < course.endDate
     },
-    isInstructorInCourse (course) {
-      return course.instructorIds.includes(this.currentUser.userId)
+    isCurrentUserInCourse (course) {
+      return course.instructorIds.includes(this.currentUser.userId) ||
+        course.studentIds.includes(this.currentUser.userId)
     }
   }
 }
