@@ -36,6 +36,11 @@ export default async () => {
   const server = hapi.server({
     host: '0.0.0.0',
     port,
+    state: {
+      // Ignore invalid cookie headers and values. See #308
+      strictHeader: false,
+      ignoreErrors: true
+    },
     routes: {
       files: {
         // All files will be served from the built frontend directory
