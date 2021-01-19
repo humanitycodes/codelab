@@ -1,24 +1,23 @@
 <template>
   <div>
-    <CoursesList
-      title="Your Active Courses"
-      :courses="activeCourses"
-    />
-    <CoursesList
-      title="Other Courses"
-      :courses="otherCourses"
-      :expanded="false"
-    />
+    <Expander title="Your Active Courses">
+      <CoursesList :courses="activeCourses"/>
+    </Expander>
+
+    <Expander title="Other Courses" :expanded="false">
+      <CoursesList :courses="otherCourses"/>
+    </Expander>
   </div>
 </template>
 
 <script>
 import { userGetters } from '@state/helpers'
 import CoursesList from '@components/courses-list'
+import Expander from '@components/expander'
 
 export default {
   components: {
-    CoursesList
+    CoursesList, Expander
   },
   props: {
     courses: {
