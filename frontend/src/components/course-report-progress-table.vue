@@ -1,127 +1,124 @@
 <template>
-  <details v-if="studentsInCourse.length">
-    <summary>{{ course.courseKey }}</summary>
-    <table class="dashboard-info">
-      <colgroup span="2"></colgroup>
-      <colgroup span="3"></colgroup>
-      <colgroup span="4"></colgroup>
-      <thead>
-        <tr>
-          <th colspan="2" scope="colgroup">Student</th>
-          <th colspan="3" scope="colgroup">Grade</th>
-          <th colspan="4" scope="colgroup">Projects</th>
-        </tr>
-        <tr>
-          <!-- STUDENT -->
-          <th scope="col">
-            Links
-          </th>
-          <th scope="col">
-            Name
-          </th>
-          <!-- GRADE -->
-          <th class="numeric-cell" scope="col">
-            Current
-          </th>
-          <th class="numeric-cell" scope="col">
-            Delta
-          </th>
-          <th class="numeric-cell" scope="col" title="Student's final grade (unrounded) if they continue at this pace">
-            Projected
-          </th>
-          <!-- PROJECTS -->
-          <th class="numeric-cell" scope="col" title="Number of days since an update was made to a project">
-            Days Inactive
-          </th>
-          <th class="numeric-cell" scope="col" title="Total projects a student has submitted that have not yet been approved">
-            Total Open
-          </th>
-          <th class="numeric-cell" scope="col" title="Maximum number of days a submitted project has gone unapproved">
-            Days Open
-          </th>
-          <th class="numeric-cell" scope="col" title="Maximum number of days since a project has had changes requested">
-            Days Stale
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="student in studentsInCourse" :key="student.userId">
+  <table class="dashboard-info">
+    <colgroup span="2"></colgroup>
+    <colgroup span="3"></colgroup>
+    <colgroup span="4"></colgroup>
+    <thead>
+      <tr>
+        <th colspan="2" scope="colgroup">Student</th>
+        <th colspan="3" scope="colgroup">Grade</th>
+        <th colspan="4" scope="colgroup">Projects</th>
+      </tr>
+      <tr>
+        <!-- STUDENT -->
+        <th scope="col">
+          Links
+        </th>
+        <th scope="col">
+          Name
+        </th>
+        <!-- GRADE -->
+        <th class="numeric-cell" scope="col">
+          Current
+        </th>
+        <th class="numeric-cell" scope="col">
+          Delta
+        </th>
+        <th class="numeric-cell" scope="col" title="Student's final grade (unrounded) if they continue at this pace">
+          Projected
+        </th>
+        <!-- PROJECTS -->
+        <th class="numeric-cell" scope="col" title="Number of days since an update was made to a project">
+          Days Inactive
+        </th>
+        <th class="numeric-cell" scope="col" title="Total projects a student has submitted that have not yet been approved">
+          Total Open
+        </th>
+        <th class="numeric-cell" scope="col" title="Maximum number of days a submitted project has gone unapproved">
+          Days Open
+        </th>
+        <th class="numeric-cell" scope="col" title="Maximum number of days since a project has had changes requested">
+          Days Stale
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="student in studentsInCourse" :key="student.userId">
 
-          <!-- STUDENT: Links -->
-          <td class="links">
-            <a
-              v-if="student.githubLogin"
-              :href="courseReposFor(course, student)"
-              target="_blank"
-              class="icon-link"
-              alt="Open Github profile in new tab"
-              aria-label="GitHub Profile"
-            >
-              <span class="fab fa-github" aria-hidden="true" title="Open student's GitHub profile"></span>
-            </a>
-
-            <a
-              v-if="student.email"
-              :href="'mailto:' + student.email"
-              target="_blank"
-              class="icon-link"
-              alt="Email student"
-              aria-label="Email address"
-            >
-              <span class="far fa-envelope" aria-hidden="true" title="Email student"></span>
-            </a>
-          </td>
-
-          <!-- STUDENT: Name -->
-          <td scope="row" class="align-right">
-            {{ student.fullName }}
-          </td>
-
-          <!-- GRADE: Current grade -->
-          <td
-            class="numeric-cell"
-            :class="getCurrentGradeStyle(student)"
+        <!-- STUDENT: Links -->
+        <td class="links">
+          <a
+            v-if="student.githubLogin"
+            :href="courseReposFor(course, student)"
+            target="_blank"
+            class="icon-link"
+            alt="Open Github profile in new tab"
+            aria-label="GitHub Profile"
           >
-            {{ getCurrentGrade(student) }}
-          </td>
-          <!-- GRADE: Delta -->
-          <td
-            class="numeric-cell"
-            :class="getCurrentGradeStyle(student)"
-          >
-            ({{ getCurrentGradeDelta(student) }})
-          </td>
-          <!-- GRADE: Projected Grade -->
-          <td
-            class="numeric-cell"
-            :class="getCurrentGradeStyle(student)"
-          >
-            {{ getProjectedGrade(student) }}
-          </td>
+            <span class="fab fa-github" aria-hidden="true" title="Open student's GitHub profile"></span>
+          </a>
 
-          <!-- PROJECTS: Days Inactive -->
-          <td
-            class="numeric-cell"
-            :class="getDaysInactiveStyle(student)"
+          <a
+            v-if="student.email"
+            :href="'mailto:' + student.email"
+            target="_blank"
+            class="icon-link"
+            alt="Email student"
+            aria-label="Email address"
           >
-            {{ daysSinceLastProjectActivity(student) }}
-          </td>
-          <!-- PROJECTS: Total Open -->
-          <td class="numeric-cell" :title="isNaN(inProgressLessonCount(student)) ? 'This student has no submitted, unapproved projects' : ''">
-            {{ inProgressLessonCount(student) }}
-          </td>
-          <!-- PROJECTS: Days Open -->
-          <td class="numeric-cell" :title="isNaN(maxDaysProjectOngoingFor(student)) ? 'This student has no submitted, unapproved projects' : ''">
-            {{ maxDaysProjectOngoingFor(student) }}
-          </td>
-          <!-- PROJECTS: Days Stale -->
-          <td class="numeric-cell" :title="isNaN(maxDaysProjectStaleFor(student)) ? 'This student has no submitted, unapproved projects where the instructor was last to comment' : ''">
-            {{ maxDaysProjectStaleFor(student) }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </details>
+            <span class="far fa-envelope" aria-hidden="true" title="Email student"></span>
+          </a>
+        </td>
+
+        <!-- STUDENT: Name -->
+        <td scope="row" class="align-right">
+          {{ student.fullName }}
+        </td>
+
+        <!-- GRADE: Current grade -->
+        <td
+          class="numeric-cell"
+          :class="getCurrentGradeStyle(student)"
+        >
+          {{ getCurrentGrade(student) }}
+        </td>
+        <!-- GRADE: Delta -->
+        <td
+          class="numeric-cell"
+          :class="getCurrentGradeStyle(student)"
+        >
+          ({{ getCurrentGradeDelta(student) }})
+        </td>
+        <!-- GRADE: Projected Grade -->
+        <td
+          class="numeric-cell"
+          :class="getCurrentGradeStyle(student)"
+        >
+          {{ getProjectedGrade(student) }}
+        </td>
+
+        <!-- PROJECTS: Days Inactive -->
+        <td
+          class="numeric-cell"
+          :class="getDaysInactiveStyle(student)"
+        >
+          {{ daysSinceLastProjectActivity(student) }}
+        </td>
+        <!-- PROJECTS: Total Open -->
+        <td class="numeric-cell" :title="isNaN(inProgressLessonCount(student)) ? 'This student has no submitted, unapproved projects' : ''">
+          {{ inProgressLessonCount(student) }}
+        </td>
+        <!-- PROJECTS: Days Open -->
+        <td class="numeric-cell" :title="isNaN(maxDaysProjectOngoingFor(student)) ? 'This student has no submitted, unapproved projects' : ''">
+          {{ maxDaysProjectOngoingFor(student) }}
+        </td>
+        <!-- PROJECTS: Days Stale -->
+        <td class="numeric-cell" :title="isNaN(maxDaysProjectStaleFor(student)) ? 'This student has no submitted, unapproved projects where the instructor was last to comment' : ''">
+          {{ maxDaysProjectStaleFor(student) }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <script>
@@ -133,6 +130,9 @@ import courseUserGradeProjectedReal from '@helpers/computed/course-user-grade-pr
 import courseAverageLessonGradePointsReal from '@helpers/computed/course-average-lesson-grade-points-real'
 import gradeMax from '@constants/grade-max'
 import normalizedSemesterWeeks from '@constants/normalized-semester-weeks'
+
+// Threshold is the expected grade after one week of lesson work
+const gradeThreshold = gradeMax / normalizedSemesterWeeks
 
 export default {
   props: {
@@ -183,8 +183,6 @@ export default {
     getCurrentGradeStyle (student) {
       const currentGrade = courseUserGradeCurrentRounded(this.course, student)
       const deltaGrade = currentGrade - this.expectedGrade
-      // Threshold is the expected grade after one week of lesson work
-      const gradeThreshold = gradeMax / normalizedSemesterWeeks
 
       if (deltaGrade >= gradeThreshold) {
         return 'allstar-grade'

@@ -1,35 +1,47 @@
 <template>
   <Layout>
     <h1>Student Progress</h1>
-    <CourseProgress
-      v-for="course in coursesSortedByKey"
-      :course="course"
-      :key="course.courseId"
-    />
+
+    <Expander title="Your Active Courses">
+      <CourseProgressReportsList :courses="activeCourses"/>
+    </Expander>
+
+    <Expander title="Other Courses" :expanded="false">
+      <CourseProgressReportsList :courses="otherCourses"/>
+    </Expander>
   </Layout>
 </template>
 
 <script>
-import Layout from '@layouts/main'
-import CourseProgress from '@components/course-progress'
 import { courseGetters, userGetters } from '@state/helpers'
-import sortBy from 'lodash/sortBy'
+import Layout from '@layouts/main'
+import CourseProgressReportsList from '@components/course-reports-progress-list'
+import Expander from '@components/expander'
 
 export default {
   components: {
-    Layout, CourseProgress
+    CourseProgressReportsList, Expander, Layout
   },
   computed: {
     ...courseGetters,
     ...userGetters,
-    availableCourses () {
-      const currentUserId = this.currentUser.userId
-      return this.courses.filter(
-        course => course.instructorIds.includes(currentUserId)
+    activeCourses () {
+      return this.courses.filter(course =>
+        this.isInstructorInCourse(course) && this.isActiveCourse(course)
       )
     },
-    coursesSortedByKey () {
-      return sortBy(this.availableCourses, [course => course.courseKey])
+    otherCourses () {
+      return this.courses.filter(course =>
+        this.isInstructorInCourse(course) && !this.isActiveCourse(course)
+      )
+    }
+  },
+  methods: {
+    isActiveCourse (course) {
+      return !course.endDate || Date.now() < course.endDate
+    },
+    isInstructorInCourse (course) {
+      return course.instructorIds.includes(this.currentUser.userId)
     }
   }
 }

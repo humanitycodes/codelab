@@ -119,6 +119,14 @@ export default [
     }
   },
   {
+    path: '/courses/:courseKey/reports/progress',
+    component: () => import('@pages/course-report-progress'),
+    meta: {
+      isAuthorized: canReadAllCourses,
+      layout: 'full'
+    }
+  },
+  {
     path: '/code-reviews',
     component: () => import('@pages/code-reviews'),
     meta: {
@@ -130,8 +138,7 @@ export default [
     path: '/student-progress',
     component: () => import('@pages/student-progress'),
     meta: {
-      isAuthorized: canReadAllCourses,
-      layout: 'full'
+      isAuthorized: canReadAllCourses
     }
   },
   {
