@@ -14,107 +14,201 @@
         <th scope="col">
           Links
         </th>
-        <th scope="col">
+        <th
+          scope="col"
+          class="cursor-pointer"
+          @click="toggleOrderBy('name')"
+        >
           Name
+          <OrderByIndicator
+            column="name"
+            :orderByColumn="orderByColumn"
+            :orderByDirection="orderByDirection"
+          />
         </th>
         <!-- GRADE -->
-        <th class="numeric-cell" scope="col">
+        <th
+          scope="col"
+          class="numeric-cell cursor-pointer"
+          @click="toggleOrderBy('current-grade')"
+        >
           Current
+          <OrderByIndicator
+            column="current-grade"
+            :orderByColumn="orderByColumn"
+            :orderByDirection="orderByDirection"
+          />
         </th>
-        <th class="numeric-cell" scope="col">
+        <th
+          scope="col"
+          class="numeric-cell cursor-pointer"
+          @click="toggleOrderBy('delta-grade')"
+        >
           Delta
+          <OrderByIndicator
+            column="delta-grade"
+            :orderByColumn="orderByColumn"
+            :orderByDirection="orderByDirection"
+          />
         </th>
-        <th class="numeric-cell" scope="col" title="Student's final grade (unrounded) if they continue at this pace">
+        <th
+          scope="col"
+          class="numeric-cell cursor-pointer"
+          title="Student's final grade (unrounded) if they continue at this pace"
+          @click="toggleOrderBy('projected-grade')"
+        >
           Projected
+          <OrderByIndicator
+            column="projected-grade"
+            :orderByColumn="orderByColumn"
+            :orderByDirection="orderByDirection"
+          />
         </th>
         <!-- PROJECTS -->
-        <th class="numeric-cell" scope="col" title="Number of days since an update was made to a project">
+        <th
+          scope="col"
+          class="numeric-cell cursor-pointer"
+          title="Number of days since an update was made to a project"
+          @click="toggleOrderBy('days-inactive')"
+        >
           Days Inactive
+          <OrderByIndicator
+            column="days-inactive"
+            :orderByColumn="orderByColumn"
+            :orderByDirection="orderByDirection"
+          />
         </th>
-        <th class="numeric-cell" scope="col" title="Total projects a student has submitted that have not yet been approved">
+        <th
+          scope="col"
+          class="numeric-cell cursor-pointer"
+          title="Total projects a student has submitted that have not yet been approved"
+          @click="toggleOrderBy('open-projects')"
+       >
           Total Open
+          <OrderByIndicator
+            column="open-projects"
+            :orderByColumn="orderByColumn"
+            :orderByDirection="orderByDirection"
+          />
         </th>
-        <th class="numeric-cell" scope="col" title="Maximum number of days a submitted project has gone unapproved">
+        <th
+          scope="col"
+          class="numeric-cell cursor-pointer"
+          title="Maximum number of days a submitted project has gone unapproved"
+          @click="toggleOrderBy('days-open')"
+        >
           Days Open
+          <OrderByIndicator
+            column="days-open"
+            :orderByColumn="orderByColumn"
+            :orderByDirection="orderByDirection"
+          />
         </th>
-        <th class="numeric-cell" scope="col" title="Maximum number of days since a project has had changes requested">
+        <th
+          scope="col"
+          class="numeric-cell cursor-pointer"
+          title="Maximum number of days since a project has had changes requested"
+          @click="toggleOrderBy('days-stale')"
+        >
           Days Stale
+          <OrderByIndicator
+            column="days-stale"
+            :orderByColumn="orderByColumn"
+            :orderByDirection="orderByDirection"
+          />
         </th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="student in studentsInCourse" :key="student.userId">
+      <tr v-for="row in rows" :key="row.student.userId">
 
         <!-- STUDENT: Links -->
         <td class="links">
           <a
-            v-if="student.githubLogin"
-            :href="courseReposFor(course, student)"
+            v-if="row.student.githubLogin"
+            :href="courseReposFor(course, row.student)"
             target="_blank"
             class="icon-link"
             alt="Open Github profile in new tab"
             aria-label="GitHub Profile"
           >
-            <span class="fab fa-github" aria-hidden="true" title="Open student's GitHub profile"></span>
+            <span
+              class="fab fa-github"
+              aria-hidden="true"
+              title="Open student's GitHub profile"
+            ></span>
           </a>
 
           <a
-            v-if="student.email"
-            :href="'mailto:' + student.email"
+            v-if="row.student.email"
+            :href="'mailto:' + row.student.email"
             target="_blank"
             class="icon-link"
             alt="Email student"
             aria-label="Email address"
           >
-            <span class="far fa-envelope" aria-hidden="true" title="Email student"></span>
+            <span
+              class="far fa-envelope"
+              aria-hidden="true"
+              title="Email student"
+            ></span>
           </a>
         </td>
 
         <!-- STUDENT: Name -->
         <td scope="row" class="align-right">
-          {{ student.fullName }}
+          {{ row.student.fullName }}
         </td>
 
         <!-- GRADE: Current grade -->
         <td
           class="numeric-cell"
-          :class="getCurrentGradeStyle(student)"
+          :class="gradeStyle(row.deltaGrade)"
         >
-          {{ getCurrentGrade(student) }}
+          {{ row.currentGrade }}
         </td>
         <!-- GRADE: Delta -->
         <td
           class="numeric-cell"
-          :class="getCurrentGradeStyle(student)"
+          :class="gradeStyle(row.deltaGrade)"
         >
-          ({{ getCurrentGradeDelta(student) }})
+          ({{ row.deltaGrade }})
         </td>
         <!-- GRADE: Projected Grade -->
         <td
           class="numeric-cell"
-          :class="getCurrentGradeStyle(student)"
+          :class="gradeStyle(row.deltaGrade)"
         >
-          {{ getProjectedGrade(student) }}
+          {{ row.projectedGrade }}
         </td>
 
         <!-- PROJECTS: Days Inactive -->
         <td
           class="numeric-cell"
-          :class="getDaysInactiveStyle(student)"
+          :class="getDaysInactiveStyle(row.student)"
         >
-          {{ daysSinceLastProjectActivity(student) }}
+          {{ row.daysInactive }}
         </td>
         <!-- PROJECTS: Total Open -->
-        <td class="numeric-cell" :title="isNaN(inProgressLessonCount(student)) ? 'This student has no submitted, unapproved projects' : ''">
-          {{ inProgressLessonCount(student) }}
+        <td
+          class="numeric-cell"
+          :title="isNaN(row.openProjects) ? 'This student has no submitted, unapproved projects' : ''"
+        >
+          {{ row.openProjects }}
         </td>
         <!-- PROJECTS: Days Open -->
-        <td class="numeric-cell" :title="isNaN(maxDaysProjectOngoingFor(student)) ? 'This student has no submitted, unapproved projects' : ''">
-          {{ maxDaysProjectOngoingFor(student) }}
+        <td
+          class="numeric-cell"
+          :title="isNaN(row.daysOpen) ? 'This student has no submitted, unapproved projects' : ''"
+        >
+          {{ row.daysOpen }}
         </td>
         <!-- PROJECTS: Days Stale -->
-        <td class="numeric-cell" :title="isNaN(maxDaysProjectStaleFor(student)) ? 'This student has no submitted, unapproved projects where the instructor was last to comment' : ''">
-          {{ maxDaysProjectStaleFor(student) }}
+        <td
+          class="numeric-cell"
+          :title="isNaN(row.daysStale) ? 'This student has no submitted, unapproved projects where the instructor was last to comment' : ''"
+        >
+          {{ row.daysStale }}
         </td>
       </tr>
     </tbody>
@@ -122,68 +216,110 @@
 </template>
 
 <script>
+import OrderByIndicator from '@components/indicator-order-by'
 import daysSince from '@helpers/computed/days-since'
 import { userGetters, projectCompletionGetters } from '@state/helpers'
-import courseUserGradeCurrentRounded from '@helpers/computed/course-user-grade-current-rounded'
+import courseUserGradeCurrentReal from '@helpers/computed/course-user-grade-current-real'
 import courseGradeMinExpectedRounded from '@helpers/computed/course-grade-min-expected-rounded'
 import courseUserGradeProjectedReal from '@helpers/computed/course-user-grade-projected-real'
-import courseAverageLessonGradePointsReal from '@helpers/computed/course-average-lesson-grade-points-real'
+import getGradeRounded from '@helpers/utils/get-grade-rounded'
 import gradeMax from '@constants/grade-max'
 import normalizedSemesterWeeks from '@constants/normalized-semester-weeks'
+import orderBy from 'lodash/orderBy'
 
 // Threshold is the expected grade after one week of lesson work
 const gradeThreshold = gradeMax / normalizedSemesterWeeks
 
 export default {
+  components: {
+    OrderByIndicator
+  },
   props: {
     course: {
       type: Object,
       required: true
     }
   },
+  data () {
+    return {
+      expectedGrade: courseGradeMinExpectedRounded(this.course),
+      orderByColumn: 'current-grade',
+      orderByDirection: 'asc',
+      orderByIdentifier: {
+        'name': row => row.student.fullName,
+        'current-grade': row => parseFloat(row.currentGrade),
+        'delta-grade': row => parseFloat(row.deltaGrade),
+        'projected-grade': row => parseFloat(row.projectedGrade),
+        'days-inactive': row => parseInt(row.daysInactive) || Infinity,
+        'open-projects': row => parseInt(row.openProjects),
+        'days-open': row => parseInt(row.daysOpen) || -1,
+        'days-stale': row => parseInt(row.daysStale) || -1
+      }
+    }
+  },
   computed: {
     ...userGetters,
     ...projectCompletionGetters,
-    expectedGrade () {
-      return courseGradeMinExpectedRounded(this.course)
+    rows () {
+      const rows = this.course.studentIds.map(studentId => {
+        const student = this.users.find(user => user.userId === studentId)
+        const progress = this.progressForStudent(student)
+        return {
+          student,
+          ...progress
+        }
+      })
+      return orderBy(rows, [
+        this.orderByIdentifier[this.orderByColumn],
+        row => row.student.userId
+      ], [this.orderByDirection, this.orderByDirection])
     },
     courseProjectCompletions () {
       return this.projectCompletions.filter(
         completion => completion.courseId === this.course.courseId
       )
-    },
-    studentsInCourse () {
-      return this.course.studentIds.map(
-        studentId => this.users.find(user => user.userId === studentId)
-      ).sort((student1, student2) => {
-        const student1Progress = this.getCurrentGrade(student1)
-        const student2Progress = this.getCurrentGrade(student2)
-
-        // Sort by course progress, then by name
-        if (student1Progress === student2Progress) {
-          return student1.fullName.toLowerCase() < student2.fullName.toLowerCase() ? -1 : 1
-        }
-        return student1Progress < student2Progress ? -1 : 1
-      })
     }
   },
   methods: {
+    toggleOrderBy (column) {
+      if (this.orderByColumn === column) {
+        this.orderByDirection = this.orderByDirection === 'asc' ? 'desc' : 'asc'
+      } else {
+        this.orderByColumn = column
+        this.orderByDirection = 'asc'
+      }
+    },
+    progressForStudent (student) {
+      const realGrade = courseUserGradeCurrentReal(this.course, student)
+      const roundedGrade = getGradeRounded(realGrade)
+      const currentGrade = this.getCurrentGrade(roundedGrade)
+      const deltaGrade = this.getCurrentGradeDelta(roundedGrade)
+      const projectedGrade = this.getProjectedGrade(realGrade)
+      const daysInactive = this.daysSinceLastProjectActivity(student)
+      const openProjects = this.inProgressLessonCount(student)
+      const daysOpen = this.maxDaysProjectOngoingFor(student)
+      const daysStale = this.maxDaysProjectStaleFor(student)
+      return {
+        currentGrade,
+        deltaGrade,
+        projectedGrade,
+        daysInactive,
+        openProjects,
+        daysOpen,
+        daysStale
+      }
+    },
     formatGrade (grade) {
       return grade !== 0 ? parseFloat(grade).toFixed(2) : 0
     },
-    getCurrentGrade (student) {
-      const roundedGrade = courseUserGradeCurrentRounded(this.course, student)
+    getCurrentGrade (roundedGrade) {
       return this.formatGrade(roundedGrade)
     },
-    getCurrentGradeDelta (student) {
-      const currentGrade = courseUserGradeCurrentRounded(this.course, student)
-      const deltaGrade = currentGrade - this.expectedGrade
+    getCurrentGradeDelta (roundedGrade) {
+      const deltaGrade = roundedGrade - this.expectedGrade
       return (deltaGrade >= 0 ? '+' : '') + this.formatGrade(deltaGrade)
     },
-    getCurrentGradeStyle (student) {
-      const currentGrade = courseUserGradeCurrentRounded(this.course, student)
-      const deltaGrade = currentGrade - this.expectedGrade
-
+    gradeStyle (deltaGrade) {
       if (deltaGrade >= gradeThreshold) {
         return 'allstar-grade'
       } else if (deltaGrade <= -gradeThreshold) {
@@ -192,8 +328,8 @@ export default {
         return ''
       }
     },
-    getProjectedGrade (student) {
-      const projectedGrade = courseUserGradeProjectedReal(this.course, student)
+    getProjectedGrade (realGrade) {
+      const projectedGrade = courseUserGradeProjectedReal(this.course, realGrade)
       return this.formatGrade(projectedGrade)
     },
     getMostRecentStudentActivityDate (completion) {
@@ -203,13 +339,6 @@ export default {
         completion.firstCommittedAt || 0,
         completion.firstSubmittedAt || 0,
         completion.lastCommentedAt || 0
-      )
-    },
-    behindByLessonCount (student) {
-      const currentGrade = this.getCurrentGrade(student)
-      return Math.round(
-        (currentGrade - this.expectedGrade) /
-        courseAverageLessonGradePointsReal(this.course)
       )
     },
     inProgressLessonCount (student) {
@@ -224,8 +353,9 @@ export default {
         !completion.approved &&
         completion.instructorCommentedLast
       ).map(completion => {
-        if (!completion.lastCommentedAt) return -1
-        return daysSince(completion.lastCommentedAt)
+        return completion.lastCommentedAt
+          ? daysSince(completion.lastCommentedAt)
+          : -1
       }).reduce((a, b) => Math.max(a, b), -1)
       return result !== -1 ? result : '--'
     },
@@ -234,8 +364,9 @@ export default {
         completion.studentUserId === student.userId &&
         !completion.approved
       ).map(completion => {
-        if (!completion.firstSubmittedAt) return -1
-        return daysSince(completion.firstSubmittedAt)
+        return completion.firstSubmittedAt
+          ? daysSince(completion.firstSubmittedAt)
+          : -1
       }).reduce((a, b) => Math.max(a, b), -1)
       return result !== -1 ? result : '--'
     },
@@ -245,10 +376,9 @@ export default {
         completion.firstSubmittedAt
       ).map(completion => {
         const activityDate = this.getMostRecentStudentActivityDate(completion)
-        if (!activityDate) return 999
-        return daysSince(activityDate)
-      }).reduce((a, b) => Math.min(a, b), 999)
-      return result !== 999 ? result : '😵'
+        return activityDate ? daysSince(activityDate) : Infinity
+      }).reduce((a, b) => Math.min(a, b), Infinity)
+      return result !== Infinity ? result : '😵'
     },
     getDaysInactiveStyle (student) {
       const daysInactive = this.daysSinceLastProjectActivity(student)
