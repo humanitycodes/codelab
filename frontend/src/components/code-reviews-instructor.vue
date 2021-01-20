@@ -5,7 +5,7 @@
       <thead>
         <th
           id="grade-point-heading"
-          class="numeric-cell sortable"
+          class="numeric-cell cursor-pointer"
           title="The current grade points achieved by the student. Click the heading to sort by this value."
           @click="toggleOrderBy('grade-point')"
           @mouseover="showAllSensitiveData = true"
@@ -20,7 +20,7 @@
         </th>
         <th
           id="student-heading"
-          class="sortable"
+          class="cursor-pointer"
           title="The name of the student. Click the heading to sort by this value."
           @click="toggleOrderBy('student')"
         >
@@ -33,7 +33,7 @@
         </th>
         <th
           id="course-heading"
-          class="sortable"
+          class="cursor-pointer"
           title="The course and section the student is enrolled in. Click the heading to sort by this value."
           @click="toggleOrderBy('course')"
         >
@@ -46,7 +46,7 @@
         </th>
         <th
           id="lesson-heading"
-          class="sortable"
+          class="cursor-pointer"
           title="The lesson that the project demonstrates. Click the heading to sort by this value."
           @click="toggleOrderBy('lesson')"
         >
@@ -59,7 +59,7 @@
         </th>
         <th
           id="project-age-heading"
-          class="numeric-cell sortable"
+          class="numeric-cell cursor-pointer"
           title="The number of days since the project was first submitted. Click the heading to sort by this value."
           @click="toggleOrderBy('project-age')"
         >
@@ -72,7 +72,7 @@
         </th>
         <th
           id="last-updated-heading"
-          class="numeric-cell sortable"
+          class="numeric-cell cursor-pointer"
           title="The date on which the project was last updated. Click the heading to sort by this value."
           @click="toggleOrderBy('last-updated')"
         >
@@ -161,7 +161,9 @@ import daysSince from '@helpers/computed/days-since'
 import updateProjectCompletionInstructor from '@api/project-completions/update-project-completion-instructor'
 
 export default {
-  components: { OrderByIndicator },
+  components: {
+    OrderByIndicator
+  },
   props: {
     instructor: {
       type: Object,
@@ -327,9 +329,6 @@ td:hover .review-info-sensitive-data
 .code-review-links
   text-align: center
 
-.fa
-  font-size: 1.4em
-
 .icon-link:not(:last-child)
   margin-right: .2em
 
@@ -343,7 +342,4 @@ td:hover .review-info-sensitive-data
   padding-top: 0
   padding-right: 0
   padding-bottom: 0
-
-.sortable
-  cursor: pointer
 </style>

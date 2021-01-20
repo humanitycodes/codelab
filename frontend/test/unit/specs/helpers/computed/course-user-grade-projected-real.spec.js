@@ -2,10 +2,8 @@ import courseUserGradeProjectedReal from '@helpers/computed/course-user-grade-pr
 
 const assertCourseUserGradeProjectedRealWith = ({ currentGrade, percentComplete }, expectation) => {
   it(`returns ${expectation} for a current grade of ${currentGrade} and the course is ${percentComplete}% complete`, () => {
-    courseUserGradeProjectedReal.__Rewire__('courseUserGradeCurrentReal', () => currentGrade)
     courseUserGradeProjectedReal.__Rewire__('coursePercentThrough', () => percentComplete)
-    expect(courseUserGradeProjectedReal()).to.equal(expectation)
-    courseUserGradeProjectedReal.__ResetDependency__('courseUserGradeCurrentReal')
+    expect(courseUserGradeProjectedReal(null, currentGrade)).to.equal(expectation)
     courseUserGradeProjectedReal.__ResetDependency__('coursePercentThrough')
   })
 }

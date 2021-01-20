@@ -1,13 +1,8 @@
-import courseUserGradeCurrentReal from './course-user-grade-current-real'
 import coursePercentThrough from './course-percent-through'
 
-export default (course, user) => {
-  const currentGrade = courseUserGradeCurrentReal(course, user)
+export default (course, currentGrade) => {
   const percentThroughCourse = coursePercentThrough(course)
-
-  if (currentGrade === 0 || percentThroughCourse === 0) {
-    return 0
-  }
-
-  return currentGrade / (percentThroughCourse / 100)
+  return (currentGrade === 0 || percentThroughCourse === 0)
+    ? 0
+    : currentGrade / (percentThroughCourse / 100)
 }
