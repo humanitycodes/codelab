@@ -14,119 +14,117 @@
         <th scope="col">
           Links
         </th>
-        <th
-          scope="col"
-          class="cursor-pointer"
-          @click="toggleOrderBy('name')"
-        >
-          Name
-          <OrderByIndicator
-            column="name"
-            :orderByColumn="orderByColumn"
-            :orderByDirection="orderByDirection"
-          />
+        <th scope="col">
+          <a href="javascript:void(0)" @click="toggleOrderBy('name')">
+            Name
+            <OrderByIndicator
+              column="name"
+              :orderByColumn="orderByColumn"
+              :orderByDirection="orderByDirection"
+            />
+          </a>
         </th>
         <!-- GRADE -->
-        <th
-          scope="col"
-          class="numeric-cell cursor-pointer"
-          @click="toggleOrderBy('current-grade')"
-        >
-          Current
-          <OrderByIndicator
-            column="current-grade"
-            :orderByColumn="orderByColumn"
-            :orderByDirection="orderByDirection"
-          />
+        <th scope="col" class="numeric-cell">
+          <a href="javascript:void(0)" @click="toggleOrderBy('current-grade')">
+            Current
+            <OrderByIndicator
+              column="current-grade"
+              :orderByColumn="orderByColumn"
+              :orderByDirection="orderByDirection"
+            />
+          </a>
         </th>
-        <th
-          scope="col"
-          class="numeric-cell cursor-pointer"
-          @click="toggleOrderBy('delta-grade')"
-        >
-          Delta
-          <OrderByIndicator
-            column="delta-grade"
-            :orderByColumn="orderByColumn"
-            :orderByDirection="orderByDirection"
-          />
+        <th scope="col" class="numeric-cell">
+          <a href="javascript:void(0)" @click="toggleOrderBy('delta-grade')">
+            Delta
+            <OrderByIndicator
+              column="delta-grade"
+              :orderByColumn="orderByColumn"
+              :orderByDirection="orderByDirection"
+            />
+          </a>
         </th>
-        <th
-          scope="col"
-          class="numeric-cell cursor-pointer"
-          title="Student's final grade (unrounded) if they continue at this pace"
-          @click="toggleOrderBy('projected-grade')"
-        >
-          Projected
-          <OrderByIndicator
-            column="projected-grade"
-            :orderByColumn="orderByColumn"
-            :orderByDirection="orderByDirection"
-          />
+        <th scope="col" class="numeric-cell">
+          <a
+            href="javascript:void(0)"
+            title="Student's final grade (unrounded) if they continue at this pace"
+            @click="toggleOrderBy('projected-grade')"
+          >
+            Projected
+            <OrderByIndicator
+              column="projected-grade"
+              :orderByColumn="orderByColumn"
+              :orderByDirection="orderByDirection"
+            />
+          </a>
         </th>
         <!-- PROJECTS -->
-        <th
-          scope="col"
-          class="numeric-cell cursor-pointer"
-          title="Number of days since an update was made to a project"
-          @click="toggleOrderBy('days-inactive')"
-        >
-          Days Inactive
-          <OrderByIndicator
-            column="days-inactive"
-            :orderByColumn="orderByColumn"
-            :orderByDirection="orderByDirection"
-          />
+        <th scope="col" class="numeric-cell">
+          <a
+            href="javascript:void(0)"
+            title="Number of days since an update was made to a project"
+            @click="toggleOrderBy('days-inactive')"
+          >
+            Days Inactive
+            <OrderByIndicator
+              column="days-inactive"
+              :orderByColumn="orderByColumn"
+              :orderByDirection="orderByDirection"
+            />
+          </a>
         </th>
-        <th
-          scope="col"
-          class="numeric-cell cursor-pointer"
-          title="Total projects a student has submitted that have not yet been approved"
-          @click="toggleOrderBy('open-projects')"
-       >
-          Total Open
-          <OrderByIndicator
-            column="open-projects"
-            :orderByColumn="orderByColumn"
-            :orderByDirection="orderByDirection"
-          />
+        <th scope="col" class="numeric-cell">
+          <a
+            href="javascript:void(0)"
+            title="Total projects a student has submitted that have not yet been approved"
+            @click="toggleOrderBy('open-projects')"
+          >
+            Total Open
+            <OrderByIndicator
+              column="open-projects"
+              :orderByColumn="orderByColumn"
+              :orderByDirection="orderByDirection"
+            />
+          </a>
         </th>
-        <th
-          scope="col"
-          class="numeric-cell cursor-pointer"
-          title="Maximum number of days a submitted project has gone unapproved"
-          @click="toggleOrderBy('days-open')"
-        >
-          Days Open
-          <OrderByIndicator
-            column="days-open"
-            :orderByColumn="orderByColumn"
-            :orderByDirection="orderByDirection"
-          />
+        <th scope="col" class="numeric-cell">
+          <a
+            href="javascript:void(0)"
+            title="Maximum number of days a submitted project has gone unapproved"
+            @click="toggleOrderBy('days-open')"
+          >
+            Days Open
+            <OrderByIndicator
+              column="days-open"
+              :orderByColumn="orderByColumn"
+              :orderByDirection="orderByDirection"
+            />
+          </a>
         </th>
-        <th
-          scope="col"
-          class="numeric-cell cursor-pointer"
-          title="Maximum number of days since a project has had changes requested"
-          @click="toggleOrderBy('days-stale')"
-        >
-          Days Stale
-          <OrderByIndicator
-            column="days-stale"
-            :orderByColumn="orderByColumn"
-            :orderByDirection="orderByDirection"
-          />
+        <th scope="col" class="numeric-cell">
+          <a
+            href="javascript:void(0)"
+            title="Maximum number of days since a project has had changes requested"
+            @click="toggleOrderBy('days-stale')"
+          >
+            Days Stale
+            <OrderByIndicator
+              column="days-stale"
+              :orderByColumn="orderByColumn"
+              :orderByDirection="orderByDirection"
+            />
+          </a>
         </th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="row in rows" :key="row.student.userId">
-
         <!-- STUDENT: Links -->
         <td class="text-center">
           <a
             v-if="row.student.githubLogin"
-            :href="courseReposFor(course, row.student)"
+            :href="courseReposFor(row.student)"
             target="_blank"
             class="icon-link"
             alt="Open Github profile in new tab"
@@ -138,7 +136,6 @@
               title="Open student's GitHub profile"
             ></span>
           </a>
-
           <a
             v-if="row.student.email"
             :href="'mailto:' + row.student.email"
@@ -388,15 +385,11 @@ export default {
     daysInactiveStyle (daysInactive) {
       return daysInactive >= 5 ? 'warning-inactive' : ''
     },
-    courseReposFor (course, student) {
+    courseReposFor (student) {
       return [
         'https://github.com/',
         student.githubLogin,
         '?utf8=✓&tab=repositories&type=source'
-        // NOTE: Not including course key for now, because
-        // providing a query makes the results sort by
-        // repository creation, ascending, which is Not
-        // very useful. 😕
       ].join('')
     }
   }
