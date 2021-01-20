@@ -123,7 +123,7 @@
       <tr v-for="row in rows" :key="row.student.userId">
 
         <!-- STUDENT: Links -->
-        <td class="links">
+        <td class="text-center">
           <a
             v-if="row.student.githubLogin"
             :href="courseReposFor(course, row.student)"
@@ -156,7 +156,7 @@
         </td>
 
         <!-- STUDENT: Name -->
-        <td scope="row" class="align-right">
+        <td scope="row" class="text-right">
           {{ row.student.fullName }}
         </td>
 
@@ -185,7 +185,7 @@
         <!-- PROJECTS: Days Inactive -->
         <td
           class="numeric-cell"
-          :class="getDaysInactiveStyle(row.student)"
+          :class="daysInactiveStyle(row.daysInactive)"
         >
           {{ row.daysInactive }}
         </td>
@@ -278,6 +278,15 @@ export default {
       return this.projectCompletions.filter(
         completion => completion.courseId === this.course.courseId
       )
+    },
+    studentProjectCompletions () {
+      const completions = {}
+      this.course.studentIds.forEach(studentId => {
+        completions[studentId] = this.courseProjectCompletions.filter(
+          completion => completion.studentUserId === studentId
+        )
+      })
+      return completions
     }
   },
   methods: {
@@ -342,46 +351,41 @@ export default {
       )
     },
     inProgressLessonCount (student) {
-      return this.courseProjectCompletions.filter(completion =>
-        completion.studentUserId === student.userId &&
-        !completion.approved
+      const studentCompletions = this.studentProjectCompletions[student.userId]
+      return studentCompletions.filter(
+        completion => !completion.approved
       ).length
     },
     maxDaysProjectStaleFor (student) {
-      const result = this.courseProjectCompletions.filter(completion =>
-        completion.studentUserId === student.userId &&
-        !completion.approved &&
-        completion.instructorCommentedLast
-      ).map(completion => {
-        return completion.lastCommentedAt
-          ? daysSince(completion.lastCommentedAt)
-          : -1
-      }).reduce((a, b) => Math.max(a, b), -1)
+      const studentCompletions = this.studentProjectCompletions[student.userId]
+      const result = studentCompletions.filter(
+        completion => !completion.approved && completion.instructorCommentedLast
+      ).map(completion => completion.lastCommentedAt
+        ? daysSince(completion.lastCommentedAt)
+        : -1
+      ).reduce((a, b) => Math.max(a, b), -1)
       return result !== -1 ? result : '--'
     },
     maxDaysProjectOngoingFor (student) {
-      const result = this.courseProjectCompletions.filter(completion =>
-        completion.studentUserId === student.userId &&
-        !completion.approved
-      ).map(completion => {
-        return completion.firstSubmittedAt
-          ? daysSince(completion.firstSubmittedAt)
-          : -1
-      }).reduce((a, b) => Math.max(a, b), -1)
+      const studentCompletions = this.studentProjectCompletions[student.userId]
+      const result = studentCompletions.filter(
+        completion => !completion.approved
+      ).map(completion => completion.firstSubmittedAt
+        ? daysSince(completion.firstSubmittedAt)
+        : -1
+      ).reduce((a, b) => Math.max(a, b), -1)
       return result !== -1 ? result : '--'
     },
     daysSinceLastProjectActivity (student) {
-      const result = this.courseProjectCompletions.filter(completion =>
-        completion.studentUserId === student.userId &&
-        completion.firstSubmittedAt
-      ).map(completion => {
-        const activityDate = this.getMostRecentStudentActivityDate(completion)
-        return activityDate ? daysSince(activityDate) : Infinity
-      }).reduce((a, b) => Math.min(a, b), Infinity)
+      const studentCompletions = this.studentProjectCompletions[student.userId]
+      const result = studentCompletions.filter(
+        completion => completion.firstSubmittedAt
+      ).map(completion =>
+        daysSince(this.getMostRecentStudentActivityDate(completion))
+      ).reduce((a, b) => Math.min(a, b), Infinity)
       return result !== Infinity ? result : '😵'
     },
-    getDaysInactiveStyle (student) {
-      const daysInactive = this.daysSinceLastProjectActivity(student)
+    daysInactiveStyle (daysInactive) {
       return daysInactive >= 5 ? 'warning-inactive' : ''
     },
     courseReposFor (course, student) {
@@ -404,32 +408,15 @@ export default {
 
 .warning-grade, .warning-inactive
   color: $design.branding.danger.dark
+
 .allstar-grade
   color: $design.branding.success.light
 
-.grade-delta
-  width: 1px
-  white-space: nowrap
-  border-left-style: dashed
+.icon-link
+  margin-right: .2em
 
 table
   border-collapse: collapse
-
-colgroup, thead
-  border: 2px solid #ddd
-
-.align-right
-  text-align: right
-
-.links
-  text-align: center
-
-.fa
-  font-size: 1.4em
-
-.icon-link:not(:last-child)
-  margin-right: .2em
-
-details:last-child
-  margin-bottom: 3em
+  colgroup, thead
+    border: 2px solid #ddd
 </style>
