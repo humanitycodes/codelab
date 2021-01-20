@@ -13,12 +13,16 @@
 </template>
 
 <script>
+import store from '@state/store'
 import { courseGetters, userGetters } from '@state/helpers'
 import Layout from '@layouts/main'
 import CourseProgressReportsList from '@components/course-reports-progress-list'
 import Expander from '@components/expander'
 
 export default {
+  beforeRouteEnter (to, from, next) {
+    store.dispatch('syncResourceJournal').then(() => next())
+  },
   components: {
     CourseProgressReportsList, Expander, Layout
   },
