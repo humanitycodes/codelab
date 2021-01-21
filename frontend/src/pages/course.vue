@@ -300,7 +300,7 @@ export default {
       return courseUserProjectedPercentToMaxGrade(this.currentCourse, this.currentUser)
     },
     projectedGrade () {
-      return courseUserGradeProjectedReported(this.currentCourse, this.currentUser)
+      return courseUserGradeProjectedReported(this.currentCourse, this.currentGrade)
     },
     hoveredLessonStatus () {
       return courseLessonUserStatus(this.currentCourse, this.hoveredLesson, this.currentUser)
