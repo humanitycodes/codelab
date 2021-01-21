@@ -1,87 +1,102 @@
 <template>
   <section>
     <h2>{{ instructor.fullName }}</h2>
-    <table class="dashboard-info">
+    <table
+      role="grid"
+      class="dashboard-info"
+      :aria-rowcount="codeReviews.length"
+    >
       <thead>
         <th
           id="grade-point-heading"
-          class="numeric-cell cursor-pointer"
-          title="The current grade points achieved by the student. Click the heading to sort by this value."
-          @click="toggleOrderBy('grade-point')"
+          class="numeric-cell"
           @mouseover="showAllSensitiveData = true"
           @mouseout="showAllSensitiveData = false"
         >
-          GP
-          <OrderByIndicator
-            column="grade-point"
-            :orderByColumn="orderByColumn"
-            :orderByDirection="orderByDirection"
-          />
+          <a
+            href="javascript:void(0)"
+            title="The current grade points achieved by the student. Click the heading to sort by this value."
+            @click="toggleOrderBy('grade-point')"
+            @focus="showAllSensitiveData = true"
+            @blur="showAllSensitiveData = false"
+          >
+            GP
+            <OrderByIndicator
+              column="grade-point"
+              :orderByColumn="orderByColumn"
+              :orderByDirection="orderByDirection"
+            />
+          </a>
         </th>
-        <th
-          id="student-heading"
-          class="cursor-pointer"
-          title="The name of the student. Click the heading to sort by this value."
-          @click="toggleOrderBy('student')"
-        >
-          Student
-          <OrderByIndicator
-            column="student"
-            :orderByColumn="orderByColumn"
-            :orderByDirection="orderByDirection"
-          />
+        <th id="student-heading">
+          <a
+            href="javascript:void(0)"
+            title="The name of the student. Click the heading to sort by this value."
+            @click="toggleOrderBy('student')"
+          >
+            Student
+            <OrderByIndicator
+              column="student"
+              :orderByColumn="orderByColumn"
+              :orderByDirection="orderByDirection"
+            />
+          </a>
         </th>
-        <th
-          id="course-heading"
-          class="cursor-pointer"
-          title="The course and section the student is enrolled in. Click the heading to sort by this value."
-          @click="toggleOrderBy('course')"
-        >
-          Course
-          <OrderByIndicator
-            column="course"
-            :orderByColumn="orderByColumn"
-            :orderByDirection="orderByDirection"
-          />
+        <th id="course-heading">
+          <a
+            href="javascript:void(0)"
+            title="The course and section the student is enrolled in. Click the heading to sort by this value."
+            @click="toggleOrderBy('course')"
+          >
+            Course
+            <OrderByIndicator
+              column="course"
+              :orderByColumn="orderByColumn"
+              :orderByDirection="orderByDirection"
+            />
+          </a>
         </th>
-        <th
-          id="lesson-heading"
-          class="cursor-pointer"
-          title="The lesson that the project demonstrates. Click the heading to sort by this value."
-          @click="toggleOrderBy('lesson')"
-        >
-          Lesson
-          <OrderByIndicator
-            column="lesson"
-            :orderByColumn="orderByColumn"
-            :orderByDirection="orderByDirection"
-          />
+        <th id="lesson-heading">
+          <a
+            href="javascript:void(0)"
+            title="The lesson that the project demonstrates. Click the heading to sort by this value."
+            @click="toggleOrderBy('lesson')"
+          >
+            Lesson
+            <OrderByIndicator
+              column="lesson"
+              :orderByColumn="orderByColumn"
+              :orderByDirection="orderByDirection"
+            />
+          </a>
         </th>
-        <th
-          id="project-age-heading"
-          class="numeric-cell cursor-pointer"
-          title="The number of days since the project was first submitted. Click the heading to sort by this value."
-          @click="toggleOrderBy('project-age')"
-        >
-          Project Age
-          <OrderByIndicator
-            column="project-age"
-            :orderByColumn="orderByColumn"
-            :orderByDirection="orderByDirection"
-          />
+        <th id="project-age-heading" class="numeric-cell">
+          <a
+            href="javascript:void(0)"
+            title="The number of days since the project was first submitted. Click the heading to sort by this value."
+            @click="toggleOrderBy('project-age')"
+          >
+            Project Age
+            <OrderByIndicator
+              column="project-age"
+              :orderByColumn="orderByColumn"
+              :orderByDirection="orderByDirection"
+            />
+          </a>
         </th>
-        <th
-          id="last-updated-heading"
-          class="numeric-cell cursor-pointer"
-          title="The date on which the project was last updated. Click the heading to sort by this value."
-          @click="toggleOrderBy('last-updated')"
-        >
-          Updated
-          <OrderByIndicator
-            column="last-updated"
-            :orderByColumn="orderByColumn"
-            :orderByDirection="orderByDirection"
-          />
+        <th id="last-updated-heading" class="numeric-cell">
+          <a
+            href="javascript:void(0)"
+            title="The date on which the project was last updated. Click the heading to sort by this value."
+            @click="toggleOrderBy('last-updated')"
+          >
+            Updated
+            <OrderByIndicator
+              column="last-updated"
+              :orderByColumn="orderByColumn"
+              :orderByDirection="orderByDirection"
+            />
+          </a>
         </th>
         <th id="links-heading">Links</th>
       </thead>
@@ -89,6 +104,7 @@
         <tr
           v-for="(codeReview, index) in sortCodeReviews(codeReviews)"
           :key="index"
+          :aria-rowindex="index + 1"
         >
           <td class="numeric-cell">
             <span :class="{ 'review-info-sensitive-data': !showAllSensitiveData }">
@@ -97,7 +113,7 @@
           </td>
           <td>
             {{ codeReview.student.fullName }}
-            </td>
+          </td>
           <td class="review-info-key">
             {{ humanizeCourseKey(codeReview.course.courseKey) }}
           </td>

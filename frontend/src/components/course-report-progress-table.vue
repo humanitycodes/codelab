@@ -1,5 +1,5 @@
 <template>
-  <table class="dashboard-info">
+  <table class="dashboard-info" role="grid" :aria-rowcount="rows.length">
     <colgroup span="2"></colgroup>
     <colgroup span="3"></colgroup>
     <colgroup span="4"></colgroup>
@@ -119,7 +119,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="row in rows" :key="row.student.userId">
+      <tr
+        v-for="(row, index) in rows"
+        :key="index"
+        :aria-rowindex="index + 1"
+      >
         <!-- STUDENT: Links -->
         <td class="text-center">
           <a
