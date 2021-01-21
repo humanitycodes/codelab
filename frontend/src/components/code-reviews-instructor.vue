@@ -8,14 +8,14 @@
     >
       <thead>
         <th
-          id="grade-point-heading"
-          class="numeric-cell"
+          class="grade-point-heading"
+          :aria-sort="ariaSortDirection('grade-point')"
           @mouseover="showAllSensitiveData = true"
           @mouseout="showAllSensitiveData = false"
         >
           <a
             href="javascript:void(0)"
-            title="The current grade points achieved by the student. Click the heading to sort by this value."
+            title="The current grade points achieved by the student."
             @click="toggleOrderBy('grade-point')"
             @focus="showAllSensitiveData = true"
             @blur="showAllSensitiveData = false"
@@ -28,10 +28,13 @@
             />
           </a>
         </th>
-        <th id="student-heading">
+        <th
+          class="student-heading"
+          :aria-sort="ariaSortDirection('student')"
+        >
           <a
             href="javascript:void(0)"
-            title="The name of the student. Click the heading to sort by this value."
+            title="The name of the student."
             @click="toggleOrderBy('student')"
           >
             Student
@@ -42,10 +45,13 @@
             />
           </a>
         </th>
-        <th id="course-heading">
+        <th
+          class="course-heading"
+          :aria-sort="ariaSortDirection('course')"
+        >
           <a
             href="javascript:void(0)"
-            title="The course and section the student is enrolled in. Click the heading to sort by this value."
+            title="The course and section the student is enrolled in."
             @click="toggleOrderBy('course')"
           >
             Course
@@ -56,10 +62,13 @@
             />
           </a>
         </th>
-        <th id="lesson-heading">
+        <th
+          class="lesson-heading"
+          :aria-sort="ariaSortDirection('lesson')"
+        >
           <a
             href="javascript:void(0)"
-            title="The lesson that the project demonstrates. Click the heading to sort by this value."
+            title="The lesson that the project demonstrates."
             @click="toggleOrderBy('lesson')"
           >
             Lesson
@@ -70,13 +79,16 @@
             />
           </a>
         </th>
-        <th id="project-age-heading" class="numeric-cell">
+        <th
+          class="project-age-heading"
+          :aria-sort="ariaSortDirection('project-age')"
+        >
           <a
             href="javascript:void(0)"
-            title="The number of days since the project was first submitted. Click the heading to sort by this value."
+            title="The number of days since the project was first submitted."
             @click="toggleOrderBy('project-age')"
           >
-            Project Age
+            Age
             <OrderByIndicator
               column="project-age"
               :orderByColumn="orderByColumn"
@@ -84,10 +96,13 @@
             />
           </a>
         </th>
-        <th id="last-updated-heading" class="numeric-cell">
+        <th
+          class="last-updated-heading numeric-cell"
+          :aria-sort="ariaSortDirection('last-updated')"
+        >
           <a
             href="javascript:void(0)"
-            title="The date on which the project was last updated. Click the heading to sort by this value."
+            title="The date on which the project was last updated."
             @click="toggleOrderBy('last-updated')"
           >
             Updated
@@ -98,7 +113,7 @@
             />
           </a>
         </th>
-        <th id="links-heading">Links</th>
+        <th class="links-heading">Links</th>
       </thead>
       <tbody>
         <tr
@@ -107,7 +122,9 @@
           :aria-rowindex="index + 1"
         >
           <td class="numeric-cell">
-            <span :class="{ 'review-info-sensitive-data': !showAllSensitiveData }">
+            <span
+              :class="{ 'review-info-sensitive-data': !showAllSensitiveData }"
+            >
               {{ codeReview.studentGradePoints }}
             </span>
           </td>
@@ -118,7 +135,10 @@
             {{ humanizeCourseKey(codeReview.course.courseKey) }}
           </td>
           <td class="review-info-key">
-            <a target="_blank" :href="getCourseLessonUrl(codeReview)">{{ codeReview.lesson.lessonKey }}</a>
+            <a
+              target="_blank"
+              :href="getCourseLessonUrl(codeReview)"
+            >{{ codeReview.lesson.lessonKey }}</a>
           </td>
           <td class="numeric-cell">
             {{ getProjectCompletionAgeInDays(codeReview) }}
@@ -127,20 +147,71 @@
             {{ getProjectCompletionLastUpdatedDateFormatted(codeReview) }}
           </td>
           <td class="code-review-links">
-            <a :href="getFirstIssueUrl(codeReview)" target="_blank" class="icon-link" alt="Open the GitHub issue in a new tab" aria-label="GitHub Issue">
-              <span class="fas fa-exclamation-circle" aria-hidden="true" title="Open this issue on GitHub"></span>
+            <a
+              target="_blank"
+              class="icon-link"
+              alt="Open the GitHub issue in a new tab"
+              aria-label="GitHub Issue"
+              :href="getFirstIssueUrl(codeReview)"
+            >
+              <span
+                class="fas fa-exclamation-circle"
+                aria-hidden="true"
+                title="Open this issue on GitHub"
+              ></span>
             </a>
-            <a :href="getGitHubProjectUrl(codeReview)" target="_blank" class="icon-link" alt="Open the GitHub code in a new tab" aria-label="GitHub Code">
-              <span class="fas fa-code" aria-hidden="true" title="View the code on GitHub"></span>
+            <a
+              target="_blank"
+              class="icon-link"
+              alt="Open the GitHub code in a new tab"
+              aria-label="GitHub Code"
+              :href="getGitHubProjectUrl(codeReview)"
+            >
+              <span
+                class="fas fa-code"
+                aria-hidden="true"
+                title="View the code on GitHub"
+              ></span>
             </a>
-            <a :href="getHostedUrl(codeReview)" target="_blank" class="icon-link" alt="Open the hosted site in a new tab" aria-label="Hosted Site">
-              <span class="fas fa-globe-americas" aria-hidden="true" title="View the hosted site"></span>
+            <a
+              target="_blank"
+              class="icon-link"
+              alt="Open the hosted site in a new tab"
+              aria-label="Hosted Site"
+              :href="getHostedUrl(codeReview)"
+            >
+              <span
+                class="fas fa-globe-americas"
+                aria-hidden="true"
+                title="View the hosted site"
+              ></span>
             </a>
-            <a :href="getValidatorUrl(codeReview)" target="_blank" class="icon-link" alt="Open validator errors in a new tab" aria-label="W3 Validator">
-              <span class="fas fa-check-circle" aria-hidden="true" title="View the W3 validator"></span>
+            <a
+              target="_blank"
+              class="icon-link"
+              alt="Open validator errors in a new tab"
+              aria-label="W3 Validator"
+              :href="getValidatorUrl(codeReview)"
+            >
+              <span
+                class="fas fa-check-circle"
+                aria-hidden="true"
+                title="View the W3 validator"
+              ></span>
             </a>
-            <a @click="openAllLinks(codeReview)" target="_blank" class="icon-link" alt="Open all links in a new tab" aria-label="All links">
-              <span class="fas fa-folder-open" aria-hidden="true" title="Open all links"></span>
+            <a
+              href="javasript:void(0)"
+              target="_blank"
+              class="icon-link"
+              alt="Open all links in a new tab"
+              aria-label="All links"
+              @click="openAllLinks(codeReview)"
+            >
+              <span
+                class="fas fa-folder-open"
+                aria-hidden="true"
+                title="Open all links"
+              ></span>
             </a>
           </td>
           <td class="review-reassignment-control">
@@ -206,6 +277,10 @@ export default {
     }
   },
   methods: {
+    ariaSortDirection (column) {
+      if (this.orderByColumn !== column) return 'none'
+      return this.orderByDirection === 'asc' ? 'ascending' : 'descending'
+    },
     getFirstIssueUrl (codeReview) {
       return this.getGitHubProjectUrl(codeReview) + '/issues/1'
     },
@@ -313,33 +388,31 @@ export default {
 
 td
   white-space: nowrap
+  .review-info-sensitive-data
+    filter: blur(7px)
+    transition: filter .3s
+  &:hover .review-info-sensitive-data
+    filter: none
 
-td .review-info-sensitive-data
-  filter: blur(7px)
-  transition: filter .3s
-
-td:hover .review-info-sensitive-data
-  filter: none
-
-#grade-point-heading
+.grade-point-heading
   width: 5%
 
-#student-heading
+.student-heading
   width: 25%
 
-#course-heading
+.course-heading
   width: 10%
 
-#lesson-heading
+.lesson-heading
   width: 30%
 
-#project-age-heading
+.project-age-heading
   width: 10%
 
-#last-updated-heading
+.last-updated-heading
   width: 10%
 
-#links-heading
+.links-heading
   width: 10%
 
 .code-review-links
