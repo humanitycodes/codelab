@@ -14,7 +14,7 @@
         <th scope="col">
           Links
         </th>
-        <th scope="col">
+        <th scope="col" :aria-sort="ariaSortDirection('name')">
           <a href="javascript:void(0)" @click="toggleOrderBy('name')">
             Name
             <OrderByIndicator
@@ -25,7 +25,11 @@
           </a>
         </th>
         <!-- GRADE -->
-        <th scope="col" class="numeric-cell">
+        <th
+          scope="col"
+          class="numeric-cell"
+          :aria-sort="ariaSortDirection('current-grade')"
+        >
           <a href="javascript:void(0)" @click="toggleOrderBy('current-grade')">
             Current
             <OrderByIndicator
@@ -35,7 +39,11 @@
             />
           </a>
         </th>
-        <th scope="col" class="numeric-cell">
+        <th
+          scope="col"
+          class="numeric-cell"
+          :aria-sort="ariaSortDirection('delta-grade')"
+        >
           <a href="javascript:void(0)" @click="toggleOrderBy('delta-grade')">
             Delta
             <OrderByIndicator
@@ -45,7 +53,11 @@
             />
           </a>
         </th>
-        <th scope="col" class="numeric-cell">
+        <th
+          scope="col"
+          class="numeric-cell"
+          :aria-sort="ariaSortDirection('projected-grade')"
+        >
           <a
             href="javascript:void(0)"
             title="Student's final grade (unrounded) if they continue at this pace"
@@ -60,7 +72,11 @@
           </a>
         </th>
         <!-- PROJECTS -->
-        <th scope="col" class="numeric-cell">
+        <th
+          scope="col"
+          class="numeric-cell"
+          :aria-sort="ariaSortDirection('days-inactive')"
+        >
           <a
             href="javascript:void(0)"
             title="Number of days since an update was made to a project"
@@ -74,7 +90,11 @@
             />
           </a>
         </th>
-        <th scope="col" class="numeric-cell">
+        <th
+          scope="col"
+          class="numeric-cell"
+          :aria-sort="ariaSortDirection('open-projects')"
+        >
           <a
             href="javascript:void(0)"
             title="Total projects a student has submitted that have not yet been approved"
@@ -88,7 +108,11 @@
             />
           </a>
         </th>
-        <th scope="col" class="numeric-cell">
+        <th
+          scope="col"
+          class="numeric-cell"
+          :aria-sort="ariaSortDirection('days-open')"
+        >
           <a
             href="javascript:void(0)"
             title="Maximum number of days a submitted project has gone unapproved"
@@ -102,7 +126,11 @@
             />
           </a>
         </th>
-        <th scope="col" class="numeric-cell">
+        <th
+          scope="col"
+          class="numeric-cell"
+          :aria-sort="ariaSortDirection('days-stale')"
+        >
           <a
             href="javascript:void(0)"
             title="Maximum number of days since a project has had changes requested"
@@ -291,6 +319,10 @@ export default {
     }
   },
   methods: {
+    ariaSortDirection (column) {
+      if (this.orderByColumn !== column) return 'none'
+      return this.orderByDirection === 'asc' ? 'ascending' : 'descending'
+    },
     toggleOrderBy (column) {
       if (this.orderByColumn === column) {
         this.orderByDirection = this.orderByDirection === 'asc' ? 'desc' : 'asc'
