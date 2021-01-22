@@ -200,7 +200,6 @@
               ></span>
             </a>
             <a
-              href="javasript:void(0)"
               target="_blank"
               class="icon-link"
               alt="Open all links in a new tab"
