@@ -87,7 +87,7 @@ export default {
       // is being sent to the client via the URL as a query parameter
       const encodedJwt = encodeURIComponent(jwt)
       let url = `${serverBaseUrl}/sign-in?token=${encodedJwt}`
-      if (request.query.state) {
+      if (request.query.state && request.params.returnPath) {
         url += `&returnPath=/${request.params.returnPath}`
       }
       return h.redirect(url)
