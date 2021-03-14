@@ -33,7 +33,8 @@ export default new Sequelize(
     },
     dialectOptions: {
       ssl: {
-        require: useSsl
+        require: useSsl,
+        rejectUnauthorized: false
       }
     },
     define: {
