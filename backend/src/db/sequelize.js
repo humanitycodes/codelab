@@ -30,6 +30,11 @@ export default new Sequelize(
     pool: {
       max: dbConnPoolSize
     },
+    dialectOptions: {
+      ssl: {
+        require: true
+      }
+    },
     define: {
       freezeTableName: true,
       timestamps: false,
