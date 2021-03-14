@@ -19,6 +19,7 @@ import Sequelize from 'sequelize'
 import databaseUrl from '../../env/database-url'
 import dbConnPoolSize from '../../env/db-conn-pool-size'
 import logSqlStatements from '../../env/log-sql-statements'
+import useSsl from '../../env/db-ssl'
 
 export default new Sequelize(
   databaseUrl,
@@ -32,7 +33,7 @@ export default new Sequelize(
     },
     dialectOptions: {
       ssl: {
-        require: true
+        require: useSsl
       }
     },
     define: {
