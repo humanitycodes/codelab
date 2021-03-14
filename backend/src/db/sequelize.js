@@ -32,10 +32,7 @@ export default new Sequelize(
       max: dbConnPoolSize
     },
     dialectOptions: {
-      ssl: {
-        require: useSsl,
-        rejectUnauthorized: false
-      }
+      ssl: useSsl
     },
     define: {
       freezeTableName: true,
