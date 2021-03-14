@@ -1,2 +1,2 @@
-// Use SSL in production where Heroku requires it
-module.exports = process.env.NODE_ENV === 'production'
+// Use SSL in Heroku environments
+module.exports = process.env.CODELAB_DB_USE_SSL === 'true'
