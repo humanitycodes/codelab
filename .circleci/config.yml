@@ -12,8 +12,8 @@ jobs:
       YARN_VERSION: 1.16.0
     # Pre-built images list: https://circleci.com/docs/2.0/circleci-images/
     docker:
-    - image: circleci/node:14.15.1-buster-browsers
-    - image: circleci/postgres:10.8-alpine-ram
+    - image: cimg/node:14.18.1-browsers
+    - image: cimg/postgres:10.19
     steps:
     # Setup PATH (can't do in environment section because PATH refers to itself)
     - run:
