@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  browser-tools: circleci/browser-tools@1.2.4
 jobs:
   build:
     working_directory: ~/codelab
@@ -15,6 +17,9 @@ jobs:
     - image: cimg/node:14.18.1-browsers
     - image: cimg/postgres:10.19
     steps:
+    # Install web browsers
+    - browser-tools/install-chrome
+    - browser-tools/install-chromedriver
     # Setup PATH (can't do in environment section because PATH refers to itself)
     - run:
         working_directory: ~/codelab
