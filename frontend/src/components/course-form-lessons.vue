@@ -20,7 +20,6 @@
           v-for="lesson in courseLessons"
           :key="lesson.lessonId"
         >
-          <LessonsMapLesson :lesson="lesson" :course-key="courseKey"/>
           <button
             :disabled="lessonHasProjectCompletions(lesson)"
             :title="
@@ -31,7 +30,8 @@
             @click="showRemoveLessonModal(lesson)"
             class="inline danger"
             name="course-remove-lesson"
-          >×</button>
+          >Remove</button>
+          <LessonsMapLesson :lesson="lesson" :course-key="courseKey"/>
         </li>
       </ul>
       <p v-else class="warning">

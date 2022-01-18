@@ -20,11 +20,6 @@
           v-for="instructor in instructors"
           :key="instructor.userId"
         >
-          {{ instructor.fullName }}
-          (<a
-            :href="'mailto:' + instructor.email"
-            target="_blank"
-          >{{ instructor.email }}</a>)
           <button
             :disabled="instructorHasProjectCompletions(instructor)"
             :title="
@@ -35,7 +30,12 @@
             @click="removeInstructor(instructor)"
             class="inline danger"
             name="course-remove-instructor"
-          >×</button>
+          >Remove</button>
+          <a
+            :href="'mailto:' + instructor.email"
+            target="_blank"
+          >{{ instructor.email }}</a>
+          ({{ instructor.fullName }})
         </li>
       </ul>
       <p v-else class="warning">
