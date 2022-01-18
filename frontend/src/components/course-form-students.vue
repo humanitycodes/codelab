@@ -19,12 +19,6 @@
           v-for="student in students"
           :key="student.userId"
         >
-          {{ student.fullName }}
-          (<a
-            :name="'student-' + student.email"
-            :href="'mailto:' + student.email"
-            target="_blank"
-          >{{ student.email }}</a>)
           <button
             :disabled="studentHasProjectCompletions(student)"
             :title="
@@ -35,7 +29,13 @@
             @click="showRemoveStudentModal(student)"
             class="inline danger"
             name="course-remove-student"
-          >×</button>
+          >Remove</button>
+          <a
+            :name="'student-' + student.email"
+            :href="'mailto:' + student.email"
+            target="_blank"
+          >{{ student.email }}</a>
+          ({{ student.fullName }})
         </li>
       </ul>
       <p v-if="preenrollments.length" class="warning">
@@ -46,16 +46,16 @@
           v-for="preenrollment in preenrollments"
           :key="preenrollment"
         >
+          <button
+            @click="showRemovePreenrollmentModal(preenrollment)"
+            class="inline danger"
+            name="course-remove-student"
+          >Remove</button>
           <a
             :name="'student-' + preenrollment"
             :href="'mailto:' + preenrollment"
             target="_blank"
           >{{ preenrollment }}</a>
-          <button
-            @click="showRemovePreenrollmentModal(preenrollment)"
-            class="inline danger"
-            name="course-remove-student"
-          >×</button>
         </li>
       </ul>
       <p
