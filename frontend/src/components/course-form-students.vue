@@ -99,6 +99,7 @@
 import ModalConfirm from './modal-confirm'
 import { userGetters, projectCompletionGetters } from '@state/helpers'
 import removeArrayValue from '@helpers/utils/remove-array-value'
+import sortBy from 'lodash/sortBy'
 
 export default {
   components: {
@@ -135,10 +136,13 @@ export default {
     ...userGetters,
     ...projectCompletionGetters,
     students () {
-      return this.users.filter(user => this.studentIds.includes(user.userId))
+      return sortBy(
+        this.users.filter(user => this.studentIds.includes(user.userId)),
+        [student => student.email]
+      )
     },
     preenrollments () {
-      return this.pendingStudentEmails
+      return sortBy(this.pendingStudentEmails, [email => email])
     }
   },
   methods: {
