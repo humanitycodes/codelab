@@ -39,6 +39,9 @@
       # 1) Navigate to your project directory (unless you're already there)
       cd PATH/TO/{{ projectName }}
 
+      # 2) Create the app on Heroku (if you haven't already)
+      heroku create {{ projectHostedSubdomain }}
+
       # 3) Push your committed code to Heroku
       git push heroku main
     </CodeBlock>
