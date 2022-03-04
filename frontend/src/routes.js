@@ -4,6 +4,7 @@ import {
 import {
   canCreateCourse, canReadCourse, canReadAllCourses, canUpdateCourse
 } from '@state/auth/courses'
+import { canCreateInstructor, canReadAllInstructors } from './state/auth/users'
 import courseByKey from '@helpers/finders/course-by-key'
 import store from '@state/store'
 import brand from '@env/brand'
@@ -132,6 +133,20 @@ export default [
     meta: {
       isAuthorized: canReadAllCourses,
       layout: 'full'
+    }
+  },
+  {
+    path: '/instructors',
+    component: () => import('@pages/instructors'),
+    meta: {
+      isAuthorized: canReadAllInstructors
+    }
+  },
+  {
+    path: '/instructors/new',
+    component: resolve => require.ensure([], () => resolve(require('@pages/instructor-new').default), 'staff'),
+    meta: {
+      isAuthorized: canCreateInstructor
     }
   },
   {
