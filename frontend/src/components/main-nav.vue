@@ -11,6 +11,11 @@
           Lessons
         </router-link>
       </li>
+      <li v-if="canReadAllInstructors()">
+        <router-link to="/instructors">
+          Instructors
+        </router-link>
+      </li>
     </template>
     <template slot="secondary-list">
       <li v-if="canReadAllCourses()">
