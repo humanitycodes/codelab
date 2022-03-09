@@ -98,6 +98,7 @@
 <script>
 import ModalConfirm from './modal-confirm'
 import { userGetters, projectCompletionGetters } from '@state/helpers'
+import isEmailAddress from '@helpers/utils/is-email-address'
 import removeArrayValue from '@helpers/utils/remove-array-value'
 import sortBy from 'lodash/sortBy'
 
@@ -150,7 +151,7 @@ export default {
       if (!this.studentEmail) return
       const cleanEmail = this.studentEmail.trim().toLowerCase()
       // Student must be added by email address
-      if (!/^[\w.]+@[\w.]+\.[\w.]+/.test(cleanEmail)) return
+      if (!isEmailAddress(cleanEmail)) return
 
       const student = this.findStudentByEmail(cleanEmail)
       if (student) {

@@ -1,11 +1,14 @@
 <template>
   <Layout>
-    <CourseKeyForm @change-key-validity="keyIsValid = $event"
-      @change-key="key = $event"
-    />
+    <h1>New Instructor</h1>
+    <UserEmail v-bind:email.sync="user.email"/>
+    <p v-if="isEmailInUse" class="error">
+      An account with this email address already exists.
+    </p>
+    <UserFullName v-bind:full-name.sync="user.fullName"/>
     <button
-      :disabled="!keyIsValid"
-      @click="tryToCreateCourse"
+      :disabled="!formIsValid"
+      @click="tryToCreateInstructor"
       class="primary block"
     >
       Create instructor
@@ -15,43 +18,47 @@
 
 <script>
 import Layout from '@layouts/main'
-import store from '@state/store'
-import { userGetters, courseGetters } from '@state/helpers'
-import createCourse from '@api/courses/create-course'
-import CourseKeyForm from '../components/course-form-key'
+import { userGetters } from '@state/helpers'
+import UserEmail from '../components/user-form-email'
+import UserFullName from '../components/user-form-full-name'
+import isEmailAddress from '@helpers/utils/is-email-address'
 
 export default {
   components: {
-    Layout, CourseKeyForm
+    Layout, UserEmail, UserFullName
   },
   data () {
     return {
-      keyIsValid: false,
-      key: ''
+      user: {
+        email: '',
+        fullName: '',
+        isInstructor: true
+      }
     }
   },
   computed: {
     ...userGetters,
-    ...courseGetters
+    isEmailInUse () {
+      if (!this.isValidEmail) return false
+      const email = this.user.email.trim().toLowerCase()
+      return this.users.some(user => user.email === email)
+    },
+    isValidEmail () {
+      return isEmailAddress(this.user.email)
+    },
+    isValidName () {
+      return this.user.fullName && this.user.fullName.trim().length
+    },
+    formIsValid () {
+      return this.isValidName && this.isValidEmail && !this.isEmailInUse
+    }
   },
   methods: {
-    tryToCreateCourse () {
-      if (this.keyIsValid) {
-        const courseKey = this.key
-        createCourse({
-          courseKey,
-          instructors: [{ userId: this.currentUser.userId }]
-        })
-        .then(newCourse => store.dispatch('mergeCourses', [newCourse]))
-        .then(() => this.$router.replace(`/courses/${courseKey}/edit`))
+    tryToCreateInstructor () {
+      if (this.formIsValid) {
+        this.$router.replace('/instructors')
       }
     }
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-.key-field
-  > button
-    margin-left: 20px
-</style>
