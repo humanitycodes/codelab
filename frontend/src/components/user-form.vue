@@ -1,6 +1,6 @@
 <template>
   <div>
-    <UserEmail :email="email"/>
+    <UserEmail :email="email" :read-only="true"/>
     <UserFullName v-on="$listeners" :full-name="fullName"/>
     <UserGithub :githubLogin="githubLogin"/>
   </div>

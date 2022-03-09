@@ -8,7 +8,7 @@
         id="user-full-name"
         @input="onInput"
         name="user-full-name"
-        placeholder="Your first and last name"
+        placeholder="First and last name"
       >
       <p v-if="!isValidName" class="warning">
         A name is required so other people know what to call you.
