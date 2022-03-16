@@ -18,10 +18,12 @@
 
 <script>
 import Layout from '@layouts/main'
+import store from '@state/store'
 import { userGetters } from '@state/helpers'
 import UserEmail from '../components/user-form-email'
 import UserFullName from '../components/user-form-full-name'
 import isEmailAddress from '@helpers/utils/is-email-address'
+import createUser from '@api/users/create-user'
 
 export default {
   components: {
@@ -55,9 +57,10 @@ export default {
   },
   methods: {
     tryToCreateInstructor () {
-      if (this.formIsValid) {
-        this.$router.replace('/instructors')
-      }
+      if (!this.formIsValid) return
+      createUser(this.user)
+        .then(newUser => store.dispatch('mergeUsers', [newUser]))
+        .then(() => this.$router.replace('/instructors'))
     }
   }
 }

@@ -9,6 +9,7 @@ import initMessaging from '@notifications/init-messaging'
 import createUserMessagingToken from '@api/users/messaging-tokens/create-user-messaging-token'
 import messagingAllowedByUser from '@notifications/messaging-allowed-by-user'
 import messagingSupportedByBrowser from '@notifications/messaging-supported-by-browser'
+import mergeByIdAndVersion from './_helpers/merge-by-id-and-version'
 
 const syncCache = {}
 
@@ -116,6 +117,12 @@ export default {
           commit('SET_ALL_USERS', [])
           throw error
         })
+    },
+    mergeUsers ({ commit, state }, users) {
+      // Add or replace some users in the local state
+      if (!users || !users.length) return
+      const mergedUsers = mergeByIdAndVersion('userId', state.all, users)
+      commit('SET_ALL_USERS', mergedUsers)
     }
   },
   mutations: {
