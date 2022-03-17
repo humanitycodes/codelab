@@ -3,7 +3,7 @@ import boom from '@hapi/boom'
 import signJsonWebToken from 'helpers/jwt/sign-json-web-token'
 import sequelize from 'db/sequelize'
 import registerNewUser from '../_helpers/register-new-user'
-import readUserRecordByMsuUid from 'db/user/read-by-msu-uid'
+import readUserRecordByEmail from 'db/user/read-by-email'
 import translateUserFromRecord from 'translators/user/from-record'
 import requestMsuUserProfile from 'services/msu/request-user-profile'
 import serverBaseUrl from '../../../../env/server-base-url'
@@ -26,7 +26,7 @@ export default {
 
       // Lookup the user from MSU and then from the DB
       const msuProfile = await requestMsuUserProfile(request.query.code)
-      let userRecord = await readUserRecordByMsuUid(msuProfile.id, { transaction })
+      let userRecord = await readUserRecordByEmail(msuProfile.email, { transaction })
 
       if (!userRecord) {
         userRecord = await registerNewUser({
