@@ -1,3 +1,6 @@
 import User from './index'
 
-export default (user, options) => User.create(user, options)
+export default (user, options) => {
+  user.email = user.email.trim().toLowerCase()
+  return User.create(user, options)
+}
