@@ -1,19 +1,31 @@
 <template>
   <section>
     <h2 class="mt-4 mb-2">All Instructors</h2>
-    <ul>
-      <li
-        v-for="instructor in orderedInstructors"
-        :key="instructor.userId"
-      >
-          <a
-            :name="'instructor-' + instructor.email"
-            :href="'mailto:' + instructor.email"
-            target="_blank"
-          >{{ instructor.email }}</a>
-        ({{ instructor.fullName }})
-      </li>
-    </ul>
+    <table
+      role="grid"
+      class="dashboard-info"
+      :aria-rowcount="orderedInstructors.length"
+    >
+      <thead>
+        <th>Name</th>
+        <th>Email</th>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(instructor, index) in orderedInstructors"
+          :key="index"
+          :aria-rowindex="index + 1"
+        >
+          <td>{{ instructor.fullName }}</td>
+          <td>
+            <a
+              target="_blank"
+              :href="'mailto:' + instructor.email"
+            >{{ instructor.email }}</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </section>
 </template>
 
@@ -29,7 +41,10 @@ export default {
   },
   computed: {
     orderedInstructors () {
-      return orderBy(this.instructors, [instructor => instructor.email])
+      return orderBy(this.instructors, [
+        instructor => instructor.fullName.toLowerCase(),
+        instructor => instructor.email
+      ])
     }
   }
 }
