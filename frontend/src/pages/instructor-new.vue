@@ -59,8 +59,10 @@ export default {
     tryToCreateInstructor () {
       if (!this.formIsValid) return
       createUser(this.user)
-        .then(newUser => store.dispatch('mergeUsers', [newUser]))
-        .then(() => this.$router.replace('/instructors'))
+        .then(newUser => {
+          store.dispatch('mergeUsers', [newUser])
+          this.$router.replace('/instructors')
+        })
     }
   }
 }
