@@ -85,7 +85,7 @@ jobs:
     - run: yarn install --pure-lockfile
     # Install chromedriver over existing location
     - run: sudo rm -f test/node_modules/chromedriver/lib/chromedriver/chromedriver
-    - browser-tools/install-chromedriver
+    - browser-tools/install-chromedriver:
       install-dir: test/node_modules/chromedriver/lib/chromedriver/chromedriver
     # Save dependency cache
     - save_cache:
