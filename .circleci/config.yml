@@ -81,12 +81,11 @@ jobs:
         fi
     - run: sudo mkdir -p ~/.cache/yarn frontend/node_modules backend/node_modules test/node_modules
     - run: sudo chmod -R 777 ~/.cache/yarn frontend/node_modules backend/node_modules test/node_modules
+    # Remove cached chromedriver dependencies
+    - run: sudo rm -rf test/node_modules
+    - run: sudo rm -rf /tmp/*/chromedriver
     # Install all dependencies (if necessary)
     - run: yarn install --pure-lockfile
-    # Install chromedriver over existing location
-    - run: sudo rm -f test/node_modules/chromedriver/lib/chromedriver/chromedriver
-    - browser-tools/install-chromedriver:
-      install-dir: test/node_modules/chromedriver/lib/chromedriver/chromedriver
     # Save dependency cache
     - save_cache:
         key: yarn-v1-{{ .Branch }}-{{ .Revision }}
