@@ -47,12 +47,6 @@ jobs:
         - backend-deps-v1-
     - restore_cache:
         keys:
-        - test-deps-v1-{{ .Branch }}-{{ checksum "test/yarn.lock" }}
-        - test-deps-v1-{{ .Branch }}-
-        - test-deps-v1-master-
-        - test-deps-v1-
-    - restore_cache:
-        keys:
         - base-deps-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
         - base-deps-v1-{{ .Branch }}-
         - base-deps-v1-master-
@@ -103,10 +97,6 @@ jobs:
         key: backend-deps-v1-{{ .Branch }}-{{ checksum "backend/yarn.lock" }}
         paths:
         - backend/node_modules
-    - save_cache:
-        key: test-deps-v1-{{ .Branch }}-{{ checksum "test/yarn.lock" }}
-        paths:
-        - test/node_modules
     - save_cache:
         key: base-deps-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
         paths:
