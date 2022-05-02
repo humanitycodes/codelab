@@ -20,7 +20,6 @@ jobs:
     steps:
     # Install web browsers
     - browser-tools/install-chrome
-    - browser-tools/install-chromedriver
     # Setup PATH (can't do in environment section because PATH refers to itself)
     - run:
         working_directory: ~/codelab
@@ -84,8 +83,10 @@ jobs:
     - run: sudo chmod -R 777 ~/.cache/yarn frontend/node_modules backend/node_modules test/node_modules
     # Install all dependencies (if necessary)
     - run: yarn install --pure-lockfile
-    # Remove the cached/installed chromedriver so the orb is used instead
-    - run: sudo rm -rf test/node_modules/chromedriver/lib/chromedriver
+    # Install chromedriver over existing location
+    - run: sudo rm -f test/node_modules/chromedriver/lib/chromedriver/chromedriver
+    - browser-tools/install-chromedriver
+      install-dir: test/node_modules/chromedriver/lib/chromedriver/chromedriver
     # Save dependency cache
     - save_cache:
         key: yarn-v1-{{ .Branch }}-{{ .Revision }}
