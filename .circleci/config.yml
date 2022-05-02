@@ -12,6 +12,7 @@ jobs:
       NODE_ENV: testing
       TZ: America/Detroit
       YARN_VERSION: 1.16.0
+      CHROMEDRIVER_SKIP_DOWNLOAD: true
     # Pre-built images list: https://circleci.com/docs/2.0/circleci-images/
     docker:
     - image: cimg/node:14.18.1-browsers
@@ -79,11 +80,12 @@ jobs:
         if [[ ! -e ~/.yarn/bin/yarn || $(yarn --version) != "${YARN_VERSION}" ]]; then
           curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
         fi
-    - run: sudo rm -rf test/node_modules
     - run: sudo mkdir -p ~/.cache/yarn frontend/node_modules backend/node_modules test/node_modules
     - run: sudo chmod -R 777 ~/.cache/yarn frontend/node_modules backend/node_modules test/node_modules
     # Install all dependencies (if necessary)
     - run: yarn install --pure-lockfile
+    # Remove the cached/installed chromedriver so the orb is used instead
+    - run: sudo rm -rf test/node_modules/chromedriver/lib/chromedriver
     # Save dependency cache
     - save_cache:
         key: yarn-v1-{{ .Branch }}-{{ .Revision }}
