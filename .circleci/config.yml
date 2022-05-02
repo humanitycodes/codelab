@@ -85,7 +85,7 @@ jobs:
     - run: sudo rm -rf test/node_modules
     - run: sudo rm -rf /tmp/*/chromedriver
     # Install all dependencies (if necessary)
-    - run: yarn install --pure-lockfile
+    - run: yarn install --pure-lockfile --force
     # Save dependency cache
     - save_cache:
         key: yarn-v1-{{ .Branch }}-{{ .Revision }}
