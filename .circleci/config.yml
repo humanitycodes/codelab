@@ -12,7 +12,6 @@ jobs:
       NODE_ENV: testing
       TZ: America/Detroit
       YARN_VERSION: 1.16.0
-      CHROMEDRIVER_SKIP_DOWNLOAD: true
     # Pre-built images list: https://circleci.com/docs/2.0/circleci-images/
     docker:
     - image: cimg/node:14.18.1-browsers
@@ -85,7 +84,7 @@ jobs:
     - run: sudo rm -rf test/node_modules
     - run: sudo rm -rf /tmp/*/chromedriver
     # Install all dependencies (if necessary)
-    - run: yarn install --pure-lockfile --force
+    - run: yarn install --pure-lockfile
     # Save dependency cache
     - save_cache:
         key: yarn-v1-{{ .Branch }}-{{ .Revision }}
