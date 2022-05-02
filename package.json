@@ -21,7 +21,7 @@
   "scripts": {
     "install:backend": "cd backend && cross-env NODE_ENV=development yarn --pure-lockfile",
     "install:frontend": "cd frontend && cross-env NODE_ENV=development yarn --pure-lockfile",
-    "install:test": "cd test && cross-env NODE_ENV=development yarn --pure-lockfile --force",
+    "install:test": "cd test && cross-env NODE_ENV=development yarn --pure-lockfile",
     "postinstall": "run-s install:* build-all",
     "lint:backend": "cd backend && yarn run lint",
     "lint:frontend": "cd frontend && yarn run lint",

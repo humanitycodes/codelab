@@ -30,7 +30,7 @@
     "@babel/runtime-corejs3": "^7.12.5",
     "babel-eslint": "^9.0.0",
     "chai": "^4.2.0",
-    "chromedriver": "latest",
+    "chromedriver": "^101.0.0",
     "core-js": "^3.8.0",
     "cross-spawn": "^5.0.1",
     "eslint": "^7.14.0",
