@@ -131,3 +131,9 @@ Since this bypasses linting, tests, and QA, it is up to you to confirm that your
 
 The SSL certificates for [codelab.cas.msu.edu](https://codelab.cas.msu.edu) and [codelab517.com](https://www.codelab517.com) are automatically managed and renewed by Heroku. More information can be found in the _Domains and Certificates_
 section of the respective environment's settings on [heroku.com](https://dashboard.heroku.com/apps).
+
+## License
+
+[MIT License](./LICENSE.md)
+
+Copyright (c) 2022 Humanity Codes, LLC
